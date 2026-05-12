@@ -1,0 +1,285 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+ 
+enum RoleType {
+  ADMIN
+  MANAGER
+  ENGNEER
+  TECHNICIAN
+  VIEWER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
+enum LocationType {
+  PLANT
+  WAREHOUSE
+  OFFICE
+  FACILITY
+  OTHERS
+}
+
+enum DepartmentType {
+  MECHANICAL
+  ELECTRICAL
+  INSTRUMENTATION
+  CIVIL
+  OTHERS
+}
+
+enum IndustryType {
+  MANUFACTURING
+  CHEMICAL
+  OIL_GAS
+  FERTILIZER
+  GENERAL
+  OTHERS
+}
+
+enum CompanySize {
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
+}
+
+enum EquipmentStatus {
+  ACTIVE
+  INACTIVE
+  UNDER_MAINTENANCE
+}
+
+model Organization {
+  id              Int             @id @default(autoincrement())
+  name            String
+  slug            String          @unique //URL-Friendly unique identifier
+  industryType    IndustryType?
+  companySize     CompanySize?
+  country         String?
+  city            String?
+  logoUrl         String?
+  isActive        Boolean         @default(true)
+
+  users           User[]
+  locations       Location[]
+  departments     Department[]
+  invitations     Invitation[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+model User {
+  id                  Int             @id @default(autoincrement())   
+  organizationId      Int
+  organization        Organization    @relation(fields: [organizationId], references: [id])
+
+  name                String
+  email               String          @unique
+  passwordHash        String
+  isEmailVerified     Boolean         @default(false)
+  isActive            Boolean         @default(true)
+  lastLoginAt         DateTime?
+
+  roles               UserRole[]
+  department          UserDepartment?
+
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  @@index([organizationId]) //@@ means model level attribute. It applies to the table
+}
+
+model Role {
+  id        Int           @id @default(autoincrement())
+  name      RoleType      @unique
+  users     UserRole[]
+}
+
+// It's a junction table between user <-> role
+model UserRole {
+  id        Int   @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+
+  user      User  @relation(fields: [userId], references: [id])
+  role      Role  @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId])
+}
+
+model Location {
+  id                Int           @id @default(autoincrement())
+  organizationId    Int
+  organization      Organization  @relation(fields: [organizationId], references: [id])
+
+  name              String
+  type              LocationType?
+  address           String
+
+  createdAt         DateTime      @default(now())
+}
+
+model Department {
+  id                Int             @id @default(autoincrement())
+  organizationId    Int             
+  organization      Organization    @relation(fields: [organizationId], references: [id])
+
+  name              String
+  code              String
+  type              DepartmentType
+
+  users             UserDepartment[]
+  
+  createdAt         DateTime        @default(now())
+}
+
+model UserDepartment {
+  id              Int         @id @default(autoincrement())
+  userId          Int         @unique // The unique refer that one user have one department
+  departmentId    Int
+
+  user            User        @relation(fields: [userId], references: [id])
+  department      Department  @relation(fields: [departmentId], references: [id])
+}
+
+model Invitation {
+  id                Int                 @id @default(autoincrement())
+  organizationId    Int             
+  organization      Organization        @relation(fields: [organizationId], references: [id])
+
+  email             String
+  roleId            Int 
+  departmentId      Int?
+  token             String              @unique
+  status            InvitationStatus
+  expiresAt         DateTime
+
+  role              Role                @relation(fields: [roleId], references: [id])
+  department        Department?         @relation(fields: [departmentId], references:[id])
+
+  createdAt         DateTime            @default(now())
+
+  @@unique([organizationId, email])
+}
+
+model EmailVerification {
+  id          Int       @id @default(autoincrement())
+  userId      Int       
+  token       String    @unique
+  expiresAt   DateTime
+
+  user        User      @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime  @default(now())
+}
+
+model PasswordReset {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  token       String      @unique
+  expiresAt   DateTime 
+
+  user        User        @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime    @default(now())
+}
+
+model AuditLog {
+  id                Int       @id @default(autoincrement())
+  organizationId    Int
+  userId            Int
+
+  action            String
+  module            String
+  recordId          String
+  ipAddress         String?
+
+  createdAt         DateTime  @default(now())
+}
+
+model UserSession {
+  id                Int         @id @default(autoincrement())
+  userId            Int         
+
+  refreshToken      String      @unique
+  deviceInfo        String?
+  ipAddress         String?
+  userAgent         String?
+
+  isActive          Boolean     @default(true)
+  lastActiveAt      DateTime    @default(now())
+
+  createdAt         DateTime    @default(now())
+  expiresAt         DateTime
+
+  user              User        @relation(fields: [userId], references: [id])
+}
+
+model EquipmentType {
+  id                Int             @id @default(autoincrement())
+  organizationId    Int
+  organization      Organization    @relation(fields: [organizationId], references: [id])
+
+  name              String
+  code              String?      
+  description       String?
+
+  isActive          Boolean         @default(true)
+
+  equipments        Equipment[]
+
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@unique([organizationId, name]) // Inside one organization type name is unique
+}
+
+model Equipment {
+  id                  Int                   @id @default(autoincrement())
+  organizationId      Int
+  equipmentTypeId     Int
+
+  name                String
+  equipmentId         String
+  serialNumber        String?
+
+  location            String?
+  department          String?
+
+  status              EquipmentStatus       @default(ACTIVE)
+
+  installedDate       DateTime?
+  warrantyExpiry      DateTime?
+
+  manufacturer        String?
+  model               String?
+
+  isActive            Boolean               @default(true)
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  organization        Organization          @relation(fields: [organizationId], references: [id])
+  equipmentType       EquipmentType         @relation(fields: [equipmentTypeId], references: [id])
+
+  @@index([organizationId])
+  @@index([equipmentTypeId])
+  @@unique(organizationId, equipmentId)
+}
