@@ -64,6 +64,33 @@ enum EquipmentStatus {
   UNDER_MAINTENANCE
 }
 
+enum FrequencyType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum TaskStatus {
+  PENDING
+  INPROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ItemStatus {
+  PENDING
+  OK
+  NOT_OK
+  SKIPPED
+}
+
 model Organization {
   id              Int             @id @default(autoincrement())
   name            String
@@ -282,4 +309,117 @@ model Equipment {
   @@index([organizationId])
   @@index([equipmentTypeId])
   @@unique(organizationId, equipmentId)
+}
+
+model ChecklistTemplate {
+  id                    Int                 @id @default(autoincrement())
+  organizationId        Int
+  equipmentTypeId       Int
+
+  name                  String
+  description           String?
+
+  organization          Organization        @relation(fields: [organizationId], references: [id])
+  equipmentType         EquipmentType       @relation(fields: [equipmentTypeId], references: [id])
+
+  items                 ChecklistItem[]
+  schedules             PMSchedule[]
+
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  @@index([organizationId])
+  @@index([equipmentTypeId])
+}
+
+model ChecklistItem {
+  id                Int                     @id @default(autoincrement())
+  templateId        Int
+
+  name              String
+  order             Int
+  expectedValue     String?
+
+  template          ChecklistTemplate       @relation(fields: [templateId], references: [id])
+
+  createdAt         DateTime                @default(now())
+}
+
+model PMSchedule {
+  id                  Int                   @id @default(autoincrement())
+  organizationId      Int
+  equipmentId         Int
+  templateId          Int
+
+  frequencyType       FrequencyType
+  interval            Int //Ex: every 7 days, every 2 weeks
+
+  startDate           DateTime
+  nextDueDate         DateTimeI
+
+  assignedTo          Int
+
+  isActive            Boolean               @default(true)
+
+  organization        Organization          @relation(fields: [organizationId], references: [id])
+  equipment           Equipment             @relation(fields: [equipmentId], references: [id])
+  template            ChecklistTemplate     @relation(fields: [templateId], references: [id])
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  @@index([organizationId])
+  @@index([equipmentId])
+  @@index([nextDueDate])
+}
+
+// Task Job
+model PMTask {
+  id                      Int                     @id @default(autoincrement())
+  organizationId          Int
+  scheduleId              Int
+  equipmentId             Int
+  templateId              Int
+
+  assignedTo              Int
+
+  dueDate                 DateTime
+  completedAt             DateTime?
+
+  status                  TaskStatus              @default(PENDING)
+  priority                TaskPriority            @default(MEDIUM)
+
+  remarks                 String?
+
+  organization            Organization            @relation(fields: [organizationId], references: [id])
+  schedule                PMSchedule              @relation(fields: [scheduleId], references: [id])
+  equipment               Equipment               @relation(fields: [equipmentId], references: [id])
+  template                ChecklistTemplate       @relation(fields: [templateId], references: [id])
+
+  checklistItems          TaskChecklistItem[]
+
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+
+  @@index([organizationId])
+  @@index([scheduleId])
+  @@dueDate([dueDate])
+}
+
+// Steps inside job
+model TaskChecklistItem {
+  id                Int           @id @default(autoincrement())
+  taskId            Int
+
+  name              String
+  order             Int
+  expectedValue     String?
+  actualValue       String?
+  status            ItemStatus?
+
+  task              PMTask        @relation(fields: [taskId], references: [id])
+
+  createdAt         DateTime      @default(now())
+
+  @@index([taskId])
 }
