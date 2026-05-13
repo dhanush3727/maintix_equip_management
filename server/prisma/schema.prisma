@@ -73,7 +73,7 @@ enum FrequencyType {
 
 enum TaskStatus {
   PENDING
-  INPROGRESS
+  IN_PROGRESS
   COMPLETED
   SKIPPED
 }
@@ -91,43 +91,86 @@ enum ItemStatus {
   SKIPPED
 }
 
-model Organization {
-  id              Int             @id @default(autoincrement())
-  name            String
-  slug            String          @unique //URL-Friendly unique identifier
-  industryType    IndustryType?
-  companySize     CompanySize?
-  country         String?
-  city            String?
-  logoUrl         String?
-  isActive        Boolean         @default(true)
-
-  users           User[]
-  locations       Location[]
-  departments     Department[]
-  invitations     Invitation[]
-
-  createdAt       DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+enum BreakdownSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
 }
 
-model User {
-  id                  Int             @id @default(autoincrement())   
-  organizationId      Int
-  organization        Organization    @relation(fields: [organizationId], references: [id])
+enum BreakdownStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
 
+enum NotificationType {
+  TASK_DUE
+  TASK_OVERDUE
+  BREAKDOWN_RAISED
+  BREAKDOWN_ASSIGNED
+  BREAKDOWN_RESOLVED
+}
+
+enum ReferenceType {
+  TASK
+  BREAKDOWN
+}
+
+model Organization {
+  id                  Int             @id @default(autoincrement())
   name                String
-  email               String          @unique
-  passwordHash        String
-  isEmailVerified     Boolean         @default(false)
+  slug                String          @unique //URL-Friendly unique identifier
+  industryType        IndustryType?
+  companySize         CompanySize?
+  country             String?
+  city                String?
+  logoUrl             String?
   isActive            Boolean         @default(true)
-  lastLoginAt         DateTime?
 
-  roles               UserRole[]
-  department          UserDepartment?
+  users               User[]
+  locations           Location[]
+  departments         Department[]
+  invitations         Invitation[]
+  equipmentTypes      EquipmentType[]
+  equipments          Equipment[]
+  checklistTemplates  ChecklistTemplate[]
+  pmSchedules         PMSchedule[]
+  pmTasks             PMTask[]
+  breakdownReports    BreakdownReport[]
+  notifications       Notification[]
 
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
+}
+
+model User {
+  id                      Int                 @id @default(autoincrement())   
+  organizationId          Int
+  organization            Organization        @relation(fields: [organizationId], references: [id])
+
+  name                    String
+  email                   String              @unique
+  passwordHash            String
+  isEmailVerified         Boolean             @default(false)
+  isActive                Boolean             @default(true)
+  lastLoginAt             DateTime?
+
+  roles                   UserRole[]
+  department              UserDepartment?
+  emailVerifications      EmailVerification[]
+  passwordResets          PasswordReset[]
+  userSession             UserSession[]
+  pmSchedules             PMSchedule[]
+  pmTasks                 PMTask[]
+  reportedBreakdowns      BreakdownReport[]   @relation("ReportedBy")
+  assignedBreakdowns      BreakdownReport[]   @relation("AssignedTo")
+  breakdownActions        BreakdownAction[]
+  notifications           Notification[]
+
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
 
   @@index([organizationId]) //@@ means model level attribute. It applies to the table
 }
@@ -364,6 +407,7 @@ model PMSchedule {
   organization        Organization          @relation(fields: [organizationId], references: [id])
   equipment           Equipment             @relation(fields: [equipmentId], references: [id])
   template            ChecklistTemplate     @relation(fields: [templateId], references: [id])
+  assignee            User                  @relation(fields: [assignedTo], references: [id])
 
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
@@ -395,6 +439,7 @@ model PMTask {
   schedule                PMSchedule              @relation(fields: [scheduleId], references: [id])
   equipment               Equipment               @relation(fields: [equipmentId], references: [id])
   template                ChecklistTemplate       @relation(fields: [templateId], references: [id])
+  assignee                User                    @relation(fields: [assignedTo], references: [id])
 
   checklistItems          TaskChecklistItem[]
 
@@ -422,4 +467,80 @@ model TaskChecklistItem {
   createdAt         DateTime      @default(now())
 
   @@index([taskId])
+}
+
+// Report the problem
+model BreakdownReport {
+  id                  Int                   @id @default(autoincrement())
+  organizationId      Int
+  equipmentId         Int
+  reportedBy          Int
+  assignedTo          Int?
+
+  title               String
+  rootCause           String
+  description         String?
+
+  severity            BreakdownSeverity
+  status              BreakdownStatus       @default(OPEN)
+
+  reportedAt          DateTime              @default(now())
+  resolvedAt          DateTime
+
+  organization        Organization          @relation(fields: [organizationId], references: [id])
+  equipment           Equipment             @relation(fields: [equipmentId], references: [id])
+  reporter            User                  @relation("ReportedBy", fields: [reportedBy], references: [id])
+  assignee            User?                 @relation("AssignedTo", fields: [assignedTo], references: [id])
+
+  actions             BreakdownAction[]
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  @@index([organizationId])
+  @@index([equipmentId])
+  @@index([status])
+}
+
+// Steps taken to solve the problem
+model BreakdownAction {
+  id                Int                   @id @default(autoincrement())
+  breakdownId       Int
+  performedBy       Int
+
+  action            String
+  remarks           String?
+
+  createdAt         DateTime              @default(now())
+
+  breakdown         BreakdownReport       @relation(fields: [breakdownId], references: [id])
+  user              User                  @relation(fields: [performedBy], references: [id])
+
+  @@index([breakdownId])
+}
+
+model Notification {
+  id                  Int                   @id @default(autoincrement())
+  organizationId      Int
+  userId              Int
+
+  type                NotificationType
+  title               String
+  message             String
+
+  referenceId         Int? //taskId or breakdownId
+  referenceType       ReferenceType?
+
+  isRead              Boolean               @default(false)
+
+  createdAt           DateTime              @default(now())
+  readAt              DateTime?
+
+  organization        Organization          @relation(fields: [organizationId], references: [id])
+  user                User                  @relation(fields: [userId], references: [id])
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
 }
