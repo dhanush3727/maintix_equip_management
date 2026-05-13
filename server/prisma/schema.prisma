@@ -157,9 +157,11 @@ model User {
 }
 
 model Role {
-  id        Int           @id @default(autoincrement())
-  name      RoleType      @unique
-  users     UserRole[]
+  id            Int           @id @default(autoincrement())
+  name          RoleType      @unique
+
+  users         UserRole[]
+  invitations   Invitation[]
 }
 
 // It's a junction table between user <-> role
@@ -287,6 +289,7 @@ model Department {
   type              DepartmentType
 
   users             UserDepartment[]
+  invitations       Invitation[]
   
   createdAt         DateTime        @default(now())
 }
@@ -305,21 +308,21 @@ model UserDepartment {
 // ==============================
 
 model EquipmentType {
-  id                Int             @id @default(autoincrement())
-  organizationId    Int
-  organization      Organization    @relation(fields: [organizationId], references: [id])
+  id                    Int             @id @default(autoincrement())
+  organizationId        Int
+  organization          Organization    @relation(fields: [organizationId], references: [id])
 
-  name              String
-  code              String?      
-  description       String?
+  name                  String
+  code                  String?      
+  description           String?
 
-  isActive          Boolean         @default(true)
+  isActive              Boolean         @default(true)
 
-  equipments        Equipment[]
+  equipments            Equipment[]
+  checklistTemplates    ChecklistTemplate[]
 
-
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
   @@unique([organizationId, name]) // Inside one organization type name is unique
 }
@@ -346,6 +349,10 @@ model Equipment {
 
   isActive            Boolean               @default(true)
 
+  pmSchedules         PMSchedule[]
+  pmTasks             PMTask[]
+  breakdownReports    BreakdownReport[]
+
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
 
@@ -354,7 +361,7 @@ model Equipment {
 
   @@index([organizationId])
   @@index([equipmentTypeId])
-  @@unique(organizationId, equipmentId)
+  @@unique([organizationId, equipmentId])
 }
 
 // ==============================
@@ -374,6 +381,7 @@ model ChecklistTemplate {
 
   items                 ChecklistItem[]
   schedules             PMSchedule[]
+  tasks                 PMTask[]
 
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
@@ -415,6 +423,8 @@ model PMSchedule {
 
   isActive            Boolean               @default(true)
 
+  pmTasks             PMTask[]
+
   organization        Organization          @relation(fields: [organizationId], references: [id])
   equipment           Equipment             @relation(fields: [equipmentId], references: [id])
   template            ChecklistTemplate     @relation(fields: [templateId], references: [id])
@@ -452,7 +462,7 @@ model PMTask {
   equipment               Equipment               @relation(fields: [equipmentId], references: [id])
   template                ChecklistTemplate       @relation(fields: [templateId], references: [id])
   assignee                User                    @relation(fields: [assignedTo], references: [id])
-
+  
   checklistItems          TaskChecklistItem[]
 
   createdAt               DateTime                @default(now())
