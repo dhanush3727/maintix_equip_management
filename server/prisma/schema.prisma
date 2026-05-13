@@ -10,7 +10,11 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
- 
+
+// ==============================
+// ENUMS
+// ==============================
+
 enum RoleType {
   ADMIN
   MANAGER
@@ -118,32 +122,9 @@ enum ReferenceType {
   BREAKDOWN
 }
 
-model Organization {
-  id                  Int             @id @default(autoincrement())
-  name                String
-  slug                String          @unique //URL-Friendly unique identifier
-  industryType        IndustryType?
-  companySize         CompanySize?
-  country             String?
-  city                String?
-  logoUrl             String?
-  isActive            Boolean         @default(true)
-
-  users               User[]
-  locations           Location[]
-  departments         Department[]
-  invitations         Invitation[]
-  equipmentTypes      EquipmentType[]
-  equipments          Equipment[]
-  checklistTemplates  ChecklistTemplate[]
-  pmSchedules         PMSchedule[]
-  pmTasks             PMTask[]
-  breakdownReports    BreakdownReport[]
-  notifications       Notification[]
-
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
-}
+// ==============================
+// AUTH MODULE
+// ==============================
 
 model User {
   id                      Int                 @id @default(autoincrement())   
@@ -193,6 +174,97 @@ model UserRole {
   @@unique([userId, roleId])
 }
 
+model UserSession {
+  id                Int         @id @default(autoincrement())
+  userId            Int         
+
+  refreshToken      String      @unique
+  deviceInfo        String?
+  ipAddress         String?
+  userAgent         String?
+
+  isActive          Boolean     @default(true)
+  lastActiveAt      DateTime    @default(now())
+
+  createdAt         DateTime    @default(now())
+  expiresAt         DateTime
+
+  user              User        @relation(fields: [userId], references: [id])
+}
+
+model EmailVerification {
+  id          Int       @id @default(autoincrement())
+  userId      Int       
+  token       String    @unique
+  expiresAt   DateTime
+
+  user        User      @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime  @default(now())
+}
+
+model PasswordReset {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  token       String      @unique
+  expiresAt   DateTime 
+
+  user        User        @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime    @default(now())
+}
+
+model Invitation {
+  id                Int                 @id @default(autoincrement())
+  organizationId    Int             
+  organization      Organization        @relation(fields: [organizationId], references: [id])
+
+  email             String
+  roleId            Int 
+  departmentId      Int?
+  token             String              @unique
+  status            InvitationStatus
+  expiresAt         DateTime
+
+  role              Role                @relation(fields: [roleId], references: [id])
+  department        Department?         @relation(fields: [departmentId], references:[id])
+
+  createdAt         DateTime            @default(now())
+
+  @@unique([organizationId, email])
+}
+
+// ==============================
+// ORGANIZATION MODULE
+// ==============================
+
+model Organization {
+  id                  Int             @id @default(autoincrement())
+  name                String
+  slug                String          @unique //URL-Friendly unique identifier
+  industryType        IndustryType?
+  companySize         CompanySize?
+  country             String?
+  city                String?
+  logoUrl             String?
+  isActive            Boolean         @default(true)
+
+  users               User[]
+  locations           Location[]
+  departments         Department[]
+  invitations         Invitation[]
+  equipmentTypes      EquipmentType[]
+  equipments          Equipment[]
+  checklistTemplates  ChecklistTemplate[]
+  pmSchedules         PMSchedule[]
+  pmTasks             PMTask[]
+  breakdownReports    BreakdownReport[]
+  notifications       Notification[]
+
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+}
+
 model Location {
   id                Int           @id @default(autoincrement())
   organizationId    Int
@@ -228,78 +300,9 @@ model UserDepartment {
   department      Department  @relation(fields: [departmentId], references: [id])
 }
 
-model Invitation {
-  id                Int                 @id @default(autoincrement())
-  organizationId    Int             
-  organization      Organization        @relation(fields: [organizationId], references: [id])
-
-  email             String
-  roleId            Int 
-  departmentId      Int?
-  token             String              @unique
-  status            InvitationStatus
-  expiresAt         DateTime
-
-  role              Role                @relation(fields: [roleId], references: [id])
-  department        Department?         @relation(fields: [departmentId], references:[id])
-
-  createdAt         DateTime            @default(now())
-
-  @@unique([organizationId, email])
-}
-
-model EmailVerification {
-  id          Int       @id @default(autoincrement())
-  userId      Int       
-  token       String    @unique
-  expiresAt   DateTime
-
-  user        User      @relation(fields: [userId], references: [id])
-
-  createdAt   DateTime  @default(now())
-}
-
-model PasswordReset {
-  id          Int         @id @default(autoincrement())
-  userId      Int
-  token       String      @unique
-  expiresAt   DateTime 
-
-  user        User        @relation(fields: [userId], references: [id])
-
-  createdAt   DateTime    @default(now())
-}
-
-model AuditLog {
-  id                Int       @id @default(autoincrement())
-  organizationId    Int
-  userId            Int
-
-  action            String
-  module            String
-  recordId          String
-  ipAddress         String?
-
-  createdAt         DateTime  @default(now())
-}
-
-model UserSession {
-  id                Int         @id @default(autoincrement())
-  userId            Int         
-
-  refreshToken      String      @unique
-  deviceInfo        String?
-  ipAddress         String?
-  userAgent         String?
-
-  isActive          Boolean     @default(true)
-  lastActiveAt      DateTime    @default(now())
-
-  createdAt         DateTime    @default(now())
-  expiresAt         DateTime
-
-  user              User        @relation(fields: [userId], references: [id])
-}
+// ==============================
+// EQUIPMENT MODULE
+// ==============================
 
 model EquipmentType {
   id                Int             @id @default(autoincrement())
@@ -354,6 +357,10 @@ model Equipment {
   @@unique(organizationId, equipmentId)
 }
 
+// ==============================
+// CHECKLIST MODULE
+// ==============================
+
 model ChecklistTemplate {
   id                    Int                 @id @default(autoincrement())
   organizationId        Int
@@ -388,6 +395,10 @@ model ChecklistItem {
   createdAt         DateTime                @default(now())
 }
 
+// ==============================
+// PM (PREVENTIVE MAINTENANCE)
+// ==============================
+
 model PMSchedule {
   id                  Int                   @id @default(autoincrement())
   organizationId      Int
@@ -398,7 +409,7 @@ model PMSchedule {
   interval            Int //Ex: every 7 days, every 2 weeks
 
   startDate           DateTime
-  nextDueDate         DateTimeI
+  nextDueDate         DateTime
 
   assignedTo          Int
 
@@ -415,6 +426,7 @@ model PMSchedule {
   @@index([organizationId])
   @@index([equipmentId])
   @@index([nextDueDate])
+  @@index([assignedTo])
 }
 
 // Task Job
@@ -448,7 +460,8 @@ model PMTask {
 
   @@index([organizationId])
   @@index([scheduleId])
-  @@dueDate([dueDate])
+  @@index([dueDate])
+  @@index([assignedTo])
 }
 
 // Steps inside job
@@ -469,6 +482,10 @@ model TaskChecklistItem {
   @@index([taskId])
 }
 
+// ==============================
+// BREAKDOWN MODULE
+// ==============================
+
 // Report the problem
 model BreakdownReport {
   id                  Int                   @id @default(autoincrement())
@@ -485,7 +502,7 @@ model BreakdownReport {
   status              BreakdownStatus       @default(OPEN)
 
   reportedAt          DateTime              @default(now())
-  resolvedAt          DateTime
+  resolvedAt          DateTime?
 
   organization        Organization          @relation(fields: [organizationId], references: [id])
   equipment           Equipment             @relation(fields: [equipmentId], references: [id])
@@ -500,6 +517,7 @@ model BreakdownReport {
   @@index([organizationId])
   @@index([equipmentId])
   @@index([status])
+  @@index([assignedTo])
 }
 
 // Steps taken to solve the problem
@@ -518,6 +536,10 @@ model BreakdownAction {
 
   @@index([breakdownId])
 }
+
+// ==============================
+// NOTIFICATION MODULE
+// ==============================
 
 model Notification {
   id                  Int                   @id @default(autoincrement())
@@ -543,4 +565,21 @@ model Notification {
   @@index([userId])
   @@index([isRead])
   @@index([createdAt])
+}
+
+// ==============================
+// LOGGING
+// ==============================
+
+model AuditLog {
+  id                Int       @id @default(autoincrement())
+  organizationId    Int
+  userId            Int
+
+  action            String
+  module            String
+  recordId          String
+  ipAddress         String?
+
+  createdAt         DateTime  @default(now())
 }
