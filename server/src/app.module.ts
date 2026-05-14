@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { AppConfigModule } from './config/config.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -23,6 +24,8 @@ import * as Joi from 'joi';
         CLOUDINARY_NAME: Joi.string().required(),
       }),
     }),
+
+    AppConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
