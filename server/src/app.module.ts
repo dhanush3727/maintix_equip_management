@@ -15,6 +15,12 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
         PORT: Joi.number().default(5000),
+        JWT_SECRET: Joi.string().required(),
+        EMAIL_ID: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        CLOUDINARY_API_KEY: Joi.string().required(),
+        CLOUDINARY_API_SECRET: Joi.string().required(),
+        CLOUDINARY_NAME: Joi.string().required(),
       }),
     }),
   ],
