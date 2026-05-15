@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
-import { AppConfigModule } from './config/config.module';
-import * as Joi from 'joi';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { MailModule } from './mail/mail.module';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
@@ -13,19 +14,12 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
-        PORT: Joi.number().default(5000),
-        JWT_SECRET: Joi.string().required(),
-        EMAIL_ID: Joi.string().required(),
-        EMAIL_PASSWORD: Joi.string().required(),
-        CLOUDINARY_API_KEY: Joi.string().required(),
-        CLOUDINARY_API_SECRET: Joi.string().required(),
-        CLOUDINARY_NAME: Joi.string().required(),
-      }),
+      load: [configuration],
     }),
 
-    AppConfigModule,
+    CloudinaryModule,
+
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
