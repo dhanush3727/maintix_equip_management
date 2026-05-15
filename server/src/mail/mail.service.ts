@@ -1,18 +1,33 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 
 @Injectable()
-export class MailService {
-  private transporter: nodemailer.Transporter;
-  constructor(private readonly configService: ConfigService) {
+export class MailService implements OnModuleInit {
+  private transporter!: nodemailer.Transporter;
+
+  constructor(private readonly configService: ConfigService) {}
+
+  onModuleInit() {
+    const host = this.configService.get<string>('mail.host');
+    const port = this.configService.get<number>('mail.port');
+    const user = this.configService.get<string>('mail.user');
+    const pass = this.configService.get<string>('mail.pass');
+
+    if (!host || !port || !user || !pass)
+      throw new Error('Mail config is missing');
+
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
+      host,
+      port,
       secure: false,
       auth: {
-        user: this.configService.get<string>('EMAIL_ID'),
-        pass: this.configService.get<string>('EMAIL_PASSWORD'),
+        user,
+        pass,
       },
     });
   }
