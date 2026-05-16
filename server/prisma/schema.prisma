@@ -20,7 +20,7 @@ enum RoleType {
   MANAGER
   ENGNEER
   TECHNICIAN
-  VIEWER
+  INSPECTOR
 }
 
 enum InvitationStatus {

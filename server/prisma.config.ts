@@ -9,6 +9,7 @@ export default defineConfig({
   schema: 'prisma/schema.prisma',
   migrations: {
     path: 'prisma/migrations',
+    seed: 'ts-node prisma/seed.ts', // This command will run the seed script located at prisma/seed.ts after applying migrations. The ts-node package is used to execute TypeScript files directly without needing to compile them first.
   },
   datasource: {
     url: process.env.DATABASE_URL,
