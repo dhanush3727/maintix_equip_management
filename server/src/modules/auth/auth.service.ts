@@ -114,6 +114,6 @@ export class AuthService {
     // Save new refresh token
     await this.saveRefreshToekn(userId, tokens.refreshToken);
 
-    return tokens;
+    // return tokens;
   }
 }
