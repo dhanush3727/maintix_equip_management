@@ -6,9 +6,12 @@ dotenv.config();
 
 console.log('DB URL:', process.env.DATABASE_URL);
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL as string,
-});
+const adapter = new PrismaPg(
+  {
+    connectionString: process.env.DATABASE_URL as string,
+  },
+  { schema: 'maintix' },
+);
 
 const prisma = new PrismaClient({ adapter });
 
@@ -19,7 +22,7 @@ async function main(): Promise<void> {
     RoleType.MANAGER,
     RoleType.TECHNICIAN,
     RoleType.INSPECTOR,
-    RoleType.ENGNEER,
+    RoleType.ENGINEER,
   ];
 
   for (const role of roles) {

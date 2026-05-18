@@ -6,7 +6,8 @@ export default () => ({
     url: process.env.DATABASE_URL,
   },
   jwt: {
-    secret: process.env.JWT_SECRET,
+    accessSecret: process.env.JWT_ACCESS_SECRET,
+    refreshSecret: process.env.JWT_REFRESH_SECRET,
   },
   cloudinary: {
     cloudName: process.env.CLOUDINARY_NAME,

@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 type JwtPayload = {
   sub: number;
   email: string;
+  roles: string[];
 };
 
 @Injectable()
@@ -16,10 +17,10 @@ export class AccessTokenStrategy extends PassportStrategy(
 ) {
   constructor(private readonly configService: ConfigService) {
     // Get secret from .env
-    const secret = configService.get<string>('jwt.secret');
+    const secret = configService.get<string>('jwt.accessSecret');
 
     if (!secret) {
-      throw new Error('JWT secret is not defined in environment');
+      throw new Error('JWT access secret is not defined in environment');
     }
 
     super({

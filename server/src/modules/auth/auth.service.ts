@@ -5,6 +5,12 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UserSession, User } from '@prisma/client';
 
+type JwtPayloadType = {
+  sub: number;
+  email: string;
+  roles: string[];
+};
+
 type MetaType = {
   deviceInfo?: string;
   ipAddress?: string;
@@ -21,9 +27,23 @@ export class AuthService {
     private prisma: PrismaService,
   ) {}
 
+  // Fetch roles for a user
+  async getUserRoles(userId: number) {
+    const userRoles = await this.prisma.userRole.findMany({
+      where: { userId },
+      include: { role: true }, // join Role table
+    });
+
+    return userRoles.map((userRole) => userRole.role.name);
+  }
+
   //Generate access token and refresh token
   async generateTokens(userId: number, email: string) {
-    const payload = { sub: userId, email };
+    // Get roles from DB
+    const roles = await this.getUserRoles(userId);
+
+    // payload
+    const payload: JwtPayloadType = { sub: userId, email, roles };
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('jwt.secret'),
@@ -114,6 +134,6 @@ export class AuthService {
     // Save new refresh token
     await this.saveRefreshToekn(userId, tokens.refreshToken);
 
-    // return tokens;
+    return tokens;
   }
 }
