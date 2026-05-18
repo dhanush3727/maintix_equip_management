@@ -3,12 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-
-type JwtPayload = {
-  sub: number;
-  email: string;
-  roles: string[];
-};
+import { JwtPayloadType } from '../types/auth.types';
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(
@@ -30,7 +25,7 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   // The validate method is called after the token is verified. It receives the decoded payload.
-  validate(payload: JwtPayload): JwtPayload {
+  validate(payload: JwtPayloadType): JwtPayloadType {
     return payload;
   }
 

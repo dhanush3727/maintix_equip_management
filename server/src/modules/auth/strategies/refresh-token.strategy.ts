@@ -3,12 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-
-type JwtPayload = {
-  sub: number;
-  email: string;
-  roles: string[];
-};
+import { JwtPayloadType, RequestWithCookies } from '../types/auth.types';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
@@ -24,14 +19,19 @@ export class RefreshTokenStrategy extends PassportStrategy(
     }
 
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField('refreshToken'), // extract refresh token from request body
-      secretOrKey: secret,
-      passReqToCallback: true,
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req: RequestWithCookies) => req?.cookies?.refreshToken || null, // extract refresh token from cookies
+      ]), // extract refresh token from request body
+      secretOrKey: secret, // use the refresh token secret
+      passReqToCallback: true, // It allows us to access the request object in the validate method, which is necessary to extract the refresh token from the request body.
     });
   }
 
-  validate(req: Request, payload: JwtPayload) {
-    const refreshToken = (req.body as { refreshToken?: string }).refreshToken;
+  validate(
+    req: RequestWithCookies,
+    payload: JwtPayloadType,
+  ): JwtPayloadType & { refreshToken: string } {
+    const refreshToken = req.cookies?.refreshToken;
 
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token missing');

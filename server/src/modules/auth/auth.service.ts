@@ -1,30 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
-import { UserSession, User } from '@prisma/client';
-
-type JwtPayloadType = {
-  sub: number;
-  email: string;
-  roles: string[];
-};
-
-type MetaType = {
-  deviceInfo?: string;
-  ipAddress?: string;
-  userAgent?: string;
-};
-
-type UserSessionType = UserSession & { user: User };
+import { JwtPayloadType, MetaType, UserSessionType } from './types/auth.types';
+import { compareToken, hashToken } from './utils/auth.utils';
+import { TokenService } from './services/tokens.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private prisma: PrismaService,
+    private readonly tokenService: TokenService,
   ) {}
 
   // Fetch roles for a user
@@ -38,24 +22,14 @@ export class AuthService {
   }
 
   //Generate access token and refresh token
-  async generateTokens(userId: number, email: string) {
+  async generateAuthTokens(userId: number, email: string) {
     // Get roles from DB
     const roles = await this.getUserRoles(userId);
 
     // payload
     const payload: JwtPayloadType = { sub: userId, email, roles };
 
-    const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get<string>('jwt.secret'),
-      expiresIn: '15m',
-    });
-
-    const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get<string>('jwt.secret'),
-      expiresIn: '7d',
-    });
-
-    return { accessToken, refreshToken };
+    return this.tokenService.generateTokens(payload);
   }
 
   // Store Refresh Token
@@ -64,7 +38,7 @@ export class AuthService {
     refreshToken: string,
     meta?: MetaType,
   ) {
-    const hashed = await bcrypt.hash(refreshToken, 10);
+    const hashed = await hashToken(refreshToken);
 
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // match JWT expiry
@@ -99,7 +73,7 @@ export class AuthService {
 
     // Find matching session
     for (const session of sessions) {
-      const isMatch = await bcrypt.compare(refreshToken, session.refreshToken);
+      const isMatch = await compareToken(refreshToken, session.refreshToken);
 
       if (isMatch) {
         matchedSession = session;
@@ -129,7 +103,10 @@ export class AuthService {
     });
 
     // generate new tokens
-    const tokens = await this.generateTokens(userId, matchedSession.user.email);
+    const tokens = await this.generateAuthTokens(
+      userId,
+      matchedSession.user.email,
+    );
 
     // Save new refresh token
     await this.saveRefreshToekn(userId, tokens.refreshToken);
