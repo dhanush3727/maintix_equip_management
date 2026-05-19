@@ -11,13 +11,13 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('app.port') || 3000;
+  const port = configService.get<number>('app.port') || 5000;
 
   app.use(cookieParser());
 
   app.enableCors({
     origin: true,
-    credetials: true,
+    credentials: true,
   });
 
   app.setGlobalPrefix('api');
@@ -43,6 +43,6 @@ async function bootstrap() {
   );
 
   await app.listen(port);
-  console.log(`Server is running port ${port}`);
+  console.log(`Server is running on port ${port}`);
 }
 bootstrap();

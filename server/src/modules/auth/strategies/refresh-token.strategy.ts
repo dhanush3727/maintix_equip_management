@@ -37,6 +37,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
       throw new UnauthorizedException('Refresh token missing');
     }
 
+    // returning the payload along with the refresh token, so that it can be used in the AuthService to validate and rotate the refresh token.
     return {
       ...payload,
       refreshToken,

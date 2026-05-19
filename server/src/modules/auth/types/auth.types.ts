@@ -1,4 +1,5 @@
 import { User, UserSession } from '@prisma/client';
+import { Request } from 'express';
 
 export type JwtPayloadType = {
   sub: number;

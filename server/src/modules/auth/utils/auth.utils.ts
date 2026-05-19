@@ -12,3 +12,22 @@ export async function compareToken(
 ): Promise<boolean> {
   return await bcrypt.compare(rawToken, hashToken);
 }
+
+// Generate slug
+export async function generateSlug(companyName: string): Promise<string> {
+  // Dynamically import nanoid
+  const { customAlphabet } = await import('nanoid');
+
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz', 6);
+
+  const baseSlug = companyName
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+
+  const uniqueSuffix = nanoid();
+
+  return `${baseSlug}-${uniqueSuffix}`;
+}

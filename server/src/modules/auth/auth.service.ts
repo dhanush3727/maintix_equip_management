@@ -1,8 +1,19 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { GenereateTokensType, MetaType } from './types/auth.types';
-import { compareToken, hashToken } from './utils/auth.utils';
+import {
+  GenereateTokensType,
+  JwtPayloadType,
+  MetaType,
+} from './types/auth.types';
+import { compareToken, generateSlug, hashToken } from './utils/auth.utils';
 import { TokenService } from './services/tokens.service';
+import { RegisterDto } from './dto/register.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -66,7 +77,9 @@ export class AuthService {
   }
 
   // Refresh token rotation
-  async refreshTokens(userId: number, refreshToken: string, jti: string) {
+  async refreshTokens(user: JwtPayloadType, refreshToken: string) {
+    const { sub: userId, jti } = user;
+
     // Get session from DB
     const session = await this.prisma.userSession.findUnique({
       where: { jti },
@@ -110,5 +123,85 @@ export class AuthService {
     await this.saveRefreshToken(userId, tokens.refreshToken, tokens.jti);
 
     return tokens;
+  }
+
+  // Register user and generate tokens
+  async registerService(dto: RegisterDto) {
+    const companyName = dto.companyName.trim().replace(/\s+/g, ' '); // Replace multiple spaces with single space
+    const email = dto.email.trim().toLowerCase();
+    const name = dto.name.trim().replace(/\s+/g, ' ');
+    const password = dto.password;
+
+    // Check existing user
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      throw new ConflictException('Email already in use');
+    }
+
+    // Hash Password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const slug: string = await generateSlug(companyName);
+
+    // Start transation - why this, if create everything will create if wrong no one will create
+    const result = await this.prisma.$transaction(async (tx) => {
+      // Create organization
+      const organization = await tx.organization.create({
+        data: {
+          name: companyName,
+          slug,
+        },
+      });
+
+      // Create user
+      const user = await tx.user.create({
+        data: {
+          name,
+          email,
+          passwordHash: hashedPassword,
+          organizationId: organization.id,
+        },
+      });
+
+      // Get Admin role
+      const adminRole = await tx.role.findUnique({
+        where: { name: 'ADMIN' },
+      });
+
+      if (!adminRole)
+        throw new InternalServerErrorException('ADMIN role not found');
+
+      // Assign role
+      await tx.userRole.create({
+        data: {
+          userId: user.id,
+          roleId: adminRole.id,
+        },
+      });
+
+      return { user, organization };
+    });
+
+    // Generate tokens
+    const { accessToken, refreshToken, jti } = await this.generateAuthTokens(
+      result.user.id,
+    );
+
+    // Store session
+    await this.saveRefreshToken(result.user.id, refreshToken, jti);
+
+    // Return response
+    return {
+      user: {
+        id: result.user.id,
+        name: result.user.name,
+        email: result.user.email,
+      },
+      accessToken,
+      refreshToken,
+    };
   }
 }

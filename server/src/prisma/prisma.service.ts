@@ -10,9 +10,14 @@ export class PrismaService
 {
   constructor() {
     // Initialize the PrismaClient with the PostgreSQL adapter.
-    const adapter = new PrismaPg({
-      connectionString: process.env.DATABASE_URL as string,
-    });
+    const adapter = new PrismaPg(
+      {
+        connectionString: process.env.DATABASE_URL as string,
+      },
+      {
+        schema: 'maintix',
+      },
+    );
 
     // Call the super constructor with the adapter and logging options.
     //The super is used to call the constructor of the parent class (PrismaClient) and pass the adapter and logging options to it.

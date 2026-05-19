@@ -184,7 +184,7 @@ model UserSession {
   refreshToken      String      
   deviceInfo        String?
   ipAddress         String?
-  userAgent         String?
+  userAgent         String?     // User agent is refer to the browser or app info, it can be used for security monitoring and analytics
 
   isActive          Boolean     @default(true)
   lastActiveAt      DateTime    @default(now())

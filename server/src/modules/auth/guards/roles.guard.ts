@@ -9,7 +9,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Observable } from 'rxjs';
-import { AuthenticateRequest, RequestUser } from '../types/auth.types';
+import { Request } from 'express';
+import { AuthenticateRequest } from '../types/auth.types';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -30,7 +31,7 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<AuthenticateRequest>(); // Get the request object and type it as AuthenticateRequest which includes user info
 
-    const user: RequestUser = request.user; //Extract User from request
+    const user = request.user; //Extract User from request
 
     if (!user) throw new UnauthorizedException('User not found in request');
 
