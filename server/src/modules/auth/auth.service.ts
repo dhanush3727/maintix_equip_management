@@ -12,10 +12,10 @@ export class AuthService {
   ) {}
 
   // Fetch roles for a user
-  async getUserRoles(userId: number) {
+  async getUserRoles(userId: number): Promise<string[]> {
     const userRoles = await this.prisma.userRole.findMany({
       where: { userId },
-      include: { role: true }, // join Role table
+      include: { role: true }, // Include - Also fetch related data from another table
     });
 
     return userRoles.map((userRole) => userRole.role.name);
@@ -61,7 +61,7 @@ export class AuthService {
     const sessions = await this.prisma.userSession.findMany({
       where: { userId, isActive: true },
       include: {
-        user: true,
+        user: true, // Join User table
       },
     });
 

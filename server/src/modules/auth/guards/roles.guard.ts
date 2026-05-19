@@ -12,7 +12,7 @@ import { AuthenticateRequest, RequestUser } from '../types/auth.types';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector) {} // reflector is a tool to read metadata
 
   // This method runs before controller execution. It checks if the user has required roles
   canActivate(
