@@ -4,6 +4,7 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
@@ -21,17 +22,17 @@ export class RolesGuard implements CanActivate {
     // Get required roles from decorator
     const requiredRoles = this.reflector.get<string[]>(
       ROLES_KEY,
-      context.getHandler(),
+      context.getHandler(), // Get the handler (method) being accessed and retrieve the roles metadata attached to it
     );
 
     // If no roles defined don't allow access
     if (!requiredRoles || requiredRoles.length === 0) return false;
 
-    const request = context.switchToHttp().getRequest<AuthenticateRequest>(); // Get request object
+    const request = context.switchToHttp().getRequest<AuthenticateRequest>(); // Get the request object and type it as AuthenticateRequest which includes user info
 
     const user: RequestUser = request.user; //Extract User from request
 
-    if (!user) throw new ForbiddenException('User not found in request');
+    if (!user) throw new UnauthorizedException('User not found in request');
 
     const hasRole = requiredRoles.some((role) => user.roles.includes(role));
 

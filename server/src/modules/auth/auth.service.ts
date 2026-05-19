@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { JwtPayloadType, MetaType, UserSessionType } from './types/auth.types';
+import { GenereateTokensType, MetaType } from './types/auth.types';
 import { compareToken, hashToken } from './utils/auth.utils';
 import { TokenService } from './services/tokens.service';
 
@@ -11,31 +11,40 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  // Fetch roles for a user
-  async getUserRoles(userId: number): Promise<string[]> {
-    const userRoles = await this.prisma.userRole.findMany({
-      where: { userId },
-      include: { role: true }, // Include - Also fetch related data from another table
+  //Generate access token and refresh token
+  async generateAuthTokens(userId: number) {
+    // Get organizationId for payload
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        roles: {
+          include: {
+            role: true, // Include - Also fetch related data from another table
+          },
+        },
+      },
     });
 
-    return userRoles.map((userRole) => userRole.role.name);
-  }
+    if (!user) throw new UnauthorizedException('User not found');
 
-  //Generate access token and refresh token
-  async generateAuthTokens(userId: number, email: string) {
     // Get roles from DB
-    const roles = await this.getUserRoles(userId);
+    const roles = user.roles.map((userRole) => userRole.role.name);
 
-    // payload
-    const payload: JwtPayloadType = { sub: userId, email, roles };
+    const payload: GenereateTokensType = {
+      userId,
+      email: user.email,
+      organizationId: user.organizationId,
+      roles,
+    };
 
     return this.tokenService.generateTokens(payload);
   }
 
-  // Store Refresh Token
-  async saveRefreshToekn(
+  // Store Refresh Token in DB with hashed value
+  async saveRefreshToken(
     userId: number,
     refreshToken: string,
+    jti: string,
     meta?: MetaType,
   ) {
     const hashed = await hashToken(refreshToken);
@@ -46,6 +55,7 @@ export class AuthService {
     await this.prisma.userSession.create({
       data: {
         userId,
+        jti,
         refreshToken: hashed,
         expiresAt,
         deviceInfo: meta?.deviceInfo,
@@ -56,40 +66,31 @@ export class AuthService {
   }
 
   // Refresh token rotation
-  async refreshTokens(userId: number, refreshToken: string) {
-    // Get all active sessions for user
-    const sessions = await this.prisma.userSession.findMany({
-      where: { userId, isActive: true },
+  async refreshTokens(userId: number, refreshToken: string, jti: string) {
+    // Get session from DB
+    const session = await this.prisma.userSession.findUnique({
+      where: { jti },
       include: {
         user: true, // Join User table
       },
     });
 
-    if (!sessions.length) {
-      throw new UnauthorizedException('No active sessions');
+    if (!session || !session.isActive) {
+      throw new UnauthorizedException('Invalid session');
     }
 
-    let matchedSession: UserSessionType | null = null;
+    const isMatch = await compareToken(refreshToken, session.refreshToken);
 
-    // Find matching session
-    for (const session of sessions) {
-      const isMatch = await compareToken(refreshToken, session.refreshToken);
-
-      if (isMatch) {
-        matchedSession = session;
-        break;
-      }
-    }
-
-    if (!matchedSession) {
+    // Deactivate session if token doesn't match
+    if (!isMatch) {
       throw new UnauthorizedException('Invalid refresh token');
     }
 
     // Check expiry
-    if (matchedSession.expiresAt < new Date()) {
+    if (session.expiresAt < new Date()) {
       // Deactivate expired session
       await this.prisma.userSession.update({
-        where: { id: matchedSession.id },
+        where: { id: session.id },
         data: { isActive: false },
       });
 
@@ -98,18 +99,15 @@ export class AuthService {
 
     // deactivate old session
     await this.prisma.userSession.update({
-      where: { id: matchedSession.id },
+      where: { id: session.id },
       data: { isActive: false },
     });
 
     // generate new tokens
-    const tokens = await this.generateAuthTokens(
-      userId,
-      matchedSession.user.email,
-    );
+    const tokens = await this.generateAuthTokens(userId);
 
     // Save new refresh token
-    await this.saveRefreshToekn(userId, tokens.refreshToken);
+    await this.saveRefreshToken(userId, tokens.refreshToken, tokens.jti);
 
     return tokens;
   }

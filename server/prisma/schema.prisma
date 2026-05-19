@@ -180,7 +180,8 @@ model UserSession {
   id                Int         @id @default(autoincrement())
   userId            Int         
 
-  refreshToken      String      @unique
+  jti               String      @unique // A unique ID attached to each token so we can track and control it
+  refreshToken      String      
   deviceInfo        String?
   ipAddress         String?
   userAgent         String?
