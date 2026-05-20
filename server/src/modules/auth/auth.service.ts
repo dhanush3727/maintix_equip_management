@@ -16,13 +16,15 @@ import { TokenService } from './services/tokens.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
-import UAParser from 'ua-parser-js';
+import { AuditService } from '../../common/audit/audit.service';
+import { AuditAction, AuditModule } from '../../common/audit/audit.types';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private readonly tokenService: TokenService,
+    private auditService: AuditService,
   ) {}
 
   //#region Generate access token and refresh token
@@ -132,7 +134,7 @@ export class AuthService {
   //#endregion
 
   //#region Register user
-  async registerService(dto: RegisterDto) {
+  async registerService(dto: RegisterDto, meta?: MetaType) {
     const companyName = dto.companyName.trim().replace(/\s+/g, ' '); // Replace multiple spaces with single space
     const email = dto.email.trim().toLowerCase();
     const name = dto.name.trim().replace(/\s+/g, ' ');
@@ -191,13 +193,34 @@ export class AuthService {
       return { user, organization };
     });
 
+    const deviceInfo =
+      dto.deviceInfo ??
+      (meta?.userAgent ? meta?.userAgent?.slice(0, 50) : 'Unknown');
+
+    // Set the metadata
+    const metadata: MetaType = {
+      ipAddress: meta?.ipAddress,
+      userAgent: meta?.userAgent,
+      deviceInfo,
+    };
+
     // Generate tokens
     const { accessToken, refreshToken, jti } = await this.generateAuthTokens(
       result.user.id,
     );
 
     // Store session
-    await this.saveRefreshToken(result.user.id, refreshToken, jti);
+    await this.saveRefreshToken(result.user.id, refreshToken, jti, metadata);
+
+    // Create audit for register success
+    await this.auditService.logs({
+      organizationId: result.organization.id,
+      userId: result.user.id,
+      action: AuditAction.REGISTER_SUCCESS,
+      module: AuditModule.AUTH,
+      recordId: result.user.id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
 
     // Return response
     return {
@@ -222,6 +245,7 @@ export class AuthService {
       where: { email },
       select: {
         id: true,
+        organizationId: true,
         name: true,
         email: true,
         passwordHash: true,
@@ -237,20 +261,28 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
     if (!isPasswordValid) {
+      // Create audit for login failed
+      await this.auditService.logs({
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: AuditAction.LOGIN_FAILED,
+        module: AuditModule.AUTH,
+        recordId: user.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+
       throw new UnauthorizedException('Password not match');
     }
 
-    // Parser user agent device info
-    const parser = new UAParser(meta?.userAgent ?? '');
-    const browser = parser.getBrowser();
-    const os = parser.getOS();
-    const parsedDeviceInfo = `${browser.name ?? 'Unknown'} on ${os.name ?? 'Unknown'}`;
+    const deviceInfo =
+      dto.deviceInfo ??
+      (meta?.userAgent ? meta?.userAgent?.slice(0, 50) : 'Unknown');
 
     // Set the metadata
     const metadata: MetaType = {
       ipAddress: meta?.ipAddress,
       userAgent: meta?.userAgent,
-      deviceInfo: dto.deviceInfo ?? parsedDeviceInfo,
+      deviceInfo,
     };
 
     const { accessToken, refreshToken, jti } = await this.generateAuthTokens(
@@ -258,6 +290,16 @@ export class AuthService {
     );
 
     await this.saveRefreshToken(user.id, refreshToken, jti, metadata);
+
+    // Create audit for login success
+    await this.auditService.logs({
+      organizationId: user.organizationId,
+      userId: user.id,
+      action: AuditAction.LOGIN_SUCCESS,
+      module: AuditModule.AUTH,
+      recordId: user.id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
 
     return {
       user: {

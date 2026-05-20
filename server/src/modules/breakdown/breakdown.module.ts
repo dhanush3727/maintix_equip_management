@@ -4,6 +4,6 @@ import { BreakdownController } from './breakdown.controller';
 
 @Module({
   providers: [BreakdownService],
-  controllers: [BreakdownController]
+  controllers: [BreakdownController],
 })
 export class BreakdownModule {}

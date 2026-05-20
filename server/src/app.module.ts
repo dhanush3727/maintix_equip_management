@@ -8,6 +8,9 @@ import { MailModule } from './mail/mail.module';
 import configuration from './config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { AuditModule } from './common/audit/audit.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RequestMetaInterceptor } from './modules/auth/interceptors/request-meta.interceptor';
 
 @Module({
   imports: [
@@ -30,8 +33,15 @@ import { ThrottlerModule } from '@nestjs/throttler';
     CloudinaryModule,
     MailModule,
     AuthModule,
+    AuditModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RequestMetaInterceptor,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

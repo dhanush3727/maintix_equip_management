@@ -27,13 +27,18 @@ export type RequestUser = {
 export type AuthenticateRequest = Request & { user: RequestUser };
 
 export type MetaType = {
-  deviceInfo?: string;
   ipAddress?: string;
   userAgent?: string;
+  deviceInfo?: string;
 };
 
 export type UserSessionType = UserSession & { user: User };
 
 export type RequestWithCookies = Request & {
   cookies: { refreshToken?: string };
+};
+
+export type ReqMetaType = {
+  ipAddress: string;
+  userAgent: string;
 };

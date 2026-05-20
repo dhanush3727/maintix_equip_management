@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, MinLength, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  Matches,
+  IsOptional,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -19,4 +25,7 @@ export class RegisterDto {
   })
   @IsNotEmpty()
   password!: string;
+
+  @IsOptional()
+  deviceInfo?: string;
 }
