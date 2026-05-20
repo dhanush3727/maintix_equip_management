@@ -7,19 +7,27 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MailModule } from './mail/mail.module';
 import configuration from './config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
-    PrismaModule,
-
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
       load: [configuration],
     }),
 
-    CloudinaryModule,
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60, // 1 min
+          limit: 5, // max 5 attempts
+        },
+      ],
+    }),
 
+    PrismaModule,
+    CloudinaryModule,
     MailModule,
     AuthModule,
   ],

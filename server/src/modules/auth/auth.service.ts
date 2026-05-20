@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -14,6 +15,8 @@ import { compareToken, generateSlug, hashToken } from './utils/auth.utils';
 import { TokenService } from './services/tokens.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import { LoginDto } from './dto/login.dto';
+import UAParser from 'ua-parser-js';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +25,7 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  //Generate access token and refresh token
+  //#region Generate access token and refresh token
   async generateAuthTokens(userId: number) {
     // Get organizationId for payload
     const user = await this.prisma.user.findUnique({
@@ -50,8 +53,9 @@ export class AuthService {
 
     return this.tokenService.generateTokens(payload);
   }
+  //#endregion
 
-  // Store Refresh Token in DB with hashed value
+  //#region Store Refresh Token in DB with hashed value
   async saveRefreshToken(
     userId: number,
     refreshToken: string,
@@ -75,8 +79,9 @@ export class AuthService {
       },
     });
   }
+  //#endregion
 
-  // Refresh token rotation
+  //#region Refresh token rotation
   async refreshTokens(user: JwtPayloadType, refreshToken: string) {
     const { sub: userId, jti } = user;
 
@@ -124,8 +129,9 @@ export class AuthService {
 
     return tokens;
   }
+  //#endregion
 
-  // Register user and generate tokens
+  //#region Register user
   async registerService(dto: RegisterDto) {
     const companyName = dto.companyName.trim().replace(/\s+/g, ' '); // Replace multiple spaces with single space
     const email = dto.email.trim().toLowerCase();
@@ -138,7 +144,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email already in use');
+      throw new ConflictException('Email already exists');
     }
 
     // Hash Password
@@ -204,4 +210,64 @@ export class AuthService {
       refreshToken,
     };
   }
+  //#endregion
+
+  // #region Login user
+  async loginService(dto: LoginDto, meta?: MetaType) {
+    const email = dto.email.trim().toLowerCase();
+    const password = dto.password;
+
+    // Find User
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        passwordHash: true,
+      },
+    });
+
+    // Check user
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Check password
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Password not match');
+    }
+
+    // Parser user agent device info
+    const parser = new UAParser(meta?.userAgent ?? '');
+    const browser = parser.getBrowser();
+    const os = parser.getOS();
+    const parsedDeviceInfo = `${browser.name ?? 'Unknown'} on ${os.name ?? 'Unknown'}`;
+
+    // Set the metadata
+    const metadata: MetaType = {
+      ipAddress: meta?.ipAddress,
+      userAgent: meta?.userAgent,
+      deviceInfo: dto.deviceInfo ?? parsedDeviceInfo,
+    };
+
+    const { accessToken, refreshToken, jti } = await this.generateAuthTokens(
+      user.id,
+    );
+
+    await this.saveRefreshToken(user.id, refreshToken, jti, metadata);
+
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+      accessToken,
+      refreshToken,
+    };
+  }
+  //#endregion
 }

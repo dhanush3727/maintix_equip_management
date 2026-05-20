@@ -1,7 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength, Matches } from 'class-validator';
 
 export class RegisterDto {
-  /* eslint-disable @typescript-eslint/no-unsafe-call */
   @IsNotEmpty()
   companyName!: string;
 
