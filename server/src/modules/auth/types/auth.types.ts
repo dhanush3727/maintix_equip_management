@@ -2,7 +2,7 @@ import { User, UserSession } from '@prisma/client';
 import { Request } from 'express';
 
 export type JwtPayloadType = {
-  sub: number;
+  userId: number;
   email: string;
   organizationId: number;
   roles: string[];

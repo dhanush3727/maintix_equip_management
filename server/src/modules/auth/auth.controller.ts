@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import type { Request, Response } from 'express';
@@ -10,7 +10,8 @@ import type {
   ReqMetaType,
   RequestWithCookies,
 } from './types/auth.types';
-import { ReqMeta } from './decorators/request-meta.decorator';
+import { ReqMeta } from '../../common/decorators/request-meta.decorator';
+import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -81,20 +82,39 @@ export class AuthController {
   }
   //#endregion
 
-  // Logout current session
-  // @Post('logout')
-  // async logout(
-  //   @Req()
-  //   req: RequestWithCookies & {
-  //     user: JwtPayloadType & { refreshToken: string };
-  //   },
-  //   @ReqMeta() meta: ReqMetaType,
-  //   @Res({ passthrough: true }) res: Response,
-  // ) {
-  //   const { user } = req;
+  // #region Logout current session
+  @UseGuards(RefreshTokenGuard)
+  @Post('logout')
+  async logout(
+    @Req()
+    req: RequestWithCookies & {
+      user: JwtPayloadType & { refreshToken: string };
+    },
+    @ReqMeta() meta: ReqMetaType,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { user } = req;
 
-  //   const metadata: MetaType = {
-  //     ipAddress: met
-  //   }
-  // }
+    console.log(user);
+
+    const metadata: MetaType = {
+      ipAddress: meta.ipAddress,
+      userAgent: meta.userAgent,
+    };
+
+    await this.authService.logoutCurrentSession(
+      user.userId,
+      user.jti,
+      user.refreshToken,
+      metadata,
+    );
+
+    res.clearCookie('refreshToken');
+
+    return {
+      message: 'Logout Successfully',
+      data: {},
+    };
+  }
+  //#endregion
 }

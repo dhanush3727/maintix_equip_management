@@ -10,7 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuditModule } from './common/audit/audit.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { RequestMetaInterceptor } from './modules/auth/interceptors/request-meta.interceptor';
+import { RequestMetaInterceptor } from './common/interceptors/request-meta.interceptor';
 
 @Module({
   imports: [

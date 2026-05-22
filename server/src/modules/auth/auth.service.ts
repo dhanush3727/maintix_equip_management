@@ -85,7 +85,7 @@ export class AuthService {
 
   //#region Refresh token rotation
   async refreshTokens(user: JwtPayloadType, refreshToken: string) {
-    const { sub: userId, jti } = user;
+    const { userId: userId, jti } = user;
 
     // Get session from DB
     const session = await this.prisma.userSession.findUnique({
@@ -332,8 +332,10 @@ export class AuthService {
       throw new NotFoundException('Session not found or already logged out');
     }
 
+    console.log(session);
+
     // verify token match
-    const isMatch = await bcrypt.compare(session.refreshToken, refreshToken);
+    const isMatch = await bcrypt.compare(refreshToken, session.refreshToken);
 
     if (!isMatch) throw new UnauthorizedException('Invalid session');
 

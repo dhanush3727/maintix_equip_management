@@ -16,7 +16,7 @@ export class TokenService {
     const jti = randomUUID();
 
     const jwtPayload: JwtPayloadType = {
-      sub: payload.userId,
+      userId: payload.userId,
       email: payload.email,
       organizationId: payload.organizationId,
       roles: payload.roles,

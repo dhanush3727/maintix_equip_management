@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../../prisma/prisma.service';
-import { AccessTokenStrategy } from './strategies/access-token.strategy';
-import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { AccessTokenStrategy } from '../../common/strategies/access-token.strategy';
+import { RefreshTokenStrategy } from '../../common/strategies/refresh-token.strategy';
 import { TokenService } from './services/tokens.service';
 
 @Module({

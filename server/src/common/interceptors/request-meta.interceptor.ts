@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { Observable } from 'rxjs';
-import { ReqMetaType } from '../types/auth.types';
+import { ReqMetaType } from '../../modules/auth/types/auth.types';
 
 @Injectable()
 // The `RequestMetaInterceptor` is a NestJS interceptor that runs before the request reaches the controller.
