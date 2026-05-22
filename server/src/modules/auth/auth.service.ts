@@ -312,4 +312,46 @@ export class AuthService {
     };
   }
   //#endregion
+
+  // #region Logout current session
+  async logoutCurrentSession(
+    userId: number,
+    jti: string,
+    refreshToken: string,
+    meta?: MetaType,
+  ) {
+    //Find session
+    const session = await this.prisma.userSession.findUnique({
+      where: { jti },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!session || !session.isActive) {
+      throw new NotFoundException('Session not found or already logged out');
+    }
+
+    // verify token match
+    const isMatch = await bcrypt.compare(session.refreshToken, refreshToken);
+
+    if (!isMatch) throw new UnauthorizedException('Invalid session');
+
+    // Deactivate session
+    await this.prisma.userSession.update({
+      where: { jti },
+      data: { isActive: false },
+    });
+
+    //Audit log
+    await this.auditService.logs({
+      organizationId: session.user.organizationId,
+      userId,
+      action: AuditAction.LOGOUT_CURRENT_SESSION,
+      module: AuditModule.AUTH,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
 }

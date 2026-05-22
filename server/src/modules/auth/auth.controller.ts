@@ -1,10 +1,15 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import type { Request, Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { Throttle } from '@nestjs/throttler';
-import type { MetaType, ReqMetaType } from './types/auth.types';
+import type {
+  JwtPayloadType,
+  MetaType,
+  ReqMetaType,
+  RequestWithCookies,
+} from './types/auth.types';
 import { ReqMeta } from './decorators/request-meta.decorator';
 
 @Controller('auth')
@@ -34,8 +39,11 @@ export class AuthController {
     });
 
     return {
-      user: result.user,
-      accessToken: result.accessToken,
+      message: 'Register Successfully',
+      data: {
+        user: result.user,
+        accessToken: result.accessToken,
+      },
     };
   }
   // #endregion
@@ -64,9 +72,29 @@ export class AuthController {
     });
 
     return {
-      user: result.user,
-      accessToken: result.accessToken,
+      message: 'Login Successfully',
+      data: {
+        user: result.user,
+        accessToken: result.accessToken,
+      },
     };
   }
   //#endregion
+
+  // Logout current session
+  // @Post('logout')
+  // async logout(
+  //   @Req()
+  //   req: RequestWithCookies & {
+  //     user: JwtPayloadType & { refreshToken: string };
+  //   },
+  //   @ReqMeta() meta: ReqMetaType,
+  //   @Res({ passthrough: true }) res: Response,
+  // ) {
+  //   const { user } = req;
+
+  //   const metadata: MetaType = {
+  //     ipAddress: met
+  //   }
+  // }
 }

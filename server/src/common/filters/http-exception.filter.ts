@@ -11,6 +11,7 @@ import type { Response } from 'express';
 // This filter will handle all exceptions thrown in the application and format the response accordingly.
 export class HttpExceptionFilter implements ExceptionFilter {
   // The catch method is called when an exception is thrown. It formats the response based on the type of exception.
+  // host is an instance of ArgumentsHost, which provides methods to access the request and response objects.
   catch(exception: unknown, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
