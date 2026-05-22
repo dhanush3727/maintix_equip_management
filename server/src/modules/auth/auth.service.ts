@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -328,16 +329,18 @@ export class AuthService {
       },
     });
 
-    if (!session || !session.isActive) {
-      throw new NotFoundException('Session not found or already logged out');
+    if (!session) {
+      throw new NotFoundException('Session not found');
     }
-
-    console.log(session);
 
     // verify token match
     const isMatch = await bcrypt.compare(refreshToken, session.refreshToken);
 
     if (!isMatch) throw new UnauthorizedException('Invalid session');
+
+    if (!session.isActive) {
+      throw new BadRequestException('Session alreadt logged out');
+    }
 
     // Deactivate session
     await this.prisma.userSession.update({
@@ -356,4 +359,97 @@ export class AuthService {
     });
   }
   //#endregion
+
+  // #region Logout specific session
+  async logoutSpecificSession(userId: number, jti: string, meta?: MetaType) {
+    const session = await this.prisma.userSession.findUnique({
+      where: { jti },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!session) throw new NotFoundException('Session not found');
+
+    // Check ownership
+    if (session.userId !== userId) {
+      throw new UnauthorizedException('You cannot logout this session');
+    }
+
+    if (!session.isActive) {
+      throw new BadRequestException('Session already logged out');
+    }
+
+    // Deactivate session
+    await this.prisma.userSession.update({
+      where: { jti },
+      data: { isActive: false },
+    });
+
+    //Audit log
+    await this.auditService.logs({
+      organizationId: session.user.organizationId,
+      userId,
+      action: AuditAction.LOGOUT_SPECIFIC_SESSION,
+      module: AuditModule.AUTH,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Logout all session except current device
+  async logoutAllSessions(userId: number, jti: string, meta?: MetaType) {
+    await this.prisma.userSession.updateMany({
+      where: {
+        userId,
+        isActive: true,
+        NOT: {
+          jti,
+        },
+      },
+      data: {
+        isActive: false,
+      },
+    });
+
+    //Audit log
+    await this.auditService.logs({
+      organizationId: 0,
+      userId,
+      action: AuditAction.LOGOUT_SPECIFIC_SESSION,
+      module: AuditModule.AUTH,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Get user sessions
+  async getUserSessions(userId: number, jti: string) {
+    const sessions = await this.prisma.userSession.findMany({
+      where: { userId, isActive: true },
+      orderBy: {
+        lastActiveAt: 'desc',
+      },
+      select: {
+        jti: true,
+        ipAddress: true,
+        deviceInfo: true,
+        userAgent: true,
+        lastActiveAt: true,
+        createdAt: true,
+      },
+    });
+
+    return sessions.map((session) => ({
+      jti: session.jti,
+      ipAddress: session.ipAddress,
+      deviceInfo: session.deviceInfo,
+      userAgent: session.userAgent,
+      lastActiveAt: session.lastActiveAt,
+      createdAt: session.createdAt,
+      isCurrent: session.jti === jti, // It show the current device
+    }));
+  }
 }

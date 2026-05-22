@@ -1,10 +1,21 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import type { Request, Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { Throttle } from '@nestjs/throttler';
 import type {
+  AuthenticateRequest,
   JwtPayloadType,
   MetaType,
   ReqMetaType,
@@ -12,6 +23,7 @@ import type {
 } from './types/auth.types';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
+import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -95,18 +107,11 @@ export class AuthController {
   ) {
     const { user } = req;
 
-    console.log(user);
-
-    const metadata: MetaType = {
-      ipAddress: meta.ipAddress,
-      userAgent: meta.userAgent,
-    };
-
     await this.authService.logoutCurrentSession(
       user.userId,
       user.jti,
       user.refreshToken,
-      metadata,
+      meta,
     );
 
     res.clearCookie('refreshToken');
@@ -114,6 +119,57 @@ export class AuthController {
     return {
       message: 'Logout Successfully',
       data: {},
+    };
+  }
+  //#endregion
+
+  // #region Logout specific session
+  @UseGuards(AccessTokenGuard)
+  @Delete('sessions/:jti')
+  async logoutOtherSession(
+    @Param('jti') jti: string,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    const userId = req.user.userId;
+
+    await this.authService.logoutSpecificSession(userId, jti, meta);
+
+    return {
+      message: 'Session logged out successfully',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Logout all sessions
+  @UseGuards(AccessTokenGuard)
+  @Post('logout-all')
+  async logoutAll(@Req() req: AuthenticateRequest, @ReqMeta() meta: MetaType) {
+    const { userId, jti } = req.user;
+
+    console.log(req.user);
+
+    await this.authService.logoutAllSessions(userId, jti, meta);
+
+    return {
+      message: 'Logged out from all other sessions',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Get all user sessions
+  @UseGuards(AccessTokenGuard)
+  @Get('sessions')
+  async getAllSessions(@Req() req: AuthenticateRequest) {
+    const { userId, jti } = req.user;
+
+    const sessions = await this.authService.getUserSessions(userId, jti);
+
+    return {
+      message: 'Fetched all sessions',
+      data: sessions,
     };
   }
   //#endregion
