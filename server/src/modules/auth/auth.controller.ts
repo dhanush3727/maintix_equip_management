@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Req,
@@ -24,6 +26,8 @@ import type {
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -64,6 +68,7 @@ export class AuthController {
   // #region Login user
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   async loginUser(
     @Body() dto: LoginDto,
     @ReqMeta() meta: ReqMetaType, // Using the custom decorator to extract metadata from the request
@@ -97,6 +102,7 @@ export class AuthController {
   // #region Logout current session
   @UseGuards(RefreshTokenGuard)
   @Post('logout')
+  @HttpCode(HttpStatus.OK)
   async logout(
     @Req()
     req: RequestWithCookies & {
@@ -145,6 +151,7 @@ export class AuthController {
   //#region Logout all sessions
   @UseGuards(AccessTokenGuard)
   @Post('logout-all')
+  @HttpCode(HttpStatus.OK)
   async logoutAll(@Req() req: AuthenticateRequest, @ReqMeta() meta: MetaType) {
     const { userId, jti } = req.user;
 
@@ -170,6 +177,38 @@ export class AuthController {
     return {
       message: 'Fetched all sessions',
       data: sessions,
+    };
+  }
+  //#endregion
+
+  //#region Forgot Password
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(
+    @Body() dto: ForgotPasswordDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.authService.forgotPasswordService(dto, meta);
+
+    return {
+      message: 'Email sent',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Reset Password
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(
+    @Body() dto: ResetPasswordDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.authService.resetPasswordService(dto, meta);
+
+    return {
+      message: 'Password reset successful',
+      data: {},
     };
   }
   //#endregion

@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 
 // hash refresh token before storing
 export async function hashToken(token: string): Promise<string> {
@@ -30,4 +31,9 @@ export async function generateSlug(companyName: string): Promise<string> {
   const uniqueSuffix = nanoid();
 
   return `${baseSlug}-${uniqueSuffix}`;
+}
+
+// Hash reset token
+export function hashResetToken(token: string): string {
+  return crypto.createHash('sha256').update(token).digest('hex');
 }

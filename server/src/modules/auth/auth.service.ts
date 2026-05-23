@@ -12,13 +12,22 @@ import {
   JwtPayloadType,
   MetaType,
 } from './types/auth.types';
-import { compareToken, generateSlug, hashToken } from './utils/auth.utils';
+import {
+  compareToken,
+  generateSlug,
+  hashResetToken,
+  hashToken,
+} from './utils/auth.utils';
 import { TokenService } from './services/tokens.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { AuditService } from '../../common/audit/audit.service';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
+import * as crypto from 'crypto';
+import { MailService } from '../../mail/mail.service';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,6 +35,7 @@ export class AuthService {
     private prisma: PrismaService,
     private readonly tokenService: TokenService,
     private auditService: AuditService,
+    private mailService: MailService,
   ) {}
 
   //#region Generate access token and refresh token
@@ -452,4 +462,127 @@ export class AuthService {
       isCurrent: session.jti === jti, // It show the current device
     }));
   }
+  //#endregion
+
+  // #region Forgot Password Service
+  async forgotPasswordService(dto: ForgotPasswordDto, meta?: MetaType) {
+    const normalizedEmail = dto.email.trim().toLowerCase();
+
+    // Find User
+    const user = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+      select: { id: true, organizationId: true, email: true, name: true },
+    });
+
+    // Check user
+    if (!user) throw new NotFoundException('User Not Found');
+
+    // Delete old tokens
+    await this.prisma.passwordReset.deleteMany({
+      where: { userId: user.id },
+    });
+
+    const token = crypto.randomBytes(32).toString('hex');
+
+    const hashedToken = hashResetToken(token);
+
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    // Save in DB
+    await this.prisma.passwordReset.create({
+      data: {
+        userId: user.id,
+        expiresAt,
+        token: hashedToken,
+      },
+    });
+
+    // Create reset link
+    const resetLink = `http://localhost:5000/api/auth/reset-password?token=${token}`;
+
+    await this.mailService.sendEmail({
+      to: user.email,
+      subject: 'Reset Password',
+      html: `
+      <h3>Hi ${user.name}</h3>
+      <p>We received a request to reset your password.</p>
+      <p>Click the link below to reset your password:</p>
+      <a href="${resetLink}">${resetLink}</a>
+      <p>This link will expire in 15 minutes.</p>
+      <p>If you did not request this, please ignore this email</p>
+      <p>Thanks</p>
+      <p>Maintix Team</p>
+      `,
+    });
+
+    // Audit log
+    await this.auditService.logs({
+      organizationId: user.organizationId,
+      userId: user.id,
+      action: AuditAction.FORGOT_PASSWORD,
+      module: AuditModule.AUTH,
+      recordId: user.id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Reset Password Service
+  async resetPasswordService(dto: ResetPasswordDto, meta?: MetaType) {
+    const { token, password } = dto;
+
+    const hashedToken = hashResetToken(token);
+
+    const resetRecord = await this.prisma.passwordReset.findUnique({
+      where: { token: hashedToken },
+      include: { user: true },
+    });
+
+    if (!resetRecord) {
+      throw new BadRequestException('Invalid Token');
+    }
+
+    if (resetRecord.isUsed) {
+      throw new BadRequestException('Already token used');
+    }
+
+    if (resetRecord.expiresAt < new Date()) {
+      throw new BadRequestException('Expired Token');
+    }
+
+    const user = resetRecord.user;
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    await this.prisma.$transaction(async () => {
+      // Update password
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { passwordHash },
+      });
+
+      // Mark the token used
+      await this.prisma.passwordReset.update({
+        where: { id: resetRecord.id },
+        data: { isUsed: true },
+      });
+
+      // Logout all session
+      await this.prisma.userSession.updateMany({
+        where: { userId: resetRecord.userId, isActive: true },
+        data: { isActive: false },
+      });
+
+      // Audit logs
+      await this.auditService.logs({
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: AuditAction.PASSWORD_RESET_SUCCESS,
+        module: AuditModule.AUTH,
+        recordId: user.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+    });
+  }
+  //#endregion
 }

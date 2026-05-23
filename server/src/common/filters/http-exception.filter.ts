@@ -16,8 +16,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
 
-    console.log(exception);
-
     // Default to 500 Internal Server Error for unhandled exceptions
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | string[] = 'Internal server error';

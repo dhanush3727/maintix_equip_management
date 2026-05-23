@@ -127,9 +127,8 @@ enum ReferenceType {
 // ==============================
 
 model User {
-  id                      Int                 @id @default(autoincrement())   
+  id                      Int                 @id @default(autoincrement())
   organizationId          Int
-  organization            Organization        @relation(fields: [organizationId], references: [id])
 
   name                    String
   email                   String              @unique
@@ -152,6 +151,8 @@ model User {
 
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
+
+  organization            Organization        @relation(fields: [organizationId], references: [id])
 
   @@index([organizationId]) //@@ means model level attribute. It applies to the table
 }
@@ -200,21 +201,29 @@ model EmailVerification {
   userId      Int       
   token       String    @unique
   expiresAt   DateTime
+  isUsed      Boolean   @default(false)
+
+  createdAt   DateTime  @default(now())
 
   user        User      @relation(fields: [userId], references: [id])
 
-  createdAt   DateTime  @default(now())
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model PasswordReset {
   id          Int         @id @default(autoincrement())
   userId      Int
   token       String      @unique
-  expiresAt   DateTime 
+  expiresAt   DateTime
+  isUsed      Boolean     @default(false)
 
   user        User        @relation(fields: [userId], references: [id])
 
   createdAt   DateTime    @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Invitation {

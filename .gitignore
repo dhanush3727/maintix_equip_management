@@ -1,3 +1,4 @@
 node_modules
 .env*
 Maintix_Workflow_*
+backup.sql

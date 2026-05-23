@@ -6,6 +6,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { AccessTokenStrategy } from '../../common/strategies/access-token.strategy';
 import { RefreshTokenStrategy } from '../../common/strategies/refresh-token.strategy';
 import { TokenService } from './services/tokens.service';
+import { MailService } from '../../mail/mail.service';
 
 @Module({
   imports: [JwtModule.register({})],
@@ -16,6 +17,7 @@ import { TokenService } from './services/tokens.service';
     AccessTokenStrategy,
     RefreshTokenStrategy,
     TokenService,
+    MailService,
   ],
 })
 export class AuthModule {}
