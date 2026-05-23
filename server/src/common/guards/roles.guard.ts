@@ -9,7 +9,6 @@ import {
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Observable } from 'rxjs';
-import { Request } from 'express';
 import { AuthenticateRequest } from '../../modules/auth/types/auth.types';
 
 @Injectable()

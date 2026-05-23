@@ -11,6 +11,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AuditModule } from './common/audit/audit.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RequestMetaInterceptor } from './common/interceptors/request-meta.interceptor';
+import { UpdateLastActiveInterceptor } from './common/interceptors/updateLastActive.interceptor';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 @Module({
   imports: [
@@ -40,6 +42,14 @@ import { RequestMetaInterceptor } from './common/interceptors/request-meta.inter
     {
       provide: APP_INTERCEPTOR,
       useClass: RequestMetaInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: UpdateLastActiveInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
     },
     AppService,
   ],

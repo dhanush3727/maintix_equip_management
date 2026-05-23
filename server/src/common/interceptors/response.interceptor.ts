@@ -35,6 +35,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<
     next: CallHandler<T>, // The CallHandler is typed with T, which means it will handle an Observable that emits data of type T (the original response from the controller).
   ): Observable<ApiResponse<T>> | Promise<Observable<ApiResponse<T>>> {
     //  The next.handle() method returns an Observable that emits the original response data of type T from the controller.
+    // pipe() is used to modify or react to that observable stream.
     // We use the pipe() method to transform this Observable<T> into an Observable<ApiResponse<T>> by applying the map operator.
     return next.handle().pipe(
       map((data) => {
