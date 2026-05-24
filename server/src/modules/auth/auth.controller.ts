@@ -26,8 +26,9 @@ import type {
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
-import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { RequestTokenDto } from './dto/request-token.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { EmailVerificationDto } from './dto/email-verification.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -185,7 +186,7 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   async forgotPassword(
-    @Body() dto: ForgotPasswordDto,
+    @Body() dto: RequestTokenDto,
     @ReqMeta() meta: MetaType,
   ) {
     await this.authService.forgotPasswordService(dto, meta);
@@ -208,6 +209,54 @@ export class AuthController {
 
     return {
       message: 'Password reset successful',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Send Email Verification
+  @Post('send-verification')
+  @HttpCode(HttpStatus.OK)
+  async sendEmailVerification(
+    @Body() dto: RequestTokenDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.authService.sendEmailVerificationService(dto, meta);
+
+    return {
+      message: 'Verification mail sent your email',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Verify email
+  @Post('verify-email')
+  @HttpCode(HttpStatus.OK)
+  async verifyEmail(
+    @Body() dto: EmailVerificationDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.authService.verifyEmailService(dto, meta);
+
+    return {
+      message: 'Email verified successfully',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Resend Email Verification
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.OK)
+  async resendEmailVerification(
+    @Body() dto: RequestTokenDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.authService.resendEmailVerificationService(dto, meta);
+
+    return {
+      message: 'Verification mail sent your email',
       data: {},
     };
   }

@@ -34,6 +34,6 @@ export async function generateSlug(companyName: string): Promise<string> {
 }
 
 // Hash reset token
-export function hashResetToken(token: string): string {
+export function hashVerificationToken(token: string): string {
   return crypto.createHash('sha256').update(token).digest('hex');
 }

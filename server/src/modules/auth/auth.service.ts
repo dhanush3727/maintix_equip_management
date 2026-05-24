@@ -15,8 +15,8 @@ import {
 import {
   compareToken,
   generateSlug,
-  hashResetToken,
   hashToken,
+  hashVerificationToken,
 } from './utils/auth.utils';
 import { TokenService } from './services/tokens.service';
 import { RegisterDto } from './dto/register.dto';
@@ -26,8 +26,9 @@ import { AuditService } from '../../common/audit/audit.service';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
 import * as crypto from 'crypto';
 import { MailService } from '../../mail/mail.service';
-import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { RequestTokenDto } from './dto/request-token.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { EmailVerificationDto } from './dto/email-verification.dto';
 
 @Injectable()
 export class AuthService {
@@ -465,7 +466,7 @@ export class AuthService {
   //#endregion
 
   // #region Forgot Password Service
-  async forgotPasswordService(dto: ForgotPasswordDto, meta?: MetaType) {
+  async forgotPasswordService(dto: RequestTokenDto, meta?: MetaType) {
     const normalizedEmail = dto.email.trim().toLowerCase();
 
     // Find User
@@ -484,7 +485,7 @@ export class AuthService {
 
     const token = crypto.randomBytes(32).toString('hex');
 
-    const hashedToken = hashResetToken(token);
+    const hashedToken = hashVerificationToken(token);
 
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
@@ -500,11 +501,12 @@ export class AuthService {
     // Create reset link
     const resetLink = `http://localhost:5000/api/auth/reset-password?token=${token}`;
 
+    // Send mail
     await this.mailService.sendEmail({
       to: user.email,
       subject: 'Reset Password',
       html: `
-      <h3>Hi ${user.name}</h3>
+      <h3>Hi, ${user.name}</h3>
       <p>We received a request to reset your password.</p>
       <p>Click the link below to reset your password:</p>
       <a href="${resetLink}">${resetLink}</a>
@@ -531,58 +533,186 @@ export class AuthService {
   async resetPasswordService(dto: ResetPasswordDto, meta?: MetaType) {
     const { token, password } = dto;
 
-    const hashedToken = hashResetToken(token);
+    const hashedToken = hashVerificationToken(token);
 
     const resetRecord = await this.prisma.passwordReset.findUnique({
       where: { token: hashedToken },
       include: { user: true },
     });
 
-    if (!resetRecord) {
-      throw new BadRequestException('Invalid Token');
-    }
-
-    if (resetRecord.isUsed) {
-      throw new BadRequestException('Already token used');
+    if (!resetRecord || resetRecord.isUsed) {
+      throw new BadRequestException('Invalid or expired token');
     }
 
     if (resetRecord.expiresAt < new Date()) {
-      throw new BadRequestException('Expired Token');
+      throw new BadRequestException('Token expired');
     }
 
     const user = resetRecord.user;
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await this.prisma.$transaction(async () => {
+    await this.prisma.$transaction(async (tx) => {
       // Update password
-      await this.prisma.user.update({
+      await tx.user.update({
         where: { id: user.id },
         data: { passwordHash },
       });
 
       // Mark the token used
-      await this.prisma.passwordReset.update({
+      await tx.passwordReset.update({
         where: { id: resetRecord.id },
         data: { isUsed: true },
       });
 
       // Logout all session
-      await this.prisma.userSession.updateMany({
+      await tx.userSession.updateMany({
         where: { userId: resetRecord.userId, isActive: true },
         data: { isActive: false },
       });
+    });
 
-      // Audit logs
-      await this.auditService.logs({
-        organizationId: user.organizationId,
+    // Audit logs
+    await this.auditService.logs({
+      organizationId: user.organizationId,
+      userId: user.id,
+      action: AuditAction.RESET_PASSWORD,
+      module: AuditModule.AUTH,
+      recordId: user.id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Email verification
+  async sendEmailVerificationService(dto: RequestTokenDto, meta?: MetaType) {
+    const normalizedEmail = dto.email.trim().toLowerCase();
+
+    const user = await this.prisma.user.findUnique({
+      where: { email: normalizedEmail },
+      select: {
+        id: true,
+        organizationId: true,
+        email: true,
+        name: true,
+        isEmailVerified: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User Not Found');
+
+    if (user.isEmailVerified) {
+      throw new BadRequestException('Email already verified');
+    }
+
+    // Get the lastToken to cooldown the resend
+    const lastToken = await this.prisma.emailVerification.findFirst({
+      where: { userId: user.id },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (lastToken) {
+      const diff = Date.now() - lastToken.createdAt.getTime();
+      if (diff < 60 * 1000)
+        throw new BadRequestException('Please wait before requesting again');
+    }
+
+    // Delete old tokens
+    await this.prisma.emailVerification.deleteMany({
+      where: { userId: user.id },
+    });
+
+    const token = crypto.randomBytes(32).toString('hex');
+
+    const hashedToken = hashVerificationToken(token);
+
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    await this.prisma.emailVerification.create({
+      data: {
         userId: user.id,
-        action: AuditAction.PASSWORD_RESET_SUCCESS,
-        module: AuditModule.AUTH,
-        recordId: user.id.toString(),
-        ipAddress: meta?.ipAddress,
+        expiresAt,
+        token: hashedToken,
+      },
+    });
+
+    // Create verfication link
+    const verificationLink = `http://localhost:5000/api/auth/email-verification?token=${token}`;
+
+    // Send mail
+    await this.mailService.sendEmail({
+      to: user.email,
+      subject: 'Verify your email',
+      html: `
+      <h3>Hi, ${user.name}</h3>
+      <p>Please verify your email address by clicking the link below:</p>
+      <a href="${verificationLink}">${verificationLink}</a>
+      <p>This link will expire in 15 minutes.</p>
+      <p>If you did not request this, please ignore this email</p>
+      <p>Thanks</p>
+      <p>Maintix Team</p>
+      `,
+    });
+
+    // Audit log
+    await this.auditService.logs({
+      organizationId: user.organizationId,
+      userId: user.id,
+      action: AuditAction.EMAIL_VERIFICATION,
+      module: AuditModule.AUTH,
+      recordId: user.id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Verify Email
+  async verifyEmailService(dto: EmailVerificationDto, meta?: MetaType) {
+    const { token } = dto;
+    const hashedToken = hashVerificationToken(token);
+
+    const record = await this.prisma.emailVerification.findUnique({
+      where: { token: hashedToken },
+      include: { user: true },
+    });
+
+    if (!record || record.isUsed) {
+      throw new BadRequestException('Invalid or expired token');
+    }
+
+    if (record.expiresAt < new Date()) {
+      throw new BadRequestException('Token expired');
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      // Mark the token as used
+      await tx.emailVerification.update({
+        where: { id: record.id },
+        data: { isUsed: true },
+      });
+
+      // Update the emaill verification
+      await tx.user.update({
+        where: { id: record.userId },
+        data: { isEmailVerified: true },
       });
     });
+
+    // Audit log
+    await this.auditService.logs({
+      organizationId: record.user.organizationId,
+      userId: record.userId,
+      action: AuditAction.EMAIL_VERIFICATION,
+      module: AuditModule.AUTH,
+      recordId: record.userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Resend Email verification
+  async resendEmailVerificationService(dto: RequestTokenDto, meta?: MetaType) {
+    await this.sendEmailVerificationService(dto, meta);
   }
   //#endregion
 }
