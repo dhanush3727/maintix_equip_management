@@ -166,7 +166,7 @@ export class AuthService {
     // Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const slug: string = await generateSlug(companyName);
+    const slug: string = generateSlug(companyName);
 
     // Start transation - why this, if create everything will create if wrong no one will create
     const result = await this.prisma.$transaction(async (tx) => {

@@ -15,12 +15,7 @@ export async function compareToken(
 }
 
 // Generate slug
-export async function generateSlug(companyName: string): Promise<string> {
-  // Dynamically import nanoid
-  const { customAlphabet } = await import('nanoid');
-
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz', 6);
-
+export function generateSlug(companyName: string): string {
   const baseSlug = companyName
     .toLowerCase()
     .trim()
@@ -28,7 +23,7 @@ export async function generateSlug(companyName: string): Promise<string> {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 
-  const uniqueSuffix = nanoid();
+  const uniqueSuffix = crypto.randomBytes(6).toString('hex').slice(0, 6);
 
   return `${baseSlug}-${uniqueSuffix}`;
 }
