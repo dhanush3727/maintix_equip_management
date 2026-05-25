@@ -98,7 +98,7 @@ export class AuthService {
   //#endregion
 
   //#region Refresh token rotation
-  async refreshTokens(user: JwtPayloadType, refreshToken: string) {
+  async refreshTokenService(user: JwtPayloadType, refreshToken: string) {
     const { userId: userId, jti } = user;
 
     // Get session from DB
@@ -719,7 +719,7 @@ export class AuthService {
   //#endregion
 
   //#region Invitation Accept service
-  async acceptInvitationService(dto: AcceptInviteDto, meta?: MetaType) {
+  async acceptInvitationService(dto: AcceptInviteDto) {
     const { token, password } = dto;
     const name = dto.name.trim().replace(/\s+/g, ' ');
 
@@ -739,7 +739,7 @@ export class AuthService {
     // Expire invitaion
     if (invitation.expiresAt < new Date()) {
       await this.prisma.invitation.update({
-        where: { token: hashedToken, expiresAt: InvitationStatus.PENDING },
+        where: { token: hashedToken, status: InvitationStatus.PENDING },
         data: { expiresAt: InvitationStatus.EXPIRED },
       });
 
@@ -755,6 +755,7 @@ export class AuthService {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // Create the user and update invitation
     await this.prisma.$transaction(async (tx) => {
       // Create a user
       await tx.user.create({
@@ -763,8 +764,21 @@ export class AuthService {
           email: invitation.email,
           passwordHash,
           organizationId: invitation.organizationId,
-          roles: invitation.roleId,
-          department: invitation.departmentId,
+          isEmailVerified: true,
+          // This is relational data, User don't have roleId and departmentId column,
+          // So we need to create the relation data in userRole and userDepartment table, this is called nested write in prisma
+          roles: {
+            create: {
+              roleId: invitation.roleId,
+            },
+          },
+          department: invitation.departmentId
+            ? {
+                create: {
+                  departmentId: invitation.departmentId,
+                },
+              }
+            : undefined,
         },
       });
 

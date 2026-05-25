@@ -29,10 +29,38 @@ import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 import { RequestTokenDto } from './dto/request-token.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { EmailVerificationDto } from './dto/email-verification.dto';
+import { AcceptInviteDto } from './dto/accept-invite.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  //#region Refresh token rotation
+  @UseGuards(RefreshTokenGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(
+    @Req() req: Request & { user: JwtPayloadType & { refreshToken: string } },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { user } = req;
+
+    const { refreshToken, accessToken } =
+      await this.authService.refreshTokenService(user, user.refreshToken);
+
+    // Set refresh token in cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+    });
+
+    return {
+      message: 'Token refreshed successfully',
+      data: { accessToken },
+    };
+  }
+  //#endregion
 
   // #region Register new user
   @Post('register')
@@ -257,6 +285,19 @@ export class AuthController {
 
     return {
       message: 'Verification mail sent your email',
+      data: {},
+    };
+  }
+  //#endregion
+
+  //#region Accept Invitation
+  @Post('accept-invite')
+  @HttpCode(HttpStatus.OK)
+  async acceptInvitation(@Body() dto: AcceptInviteDto) {
+    await this.authService.acceptInvitationService(dto);
+
+    return {
+      message: 'Invitation accepted and user created',
       data: {},
     };
   }
