@@ -29,3 +29,7 @@ export class RegisterDto {
   @IsOptional()
   deviceInfo?: string;
 }
+
+// The "!" tells TypeScript:
+// "This property will definitely be assigned later (by NestJS from request body)"
+// Without this, TypeScript throws an error because the property is not initialized

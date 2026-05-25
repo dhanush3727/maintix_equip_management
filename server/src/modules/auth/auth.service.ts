@@ -29,6 +29,8 @@ import { MailService } from '../../mail/mail.service';
 import { RequestTokenDto } from './dto/request-token.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { EmailVerificationDto } from './dto/email-verification.dto';
+import { AcceptInviteDto } from './dto/accept-invite.dto';
+import { InvitationStatus } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -713,6 +715,65 @@ export class AuthService {
   //#region Resend Email verification
   async resendEmailVerificationService(dto: RequestTokenDto, meta?: MetaType) {
     await this.sendEmailVerificationService(dto, meta);
+  }
+  //#endregion
+
+  //#region Invitation Accept service
+  async acceptInvitationService(dto: AcceptInviteDto, meta?: MetaType) {
+    const { token, password } = dto;
+    const name = dto.name.trim().replace(/\s+/g, ' ');
+
+    const hashedToken = hashVerificationToken(token);
+
+    // Get the invitation
+    const invitation = await this.prisma.invitation.findUnique({
+      where: { token: hashedToken },
+      include: { organization: true, role: true, department: true },
+    });
+
+    // Check the invitation
+    if (!invitation || invitation.status !== InvitationStatus.PENDING) {
+      throw new BadRequestException('Invalid invitation');
+    }
+
+    // Expire invitaion
+    if (invitation.expiresAt < new Date()) {
+      await this.prisma.invitation.update({
+        where: { token: hashedToken, expiresAt: InvitationStatus.PENDING },
+        data: { expiresAt: InvitationStatus.EXPIRED },
+      });
+
+      throw new BadRequestException('Invitation Expired');
+    }
+
+    // Find the email already exist
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: invitation.email },
+    });
+
+    if (existingUser) throw new BadRequestException('User already exists');
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    await this.prisma.$transaction(async (tx) => {
+      // Create a user
+      await tx.user.create({
+        data: {
+          name,
+          email: invitation.email,
+          passwordHash,
+          organizationId: invitation.organizationId,
+          roles: invitation.roleId,
+          department: invitation.departmentId,
+        },
+      });
+
+      // Update invitation
+      await tx.invitation.update({
+        where: { id: invitation.id },
+        data: { status: InvitationStatus.ACCEPTED },
+      });
+    });
   }
   //#endregion
 }
