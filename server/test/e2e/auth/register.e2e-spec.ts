@@ -1,37 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from '../../../src/app.module';
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
-import { ValidationPipe } from '@nestjs/common';
+import { createApp } from '../../utils/create-app';
 
 // This is an end-to-end test for the registration endpoint of the authentication module.
 describe('Register E2E', () => {
   let app: INestApplication; // Define the app variable to hold the Nest application instance
 
   // Set up the testing environment before running the tests
+  // in this case we create a app instance before run every tests
   beforeAll(async () => {
-    // Create testing module
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule], // it loads entire app
-    }).compile();
-
-    // Create nest app instance
-    app = moduleFixture.createNestApplication();
-
-    // Apply the prefix for this app instance
-    app.setGlobalPrefix('api');
-
-    // Apply global validation pipe
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      }),
-    );
-
-    await app.init(); // Initialize the app before running the tests
+    app = await createApp();
   });
 
   // Clean up after all tests have run
@@ -59,6 +38,58 @@ describe('Register E2E', () => {
     expect(res.status).toBe(201);
 
     // Check if the response body has a message property, which indicates successful registration
+    expect(res.body).toHaveProperty('data');
+  });
+
+  it('should fail if email already exists', async () => {
+    const payload = {
+      companyName: 'Test Company',
+      name: 'Test User',
+      email: `test@gmail.com`,
+      password: 'Password@123',
+    };
+
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+    const res = await request(server).post('/api/auth/register').send(payload);
+    expect(res.status).toBe(409);
     expect(res.body).toHaveProperty('message');
+  });
+
+  it('should fail for invalid email', async () => {
+    const payload = {
+      companyName: 'Test Company',
+      name: 'Test User',
+      email: `test${Date.now()}.com`,
+      password: 'Password@123',
+    };
+
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+    const res = await request(server).post('/api/auth/register').send(payload);
+    expect(res.status).toBe(400);
+  });
+
+  it('should fail for weak password', async () => {
+    const payload = {
+      companyName: 'Test Company',
+      name: 'Test User',
+      email: `test${Date.now()}.com`,
+      password: '1234',
+    };
+
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+    const res = await request(server).post('/api/auth/register').send(payload);
+    expect(res.status).toBe(400);
+  });
+
+  it('should fail if name is missing', async () => {
+    const payload = {
+      companyName: 'Test Company',
+      email: `test${Date.now()}.com`,
+      password: '1234',
+    };
+
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+    const res = await request(server).post('/api/auth/register').send(payload);
+    expect(res.status).toBe(400);
   });
 });

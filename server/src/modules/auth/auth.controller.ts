@@ -302,4 +302,18 @@ export class AuthController {
     };
   }
   //#endregion
+
+  // #region Get current user
+  @UseGuards(AccessTokenGuard)
+  @Get('/me')
+  async getCurrentUser(@Req() req: AuthenticateRequest) {
+    const user = req.user;
+    const result = await this.authService.getCurrentUserService(user.userId);
+
+    return {
+      message: 'Fetched current user successfully',
+      data: result,
+    };
+  }
+  //#endregion
 }

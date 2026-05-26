@@ -790,4 +790,24 @@ export class AuthService {
     });
   }
   //#endregion
+
+  //#region Get current user details
+  async getCurrentUserService(userId: number) {
+    // Fetch the user
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        organizationId: true,
+        isEmailVerified: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+  //#endregion
 }
