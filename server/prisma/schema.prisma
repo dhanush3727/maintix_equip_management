@@ -260,6 +260,7 @@ model Organization {
   country             String?
   city                String?
   logoUrl             String?
+  logoPublicId        String?
   isActive            Boolean         @default(true)
 
   users               User[]

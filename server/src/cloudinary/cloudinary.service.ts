@@ -7,6 +7,11 @@ import { v2 as cloudinary } from 'cloudinary';
 import { ConfigService } from '@nestjs/config';
 import * as streamifier from 'streamifier';
 
+export type CloudinaryUploadResult = {
+  url: string;
+  publicId: string;
+};
+
 @Injectable()
 export class CloudinaryService implements OnModuleInit {
   constructor(private readonly configService: ConfigService) {}
@@ -33,7 +38,7 @@ export class CloudinaryService implements OnModuleInit {
       throw new InternalServerErrorException('Invalid file');
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<CloudinaryUploadResult>((resolve, reject) => {
       const upload = cloudinary.uploader.upload_stream(
         { folder: 'maintix' },
         (error, result) => {

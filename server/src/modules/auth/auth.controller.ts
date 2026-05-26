@@ -22,7 +22,7 @@ import type {
   MetaType,
   ReqMetaType,
   RequestWithCookies,
-} from './types/auth.types';
+} from '../../common/types/auth.types';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
@@ -153,7 +153,6 @@ export class AuthController {
 
     return {
       message: 'Logout Successfully',
-      data: {},
     };
   }
   //#endregion
@@ -172,7 +171,6 @@ export class AuthController {
 
     return {
       message: 'Session logged out successfully',
-      data: {},
     };
   }
   //#endregion
@@ -190,7 +188,6 @@ export class AuthController {
 
     return {
       message: 'Logged out from all other sessions',
-      data: {},
     };
   }
   //#endregion
@@ -221,7 +218,6 @@ export class AuthController {
 
     return {
       message: 'Email sent',
-      data: {},
     };
   }
   //#endregion
@@ -237,7 +233,6 @@ export class AuthController {
 
     return {
       message: 'Password reset successful',
-      data: {},
     };
   }
   //#endregion
@@ -253,7 +248,6 @@ export class AuthController {
 
     return {
       message: 'Verification mail sent your email',
-      data: {},
     };
   }
   //#endregion
@@ -269,7 +263,6 @@ export class AuthController {
 
     return {
       message: 'Email verified successfully',
-      data: {},
     };
   }
   //#endregion
@@ -285,7 +278,6 @@ export class AuthController {
 
     return {
       message: 'Verification mail sent your email',
-      data: {},
     };
   }
   //#endregion
@@ -298,7 +290,6 @@ export class AuthController {
 
     return {
       message: 'Invitation accepted and user created',
-      data: {},
     };
   }
   //#endregion

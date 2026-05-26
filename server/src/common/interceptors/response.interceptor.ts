@@ -21,7 +21,7 @@ type PaginationInfo = {
 interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: T;
+  data?: T;
   pagination?: PaginationInfo;
 }
 
@@ -40,7 +40,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<
     return next.handle().pipe(
       map((data) => {
         let message = 'Success'; // Default message if the controller does not provide one
-        let responseData: T; // This will hold the original response data from the controller
+        let responseData: T | undefined; // This will hold the original response data from the controller
         let pagination: PaginationInfo | undefined; // This will hold pagination info if provided by the controller
 
         // If the controller returns an object that contains a 'message' or 'data' field, we extract those to use in our response.
@@ -57,7 +57,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<
           };
 
           message = res.message ?? message;
-          responseData = res.data ?? data;
+          responseData = res.data;
           pagination = res.pagination;
         } else {
           responseData = data;

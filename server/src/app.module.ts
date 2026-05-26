@@ -13,6 +13,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RequestMetaInterceptor } from './common/interceptors/request-meta.interceptor';
 import { UpdateLastActiveInterceptor } from './common/interceptors/updateLastActive.interceptor';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { OrganizationModule } from './modules/organization/organization.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
     MailModule,
     AuthModule,
     AuditModule,
+    OrganizationModule,
   ],
   controllers: [AppController],
   providers: [

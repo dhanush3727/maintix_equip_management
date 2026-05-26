@@ -1,7 +1,7 @@
 // This is a custom parameter decorator for NestJS that allows us to easily extract request metadata (like IP address and user-agent) in our controller methods.
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
-import { ReqMetaType } from '../../modules/auth/types/auth.types';
+import { ReqMetaType } from '../types/auth.types';
 
 // The `ReqMeta` decorator can be used in any controller method to access the request metadata without having to manually extract it from the request object each time.
 export const ReqMeta = createParamDecorator(

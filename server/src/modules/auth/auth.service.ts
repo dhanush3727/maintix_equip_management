@@ -11,7 +11,7 @@ import {
   GenereateTokensType,
   JwtPayloadType,
   MetaType,
-} from './types/auth.types';
+} from '../../common/types/auth.types';
 import {
   compareToken,
   generateSlug,

@@ -10,10 +10,15 @@ export enum AuditAction {
   RESET_PASSWORD = 'RESET_PASSWORD',
   EMAIL_VERIFICATION = 'EMAIL_VERIFICATION',
   ACCEPT_INVITATION = 'ACCEPT_INVITATION',
+
+  // Organization Actions
+  CREATE_ORG = 'CREATE_ORG',
+  UPDATE_ORG = 'UPDATE_ORG',
 }
 
 export enum AuditModule {
   AUTH = 'AUTH',
+  ORG = 'ORG',
   EQUIPMENT = 'EQUIPMENT',
   PM = 'PM',
   BREAKDOWN = 'BREAKDOWN',

@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayloadType, GenereateTokensType } from '../types/auth.types';
+import {
+  JwtPayloadType,
+  GenereateTokensType,
+} from '../../../common/types/auth.types';
 import { randomUUID } from 'crypto';
 
 @Injectable()
