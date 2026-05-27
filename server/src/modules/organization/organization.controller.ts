@@ -158,4 +158,21 @@ export class OrganizationController {
     };
   }
   //#endregion
+
+  //#region Get locations based on organization
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Get('location')
+  async getLocations(@Req() req: AuthenticateRequest) {
+    const { organizationId } = req.user;
+
+    const locations =
+      await this.organizationService.getLocationService(organizationId);
+
+    return {
+      message: 'Fetched locations',
+      data: locations,
+    };
+  }
+  //#endregion
 }

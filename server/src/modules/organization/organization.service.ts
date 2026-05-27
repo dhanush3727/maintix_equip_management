@@ -258,4 +258,14 @@ export class OrganizationService {
     });
   }
   //#endregion
+
+  //#region Get location based on organization
+  async getLocationService(organizationId: number) {
+    const locations = await this.prisma.location.findMany({
+      where: { organizationId },
+    });
+
+    return locations;
+  }
+  //#endregion
 }
