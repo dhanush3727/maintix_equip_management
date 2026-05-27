@@ -282,13 +282,14 @@ model Organization {
 model Location {
   id                Int           @id @default(autoincrement())
   organizationId    Int
-  organization      Organization  @relation(fields: [organizationId], references: [id])
 
   name              String
   type              LocationType?
   address           String
 
   createdAt         DateTime      @default(now())
+  
+  organization      Organization  @relation(fields: [organizationId], references: [id])
 }
 
 model Department {

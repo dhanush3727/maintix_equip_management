@@ -1,7 +1,7 @@
 import { CompanySize, IndustryType } from '@prisma/client';
 import { IsString, IsEnum, IsOptional } from 'class-validator';
 
-export class UpdateOrganizationDto {
+export class CreateOrganizationDto {
   @IsEnum(IndustryType)
   industryType!: IndustryType;
 

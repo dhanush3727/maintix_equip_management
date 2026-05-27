@@ -14,7 +14,6 @@ import {
 } from '../../common/types/auth.types';
 import {
   compareToken,
-  generateSlug,
   hashToken,
   hashVerificationToken,
 } from './utils/auth.utils';
@@ -31,6 +30,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { EmailVerificationDto } from './dto/email-verification.dto';
 import { AcceptInviteDto } from './dto/accept-invite.dto';
 import { InvitationStatus } from '@prisma/client';
+import { generateSlug } from '../../common/utils/generate-slug.util';
 
 @Injectable()
 export class AuthService {

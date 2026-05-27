@@ -14,6 +14,9 @@ export enum AuditAction {
   // Organization Actions
   CREATE_ORG = 'CREATE_ORG',
   UPDATE_ORG = 'UPDATE_ORG',
+
+  // Location Actions
+  CREATE_LOCATION = 'CREATE_LOCATION',
 }
 
 export enum AuditModule {

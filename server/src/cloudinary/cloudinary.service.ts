@@ -78,7 +78,10 @@ export class CloudinaryService implements OnModuleInit {
   }
 
   // Replace a file
-  async replaceFile(publicId: string, file: Express.Multer.File) {
+  async replaceFile(
+    publicId: string,
+    file: Express.Multer.File,
+  ): Promise<CloudinaryUploadResult> {
     await this.deleteFile(publicId);
     return this.uploadFile(file);
   }
