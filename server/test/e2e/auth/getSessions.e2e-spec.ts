@@ -2,17 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
 import { createApp } from '../../utils/create-app';
-
-interface LoginResponse {
-  data: {
-    user: {
-      id: number;
-      name: string;
-      email: string;
-    };
-    accessToken: string;
-  };
-}
+import { LoginResponse } from '../../test.types';
 
 describe('Get All Sessions E2E', () => {
   let app: INestApplication;

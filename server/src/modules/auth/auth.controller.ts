@@ -30,6 +30,7 @@ import { RequestTokenDto } from './dto/request-token.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { EmailVerificationDto } from './dto/email-verification.dto';
 import { AcceptInviteDto } from './dto/accept-invite.dto';
+import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -158,7 +159,7 @@ export class AuthController {
   //#endregion
 
   // #region Logout specific session
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Delete('sessions/:jti')
   async logoutOtherSession(
     @Param('jti') jti: string,
@@ -176,7 +177,7 @@ export class AuthController {
   //#endregion
 
   //#region Logout all sessions
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Post('logout-all')
   @HttpCode(HttpStatus.OK)
   async logoutAll(@Req() req: AuthenticateRequest, @ReqMeta() meta: MetaType) {
@@ -193,7 +194,7 @@ export class AuthController {
   //#endregion
 
   //#region Get all user sessions
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Get('sessions')
   async getAllSessions(@Req() req: AuthenticateRequest) {
     const { userId, jti } = req.user;
@@ -295,7 +296,7 @@ export class AuthController {
   //#endregion
 
   // #region Get current user
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Get('/me')
   async getCurrentUser(@Req() req: AuthenticateRequest) {
     const user = req.user;

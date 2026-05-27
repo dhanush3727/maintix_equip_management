@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -257,18 +258,16 @@ export class AuthService {
     // Find User
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: {
-        id: true,
-        organizationId: true,
-        name: true,
-        email: true,
-        passwordHash: true,
-      },
+      include: { organization: true },
     });
 
     // Check user
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    if (!user.organization.isActive) {
+      throw new ForbiddenException('Your organization is deactivated');
     }
 
     // Check password

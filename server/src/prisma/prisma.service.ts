@@ -22,7 +22,7 @@ export class PrismaService
     // Call the super constructor with the adapter and logging options.
     //The super is used to call the constructor of the parent class (PrismaClient) and pass the adapter and logging options to it.
     // The logging options specify that we want to log all queries, errors, warnings, and informational messages from Prisma.
-    super({ adapter, log: ['query', 'error', 'warn', 'info'] });
+    super({ adapter, log: ['error', 'warn'] });
   }
 
   async onModuleInit() {

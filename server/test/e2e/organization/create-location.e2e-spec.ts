@@ -1,24 +1,21 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
+import { describe, it, beforeAll, afterAll, expect } from '@jest/globals';
 import { createApp } from '../../utils/create-app';
-import { CompanySize, IndustryType } from '@prisma/client';
 import { LoginResponse } from '../../test.types';
 
-describe('Create Organization Profile E2E', () => {
+describe('Create Location E2E', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     app = await createApp();
   });
 
-  // Clean up after all tests have run
   afterAll(async () => {
-    // close the app after test
     await app.close();
   });
 
-  it('should create organization profile', async () => {
+  it('should create location', async () => {
     const payload = {
       email: `test@gmail.com`,
       password: 'Password@123',
@@ -32,28 +29,66 @@ describe('Create Organization Profile E2E', () => {
     const loginData = loginRes.body as LoginResponse;
     const accessToken = loginData.data.accessToken;
 
-    const orgPayload = {
-      industryType: IndustryType.GENERAL,
-      companySize: CompanySize.ENTERPRISE,
-      country: 'Austrila',
-      city: 'Sydney',
+    const locPayload = {
+      name: 'Warehouse 2',
+      address: '73 ammankudi',
+      type: 'WAREHOUSE',
     };
 
     const res = await request(server)
-      .post('/api/organization')
-      .send(orgPayload)
-      .set('Authorization', `Bearer ${accessToken}`);
+      .post('/api/organization/location')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(locPayload);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
   });
 
-  it('should fail for without token', async () => {
-    const server = app.getHttpServer() as Parameters<typeof request>[0];
-    const res = await request(server)
-      .post('/api/organization')
-      .send({ country: 'India' });
+  it('should fail for exist location', async () => {
+    const payload = {
+      email: `test@gmail.com`,
+      password: 'Password@123',
+    };
 
-    expect(res.status).toBe(401);
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload);
+
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const locPayload = {
+      name: 'Plant A',
+      address: '73 ammankudi',
+      type: 'PLANT',
+    };
+
+    const res = await request(server)
+      .post('/api/organization/location')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(locPayload);
+
+    expect(res.status).toBe(400);
+  });
+
+  it('should fail for without authorization', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const locPayload = {
+      name: 'Plant A',
+      address: '73 ammankudi',
+      type: 'PLANT',
+    };
+
+    const res = await request(server)
+      .post('/api/organization/location')
+      .send(locPayload)
+      .expect(401);
+
+    expect(res.body).toEqual({
+      statusCode: 401,
+      message: 'Unauthorized',
+    });
   });
 
   it('should fail for invalid enum', async () => {
@@ -65,47 +100,24 @@ describe('Create Organization Profile E2E', () => {
     const server = app.getHttpServer() as Parameters<typeof request>[0];
     const loginRes = await request(server)
       .post('/api/auth/login')
-      .send(payload);
+      .send(payload)
+      .expect(200);
 
     const loginData = loginRes.body as LoginResponse;
     const accessToken = loginData.data.accessToken;
 
-    const orgPayload = {
-      industryType: 'General',
-      companySize: 'small',
-      country: 'Austrila',
-      city: 'Sydney',
+    const locPayload = {
+      name: 'Warehouse 1',
+      address: '73 ammankudi',
+      type: 'any house',
     };
 
     const res = await request(server)
-      .post('/api/organization')
-      .send(orgPayload)
-      .set('Authorization', `Bearer ${accessToken}`);
+      .post('/api/organization/location')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(locPayload)
+      .expect(400);
 
     expect(res.status).toBe(400);
-  });
-
-  it('should upload file', async () => {
-    const payload = {
-      email: `test@gmail.com`,
-      password: 'Password@123',
-    };
-
-    const server = app.getHttpServer() as Parameters<typeof request>[0];
-    const loginRes = await request(server)
-      .post('/api/auth/login')
-      .send(payload);
-
-    const loginData = loginRes.body as LoginResponse;
-    const accessToken = loginData.data.accessToken;
-
-    const res = await request(server)
-      .post('/api/organization')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .attach('logo', 'test/spanner.png')
-      .field('industryType', IndustryType.GENERAL)
-      .field('companySize', CompanySize.ENTERPRISE);
-
-    expect(res.status).toBe(200);
   });
 });

@@ -26,7 +26,29 @@ export class OrganizationService {
     private cloudinary: CloudinaryService,
   ) {}
 
-  //#region create a organization profile
+  //#region Get organization details
+  async getOrganizationService(organizationId: number) {
+    const org = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        industryType: true,
+        companySize: true,
+        city: true,
+        country: true,
+        isActive: true,
+      },
+    });
+
+    if (!org) throw new NotFoundException('Organization not found');
+
+    return org;
+  }
+  //#endregion
+
+  //#region Create a organization profile
   async createOrganizationService(
     organizationId: number,
     userId: number,
@@ -80,7 +102,7 @@ export class OrganizationService {
   }
   //#endregion
 
-  //#region update organization profile
+  //#region Update organization profile
   async updateOrganizationService(
     dto: UpdateOrganizationDto,
     organizationId: number,
@@ -161,6 +183,36 @@ export class OrganizationService {
       ipAddress: meta?.ipAddress,
     });
   }
+  //#endregion
+
+  //#region Deactivate organization
+  async deactivateOrganizationService(
+    organizationId: number,
+    userId: number,
+    meta?: MetaType,
+  ) {
+    const updated = await this.prisma.organization.updateMany({
+      where: { id: organizationId, isActive: true },
+      data: { isActive: false },
+    });
+
+    if (updated.count === 0) {
+      throw new BadRequestException(
+        'Organization not found or already deactivate',
+      );
+    }
+
+    // Audit log
+    await this.auditSerivce.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVE_ORG,
+      module: AuditModule.ORG,
+      recordId: organizationId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
 
   //#region Create Location
   async createLocationService(
@@ -177,6 +229,7 @@ export class OrganizationService {
       .replace(/\b\w/g, (char) => char.toUpperCase());
     const address = dto.address.replace(/\s+/g, ' ');
 
+    // findFirst is used instead of findUnique because we are checking the location name for the same organization, not globally unique.
     const existing = await this.prisma.location.findFirst({
       where: { name, organizationId },
     });

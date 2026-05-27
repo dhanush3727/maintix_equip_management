@@ -14,6 +14,7 @@ export enum AuditAction {
   // Organization Actions
   CREATE_ORG = 'CREATE_ORG',
   UPDATE_ORG = 'UPDATE_ORG',
+  DEACTIVE_ORG = 'DEACTIVE_ORG',
 
   // Location Actions
   CREATE_LOCATION = 'CREATE_LOCATION',

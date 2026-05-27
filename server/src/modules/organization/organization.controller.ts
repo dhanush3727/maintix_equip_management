@@ -2,15 +2,18 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Patch,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { OrganizationService } from './organization.service';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -26,13 +29,31 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
+import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
 
 @Controller('organization')
 export class OrganizationController {
   constructor(private organizationService: OrganizationService) {}
 
+  //#region Get current organization
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Get()
+  async getOrganization(@Req() req: AuthenticateRequest) {
+    const user = req.user;
+    const org = await this.organizationService.getOrganizationService(
+      user.organizationId,
+    );
+
+    return {
+      message: 'Fetched organization successfully',
+      data: org,
+    };
+  }
+  //#endregion
+
   //#region Create organization profile
-  @UseGuards(AccessTokenGuard, RolesGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN)
   @UseInterceptors(FileInterceptor('logo'))
   @Post()
@@ -60,7 +81,7 @@ export class OrganizationController {
   //#endregion
 
   //#region Update organization
-  @UseGuards(AccessTokenGuard, RolesGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN)
   @UseInterceptors(FileInterceptor('logo'))
   @Patch()
@@ -87,8 +108,33 @@ export class OrganizationController {
   }
   //#endregion
 
+  // #region Deactivate organization
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Patch('deactivate')
+  async deactivateOrganization(
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const user = req.user;
+
+    await this.organizationService.deactivateOrganizationService(
+      user.organizationId,
+      user.userId,
+      meta,
+    );
+
+    res.clearCookie('refreshToken');
+
+    return {
+      message: 'Organization Deactivate successfully',
+    };
+  }
+  //#endregion
+
   //#region Create location
-  @UseGuards(AccessTokenGuard, RolesGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN)
   @Post('location')
   async createLocation(
