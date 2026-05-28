@@ -2,10 +2,12 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Req,
@@ -32,6 +34,8 @@ import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
 import { UpdateLocationDto } from './dto/update-location.dto';
+import { CreateDepartmentDto } from './dto/create-dep.dto';
+import { UpdateDepartmentDto } from './dto/update-dep.dto';
 
 @Controller('organization')
 export class OrganizationController {
@@ -182,7 +186,10 @@ export class OrganizationController {
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN)
   @Get('location/:id')
-  async getLocation(@Param('id') id: number, @Req() req: AuthenticateRequest) {
+  async getLocation(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
     const { organizationId } = req.user;
 
     const location = await this.organizationService.getLocationService(
@@ -202,7 +209,7 @@ export class OrganizationController {
   @Roles(RoleType.ADMIN)
   @Patch('location/:id')
   async updteLocation(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number, // parseIntPipe change id to number
     @Body() dto: UpdateLocationDto,
     @Req() req: AuthenticateRequest,
     @ReqMeta() meta: MetaType,
@@ -219,6 +226,131 @@ export class OrganizationController {
 
     return {
       message: 'Location updated successfully!',
+    };
+  }
+  //#endregion
+
+  //#region Delete location
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Delete('location/:id')
+  async deleteLocation(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const { organizationId } = req.user;
+
+    await this.organizationService.deleteLocationService(id, organizationId);
+
+    return {
+      message: 'Location deleted successfully',
+    };
+  }
+  //#endregion
+
+  //#region Create Department
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Post('department')
+  async createDepartment(
+    @Body() dto: CreateDepartmentDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    const { userId, organizationId } = req.user;
+
+    await this.organizationService.createDepartmentService(
+      dto,
+      organizationId,
+      userId,
+      meta,
+    );
+
+    return {
+      message: 'Department Created',
+    };
+  }
+  //#endregion
+
+  //#region Get departments based on organization
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Get('department')
+  async getDepartments(@Req() req: AuthenticateRequest) {
+    const { organizationId } = req.user;
+
+    const data =
+      await this.organizationService.getDepartmentsService(organizationId);
+
+    return {
+      message: 'Successfully get the departments',
+      data,
+    };
+  }
+  //#endregion
+
+  //#region Get department by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Get('department/:id')
+  async getDepartment(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const { organizationId } = req.user;
+
+    const data = await this.organizationService.getDepartmentService(
+      id,
+      organizationId,
+    );
+
+    return {
+      message: 'Successfully Fetched Department',
+      data,
+    };
+  }
+  //#endregion
+
+  //#region Update Department
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Patch('department/:id')
+  async updateDepartment(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateDepartmentDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    const { userId, organizationId } = req.user;
+
+    await this.organizationService.updateDepartmentService(
+      id,
+      dto,
+      organizationId,
+      userId,
+      meta,
+    );
+
+    return {
+      message: 'Department updated successfully',
+    };
+  }
+  //#endregion
+
+  //#region Delete department
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Delete('department/:id')
+  async deleteDepartment(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const { organizationId } = req.user;
+
+    await this.organizationService.deleteDepartmentService(id, organizationId);
+
+    return {
+      message: 'Department deleted successfully',
     };
   }
   //#endregion

@@ -1,6 +1,8 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
+import { HttpExceptionFilter } from '../../src/common/filters/http-exception.filter';
+import { ResponseInterceptor } from '../../src/common/interceptors/response.interceptor';
 
 export async function createApp() {
   // Create testing module
@@ -24,6 +26,9 @@ export async function createApp() {
       transform: true,
     }),
   );
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   await app.init(); // Initialize the app before running the tests
 

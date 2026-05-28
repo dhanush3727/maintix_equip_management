@@ -19,6 +19,10 @@ export enum AuditAction {
   // Location Actions
   CREATE_LOCATION = 'CREATE_LOCATION',
   UPDATE_LOCATION = 'UPDATE_LOCATION',
+
+  // Department Actions
+  CREATE_DEPARTMENT = 'CREATE_DEPARTMENT',
+  UPDATE_DEPARTMENT = 'UPDATE_DEPARTMENT',
 }
 
 export enum AuditModule {

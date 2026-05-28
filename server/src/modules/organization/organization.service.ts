@@ -18,6 +18,8 @@ import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { generateSlug } from '../../common/utils/generate-slug.util';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { Prisma } from '@prisma/client';
+import { CreateDepartmentDto } from './dto/create-dep.dto';
+import { UpdateDepartmentDto } from './dto/update-dep.dto';
 
 @Injectable()
 export class OrganizationService {
@@ -270,6 +272,12 @@ export class OrganizationService {
       orderBy: {
         createdAt: 'desc',
       },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        address: true,
+      },
     });
 
     return locations;
@@ -350,6 +358,154 @@ export class OrganizationService {
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
     });
+  }
+  //#endregion
+
+  //#region Delete location service
+  async deleteLocationService(id: number, organizationId: number) {
+    // why delteMany? this does two things in one query check org and checks that is active then update
+    const location = await this.prisma.location.deleteMany({
+      where: { id, organizationId },
+    });
+
+    if (location.count === 0) throw new NotFoundException('Location not found');
+  }
+  //#endregion
+
+  //#region Create Document
+  async createDepartmentService(
+    dto: CreateDepartmentDto,
+    organizationId: number,
+    userId: number,
+    meta?: MetaType,
+  ) {
+    const { name, code, type } = dto;
+
+    try {
+      await this.prisma.department.create({
+        data: {
+          name,
+          code,
+          type,
+          organizationId,
+        },
+      });
+
+      // Audit log
+      await this.auditSerivce.logs({
+        organizationId,
+        userId,
+        action: AuditAction.CREATE_DEPARTMENT,
+        module: AuditModule.ORG,
+        recordId: userId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new BadRequestException('Department already exist');
+      }
+
+      throw err;
+    }
+  }
+  //#endregion
+
+  //#region Get Departments based on organization
+  async getDepartmentsService(organizationId: number) {
+    const departments = await this.prisma.department.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        code: true,
+      },
+    });
+
+    return departments;
+  }
+  //#endregion
+
+  //#region Get Department by id
+  async getDepartmentService(id: number, organizationId: number) {
+    const department = await this.prisma.department.findFirst({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        code: true,
+      },
+    });
+
+    if (!department) throw new NotFoundException('Department not found');
+
+    return department;
+  }
+  //#endregion
+
+  //#region Update Department service
+  async updateDepartmentService(
+    id: number,
+    dto: UpdateDepartmentDto,
+    organizationId: number,
+    userId: number,
+    meta?: MetaType,
+  ) {
+    const { name, code, type } = dto;
+
+    const department = await this.prisma.department.findFirst({
+      where: { id, organizationId },
+    });
+
+    if (!department) throw new NotFoundException('Department not found');
+
+    const data: Prisma.DepartmentUpdateInput = {};
+
+    if (name) data.name = name;
+    if (code) data.code = code;
+    if (type) data.type = type;
+    try {
+      await this.prisma.department.update({
+        where: { id },
+        data,
+      });
+
+      // Audit log
+      await this.auditSerivce.logs({
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_DEPARTMENT,
+        module: AuditModule.ORG,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new BadRequestException('Department already exist');
+      }
+
+      throw err;
+    }
+  }
+  //#endregion
+
+  //#region Delete department service
+  async deleteDepartmentService(id: number, organizationId: number) {
+    const department = await this.prisma.department.deleteMany({
+      where: { id, organizationId },
+    });
+
+    if (department.count === 0) {
+      throw new NotFoundException('Department not found');
+    }
   }
   //#endregion
 }
