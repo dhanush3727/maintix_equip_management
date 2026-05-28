@@ -16,6 +16,8 @@ import { CreateLocationDto } from './dto/create-location.dto';
 import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { generateSlug } from '../../common/utils/generate-slug.util';
+import { UpdateLocationDto } from './dto/update-location.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class OrganizationService {
@@ -158,19 +160,20 @@ export class OrganizationService {
       logoPublicId = updated.publicId;
     }
 
+    const data: Prisma.OrganizationUpdateInput = {};
+    if (name) data.name = name;
+    if (slug) data.slug = slug;
+    if (industryType) data.industryType = industryType;
+    if (companySize) data.companySize = companySize;
+    if (country) data.country = country;
+    if (city) data.city = city;
+    if (logoUrl) data.logoUrl = logoUrl;
+    if (logoPublicId) data.logoPublicId = logoPublicId;
+
     // Update organization
     await this.prisma.organization.update({
       where: { id: organizationId },
-      data: {
-        name,
-        slug,
-        industryType,
-        companySize,
-        country,
-        city,
-        logoUrl,
-        logoPublicId,
-      },
+      data,
     });
 
     // Audit log
@@ -191,6 +194,7 @@ export class OrganizationService {
     userId: number,
     meta?: MetaType,
   ) {
+    // why updateMany? this does two things in one query check org and checks that is active then update
     const updated = await this.prisma.organization.updateMany({
       where: { id: organizationId, isActive: true },
       data: { isActive: false },
@@ -259,13 +263,93 @@ export class OrganizationService {
   }
   //#endregion
 
-  //#region Get location based on organization
-  async getLocationService(organizationId: number) {
+  //#region Get locations based on organization
+  async getLocationsService(organizationId: number) {
     const locations = await this.prisma.location.findMany({
       where: { organizationId },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     return locations;
+  }
+  //#endregion
+
+  //#region Get location
+  async getLocationService(id: number, organizationId: number) {
+    const location = await this.prisma.location.findFirst({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        address: true,
+      },
+    });
+
+    if (!location) throw new NotFoundException('Location not found');
+
+    return location;
+  }
+  //#endregion
+
+  //#region Update location
+  async updateLocationService(
+    id: number,
+    dto: UpdateLocationDto,
+    organizationId: number,
+    userId: number,
+    meta?: MetaType,
+  ) {
+    const { type } = dto;
+    const name = dto.name
+      ?.trim()
+      .replace(/\s+/g, ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+    const address = dto.address?.replace(/\s+/g, ' ');
+
+    const location = await this.prisma.location.findFirst({
+      where: { id, organizationId },
+    });
+
+    if (!location) throw new NotFoundException('Location not found');
+
+    const data: Prisma.LocationUpdateInput = {};
+
+    if (name) {
+      const existing = await this.prisma.location.findFirst({
+        // find wihtout current id
+        where: { name, organizationId, NOT: { id } },
+      });
+
+      if (existing) throw new BadRequestException('Location already exist');
+
+      data.name = name;
+    }
+
+    if (type) data.type = type;
+    if (address) data.address = address;
+
+    await this.prisma.location.update({
+      where: { id },
+      data: {
+        name,
+        type,
+        address,
+      },
+    });
+
+    // Audit log
+    await this.auditSerivce.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_LOCATION,
+      module: AuditModule.ORG,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 }

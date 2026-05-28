@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Patch,
   Post,
   Req,
@@ -30,6 +31,7 @@ import { CreateLocationDto } from './dto/create-location.dto';
 import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
+import { UpdateLocationDto } from './dto/update-location.dto';
 
 @Controller('organization')
 export class OrganizationController {
@@ -167,11 +169,56 @@ export class OrganizationController {
     const { organizationId } = req.user;
 
     const locations =
-      await this.organizationService.getLocationService(organizationId);
+      await this.organizationService.getLocationsService(organizationId);
 
     return {
       message: 'Fetched locations',
       data: locations,
+    };
+  }
+  //#endregion
+
+  //#region Get location
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Get('location/:id')
+  async getLocation(@Param('id') id: number, @Req() req: AuthenticateRequest) {
+    const { organizationId } = req.user;
+
+    const location = await this.organizationService.getLocationService(
+      id,
+      organizationId,
+    );
+
+    return {
+      message: 'Location successfully get',
+      data: location,
+    };
+  }
+  //#endregion
+
+  //#region Update location
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Patch('location/:id')
+  async updteLocation(
+    @Param('id') id: number,
+    @Body() dto: UpdateLocationDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    const { organizationId, userId } = req.user;
+
+    await this.organizationService.updateLocationService(
+      id,
+      dto,
+      organizationId,
+      userId,
+      meta,
+    );
+
+    return {
+      message: 'Location updated successfully!',
     };
   }
   //#endregion
