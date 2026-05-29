@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -17,12 +18,21 @@ import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { generateSlug } from '../../common/utils/generate-slug.util';
 import { UpdateLocationDto } from './dto/update-location.dto';
-import { InvitationStatus, Prisma } from '@prisma/client';
+import {
+  CompanySize,
+  DepartmentType,
+  IndustryType,
+  InvitationStatus,
+  LocationType,
+  Prisma,
+  RoleType,
+} from '@prisma/client';
 import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import * as crypto from 'crypto';
 import { hashVerificationToken } from '../../common/utils/generate-token.util';
+import { formatEnum } from '../../common/utils/format-enum.util';
 
 @Injectable()
 export class OrganizationService {
@@ -568,8 +578,11 @@ export class OrganizationService {
 
     if (!org) throw new NotFoundException('Organization not found');
 
-    if (existingUser?.organizationId === organizationId) {
-      throw new BadRequestException('User already in this organization');
+    if (existingUser) {
+      if (existingUser?.organizationId === organizationId) {
+        throw new BadRequestException('User already in this organization');
+      }
+      throw new ConflictException('This email alreay register');
     }
 
     if (!dep) throw new BadRequestException('Invalid department');
@@ -646,6 +659,49 @@ export class OrganizationService {
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
     });
+  }
+  //#endregion
+
+  //#region Get organization meta data
+  getOrganizationMetaService() {
+    return {
+      roleType: formatEnum(RoleType),
+      industryType: formatEnum(IndustryType),
+      companySize: formatEnum(CompanySize),
+      locationType: formatEnum(LocationType),
+      departmentType: formatEnum(DepartmentType),
+      invitationStatus: formatEnum(InvitationStatus),
+    };
+  }
+  //#endregion
+
+  //#region Get organization dropdown
+  async getDropdownService(organizationId: number) {
+    const [locations, departments] = await Promise.all([
+      this.prisma.location.findMany({
+        where: { organizationId },
+        select: { id: true, name: true },
+        orderBy: { name: 'asc' },
+      }),
+
+      this.prisma.department.findMany({
+        where: { organizationId },
+        select: { id: true, name: true },
+        orderBy: { name: 'asc' },
+      }),
+    ]);
+
+    return {
+      location: locations.map((loc) => ({
+        value: loc.id,
+        label: loc.name,
+      })),
+
+      department: departments.map((dep) => ({
+        value: dep.id,
+        label: dep.name,
+      })),
+    };
   }
   //#endregion
 }

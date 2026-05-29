@@ -736,7 +736,7 @@ export class AuthService {
     if (invitation.expiresAt < new Date()) {
       await this.prisma.invitation.update({
         where: { token: hashedToken, status: InvitationStatus.PENDING },
-        data: { expiresAt: InvitationStatus.EXPIRED },
+        data: { status: InvitationStatus.EXPIRED },
       });
 
       throw new BadRequestException('Invitation Expired');
