@@ -36,6 +36,7 @@ import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
+import { SendInvitationDto } from './dto/send-invitation.dto';
 
 @Controller('organization')
 export class OrganizationController {
@@ -351,6 +352,31 @@ export class OrganizationController {
 
     return {
       message: 'Department deleted successfully',
+    };
+  }
+  //#endregion
+
+  //#region Send invite
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Post('send-invite')
+  @HttpCode(HttpStatus.OK)
+  async sendInvitation(
+    @Body() dto: SendInvitationDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    const { userId, organizationId } = req.user;
+
+    await this.organizationService.sendInvitationService(
+      dto,
+      organizationId,
+      userId,
+      meta,
+    );
+
+    return {
+      message: 'Invitation send successfully',
     };
   }
   //#endregion

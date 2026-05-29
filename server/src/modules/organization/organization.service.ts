@@ -17,9 +17,12 @@ import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { generateSlug } from '../../common/utils/generate-slug.util';
 import { UpdateLocationDto } from './dto/update-location.dto';
-import { Prisma } from '@prisma/client';
+import { InvitationStatus, Prisma } from '@prisma/client';
 import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
+import { SendInvitationDto } from './dto/send-invitation.dto';
+import * as crypto from 'crypto';
+import { hashVerificationToken } from '../../common/utils/generate-token.util';
 
 @Injectable()
 export class OrganizationService {
@@ -506,6 +509,143 @@ export class OrganizationService {
     if (department.count === 0) {
       throw new NotFoundException('Department not found');
     }
+  }
+  //#endregion
+
+  //#region Send invitation service
+  async sendInvitationService(
+    dto: SendInvitationDto,
+    organizationId: number,
+    userId: number,
+    meta?: MetaType,
+  ) {
+    const { email, roleId, departmentId } = dto;
+
+    const [org, existingUser, dep, role, existingInvite] = await Promise.all([
+      // Get Organization
+      this.prisma.organization.findUnique({
+        where: { id: organizationId },
+        select: {
+          id: true,
+          name: true,
+        },
+      }),
+
+      // Get existing user and check that user already in the organization
+      this.prisma.user.findUnique({
+        where: { email },
+        select: { organizationId: true, name: true },
+      }),
+
+      // Get department and check that department valid or not
+      this.prisma.department.findFirst({
+        where: {
+          id: departmentId,
+          organizationId,
+        },
+        select: { id: true, name: true },
+      }),
+
+      // Get role and check that role valid or not
+      this.prisma.role.findUnique({
+        where: {
+          id: roleId,
+        },
+        select: { id: true, name: true },
+      }),
+
+      // Get existing invite
+      this.prisma.invitation.findUnique({
+        where: {
+          organizationId_email: {
+            organizationId,
+            email,
+          },
+        },
+        select: { id: true, expiresAt: true },
+      }),
+    ]);
+
+    if (!org) throw new NotFoundException('Organization not found');
+
+    if (existingUser?.organizationId === organizationId) {
+      throw new BadRequestException('User already in this organization');
+    }
+
+    if (!dep) throw new BadRequestException('Invalid department');
+
+    if (!role) throw new BadRequestException('Invalid role');
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const hashedToken = hashVerificationToken(token);
+
+    const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000); //48 hours
+
+    if (existingInvite) {
+      if (existingInvite.expiresAt > new Date()) {
+        throw new BadRequestException('Invitation already sent');
+      }
+
+      await this.prisma.invitation.update({
+        where: {
+          id: existingInvite.id,
+        },
+        data: {
+          token: hashedToken,
+          expiresAt,
+          roleId,
+          departmentId,
+          organizationId,
+          status: InvitationStatus.PENDING,
+        },
+      });
+    } else {
+      await this.prisma.invitation.create({
+        data: {
+          email,
+          token: hashedToken,
+          expiresAt,
+          roleId,
+          departmentId,
+          organizationId,
+        },
+      });
+    }
+
+    const invitationLink = `http://localhost:5000/api/auth/accept-invite?token=${token}`;
+
+    const formattedExpiry = expiresAt.toLocaleString();
+
+    // Send Email
+    await this.mailService.sendEmail({
+      to: email,
+      subject: `You are invited to join ${org.name}`,
+      html: `
+      <h3>Hi,</h3>
+      <p>You've been invited to join an organization</p>
+      <h4>Invitation Details:</h4>
+      <p><b>Organization</b>: ${org.name}</p>
+      <p><b>Role</b>: ${role.name}</p>
+      <p><b>Department</b>: ${dep.name}</p>
+      <p>To accept this invitation, click the link below and create your account</p>
+      <a href="${invitationLink}">${invitationLink}</a>
+      <h4>Important:</h4>
+      <p>This invitation will expire on ${formattedExpiry}</p>
+      <p>If you did not expect this invitation, you can safely ignore this email</p>
+      <p>Thanks</p>
+      <p>Maintix Team</p>
+      `,
+    });
+
+    // Audit logs
+    await this.auditSerivce.logs({
+      organizationId,
+      userId,
+      action: AuditAction.SEND_INVITATION,
+      module: AuditModule.ORG,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 }

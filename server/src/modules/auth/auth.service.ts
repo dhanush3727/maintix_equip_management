@@ -13,11 +13,7 @@ import {
   JwtPayloadType,
   MetaType,
 } from '../../common/types/auth.types';
-import {
-  compareToken,
-  hashToken,
-  hashVerificationToken,
-} from './utils/auth.utils';
+import { compareToken, hashToken } from './utils/auth.utils';
 import { TokenService } from './services/tokens.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
@@ -32,6 +28,7 @@ import { EmailVerificationDto } from './dto/email-verification.dto';
 import { AcceptInviteDto } from './dto/accept-invite.dto';
 import { InvitationStatus } from '@prisma/client';
 import { generateSlug } from '../../common/utils/generate-slug.util';
+import { hashVerificationToken } from '../../common/utils/generate-token.util';
 
 @Injectable()
 export class AuthService {
