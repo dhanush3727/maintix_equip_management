@@ -14,6 +14,7 @@ import { RequestMetaInterceptor } from './common/interceptors/request-meta.inter
 import { UpdateLastActiveInterceptor } from './common/interceptors/updateLastActive.interceptor';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { OrganizationModule } from './modules/organization/organization.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { OrganizationModule } from './modules/organization/organization.module';
     AuthModule,
     AuditModule,
     OrganizationModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [

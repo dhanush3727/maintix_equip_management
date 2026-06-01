@@ -384,18 +384,6 @@ export class OrganizationController {
   }
   //#endregion
 
-  //#region Get organization meta data
-  @UseGuards(AccessTokenGuard)
-  @Get('meta')
-  getOrganizationMeta() {
-    const data = this.organizationService.getOrganizationMetaService();
-
-    return {
-      data,
-    };
-  }
-  //#endregion
-
   //#region Get organization dropdown
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Get('dropdown')

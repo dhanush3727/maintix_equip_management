@@ -18,21 +18,12 @@ import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { generateSlug } from '../../common/utils/generate-slug.util';
 import { UpdateLocationDto } from './dto/update-location.dto';
-import {
-  CompanySize,
-  DepartmentType,
-  IndustryType,
-  InvitationStatus,
-  LocationType,
-  Prisma,
-  RoleType,
-} from '@prisma/client';
+import { InvitationStatus, Prisma } from '@prisma/client';
 import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import * as crypto from 'crypto';
 import { hashVerificationToken } from '../../common/utils/generate-token.util';
-import { formatEnum } from '../../common/utils/format-enum.util';
 
 @Injectable()
 export class OrganizationService {
@@ -659,19 +650,6 @@ export class OrganizationService {
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
     });
-  }
-  //#endregion
-
-  //#region Get organization meta data
-  getOrganizationMetaService() {
-    return {
-      roleType: formatEnum(RoleType),
-      industryType: formatEnum(IndustryType),
-      companySize: formatEnum(CompanySize),
-      locationType: formatEnum(LocationType),
-      departmentType: formatEnum(DepartmentType),
-      invitationStatus: formatEnum(InvitationStatus),
-    };
   }
   //#endregion
 
