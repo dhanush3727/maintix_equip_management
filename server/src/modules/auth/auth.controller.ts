@@ -31,7 +31,9 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { EmailVerificationDto } from './dto/email-verification.dto';
 import { AcceptInviteDto } from './dto/accept-invite.dto';
 import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

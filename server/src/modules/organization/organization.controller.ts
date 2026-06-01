@@ -37,7 +37,10 @@ import { UpdateLocationDto } from './dto/update-location.dto';
 import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Organization') // Swagger tag for grouping endpoints
+@ApiBearerAuth() // Indicates that the endpoints require authentication
 @Controller('organization')
 export class OrganizationController {
   constructor(private organizationService: OrganizationService) {}

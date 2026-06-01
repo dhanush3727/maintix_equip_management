@@ -48,16 +48,18 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
 
-  // Swagger config
-  const config = new DocumentBuilder()
-    .setTitle('Maintix API')
-    .setDescription('Maintix API Docs')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
+  // Set up Swagger documentation
+  const config = new DocumentBuilder() // Use DocumentBuilder to create the Swagger configuration
+    .setTitle('Maintix API') // Set the title of the API documentation
+    .setDescription('Maintix API Docs') // Set the description of the API documentation
+    .setVersion('1.0') // Set the version of the API
+    .addBearerAuth() // Add Bearer authentication support to the API documentation
+    .build(); // Build the Swagger configuration
 
+  // Create the Swagger document using the configuration and the NestJS application instance
   const document = SwaggerModule.createDocument(app, config);
 
+  // Set up the Swagger UI at the '/api' endpoint, allowing users to access the API documentation through a web interface
   SwaggerModule.setup('api', app, document);
 
   await app.listen(port);

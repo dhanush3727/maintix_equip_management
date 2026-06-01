@@ -1,8 +1,14 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { DepartmentType } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateDepartmentDto {
+  @ApiProperty({
+    example: 'Human Resources',
+    description: 'The name of the department',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
@@ -17,6 +23,11 @@ export class UpdateDepartmentDto {
   })
   name?: string;
 
+  @ApiProperty({
+    example: 'HR',
+    description: 'The code of the department',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
@@ -29,6 +40,11 @@ export class UpdateDepartmentDto {
   })
   code?: string;
 
+  @ApiProperty({
+    example: 'HR',
+    description: 'The type of the department',
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   @IsEnum(DepartmentType)
