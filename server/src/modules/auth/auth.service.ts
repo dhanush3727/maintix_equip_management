@@ -798,6 +798,19 @@ export class AuthService {
         email: true,
         organizationId: true,
         isEmailVerified: true,
+        isActive: true,
+        roles: {
+          select: {
+            id: true,
+            roleId: true,
+          },
+        },
+        department: {
+          select: {
+            id: true,
+            departmentId: true,
+          },
+        },
       },
     });
 

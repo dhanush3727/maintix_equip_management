@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UploadedFile,
@@ -280,15 +281,32 @@ export class OrganizationController {
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN)
   @Get('department')
-  async getDepartments(@Req() req: AuthenticateRequest) {
+  async getDepartments(
+    @Req() req: AuthenticateRequest,
+    @Query()
+    query: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      sortBy?: string;
+      order?: 'asc' | 'desc';
+    },
+  ) {
     const { organizationId } = req.user;
 
-    const data =
-      await this.organizationService.getDepartmentsService(organizationId);
+    const { data, pagination } =
+      await this.organizationService.getDepartmentsService(organizationId, {
+        page: query.page,
+        limit: query.limit,
+        search: query.search,
+        sortBy: query.sortBy,
+        order: query.order,
+      });
 
     return {
       message: 'Successfully get the departments',
       data,
+      pagination,
     };
   }
   //#endregion

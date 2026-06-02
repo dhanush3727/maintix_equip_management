@@ -24,6 +24,11 @@ import { UpdateDepartmentDto } from './dto/update-dep.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import * as crypto from 'crypto';
 import { hashVerificationToken } from '../../common/utils/generate-token.util';
+import {
+  buildPaginationMeta,
+  buildQueryOptions,
+  getPagination,
+} from '../../common/utils/query-builder.util';
 
 @Injectable()
 export class OrganizationService {
@@ -418,19 +423,52 @@ export class OrganizationService {
   //#endregion
 
   //#region Get Departments based on organization
-  async getDepartmentsService(organizationId: number) {
-    const departments = await this.prisma.department.findMany({
-      where: { organizationId },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        code: true,
-      },
+  async getDepartmentsService(
+    organizationId: number,
+    query: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      sortBy?: string;
+      order?: 'asc' | 'desc';
+    },
+  ) {
+    const { page = 1, limit = 10, search, sortBy, order } = query;
+
+    const { skip, take } = getPagination(page, limit);
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters: { organizationId },
+      sortBy,
+      searchFields: ['name', 'code'],
     });
 
-    return departments;
+    const [departments, total] = await Promise.all([
+      this.prisma.department.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          code: true,
+          createdAt: true,
+        },
+      }),
+
+      this.prisma.department.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: departments,
+      pagination,
+    };
   }
   //#endregion
 
