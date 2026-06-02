@@ -54,18 +54,36 @@ export function buildQueryOptions(query: {
 }) {
   const { search, sortBy, order, filters = {}, searchFields = [] } = query;
 
-  // Start with any additional filters provided
-  // e.g., { status: 'active' } can be passed in filters to only return active items
-  const where: PrismaWhere = { ...filters };
+  // Build conditions for WHERE clause
+  const conditions: PrismaWhere[] = [];
+
+  // Add any additional filters provided
+  if (Object.keys(filters).length > 0) {
+    conditions.push(filters);
+  }
 
   // Add search condition (OR across fields)
   if (search && searchFields.length > 0) {
-    where['OR'] = searchFields.map((field) => ({
-      [field]: {
-        contains: search,
-        mode: 'insensitive', // case-insensitive search
-      },
-    }));
+    conditions.push({
+      OR: searchFields.map((field) => ({
+        [field]: {
+          contains: search,
+          mode: 'insensitive', // case-insensitive search
+        },
+      })),
+    });
+  }
+
+  // Combine conditions into a single WHERE clause
+  let where: PrismaWhere = {};
+
+  // If there is only one condition, use it directly. If there are multiple conditions, combine them with AND.
+  if (conditions.length === 1) {
+    where = conditions[0];
+  } else if (conditions.length > 1) {
+    where = {
+      AND: conditions,
+    };
   }
 
   // Add sorting

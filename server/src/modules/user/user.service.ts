@@ -1,35 +1,125 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import {
+  buildPaginationMeta,
+  buildQueryOptions,
+  getPagination,
+} from '../../common/utils/query-builder.util';
+import { Prisma } from '@prisma/client';
+import { UserQueryDto } from './dto/user-query.dto';
+import { UpdateMeDto } from './dto/update-me.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
   //#region Get all users
-  async getAllUsersService() {
-    const users = await this.prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        organizationId: true,
-        roles: {
-          select: {
-            id: true,
-            roleId: true,
+  async getAllUsersService(query: UserQueryDto) {
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      sortBy,
+      order,
+      role,
+      department,
+    } = query;
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.UserWhereInput = {};
+
+    if (role) {
+      filters.roles = {
+        some: {
+          role: {
+            name: role,
           },
         },
+      };
+    }
+
+    if (department) {
+      filters.department = {
         department: {
-          select: {
-            id: true,
-            departmentId: true,
-          },
+          name: department,
         },
-        isActive: true,
-      },
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'email'],
+      sortBy,
     });
 
-    return users;
+    const [users, total] = await Promise.all([
+      this.prisma.user.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          organizationId: true,
+          roles: {
+            select: {
+              role: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          department: {
+            select: {
+              department: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          isActive: true,
+        },
+      }),
+
+      this.prisma.user.count({ where }),
+    ]);
+
+    const formattedUser = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      organizationId: user.organizationId,
+      isActive: user.isActive,
+      roles: user.roles.map((role) => ({
+        id: role.role.id,
+        name: role.role.name,
+      })),
+      department: {
+        id: user.department?.department.id,
+        name: user.department?.department.name,
+      },
+    }));
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: formattedUser,
+      pagination,
+    };
   }
   //#endregion
 
@@ -63,6 +153,44 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     return user;
+  }
+  //#endregion
+
+  //#region Update current user
+  async updateCurrentUserService(dto: UpdateMeDto, userId: number) {
+    const { name, currentPassword, newPassword } = dto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, passwordHash: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    const data: Prisma.UserUpdateInput = {};
+
+    if (name) data.name = name;
+
+    if (currentPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
+      if (!isMatch) {
+        throw new BadRequestException('Current password is invalid');
+      }
+    }
+
+    if (currentPassword && !newPassword) {
+      throw new BadRequestException('Enter new password');
+    }
+
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      data.passwordHash = hashedPassword;
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data,
+    });
   }
   //#endregion
 }

@@ -29,6 +29,8 @@ import {
   buildQueryOptions,
   getPagination,
 } from '../../common/utils/query-builder.util';
+import { LocationQueryDto } from './dto/location-query.dto';
+import { DepartmentQueryDto } from './dto/department-query.dto';
 
 @Injectable()
 export class OrganizationService {
@@ -275,21 +277,54 @@ export class OrganizationService {
   //#endregion
 
   //#region Get locations based on organization
-  async getLocationsService(organizationId: number) {
-    const locations = await this.prisma.location.findMany({
-      where: { organizationId },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        address: true,
-      },
+  async getLocationsService(organizationId: number, query: LocationQueryDto) {
+    const { page = 1, limit = 10, search, sortBy, order, type } = query;
+
+    const allowedSortBy = ['name'];
+
+    if (sortBy && !allowedSortBy.includes(sortBy)) {
+      throw new BadRequestException('Invalid sortby');
+    }
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.LocationWhereInput = { organizationId };
+
+    if (type) {
+      filters.type = type;
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'address'],
+      sortBy,
     });
 
-    return locations;
+    const [locations, total] = await Promise.all([
+      this.prisma.location.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          address: true,
+        },
+      }),
+
+      this.prisma.location.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: locations,
+      pagination,
+    };
   }
   //#endregion
 
@@ -425,24 +460,30 @@ export class OrganizationService {
   //#region Get Departments based on organization
   async getDepartmentsService(
     organizationId: number,
-    query: {
-      page?: number;
-      limit?: number;
-      search?: string;
-      sortBy?: string;
-      order?: 'asc' | 'desc';
-    },
+    query: DepartmentQueryDto,
   ) {
-    const { page = 1, limit = 10, search, sortBy, order } = query;
+    const { page = 1, limit = 10, search, sortBy, order, type } = query;
+
+    const allowedSortBy = ['name', 'code'];
+
+    if (sortBy && !allowedSortBy.includes(sortBy)) {
+      throw new BadRequestException('Invalide sortby');
+    }
 
     const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.DepartmentWhereInput = { organizationId };
+
+    if (type) {
+      filters.type = type;
+    }
 
     const { where, orderBy } = buildQueryOptions({
       search,
       order,
-      filters: { organizationId },
-      sortBy,
+      filters,
       searchFields: ['name', 'code'],
+      sortBy,
     });
 
     const [departments, total] = await Promise.all([

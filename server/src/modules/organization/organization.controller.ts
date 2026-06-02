@@ -39,6 +39,8 @@ import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { LocationQueryDto } from './dto/location-query.dto';
+import { DepartmentQueryDto } from './dto/department-query.dto';
 
 @ApiTags('Organization') // Swagger tag for grouping endpoints
 @ApiBearerAuth() // Indicates that the endpoints require authentication
@@ -174,15 +176,19 @@ export class OrganizationController {
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN)
   @Get('location')
-  async getLocations(@Req() req: AuthenticateRequest) {
+  async getLocations(
+    @Req() req: AuthenticateRequest,
+    @Query() query: LocationQueryDto,
+  ) {
     const { organizationId } = req.user;
 
-    const locations =
-      await this.organizationService.getLocationsService(organizationId);
+    const { data, pagination } =
+      await this.organizationService.getLocationsService(organizationId, query);
 
     return {
       message: 'Fetched locations',
-      data: locations,
+      data,
+      pagination,
     };
   }
   //#endregion
@@ -284,24 +290,15 @@ export class OrganizationController {
   async getDepartments(
     @Req() req: AuthenticateRequest,
     @Query()
-    query: {
-      page?: number;
-      limit?: number;
-      search?: string;
-      sortBy?: string;
-      order?: 'asc' | 'desc';
-    },
+    query: DepartmentQueryDto,
   ) {
     const { organizationId } = req.user;
 
     const { data, pagination } =
-      await this.organizationService.getDepartmentsService(organizationId, {
-        page: query.page,
-        limit: query.limit,
-        search: query.search,
-        sortBy: query.sortBy,
-        order: query.order,
-      });
+      await this.organizationService.getDepartmentsService(
+        organizationId,
+        query,
+      );
 
     return {
       message: 'Successfully get the departments',

@@ -3,11 +3,13 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserQueryDto } from './dto/user-query.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -18,11 +20,13 @@ export class UserController {
   //#region Get all users
   @UseGuards(AccessTokenGuard)
   @Get()
-  async getAllUser() {
-    const data = await this.userService.getAllUsersService();
+  async getAllUser(@Query() query: UserQueryDto) {
+    const { data, pagination } =
+      await this.userService.getAllUsersService(query);
 
     return {
       data,
+      pagination,
     };
   }
 
