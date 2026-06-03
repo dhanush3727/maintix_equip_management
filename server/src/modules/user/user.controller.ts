@@ -19,6 +19,9 @@ import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RoleType } from '@prisma/client';
+import { UpdateEmailDto } from './dto/update-email.dto';
+import { UpdateRolesDto } from './dto/update-role.dto';
+import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -109,6 +112,63 @@ export class UserController {
 
     return {
       data,
+    };
+  }
+  //#endregion
+
+  //#region update user email by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Patch('orgs/user/:id/email')
+  async updateUserEmail(
+    @Req() req: AuthenticateRequest,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateEmailDto,
+  ) {
+    const { organizationId } = req.user;
+
+    await this.userService.updateUserEmailService(dto, id, organizationId);
+
+    return {
+      message: 'User email updated successfully',
+    };
+  }
+  //#endregion
+
+  //#region Update user role
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Patch('orgs/user/:id/roles')
+  async updateUserRole(
+    @Req() req: AuthenticateRequest,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateRolesDto,
+  ) {
+    const { organizationId } = req.user;
+
+    await this.userService.updateUserRolesService(id, organizationId, dto);
+
+    return {
+      message: 'User role updated successfully',
+    };
+  }
+  //#endregion
+
+  //#region Update user department
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN)
+  @Patch('orgs/user/:id/department')
+  async updateUserDepartment(
+    @Req() req: AuthenticateRequest,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateDepartmentDto,
+  ) {
+    const { organizationId } = req.user;
+
+    await this.userService.updateUserDepartment(id, organizationId, dto);
+
+    return {
+      message: 'User department updated successfully',
     };
   }
   //#endregion

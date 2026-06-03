@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -14,7 +15,9 @@ import { Prisma } from '@prisma/client';
 import { UserQueryDto } from './dto/user-query.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 import * as bcrypt from 'bcrypt';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateEmailDto } from './dto/update-email.dto';
+import { UpdateRolesDto } from './dto/update-role.dto';
+import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @Injectable()
 export class UserService {
@@ -371,9 +374,13 @@ export class UserService {
   }
   //#endregion
 
-  //#region Update user by id
-  async updateUserById(dto: UpdateUserDto, id: number, organizationId: number) {
-    const { email, isActive } = dto;
+  //#region Update user email by id
+  async updateUserEmailService(
+    dto: UpdateEmailDto,
+    id: number,
+    organizationId: number,
+  ) {
+    const { email } = dto;
 
     const user = await this.prisma.user.findFirst({
       where: { id, organizationId },
@@ -385,6 +392,118 @@ export class UserService {
     const data: Prisma.UserUpdateInput = {};
 
     if (email) data.email = email;
+
+    const existing = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+
+    if (existing) throw new ConflictException('This email already exist');
+
+    await this.prisma.user.update({
+      where: { id },
+      data,
+    });
+  }
+  //#endregion
+
+  //#region Update user roles by id
+  async updateUserRolesService(
+    id: number,
+    organizationId: number,
+    dto: UpdateRolesDto,
+  ) {
+    const { roleIds } = dto;
+
+    // Check user
+    const user = await this.prisma.user.findFirst({
+      where: { id, organizationId },
+      select: { id: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    // remove duplicates
+    const uniqueRoleIds = [...new Set(roleIds)];
+
+    // validate role exist
+    // if request comes like [1,2,5] but in role only have [1,2,3] so it will return two roles only
+    const roles = await this.prisma.role.findMany({
+      where: {
+        id: { in: uniqueRoleIds }, // in refers to SQL IN operator, it checks the uniqueRoleIds array and finds all roles that have an id matching any of the values in that array
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    // after it return the roles check the roles length and the uniqueRoleIds length are same,
+    // if not then uniqueRoleIds have invalid role id so we throw error
+    if (roles.length !== uniqueRoleIds.length) {
+      throw new BadRequestException('Invalid roles provided');
+    }
+
+    // Replace old roles with new roles
+    // why replace? because if we only add new roles then old roles will still exist and if we only delete old roles then
+    // there will be some time that user will have no role which is not good,
+    // so we do it in transaction to make sure that either both operation success or both operation fail
+    await this.prisma.$transaction(async (tx) => {
+      // Delete old data
+      await tx.userRole.deleteMany({
+        where: {
+          userId: id,
+        },
+      });
+
+      //Create new data
+      await tx.userRole.createMany({
+        data: uniqueRoleIds.map((roleId) => ({
+          userId: id,
+          roleId,
+        })),
+        skipDuplicates: true,
+      });
+    });
+  }
+  //#endregion
+
+  //#region Update user department
+  async updateUserDepartment(
+    id: number,
+    organizationId: number,
+    dto: UpdateDepartmentDto,
+  ) {
+    const { departmentId } = dto;
+
+    // check user
+    const user = await this.prisma.user.findFirst({
+      where: { id, organizationId },
+      select: { id: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    // check valid dep id
+    const department = await this.prisma.department.findFirst({
+      where: { id: departmentId, organizationId },
+      select: { id: true },
+    });
+
+    if (!department) throw new BadRequestException('Invalid department');
+
+    // why upsert? because if we use update then if user have no department assigned then it will throw error but
+    // with upsert if user have no department then it will create new record with user id and department id and if
+    // user already have department then it will update the department id with new one
+    await this.prisma.userDepartment.upsert({
+      where: { userId: id },
+      update: {
+        departmentId,
+      },
+      create: {
+        userId: id,
+        departmentId,
+      },
+    });
   }
   //#endregion
 }
