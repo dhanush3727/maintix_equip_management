@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { Prisma } from '@prisma/client';
 import { UserQueryDto } from './dto/user-query.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -167,19 +169,23 @@ export class UserService {
 
     if (!user) throw new NotFoundException('User not found');
 
+    if (userId !== user.id) {
+      throw new ForbiddenException('You are not allow to update user');
+    }
+
     const data: Prisma.UserUpdateInput = {};
 
     if (name) data.name = name;
 
+    if (currentPassword && !newPassword) {
+      throw new BadRequestException('Enter new password');
+    }
+
     if (currentPassword) {
       const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
       if (!isMatch) {
-        throw new BadRequestException('Current password is invalid');
+        throw new BadRequestException('Current password is wrong');
       }
-    }
-
-    if (currentPassword && !newPassword) {
-      throw new BadRequestException('Enter new password');
     }
 
     if (newPassword) {
@@ -191,6 +197,194 @@ export class UserService {
       where: { id: userId },
       data,
     });
+  }
+  //#endregion
+
+  //#region Get Users based on organizations
+  async getUsersByOrganizationService(
+    organizationId: number,
+    query: UserQueryDto,
+  ) {
+    const {
+      page = 1,
+      limit = 1,
+      search,
+      sortBy,
+      order,
+      role,
+      department,
+    } = query;
+
+    const allowedSortBy = ['name', 'email'];
+
+    if (sortBy && !allowedSortBy.includes(sortBy)) {
+      throw new BadRequestException('Invalid sortBy');
+    }
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.UserWhereInput = { organizationId };
+
+    if (role) {
+      filters.roles = {
+        some: {
+          role: {
+            name: role,
+          },
+        },
+      };
+    }
+
+    if (department) {
+      filters.department = {
+        department: {
+          name: department,
+        },
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'email'],
+      sortBy,
+    });
+
+    const [users, total] = await Promise.all([
+      this.prisma.user.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          organizationId: true,
+          roles: {
+            select: {
+              role: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          department: {
+            select: {
+              department: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          isActive: true,
+        },
+      }),
+
+      this.prisma.user.count({ where }),
+    ]);
+
+    const formattedUsers = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      organizationId: user.organizationId,
+      isActive: user.isActive,
+      roles: user.roles.map((role) => ({
+        id: role.role.id,
+        name: role.role.name,
+      })),
+      department: {
+        id: user.department?.department.id,
+        name: user.department?.department.name,
+      },
+    }));
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: formattedUsers,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get user by id based on organization
+  async getUserByIdOrgsService(organizationId: number, id: number) {
+    const user = await this.prisma.user.findFirst({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        organizationId: true,
+        roles: {
+          select: {
+            role: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        department: {
+          select: {
+            department: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        isActive: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User Not found');
+
+    const formattedUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      organizationId: user.organizationId,
+      isActive: user.isActive,
+      roles: user.roles.map((role) => ({
+        id: role.role.id,
+        name: role.role.name,
+      })),
+      department: {
+        id: user.department?.department.id,
+        name: user.department?.department.name,
+      },
+    };
+
+    return {
+      data: formattedUser,
+    };
+  }
+  //#endregion
+
+  //#region Update user by id
+  async updateUserById(dto: UpdateUserDto, id: number, organizationId: number) {
+    const { email, isActive } = dto;
+
+    const user = await this.prisma.user.findFirst({
+      where: { id, organizationId },
+      select: { id: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    const data: Prisma.UserUpdateInput = {};
+
+    if (email) data.email = email;
   }
   //#endregion
 }

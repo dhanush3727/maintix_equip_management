@@ -33,10 +33,12 @@ export class UpdateMeDto {
   @ApiProperty({ example: 'Password@123', required: false })
   @IsOptional()
   @MinLength(8)
-  @Matches(/[A-Z]/, { message: 'Must contain at least one uppercase letter' })
-  @Matches(/\d/, { message: 'Must contain at least one number' })
+  @Matches(/[A-Z]/, {
+    message: 'New password must contain at least one uppercase letter',
+  })
+  @Matches(/\d/, { message: 'New password must contain at least one number' })
   @Matches(/[@$!%*?&]/, {
-    message: 'Must contain at least one special character',
+    message: 'New password must contain at least one special character',
   })
   @IsNotEmpty()
   newPassword?: string;
