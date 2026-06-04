@@ -5,7 +5,8 @@ import request from 'supertest';
 import { ApiResponse, LoginResponse } from '../../test.types';
 import { User } from '@prisma/client';
 
-describe('Update me E2E', () => {
+//#region Deactivate user
+describe('Deactivate User E2E', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -16,11 +17,11 @@ describe('Update me E2E', () => {
     await app.close();
   });
 
-  it('should update name', async () => {
+  it('should deactivate user', async () => {
     const server = app.getHttpServer() as Parameters<typeof request>[0];
 
     const payload = {
-      email: 'dhanush3727@gmail.com',
+      email: 'dhanush7825@gmail.com',
       password: 'Dhanush@3727',
     };
 
@@ -28,31 +29,24 @@ describe('Update me E2E', () => {
       .post('/api/auth/login')
       .send(payload)
       .expect(200);
-
     const loginData = loginRes.body as LoginResponse;
     const accessToken = loginData.data.accessToken;
 
-    const updatePayload = {
-      name: 'Dhanush Kumar',
-    };
-
     const res = await request(server)
-      .patch('/api/users/me')
+      .patch('/api/users/orgs/user/4/deactivate')
       .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
       .expect(200);
 
     const body = res.body as ApiResponse<User>;
-
     expect(body.success).toBe(true);
-    expect(body.message).toBe('User updated successfully');
+    expect(body.message).toBe('User deactivated successfully');
   });
 
-  it('should fail for name empty', async () => {
+  it('should fail for user not found', async () => {
     const server = app.getHttpServer() as Parameters<typeof request>[0];
 
     const payload = {
-      email: 'dhanush3727@gmail.com',
+      email: 'dhanush7825@gmail.com',
       password: 'Dhanush@3727',
     };
 
@@ -60,31 +54,49 @@ describe('Update me E2E', () => {
       .post('/api/auth/login')
       .send(payload)
       .expect(200);
-
     const loginData = loginRes.body as LoginResponse;
     const accessToken = loginData.data.accessToken;
 
-    const updatePayload = {
-      name: '',
+    const res = await request(server)
+      .patch('/api/users/orgs/user/5/deactivate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
+
+    const body = res.body as ApiResponse<User>;
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('User not found');
+  });
+
+  it('should fail for user already deactivated', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
     };
 
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
     const res = await request(server)
-      .patch('/api/users/me')
+      .patch('/api/users/orgs/user/4/deactivate')
       .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
       .expect(400);
 
     const body = res.body as ApiResponse<User>;
-
     expect(body.success).toBe(false);
-    expect(body.message).toBe('name should not be empty');
+    expect(body.message).toBe('User already deactivated');
   });
 
-  it('should update password', async () => {
+  it('should fail for user deactivate yourself', async () => {
     const server = app.getHttpServer() as Parameters<typeof request>[0];
 
     const payload = {
-      email: 'dhanush3727@gmail.com',
+      email: 'dhanush7825@gmail.com',
       password: 'Dhanush@3727',
     };
 
@@ -92,154 +104,106 @@ describe('Update me E2E', () => {
       .post('/api/auth/login')
       .send(payload)
       .expect(200);
-
     const loginData = loginRes.body as LoginResponse;
     const accessToken = loginData.data.accessToken;
 
-    const updatePayload = {
-      currentPassword: 'Dhanush@3727',
-      newPassword: 'Dhanush@3727',
-    };
-
     const res = await request(server)
-      .patch('/api/users/me/password')
+      .patch('/api/users/orgs/user/3/deactivate')
       .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
-      .expect(200);
+      .expect(403);
 
     const body = res.body as ApiResponse<User>;
-
-    expect(body.success).toBe(true);
-    expect(body.message).toBe('User password updated successfully');
-  });
-
-  it('should fail for current password empty', async () => {
-    const server = app.getHttpServer() as Parameters<typeof request>[0];
-
-    const payload = {
-      email: 'dhanush3727@gmail.com',
-      password: 'Dhanush@3727',
-    };
-
-    const loginRes = await request(server)
-      .post('/api/auth/login')
-      .send(payload)
-      .expect(200);
-
-    const loginData = loginRes.body as LoginResponse;
-    const accessToken = loginData.data.accessToken;
-
-    const updatePayload = {
-      currentPassword: '',
-    };
-
-    const res = await request(server)
-      .patch('/api/users/me/password')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
-      .expect(400);
-
-    const body = res.body as ApiResponse<User>;
-
     expect(body.success).toBe(false);
-    expect(body.message).toBe('currentPassword should not be empty');
-  });
-
-  it('should fail for new password is not there', async () => {
-    const server = app.getHttpServer() as Parameters<typeof request>[0];
-
-    const payload = {
-      email: 'dhanush3727@gmail.com',
-      password: 'Dhanush@3727',
-    };
-
-    const loginRes = await request(server)
-      .post('/api/auth/login')
-      .send(payload)
-      .expect(200);
-
-    const loginData = loginRes.body as LoginResponse;
-    const accessToken = loginData.data.accessToken;
-
-    const updatePayload = {
-      currentPassword: 'Dhansus',
-    };
-
-    const res = await request(server)
-      .patch('/api/users/me/password')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
-      .expect(400);
-
-    const body = res.body as ApiResponse<User>;
-
-    expect(body.success).toBe(false);
-    expect(body.message).toBe('Enter new password');
-  });
-
-  it('should fail for new password is empty', async () => {
-    const server = app.getHttpServer() as Parameters<typeof request>[0];
-
-    const payload = {
-      email: 'dhanush3727@gmail.com',
-      password: 'Dhanush@3727',
-    };
-
-    const loginRes = await request(server)
-      .post('/api/auth/login')
-      .send(payload)
-      .expect(200);
-
-    const loginData = loginRes.body as LoginResponse;
-    const accessToken = loginData.data.accessToken;
-
-    const updatePayload = {
-      currentPassword: 'Dhansus',
-      newPassword: '',
-    };
-
-    const res = await request(server)
-      .patch('/api/users/me/password')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
-      .expect(400);
-
-    const body = res.body as ApiResponse<User>;
-
-    expect(body.success).toBe(false);
-    expect(body.message).toBe('newPassword should not be empty');
-  });
-
-  it('should fail for current password is wrong', async () => {
-    const server = app.getHttpServer() as Parameters<typeof request>[0];
-
-    const payload = {
-      email: 'dhanush3727@gmail.com',
-      password: 'Dhanush@3727',
-    };
-
-    const loginRes = await request(server)
-      .post('/api/auth/login')
-      .send(payload)
-      .expect(200);
-
-    const loginData = loginRes.body as LoginResponse;
-    const accessToken = loginData.data.accessToken;
-
-    const updatePayload = {
-      currentPassword: 'Dhansus',
-      newPassword: 'Dhanush@3727',
-    };
-
-    const res = await request(server)
-      .patch('/api/users/me/password')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send(updatePayload)
-      .expect(400);
-
-    const body = res.body as ApiResponse<User>;
-
-    expect(body.success).toBe(false);
-    expect(body.message).toBe('Current password is wrong');
+    expect(body.message).toBe('You cannot deactivate yourself');
   });
 });
+//#endregion
+
+//#region Activate user
+describe('Deactivate User E2E', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    app = await createApp();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('should deactivate user', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/users/orgs/user/4/activate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+
+    const body = res.body as ApiResponse<User>;
+    expect(body.success).toBe(true);
+    expect(body.message).toBe('User activated successfully');
+  });
+
+  it('should fail for user not found', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/users/orgs/user/5/activate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
+
+    const body = res.body as ApiResponse<User>;
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('User not found');
+  });
+
+  it('should fail for user already deactivated', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/users/orgs/user/4/activate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(400);
+
+    const body = res.body as ApiResponse<User>;
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('User already active');
+  });
+});
+//#endregion

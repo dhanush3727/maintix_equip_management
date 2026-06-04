@@ -263,6 +263,10 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
+    if (!user.isActive) {
+      throw new ForbiddenException('Your account is deactivated');
+    }
+
     if (!user.organization.isActive) {
       throw new ForbiddenException('Your organization is deactivated');
     }

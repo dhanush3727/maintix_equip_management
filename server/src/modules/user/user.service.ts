@@ -19,10 +19,16 @@ import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdateRolesDto } from './dto/update-role.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { AuditService } from '../../common/audit/audit.service';
+import { AuditAction, AuditModule } from '../../common/audit/audit.types';
+import { MetaType, RequestUser } from '../../common/types/auth.types';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private audit: AuditService,
+  ) {}
 
   //#region Get all users
   async getAllUsersService(query: UserQueryDto) {
@@ -163,7 +169,12 @@ export class UserService {
   //#endregion
 
   //#region Update current user
-  async updateCurrentUserService(dto: UpdateMeDto, userId: number) {
+  async updateCurrentUserService(
+    dto: UpdateMeDto,
+    userId: number,
+    organizationId: number,
+    meta?: MetaType,
+  ) {
     const { name } = dto;
 
     const user = await this.prisma.user.findUnique({
@@ -185,11 +196,26 @@ export class UserService {
       where: { id: userId },
       data,
     });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_USER_NAME,
+      module: AuditModule.USER,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 
   //#region Update current user password
-  async updateCurrentUserPassword(dto: UpdatePasswordDto, userId: number) {
+  async updateCurrentUserPassword(
+    dto: UpdatePasswordDto,
+    userId: number,
+    jti: string,
+    organizationId: number,
+    meta?: MetaType,
+  ) {
     const { currentPassword, newPassword } = dto;
 
     const user = await this.prisma.user.findUnique({
@@ -211,8 +237,44 @@ export class UserService {
 
     if (currentPassword) {
       const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
-      if (!isMatch) throw new BadRequestException('Current password not match');
+      if (!isMatch) throw new BadRequestException('Current password is wrong');
     }
+
+    if (newPassword) {
+      const passwordHash = await bcrypt.hash(newPassword, 10);
+
+      data.passwordHash = passwordHash;
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      // update the user password
+      await tx.user.update({
+        where: { id: userId },
+        data,
+      });
+
+      // deactivate all sessions for that user except current session
+      await tx.userSession.updateMany({
+        where: {
+          userId,
+          isActive: true,
+          NOT: {
+            jti,
+          },
+        },
+        data: { isActive: false },
+      });
+    });
+
+    // Audit log
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_USER_PASSWORD,
+      module: AuditModule.USER,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 
@@ -392,6 +454,8 @@ export class UserService {
     dto: UpdateEmailDto,
     id: number,
     organizationId: number,
+    userId: number,
+    meta?: MetaType,
   ) {
     const { email } = dto;
 
@@ -417,6 +481,15 @@ export class UserService {
       where: { id },
       data,
     });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_USER_EMAIL,
+      module: AuditModule.USER,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 
@@ -425,6 +498,8 @@ export class UserService {
     id: number,
     organizationId: number,
     dto: UpdateRolesDto,
+    userId: number,
+    meta?: MetaType,
   ) {
     const { roleIds } = dto;
 
@@ -477,6 +552,15 @@ export class UserService {
         skipDuplicates: true,
       });
     });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_USER_ROLE,
+      module: AuditModule.USER,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 
@@ -485,6 +569,8 @@ export class UserService {
     id: number,
     organizationId: number,
     dto: UpdateDepartmentDto,
+    userId: number,
+    meta?: MetaType,
   ) {
     const { departmentId } = dto;
 
@@ -517,12 +603,91 @@ export class UserService {
         departmentId,
       },
     });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_USER_DEPARTMENT,
+      module: AuditModule.USER,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 
   //#region Deactivate user
-  // async deactivateUserService(id:number, organizationId) {
-  //   // Check user
-  // }
+  async deactivateUserService(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    // Check user
+    const user = await this.prisma.user.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    if (!user.isActive)
+      throw new BadRequestException('User already deactivated');
+
+    if (id === userId) {
+      throw new ForbiddenException('You cannot deactivate yourself');
+    }
+
+    // Deactivate user and user session
+    await this.prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id, isActive: true },
+        data: { isActive: false },
+      });
+
+      await tx.userSession.updateMany({
+        where: { userId: id, isActive: true },
+        data: { isActive: false },
+      });
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVATE_USER,
+      module: AuditModule.USER,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Activate user
+  async activateUserService(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const user = await this.prisma.user.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    if (user.isActive) {
+      throw new BadRequestException('User already active');
+    }
+
+    // Activate user
+    await this.prisma.user.update({
+      where: { id, isActive: false },
+      data: { isActive: true },
+    });
+
+    //audit logs
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.ACTIVATE_USER,
+      module: AuditModule.USER,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
   //#endregion
 }
