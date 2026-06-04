@@ -18,6 +18,7 @@ import * as bcrypt from 'bcrypt';
 import { UpdateEmailDto } from './dto/update-email.dto';
 import { UpdateRolesDto } from './dto/update-role.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -163,7 +164,33 @@ export class UserService {
 
   //#region Update current user
   async updateCurrentUserService(dto: UpdateMeDto, userId: number) {
-    const { name, currentPassword, newPassword } = dto;
+    const { name } = dto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    if (userId !== user.id) {
+      throw new ForbiddenException('You are not allow to update user');
+    }
+
+    const data: Prisma.UserUpdateInput = {};
+
+    if (name) data.name = name;
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data,
+    });
+  }
+  //#endregion
+
+  //#region Update current user password
+  async updateCurrentUserPassword(dto: UpdatePasswordDto, userId: number) {
+    const { currentPassword, newPassword } = dto;
 
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -178,28 +205,14 @@ export class UserService {
 
     const data: Prisma.UserUpdateInput = {};
 
-    if (name) data.name = name;
-
     if (currentPassword && !newPassword) {
       throw new BadRequestException('Enter new password');
     }
 
     if (currentPassword) {
       const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
-      if (!isMatch) {
-        throw new BadRequestException('Current password is wrong');
-      }
+      if (!isMatch) throw new BadRequestException('Current password not match');
     }
-
-    if (newPassword) {
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      data.passwordHash = hashedPassword;
-    }
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data,
-    });
   }
   //#endregion
 
@@ -505,5 +518,11 @@ export class UserService {
       },
     });
   }
+  //#endregion
+
+  //#region Deactivate user
+  // async deactivateUserService(id:number, organizationId) {
+  //   // Check user
+  // }
   //#endregion
 }
