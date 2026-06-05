@@ -66,6 +66,8 @@ enum EquipmentStatus {
   ACTIVE
   INACTIVE
   UNDER_MAINTENANCE
+  BREAKDOWN
+  DECOMMISSIONED
 }
 
 enum FrequencyType {
@@ -287,6 +289,8 @@ model Location {
   type              LocationType?
   address           String
 
+  equipment         Equipment[]
+
   createdAt         DateTime      @default(now())
   
   organization      Organization  @relation(fields: [organizationId], references: [id])
@@ -302,6 +306,7 @@ model Department {
 
   users             UserDepartment[]
   invitations       Invitation[]
+  equipment         Equipment[]
   
   createdAt         DateTime        @default(now())
   organization      Organization    @relation(fields: [organizationId], references: [id])
@@ -326,7 +331,6 @@ model UserDepartment {
 model EquipmentType {
   id                    Int             @id @default(autoincrement())
   organizationId        Int
-  organization          Organization    @relation(fields: [organizationId], references: [id])
 
   name                  String
   code                  String?      
@@ -340,7 +344,10 @@ model EquipmentType {
   createdAt             DateTime        @default(now())
   updatedAt             DateTime        @updatedAt
 
+  organization          Organization    @relation(fields: [organizationId], references: [id])
+
   @@unique([organizationId, name]) // Inside one organization type name is unique
+  @@unique([organizationId, code])
 }
 
 model Equipment {
@@ -349,11 +356,11 @@ model Equipment {
   equipmentTypeId     Int
 
   name                String
-  equipmentId         String
+  code                String
   serialNumber        String?
 
-  location            String?
-  department          String?
+  locationId          Int?
+  departmentId        Int?
 
   status              EquipmentStatus       @default(ACTIVE)
 
@@ -362,8 +369,6 @@ model Equipment {
 
   manufacturer        String?
   model               String?
-
-  isActive            Boolean               @default(true)
 
   pmSchedules         PMSchedule[]
   pmTasks             PMTask[]
@@ -374,10 +379,12 @@ model Equipment {
 
   organization        Organization          @relation(fields: [organizationId], references: [id])
   equipmentType       EquipmentType         @relation(fields: [equipmentTypeId], references: [id])
+  department          Department?           @relation(fields: [departmentId], references: [id])
+  location            Location?             @relation(fields: [locationId], references: [id])
 
   @@index([organizationId])
   @@index([equipmentTypeId])
-  @@unique([organizationId, equipmentId])
+  @@unique([organizationId, code])
 }
 
 // ==============================

@@ -15,6 +15,7 @@ import { UpdateLastActiveInterceptor } from './common/interceptors/updateLastAct
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { UserModule } from './modules/user/user.module';
+import { EquipmentModule } from './modules/equipment/equipment.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { UserModule } from './modules/user/user.module';
     AuditModule,
     OrganizationModule,
     UserModule,
+    EquipmentModule,
   ],
   controllers: [AppController],
   providers: [
