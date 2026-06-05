@@ -1,9 +1,13 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -19,6 +23,7 @@ import type {
 } from '../../common/types/auth.types';
 import { CreateEquipTypeDto } from './dto/create-equipType.dto';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
+import { QueryDto } from '../../common/dto/query.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -40,4 +45,58 @@ export class EquipmentController {
       message: 'Equipment type created successfully',
     };
   }
+  //#endregion
+
+  //#region Get equipment types
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Get('equipment-type')
+  async getEquipmentsType(
+    @Req() req: AuthenticateRequest,
+    @Query() query: QueryDto,
+  ) {
+    const { data, pagination } = await this.equipmentService.getEquipmentTypes(
+      req.user,
+      query,
+    );
+
+    return {
+      data,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region get equipment type dropdown
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('equipment-type/dropdown')
+  async getEquipmentTypeDropdown(@Req() req: AuthenticateRequest) {
+    const equipmentTypes = await this.equipmentService.getEquipmentTypeDropdown(
+      req.user,
+    );
+
+    return {
+      data: equipmentTypes,
+    };
+  }
+  //#endregion
+
+  //#region Get equipment type by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Get('equipment-type/:id')
+  async getEquipmentType(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const equipmentType = await this.equipmentService.getEquipmentType(
+      id,
+      req.user,
+    );
+
+    return {
+      data: equipmentType,
+    };
+  }
+  //#endregion
 }
