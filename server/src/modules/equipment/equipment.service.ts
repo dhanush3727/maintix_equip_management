@@ -18,6 +18,7 @@ import {
   getPagination,
 } from '../../common/utils/query-builder.util';
 import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
+import { CreateEquipmentDto } from './dto/create-equipment.dto';
 
 @Injectable()
 export class EquipmentService {
@@ -52,6 +53,7 @@ export class EquipmentService {
       ) {
         throw new ConflictException('Equipment Type already exist');
       }
+      throw err;
     }
 
     await this.audit.logs({
@@ -213,6 +215,7 @@ export class EquipmentService {
       ) {
         throw new ConflictException('Equipment type already exist');
       }
+      throw err;
     }
 
     await this.audit.logs({
@@ -296,6 +299,93 @@ export class EquipmentService {
       organizationId,
       userId,
       action: AuditAction.ACTIVATE_EQUIPMENT_TYPE,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Create equipment
+  async createEquipmentService(
+    req: RequestUser,
+    dto: CreateEquipmentDto,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+
+    const {
+      name,
+      code,
+      serialNumber,
+      equipmentTypeId,
+      locationId,
+      departmentId,
+      installedDate,
+      warrantyExpiry,
+      manufacturer,
+      model,
+    } = dto;
+
+    // Check equipment type
+    const equipmentType = await this.prisma.equipmentType.findFirst({
+      where: { id: equipmentTypeId, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!equipmentType) throw new NotFoundException('Equipment type not found');
+
+    if (!equipmentType.isActive) {
+      throw new BadRequestException('Equipment type is deactivated');
+    }
+
+    // Check location
+    const location = await this.prisma.location.findFirst({
+      where: { id: locationId, organizationId },
+      select: { id: true },
+    });
+
+    if (!location) throw new NotFoundException('Location not found');
+
+    // Check department
+    const department = await this.prisma.department.findFirst({
+      where: { id: departmentId, organizationId },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!department) throw new NotFoundException('Department not found');
+
+    try {
+      await this.prisma.equipment.create({
+        data: {
+          name,
+          code,
+          serialNumber,
+          equipmentTypeId,
+          organizationId,
+          locationId,
+          departmentId,
+          installedDate,
+          warrantyExpiry,
+          manufacturer,
+          model,
+        },
+      });
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new ConflictException('Equipment code already exist');
+      }
+    }
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.CREATE_EQUIPMENT,
       module: AuditModule.EQUIPMENT,
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,

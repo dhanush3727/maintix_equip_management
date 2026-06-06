@@ -26,6 +26,7 @@ import { CreateEquipTypeDto } from './dto/create-equipType.dto';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { QueryDto } from '../../common/dto/query.dto';
 import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
+import { CreateEquipmentDto } from './dto/create-equipment.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -166,6 +167,22 @@ export class EquipmentController {
 
     return {
       message: 'Equipment type activated',
+    };
+  }
+  //#endregion
+
+  //#region Create Equipment
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Post()
+  async createEquipment(
+    @Req() req: AuthenticateRequest,
+    @Body() dto: CreateEquipmentDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.createEquipmentService(req.user, dto, meta);
+
+    return {
+      message: 'Equipment created successfully',
     };
   }
   //#endregion
