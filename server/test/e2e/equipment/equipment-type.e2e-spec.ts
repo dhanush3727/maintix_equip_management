@@ -357,3 +357,443 @@ describe('Get equipment by id', () => {
   });
 });
 //#endregion
+
+//#region Get equipments based on type
+describe('Get equipments by type E2E', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    app = await createApp();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('should get equipments by type', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .get('/api/equipment/equipment-type/1/equipments')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(true);
+    expect(body.message).toBe('Success');
+  });
+});
+//#endregion
+
+//#region Update equipment types
+describe('Update equipment type E2E', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    app = await createApp();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('should update equipment type', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {
+      name: '  mechnical  ',
+      code: ' mech02  ',
+    };
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/1')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(200);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(true);
+    expect(body.message).toBe('Equipment type updated successfully');
+  });
+
+  it('should fail for invalid name', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {
+      name: '',
+    };
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/1')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(400);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('name should not be empty');
+  });
+
+  it('should fail for invalid code', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {
+      code: '',
+    };
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/1')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(400);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('code should not be empty');
+  });
+
+  it('should fail for invalid description', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {
+      description: '',
+    };
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/1')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(400);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('description should not be empty');
+  });
+
+  it('should fail for not found', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {
+      description: 'new des',
+    };
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/5')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(404);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Equipment type not found');
+  });
+
+  it('should fail for invalid fields', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {};
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/1')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(400);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('No valid fields provided');
+  });
+
+  it('should fail for already exists', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const updatePayload = {
+      name: 'Civil',
+    };
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/1')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatePayload)
+      .expect(409);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Equipment type already exist');
+  });
+});
+//#endregion
+
+//#region Deactivate equipment type
+describe('Deactivate equipment type E2E', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    app = await createApp();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('should deactivate equipment type', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/6/deactivate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(true);
+    expect(body.message).toBe('Equipment type deactivated');
+  });
+
+  it('should fail for not found', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/10/deactivate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Equipment type not found');
+  });
+
+  it('should fail already deactivated', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/6/deactivate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(400);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Equipment type already deactivated');
+  });
+});
+//#endregion
+
+//#region Activate equipment type
+describe('Activate equipment type E2E', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    app = await createApp();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('should activate equipment type', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/6/activate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(true);
+    expect(body.message).toBe('Equipment type activated');
+  });
+
+  it('should fail for not found', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/10/activate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Equipment type not found');
+  });
+
+  it('should fail already deactivated', async () => {
+    const server = app.getHttpServer() as Parameters<typeof request>[0];
+
+    const payload = {
+      email: 'dhanush7825@gmail.com',
+      password: 'Dhanush@3727',
+    };
+
+    const loginRes = await request(server)
+      .post('/api/auth/login')
+      .send(payload)
+      .expect(200);
+    const loginData = loginRes.body as LoginResponse;
+    const accessToken = loginData.data.accessToken;
+
+    const res = await request(server)
+      .patch('/api/equipment/equipment-type/6/activate')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(400);
+    const body = res.body as ApiResponse<EquipmentType>;
+
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Equipment type already in active');
+  });
+});
+//#endregion

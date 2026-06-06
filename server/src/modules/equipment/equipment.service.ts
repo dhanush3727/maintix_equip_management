@@ -1,12 +1,14 @@
 import {
   BadRequestException,
+  ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateEquipTypeDto } from './dto/create-equipType.dto';
 import { MetaType, RequestUser } from '../../common/types/auth.types';
-import { Prisma } from '@prisma/client';
+import { EquipmentStatus, Prisma } from '@prisma/client';
 import { AuditService } from '../../common/audit/audit.service';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
 import { QueryDto } from '../../common/dto/query.dto';
@@ -15,6 +17,7 @@ import {
   buildQueryOptions,
   getPagination,
 } from '../../common/utils/query-builder.util';
+import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
 
 @Injectable()
 export class EquipmentService {
@@ -47,7 +50,7 @@ export class EquipmentService {
         err instanceof Prisma.PrismaClientKnownRequestError &&
         err.code === 'P2002'
       ) {
-        throw new BadRequestException('Equipment Type already exist');
+        throw new ConflictException('Equipment Type already exist');
       }
     }
 
@@ -97,6 +100,7 @@ export class EquipmentService {
           name: true,
           code: true,
           description: true,
+          isActive: true,
           organizationId: true,
         },
       }),
@@ -118,7 +122,7 @@ export class EquipmentService {
     const { organizationId } = req;
 
     const equipmentTypes = await this.prisma.equipmentType.findMany({
-      where: { organizationId },
+      where: { organizationId, isActive: true },
       select: { id: true, name: true, code: true },
     });
 
@@ -140,6 +144,162 @@ export class EquipmentService {
     }
 
     return equipmentType;
+  }
+  //#endregion
+
+  //#region Get equipments based on type
+  async getEquipmentsByType(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    const equipments = await this.prisma.equipmentType.findMany({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        name: true,
+        equipments: {
+          select: {
+            id: true,
+            name: true,
+            status: true,
+          },
+        },
+      },
+    });
+
+    return equipments;
+  }
+  //#endregion
+
+  //#region update equipment type
+  async updateEquipmentType(
+    id: number,
+    req: RequestUser,
+    dto: UpdateEquipTypeDto,
+    meta?: MetaType,
+  ) {
+    const { name, code, description } = dto;
+
+    const { organizationId, userId } = req;
+
+    const equipType = await this.prisma.equipmentType.findFirst({
+      where: { id, organizationId, isActive: true },
+      select: { id: true, isActive: true },
+    });
+
+    if (!equipType) throw new NotFoundException('Equipment type not found');
+
+    if (!equipType.isActive)
+      throw new ForbiddenException('The equipment type is deactivate');
+
+    const data: Prisma.EquipmentTypeUpdateInput = {};
+
+    if (name) data.name = name;
+    if (code) data.code = code;
+    if (description) data.description = description;
+
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('No valid fields provided');
+    }
+
+    try {
+      await this.prisma.equipmentType.update({
+        where: { id, organizationId },
+        data,
+      });
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new ConflictException('Equipment type already exist');
+      }
+    }
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_EQUIPMENT_TYPE,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region deactivate equiment type
+  async deactivateEquipmentType(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const existing = await this.prisma.equipmentType.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!existing) throw new NotFoundException('Equipment type not found');
+
+    if (!existing.isActive) {
+      throw new BadRequestException('Equipment type already deactivated');
+    }
+
+    const isUsed = await this.prisma.equipment.findFirst({
+      where: {
+        equipmentTypeId: id,
+        organizationId,
+        status: EquipmentStatus.ACTIVE,
+      },
+      select: { id: true },
+    });
+
+    if (isUsed) {
+      throw new BadRequestException(
+        'Cannot deactivate equipment type that is already in use',
+      );
+    }
+
+    await this.prisma.equipmentType.update({
+      where: { id },
+      data: { isActive: false },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVATE_EQUIPMENT_TYPE,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region activate equipment type
+  async activateEquipmentType(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const existing = await this.prisma.equipmentType.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!existing) throw new NotFoundException('Equipment type not found');
+
+    if (existing.isActive) {
+      throw new BadRequestException('Equipment type already in active');
+    }
+
+    await this.prisma.equipmentType.update({
+      where: { id },
+      data: { isActive: true },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.ACTIVATE_EQUIPMENT_TYPE,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 }

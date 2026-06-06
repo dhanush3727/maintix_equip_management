@@ -213,6 +213,9 @@ export class OrganizationService {
       data: { isActive: false },
     });
 
+    // the updated return with {count: 1} how many rows affected
+    // if no row affected then return count as 0
+
     if (updated.count === 0) {
       throw new BadRequestException(
         'Organization not found or already deactivate',

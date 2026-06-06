@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   Req,
@@ -24,6 +25,7 @@ import type {
 import { CreateEquipTypeDto } from './dto/create-equipType.dto';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { QueryDto } from '../../common/dto/query.dto';
+import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -96,6 +98,74 @@ export class EquipmentController {
 
     return {
       data: equipmentType,
+    };
+  }
+  //#endregion
+
+  //#region Get equipments based on type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Get('equipment-type/:id/equipments')
+  async getEquipmentsByType(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const data = await this.equipmentService.getEquipmentsByType(id, req.user);
+
+    return {
+      data,
+    };
+  }
+  //#endregion
+
+  //#region Update equipment type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Patch('equipment-type/:id')
+  async updateEquipmentType(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @Body() dto: UpdateEquipTypeDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.updateEquipmentType(id, req.user, dto, meta);
+
+    return {
+      message: 'Equipment type updated successfully',
+    };
+  }
+  //#endregion
+
+  //#region Deactivate equipment type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Patch('equipment-type/:id/deactivate')
+  async deactivateEquipmentType(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.deactivateEquipmentType(id, req.user, meta);
+
+    return {
+      message: 'Equipment type deactivated',
+    };
+  }
+  //#endregion
+
+  //#region Activate equipment type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Patch('equipment-type/:id/activate')
+  async activateEquipmentType(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.activateEquipmentType(id, req.user, meta);
+
+    return {
+      message: 'Equipment type activated',
     };
   }
   //#endregion
