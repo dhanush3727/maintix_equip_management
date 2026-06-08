@@ -19,6 +19,7 @@ import {
 } from '../../common/utils/query-builder.util';
 import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { EquipmentQueryDto } from './dto/equipment-query.dto';
 
 @Injectable()
 export class EquipmentService {
@@ -390,6 +391,59 @@ export class EquipmentService {
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
     });
+  }
+  //#endregion
+
+  //#region Get equipments
+  async getEquipmentsService(req: RequestUser, query: EquipmentQueryDto) {
+    const { organizationId } = req;
+
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      sortBy,
+      order,
+      status,
+      department,
+      location,
+    } = query;
+
+    const allowedSortBy = ['name', 'code'];
+
+    if (sortBy && !allowedSortBy.includes(sortBy)) {
+      throw new BadRequestException('Invalid sortBy');
+    }
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.EquipmentWhereInput = { organizationId };
+
+    if (status) {
+      filters.status = status;
+    }
+
+    if (location) {
+      filters.location = {
+        name: location,
+      };
+    }
+
+    if (department) {
+      filters.department = {
+        name: department,
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'serialNumber', 'code', 'manufacturer', 'model'],
+      sortBy,
+    });
+
+    
   }
   //#endregion
 }
