@@ -27,6 +27,7 @@ import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { QueryDto } from '../../common/dto/query.dto';
 import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { EquipmentQueryDto } from './dto/equipment-query.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -183,6 +184,23 @@ export class EquipmentController {
 
     return {
       message: 'Equipment created successfully',
+    };
+  }
+  //#endregion
+
+  //#region Get equipments
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get()
+  async getEquipments(
+    @Req() req: AuthenticateRequest,
+    @Query() query: EquipmentQueryDto,
+  ) {
+    const { data, pagination } =
+      await this.equipmentService.getEquipmentsService(req.user, query);
+
+    return {
+      data,
+      pagination,
     };
   }
   //#endregion

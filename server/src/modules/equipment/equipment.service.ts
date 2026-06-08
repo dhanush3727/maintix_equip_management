@@ -443,7 +443,47 @@ export class EquipmentService {
       sortBy,
     });
 
-    
+    const [equipments, total] = await Promise.all([
+      this.prisma.equipment.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          equipmentTypeId: true,
+          name: true,
+          code: true,
+          serialNumber: true,
+          status: true,
+          installedDate: true,
+          warrantyExpiry: true,
+          manufacturer: true,
+          model: true,
+          location: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          department: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.equipment.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: equipments,
+      pagination,
+    };
   }
   //#endregion
 }
