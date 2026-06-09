@@ -20,6 +20,7 @@ import {
 import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { EquipmentQueryDto } from './dto/equipment-query.dto';
+import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
 @Injectable()
 export class EquipmentService {
@@ -381,6 +382,7 @@ export class EquipmentService {
       ) {
         throw new ConflictException('Equipment code already exist');
       }
+      throw err;
     }
 
     await this.audit.logs({
@@ -460,6 +462,12 @@ export class EquipmentService {
           warrantyExpiry: true,
           manufacturer: true,
           model: true,
+          equipmentType: {
+            select: {
+              name: true,
+              code: true,
+            },
+          },
           location: {
             select: {
               id: true,
@@ -484,6 +492,278 @@ export class EquipmentService {
       data: equipments,
       pagination,
     };
+  }
+  //#endregion
+
+  //#region Get equipments by type id
+  async getEquipmentsByTypeId(
+    typeId: number,
+    req: RequestUser,
+    query: EquipmentQueryDto,
+  ) {
+    const { organizationId } = req;
+
+    const equipType = await this.prisma.equipmentType.findFirst({
+      where: { id: typeId, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!equipType) throw new NotFoundException('Equipment type not found');
+
+    if (!equipType.isActive) {
+      throw new BadRequestException('Equipment type is deactivate');
+    }
+
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      sortBy,
+      order,
+      status,
+      department,
+      location,
+    } = query;
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.EquipmentWhereInput = {
+      organizationId,
+      equipmentTypeId: typeId,
+    };
+
+    if (status) {
+      filters.status = status;
+    }
+
+    if (location) {
+      filters.location = {
+        name: location,
+      };
+    }
+
+    if (department) {
+      filters.department = {
+        name: department,
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'serialNumber', 'code', 'manufacturer', 'model'],
+      sortBy,
+    });
+
+    const [equipments, total] = await Promise.all([
+      this.prisma.equipment.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          equipmentTypeId: true,
+          name: true,
+          code: true,
+          serialNumber: true,
+          status: true,
+          installedDate: true,
+          warrantyExpiry: true,
+          manufacturer: true,
+          model: true,
+          equipmentType: {
+            select: {
+              name: true,
+              code: true,
+            },
+          },
+          location: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          department: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.equipment.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: equipments,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get equipment by id
+  async getEquipmentById(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    const equipment = await this.prisma.equipment.findFirst({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        equipmentTypeId: true,
+        name: true,
+        code: true,
+        serialNumber: true,
+        status: true,
+        installedDate: true,
+        warrantyExpiry: true,
+        manufacturer: true,
+        model: true,
+        equipmentType: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        location: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        department: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!equipment) throw new NotFoundException('Equipment not found');
+
+    return equipment;
+  }
+  //#endregion
+
+  //#region update equipment
+  async updateEquipment(
+    id: number,
+    req: RequestUser,
+    dto: UpdateEquipmentDto,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+
+    const {
+      name,
+      code,
+      serialNumber,
+      equipmentTypeId,
+      locationId,
+      departmentId,
+      installedDate,
+      warrantyExpiry,
+      manufacturer,
+      model,
+    } = dto;
+
+    const data: Prisma.EquipmentUpdateInput = {};
+
+    if (name) data.name = name;
+    if (code) data.code = code;
+    if (serialNumber) data.serialNumber = serialNumber;
+    if (installedDate) data.installedDate = installedDate;
+    if (warrantyExpiry) data.warrantyExpiry = warrantyExpiry;
+    if (manufacturer) data.manufacturer = manufacturer;
+    if (model) data.model = model;
+
+    if (equipmentTypeId) {
+      const equipType = await this.prisma.equipmentType.findFirst({
+        where: { id: equipmentTypeId, organizationId },
+        select: { id: true, isActive: true },
+      });
+
+      if (!equipType)
+        throw new NotFoundException('Equipment type is not found');
+
+      if (!equipType.isActive) {
+        throw new BadRequestException('Equipment type is deactivated');
+      }
+
+      console.log(data.equipmentType);
+
+      data.equipmentType = {
+        // Link this record to an existing row in another table
+        connect: {
+          id: equipmentTypeId,
+        },
+      };
+    }
+
+    if (locationId) {
+      const location = await this.prisma.location.findFirst({
+        where: { id: locationId, organizationId },
+        select: { id: true },
+      });
+
+      if (!location) throw new NotFoundException('Location not found');
+
+      data.location = {
+        // Link this record to an existing row in another table
+        connect: {
+          id: locationId,
+        },
+      };
+    }
+
+    if (departmentId) {
+      const department = await this.prisma.department.findFirst({
+        where: { id: departmentId, organizationId },
+        select: { id: true },
+      });
+
+      if (!department) throw new NotFoundException('Department not found');
+
+      data.department = {
+        // Link this record to an existing row in another table
+        connect: {
+          id: departmentId,
+        },
+      };
+    }
+
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('No valid fields provided');
+    }
+
+    try {
+      await this.prisma.equipment.update({
+        where: { id, organizationId },
+        data,
+      });
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new ConflictException('Equipment code already exists');
+      }
+      throw err;
+    }
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_EQUIPMENT,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 }

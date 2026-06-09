@@ -28,6 +28,7 @@ import { QueryDto } from '../../common/dto/query.dto';
 import { UpdateEquipTypeDto } from './dto/update-equipType.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { EquipmentQueryDto } from './dto/equipment-query.dto';
+import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -204,4 +205,60 @@ export class EquipmentController {
     };
   }
   //#endregion
+
+  //#region Get equipments by type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('type/:typeId')
+  async getEquipmentsByTypeId(
+    @Param('typeId', ParseIntPipe) typeId: number,
+    @Req() req: AuthenticateRequest,
+    @Query() query: EquipmentQueryDto,
+  ) {
+    const { data, pagination } =
+      await this.equipmentService.getEquipmentsByTypeId(
+        typeId,
+        req.user,
+        query,
+      );
+
+    return {
+      data,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get equipment by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get(':id')
+  async getEquipmentById(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const equipment = await this.equipmentService.getEquipmentById(
+      id,
+      req.user,
+    );
+
+    return {
+      data: equipment,
+    };
+  }
+  //#endregion
+
+  //#region Update Equipment
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch(':id')
+  async updateEquipment(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @Body() dto: UpdateEquipmentDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.updateEquipment(id, req.user, dto, meta);
+
+    return {
+      message: 'Equipment updated successfully',
+    };
+  }
 }

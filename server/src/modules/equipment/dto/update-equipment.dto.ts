@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
   IsDate,
@@ -9,9 +9,10 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateEquipmentDto {
-  @ApiProperty({ example: 'Pump' })
+export class UpdateEquipmentDto {
+  @ApiPropertyOptional({ example: 'Pump' })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
@@ -22,10 +23,11 @@ export class CreateEquipmentDto {
 
     return result;
   })
-  name!: string;
+  name?: string;
 
-  @ApiProperty({ example: 'EQ-1001' })
+  @ApiPropertyOptional({ example: 'EQ-1001' })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
@@ -34,7 +36,7 @@ export class CreateEquipmentDto {
 
     return result;
   })
-  code!: string;
+  code?: string;
 
   @ApiPropertyOptional({ example: 'E1' })
   @Transform(({ value }: { value: string }) => value.trim())
@@ -43,23 +45,26 @@ export class CreateEquipmentDto {
   @IsNotEmpty()
   serialNumber?: string;
 
-  @ApiProperty({ example: 0 })
+  @ApiPropertyOptional({ example: 0 })
   @IsInt()
+  @IsOptional()
   @IsNotEmpty()
   @IsPositive()
-  equipmentTypeId!: number;
+  equipmentTypeId?: number;
 
   @ApiPropertyOptional({ example: 0 })
   @IsInt()
+  @IsOptional()
   @IsNotEmpty()
   @IsPositive()
-  locationId!: number;
+  locationId?: number;
 
   @ApiPropertyOptional({ example: 0 })
   @IsInt()
+  @IsOptional()
   @IsNotEmpty()
   @IsPositive()
-  departmentId!: number;
+  departmentId?: number;
 
   @ApiPropertyOptional({ example: '2026-07-01' })
   @Type(() => Date)
