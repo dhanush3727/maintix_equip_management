@@ -18,4 +18,9 @@ export class EquipmentQueryDto extends QueryDto {
   @IsOptional()
   @IsString()
   location?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  type?: string;
 }

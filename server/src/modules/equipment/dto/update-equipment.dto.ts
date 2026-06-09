@@ -39,7 +39,7 @@ export class UpdateEquipmentDto {
   code?: string;
 
   @ApiPropertyOptional({ example: 'E1' })
-  @Transform(({ value }: { value: string }) => value.trim())
+  @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
   @IsNotEmpty()
@@ -79,14 +79,14 @@ export class UpdateEquipmentDto {
   warrantyExpiry?: Date;
 
   @ApiPropertyOptional({ example: 'Manufacturer' })
-  @Transform(({ value }: { value: string }) => value.trim())
+  @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
   @IsNotEmpty()
   manufacturer?: string;
 
   @ApiPropertyOptional({ example: 'Model' })
-  @Transform(({ value }: { value: string }) => value.trim())
+  @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
   @IsNotEmpty()

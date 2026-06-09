@@ -228,6 +228,50 @@ export class EquipmentController {
   }
   //#endregion
 
+  //#region Get equipments by Location
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('location/:locationId')
+  async getEquipmentsByLocation(
+    @Param('locationId', ParseIntPipe) locationId: number,
+    @Req() req: AuthenticateRequest,
+    @Query() query: EquipmentQueryDto,
+  ) {
+    const { data, pagination } =
+      await this.equipmentService.getEquipmentsByLocation(
+        locationId,
+        req.user,
+        query,
+      );
+
+    return {
+      data,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get equipments by department
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('department/:departmentId')
+  async getEquipmentsByDepartment(
+    @Param('departmentId', ParseIntPipe) departmentId: number,
+    @Req() req: AuthenticateRequest,
+    @Query() query: EquipmentQueryDto,
+  ) {
+    const { data, pagination } =
+      await this.equipmentService.getEquipmentsByDepartment(
+        departmentId,
+        req.user,
+        query,
+      );
+
+    return {
+      data,
+      pagination,
+    };
+  }
+  //#endregion
+
   //#region Get equipment by id
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Get(':id')
@@ -261,4 +305,37 @@ export class EquipmentController {
       message: 'Equipment updated successfully',
     };
   }
+  //#endregion
+
+  //#region Deactivate equipment
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch(':id/deactivate')
+  async deactivateEquipment(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.deactivateEquipment(id, req.user, meta);
+
+    return {
+      message: 'Equipment deactivated',
+    };
+  }
+  //#endregion
+
+  //#region Activate equipment
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch(':id/activate')
+  async activateEquipment(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.equipmentService.activateEquipment(id, req.user, meta);
+
+    return {
+      message: 'Equipment activated',
+    };
+  }
+  //#endregion
 }

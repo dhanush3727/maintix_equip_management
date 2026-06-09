@@ -409,6 +409,7 @@ export class EquipmentService {
       status,
       department,
       location,
+      type,
     } = query;
 
     const allowedSortBy = ['name', 'code'];
@@ -434,6 +435,12 @@ export class EquipmentService {
     if (department) {
       filters.department = {
         name: department,
+      };
+    }
+
+    if (type) {
+      filters.equipmentType = {
+        name: type,
       };
     }
 
@@ -495,7 +502,7 @@ export class EquipmentService {
   }
   //#endregion
 
-  //#region Get equipments by type id
+  //#region Get equipments by type
   async getEquipmentsByTypeId(
     typeId: number,
     req: RequestUser,
@@ -523,6 +530,7 @@ export class EquipmentService {
       status,
       department,
       location,
+      type,
     } = query;
 
     const { skip, take } = getPagination(page, limit);
@@ -545,6 +553,240 @@ export class EquipmentService {
     if (department) {
       filters.department = {
         name: department,
+      };
+    }
+
+    if (type) {
+      filters.equipmentType = {
+        name: type,
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'serialNumber', 'code', 'manufacturer', 'model'],
+      sortBy,
+    });
+
+    const [equipments, total] = await Promise.all([
+      this.prisma.equipment.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          equipmentTypeId: true,
+          name: true,
+          code: true,
+          serialNumber: true,
+          status: true,
+          installedDate: true,
+          warrantyExpiry: true,
+          manufacturer: true,
+          model: true,
+          equipmentType: {
+            select: {
+              name: true,
+              code: true,
+            },
+          },
+          location: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          department: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.equipment.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: equipments,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get equipments by location
+  async getEquipmentsByLocation(
+    locationId: number,
+    req: RequestUser,
+    query: EquipmentQueryDto,
+  ) {
+    const { organizationId } = req;
+
+    const existing = await this.prisma.location.findFirst({
+      where: { id: locationId, organizationId },
+      select: { id: true },
+    });
+
+    if (!existing) throw new NotFoundException('Location not found');
+
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      sortBy,
+      order,
+      status,
+      department,
+      location,
+      type,
+    } = query;
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.EquipmentWhereInput = {
+      organizationId,
+      locationId,
+    };
+
+    if (status) {
+      filters.status = status;
+    }
+
+    if (location) {
+      filters.location = {
+        name: location,
+      };
+    }
+
+    if (department) {
+      filters.department = {
+        name: department,
+      };
+    }
+
+    if (type) {
+      filters.equipmentType = {
+        name: type,
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name', 'serialNumber', 'code', 'manufacturer', 'model'],
+      sortBy,
+    });
+
+    const [equipments, total] = await Promise.all([
+      this.prisma.equipment.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          equipmentTypeId: true,
+          name: true,
+          code: true,
+          serialNumber: true,
+          status: true,
+          installedDate: true,
+          warrantyExpiry: true,
+          manufacturer: true,
+          model: true,
+          equipmentType: {
+            select: {
+              name: true,
+              code: true,
+            },
+          },
+          location: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          department: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.equipment.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    return {
+      data: equipments,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get equipments by department
+  async getEquipmentsByDepartment(
+    departmentId: number,
+    req: RequestUser,
+    query: EquipmentQueryDto,
+  ) {
+    const { organizationId } = req;
+
+    const existing = await this.prisma.department.findFirst({
+      where: { id: departmentId, organizationId },
+      select: { id: true },
+    });
+
+    if (!existing) throw new NotFoundException('Department not found');
+
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      sortBy,
+      order,
+      status,
+      department,
+      location,
+      type,
+    } = query;
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.EquipmentWhereInput = {
+      organizationId,
+      departmentId,
+    };
+
+    if (status) {
+      filters.status = status;
+    }
+
+    if (location) {
+      filters.location = {
+        name: location,
+      };
+    }
+
+    if (department) {
+      filters.department = {
+        name: department,
+      };
+    }
+
+    if (type) {
+      filters.equipmentType = {
+        name: type,
       };
     }
 
@@ -672,6 +914,17 @@ export class EquipmentService {
       model,
     } = dto;
 
+    const existing = await this.prisma.equipment.findFirst({
+      where: { id, organizationId },
+      select: { id: true, status: true },
+    });
+
+    if (!existing) throw new NotFoundException('Equipment not found');
+
+    if (existing.status === EquipmentStatus.INACTIVE) {
+      throw new BadRequestException('Equipment is deactivate');
+    }
+
     const data: Prisma.EquipmentUpdateInput = {};
 
     if (name) data.name = name;
@@ -760,6 +1013,75 @@ export class EquipmentService {
       organizationId,
       userId,
       action: AuditAction.UPDATE_EQUIPMENT,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region deactivate equipment
+  async deactivateEquipment(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const existing = await this.prisma.equipment.findFirst({
+      where: { id, organizationId },
+      select: { id: true, status: true },
+    });
+
+    if (!existing) throw new NotFoundException('Equipment not found');
+
+    if (existing.status === EquipmentStatus.INACTIVE) {
+      throw new BadRequestException('Equipment already deactivated');
+    }
+
+    if (
+      existing.status === EquipmentStatus.BREAKDOWN ||
+      existing.status === EquipmentStatus.UNDER_MAINTENANCE
+    ) {
+      throw new BadRequestException('Cannot deactivate equipment');
+    }
+
+    await this.prisma.equipment.update({
+      where: { id, organizationId },
+      data: { status: EquipmentStatus.INACTIVE },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVATE_EQUIPMENT,
+      module: AuditModule.EQUIPMENT,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region activate equipment
+  async activateEquipment(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const existing = await this.prisma.equipment.findFirst({
+      where: { id, organizationId },
+      select: { id: true, status: true },
+    });
+
+    if (!existing) throw new NotFoundException('Equipment not found');
+
+    if (existing.status === EquipmentStatus.ACTIVE) {
+      throw new BadRequestException('Equipment is already active');
+    }
+
+    await this.prisma.equipment.update({
+      where: { id, organizationId },
+      data: { status: EquipmentStatus.ACTIVE },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.ACTIVATE_EQUIPMENT,
       module: AuditModule.EQUIPMENT,
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
