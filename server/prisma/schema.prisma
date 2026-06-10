@@ -70,6 +70,13 @@ enum EquipmentStatus {
   DECOMMISSIONED
 }
 
+enum ChecklistItemType {
+  TEXT
+  NUMBER
+  BOOLEAN
+  SELECT
+}
+
 enum FrequencyType {
   DAILY
   WEEKLY
@@ -398,6 +405,8 @@ model ChecklistTemplate {
 
   name                  String
   description           String?
+  version               Int                 @default(1) //instead of update the record create with new version
+  isActive              Boolean             @default(true)
 
   organization          Organization        @relation(fields: [organizationId], references: [id])
   equipmentType         EquipmentType       @relation(fields: [equipmentTypeId], references: [id])
@@ -419,11 +428,19 @@ model ChecklistItem {
 
   name              String
   order             Int
+  type              ChecklistItemType // what kind of input is expected
   expectedValue     String?
+  minValue          Float?
+  maxValue          Float?
+  options           String? //JSON
+  isRequired        Boolean                 @default(true) // Defines whether this check is mandatory
+  isActive          Boolean                 @default(true)
 
   template          ChecklistTemplate       @relation(fields: [templateId], references: [id])
 
   createdAt         DateTime                @default(now())
+
+  @@unique([templateId, order]) // Prevents duplicate order inside same checklist
 }
 
 // ==============================

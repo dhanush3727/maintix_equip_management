@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict rdJcF6k3lzuRuKQWd6quinpBs0JKEtoLtzGOu6OejsEMFh0pOJ1ORINPii4nJl6
+\restrict J7F8kKo9dO2BOkLcCZHodbp1reoGPdElwXhLAwptTzSxWTBd7PirR6g9MVDOrvE
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -96,6 +96,7 @@ DROP INDEX maintix."Department_organizationId_name_key";
 DROP INDEX maintix."Department_organizationId_code_key";
 DROP INDEX maintix."ChecklistTemplate_organizationId_idx";
 DROP INDEX maintix."ChecklistTemplate_equipmentTypeId_idx";
+DROP INDEX maintix."ChecklistItem_templateId_order_key";
 DROP INDEX maintix."BreakdownReport_status_idx";
 DROP INDEX maintix."BreakdownReport_organizationId_idx";
 DROP INDEX maintix."BreakdownReport_equipmentId_idx";
@@ -204,6 +205,7 @@ DROP TYPE maintix."FrequencyType";
 DROP TYPE maintix."EquipmentStatus";
 DROP TYPE maintix."DepartmentType";
 DROP TYPE maintix."CompanySize";
+DROP TYPE maintix."ChecklistItemType";
 DROP TYPE maintix."BreakdownStatus";
 DROP TYPE maintix."BreakdownSeverity";
 DROP SCHEMA maintix;
@@ -235,6 +237,18 @@ CREATE TYPE maintix."BreakdownStatus" AS ENUM (
     'IN_PROGRESS',
     'RESOLVED',
     'CLOSED'
+);
+
+
+--
+-- Name: ChecklistItemType; Type: TYPE; Schema: maintix; Owner: -
+--
+
+CREATE TYPE maintix."ChecklistItemType" AS ENUM (
+    'TEXT',
+    'NUMBER',
+    'BOOLEAN',
+    'SELECT'
 );
 
 
@@ -524,7 +538,13 @@ CREATE TABLE maintix."ChecklistItem" (
     name text NOT NULL,
     "order" integer NOT NULL,
     "expectedValue" text,
-    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "isActive" boolean DEFAULT true NOT NULL,
+    "isRequired" boolean DEFAULT true NOT NULL,
+    "maxValue" double precision,
+    "minValue" double precision,
+    options text,
+    type maintix."ChecklistItemType" NOT NULL
 );
 
 
@@ -559,7 +579,9 @@ CREATE TABLE maintix."ChecklistTemplate" (
     name text NOT NULL,
     description text,
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "updatedAt" timestamp(3) without time zone NOT NULL
+    "updatedAt" timestamp(3) without time zone NOT NULL,
+    "isActive" boolean DEFAULT true NOT NULL,
+    version integer DEFAULT 1 NOT NULL
 );
 
 
@@ -1949,7 +1971,7 @@ COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy
 -- Data for Name: ChecklistItem; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt") FROM stdin;
+COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt", "isActive", "isRequired", "maxValue", "minValue", options, type) FROM stdin;
 \.
 
 
@@ -1957,7 +1979,7 @@ COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", 
 -- Data for Name: ChecklistTemplate; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt") FROM stdin;
+COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt", "isActive", version) FROM stdin;
 \.
 
 
@@ -2563,6 +2585,7 @@ e3bab796-d0ed-4b6c-ac64-c087dfc8d8c9	f79a7787a8026c38f8fae0f9956eb03fb20e9018011
 d21f9caa-e2d9-42be-a267-80044c624cc7	1c219de35db2852f0e0fbea8c795e265d75f0f65a0cbed2ddde7cf255fdf27c3	2026-05-27 15:43:11.764196+05:30	20260526095154_add_logo	\N	\N	2026-05-27 15:43:11.763006+05:30	1
 ab4d9e42-2ebe-407e-a254-8d169a9bb738	a31ea9b42a86d895a7f164fe2d71b75b7880dd09f5971e05baccd2ae5ae53419	2026-05-28 14:30:27.816084+05:30	20260528090027_add_uniqueness	\N	\N	2026-05-28 14:30:27.764168+05:30	1
 aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8d88e590be124009d995e7	2026-06-05 10:27:23.170992+05:30	20260605045722_equipment	\N	\N	2026-06-05 10:27:22.952003+05:30	1
+77fa00d0-c80c-45f6-b226-a0682862a3fd	137ccaeea0a9f1206e24020b8dc5825b624e7a41323233836d2accd96cd727e7	2026-06-10 14:45:27.256064+05:30	20260610091526_checklist	\N	\N	2026-06-10 14:45:26.991122+05:30	1
 \.
 
 
@@ -2937,6 +2960,13 @@ CREATE INDEX "BreakdownReport_organizationId_idx" ON maintix."BreakdownReport" U
 --
 
 CREATE INDEX "BreakdownReport_status_idx" ON maintix."BreakdownReport" USING btree (status);
+
+
+--
+-- Name: ChecklistItem_templateId_order_key; Type: INDEX; Schema: maintix; Owner: -
+--
+
+CREATE UNIQUE INDEX "ChecklistItem_templateId_order_key" ON maintix."ChecklistItem" USING btree ("templateId", "order");
 
 
 --
@@ -3521,5 +3551,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rdJcF6k3lzuRuKQWd6quinpBs0JKEtoLtzGOu6OejsEMFh0pOJ1ORINPii4nJl6
+\unrestrict J7F8kKo9dO2BOkLcCZHodbp1reoGPdElwXhLAwptTzSxWTBd7PirR6g9MVDOrvE
 
