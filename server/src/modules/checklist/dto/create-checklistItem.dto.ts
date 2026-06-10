@@ -2,6 +2,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ChecklistItemType } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import {
+  ArrayNotEmpty,
+  ArrayUnique,
+  IsArray,
+  IsBoolean,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -18,7 +22,7 @@ export class CreateChecklistItemDto {
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
-    let result = value.trim().replace(/\s+/g, '');
+    let result = value.trim().replace(/\s+/g, ' ');
 
     result = result.charAt(0).toUpperCase() + result.slice(1).toLowerCase();
 
@@ -39,7 +43,7 @@ export class CreateChecklistItemDto {
 
   @ApiPropertyOptional({ example: 'OK' })
   @ValidateIf(
-    (data: CreateChecklistItemDto) => data.type === ChecklistItemType.SELECT,
+    (data: CreateChecklistItemDto) => data.type === ChecklistItemType.TEXT,
   )
   @IsString()
   @IsOptional()
@@ -47,7 +51,7 @@ export class CreateChecklistItemDto {
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
-    const result = value.trim().replace(/\s+/g, '').toUpperCase();
+    const result = value.trim().toUpperCase();
 
     return result;
   })
@@ -55,18 +59,38 @@ export class CreateChecklistItemDto {
 
   @ApiPropertyOptional({ example: 0 })
   @ValidateIf(
-    (data: CreateChecklistItemDto) => data.type === ChecklistItemType.SELECT,
+    (data: CreateChecklistItemDto) => data.type === ChecklistItemType.NUMBER,
   )
   @IsInt()
   @IsOptional()
   @IsNotEmpty()
   @IsPositive()
-  minValue?: string;
+  minValue?: number;
 
   @ApiPropertyOptional({ example: 0 })
+  @ValidateIf(
+    (data: CreateChecklistItemDto) => data.type === ChecklistItemType.NUMBER,
+  )
   @IsInt()
   @IsOptional()
   @IsNotEmpty()
   @IsPositive()
-  maxValue?: string;
+  maxValue?: number;
+
+  @ApiPropertyOptional({ example: ['Ok', 'Not Ok'] })
+  @ValidateIf(
+    (data: CreateChecklistItemDto) => data.type === ChecklistItemType.SELECT,
+  )
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsString({ each: true })
+  options?: string[];
+
+  @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  isRequired?: boolean;
 }
+
+// @ValidateIf - Run the validation rules on this field ONLY IF this condition is true.

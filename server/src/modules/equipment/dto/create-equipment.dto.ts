@@ -16,7 +16,7 @@ export class CreateEquipmentDto {
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
-    let result = value.trim().replace(/\s+/g, '');
+    let result = value.trim().replace(/\s+/g, ' ');
 
     result = result.charAt(0).toUpperCase() + result.slice(1).toLowerCase();
 
