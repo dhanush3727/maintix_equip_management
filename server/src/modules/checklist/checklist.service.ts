@@ -65,12 +65,6 @@ export class ChecklistService {
         ) {
           throw new BadRequestException(`Invalid range for item: ${item.name}`);
         }
-
-        if (item.expectedValue !== undefined) {
-          throw new BadRequestException(
-            `${item.name} should not have expected value`,
-          );
-        }
       }
 
       // Check for SELECT type
@@ -100,6 +94,10 @@ export class ChecklistService {
           );
         }
 
+        if (item.expectedValue !== undefined) {
+          item.expectedValue = String(item.expectedValue).toLowerCase();
+        }
+
         if (
           item.expectedValue &&
           !['true', 'false'].includes(item.expectedValue)
@@ -112,7 +110,7 @@ export class ChecklistService {
     }
 
     // Create checklist template and item
-    const template = await this.prisma.checklistTemplate.create({
+    await this.prisma.checklistTemplate.create({
       data: {
         organizationId,
         equipmentTypeId,
@@ -126,11 +124,14 @@ export class ChecklistService {
             expectedValue: item.expectedValue,
             minValue: item.minValue,
             maxValue: item.maxValue,
+            // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
             options: item.options ? JSON.stringify(item.options) : null,
             isRequired: item.isRequired ?? true,
           })),
         },
       },
+      // Use `include` to fetch related items along with the checklist template in the same query.
+      // Use `select` instead when you need to limit fields for better performance and smaller payload.
       include: {
         items: true,
       },
@@ -144,8 +145,6 @@ export class ChecklistService {
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
     });
-
-    return template;
   }
   //#endregion
 }

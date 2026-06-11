@@ -27,21 +27,16 @@ export class ChecklistController {
   // Create Checklist
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN, RoleType.MANAGER)
-  @Post()
+  @Post('checklist-template')
   @HttpCode(HttpStatus.OK)
   async createChecklist(
     @Body() dto: CreateChecklistTemplateDto,
     @Req() req: AuthenticateRequest,
     @ReqMeta() meta: MetaType,
   ) {
-    const template = await this.checklist.createChecklistService(
-      dto,
-      req.user,
-      meta,
-    );
+    await this.checklist.createChecklistService(dto, req.user, meta);
 
     return {
-      data: template,
       message: 'Checklist template created',
     };
   }

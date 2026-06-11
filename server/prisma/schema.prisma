@@ -518,18 +518,23 @@ model PMTask {
 model TaskChecklistItem {
   id                Int           @id @default(autoincrement())
   taskId            Int
-
+  
+  templateItemId    Int // Reference to the original checklist item to get the type and validation rules
   name              String
   order             Int
   expectedValue     String?
+  minValue          Float?
+  maxValue          Float?
+  options           String? //JSON
   actualValue       String?
   status            ItemStatus?
 
   task              PMTask        @relation(fields: [taskId], references: [id])
-
+  templateItem      ChecklistItem @relation(fields: [templateItemId], references: [id])
   createdAt         DateTime      @default(now())
 
   @@index([taskId])
+  @@index([templateItemId])
 }
 
 // ==============================
