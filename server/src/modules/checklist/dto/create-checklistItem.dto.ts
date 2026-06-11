@@ -85,6 +85,16 @@ export class CreateChecklistItemDto {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsString({ each: true })
+  @Transform(({ value }: { value: string[] }) => {
+    if (!Array.isArray(value)) return value;
+
+    // Normlize the value based on expected value
+    // in expected value we use toUpperCase()
+    //based on this we change all this in uppercase
+    return value.map((v) =>
+      typeof v === 'string' ? v.trim().toUpperCase() : v,
+    );
+  })
   options?: string[];
 
   @ApiPropertyOptional()

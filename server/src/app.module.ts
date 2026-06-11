@@ -16,6 +16,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { OrganizationModule } from './modules/organization/organization.module';
 import { UserModule } from './modules/user/user.module';
 import { EquipmentModule } from './modules/equipment/equipment.module';
+import { ChecklistModule } from './modules/checklist/checklist.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { EquipmentModule } from './modules/equipment/equipment.module';
     OrganizationModule,
     UserModule,
     EquipmentModule,
+    ChecklistModule,
   ],
   controllers: [AppController],
   providers: [
