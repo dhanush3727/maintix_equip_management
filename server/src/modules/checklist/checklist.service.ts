@@ -7,8 +7,15 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { AuditService } from '../../common/audit/audit.service';
 import { CreateChecklistTemplateDto } from './dto/create-checklistTemplate.dto';
 import { MetaType, RequestUser } from '../../common/types/auth.types';
-import { ChecklistItemType } from '@prisma/client';
+import { ChecklistItemType, Prisma } from '@prisma/client';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
+import {
+  buildPaginationMeta,
+  buildQueryOptions,
+  getPagination,
+} from '../../common/utils/query-builder.util';
+import { ChecklistQueryDto } from './dto/checklist-query.dto';
+import { QueryDto } from '../../common/dto/query.dto';
 
 @Injectable()
 export class ChecklistService {
@@ -17,7 +24,7 @@ export class ChecklistService {
     private audit: AuditService,
   ) {}
 
-  //#region Create a checklist tempalat and checklist item
+  //#region Create a checklist template and checklist item
   async createChecklistService(
     dto: CreateChecklistTemplateDto,
     req: RequestUser,
@@ -121,9 +128,9 @@ export class ChecklistService {
             name: item.name,
             order: item.order,
             type: item.type,
-            expectedValue: item.expectedValue,
-            minValue: item.minValue,
-            maxValue: item.maxValue,
+            expectedValue: item.expectedValue ?? null,
+            minValue: item.minValue ?? null,
+            maxValue: item.maxValue ?? null,
             // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
             options: item.options ? JSON.stringify(item.options) : null,
             isRequired: item.isRequired ?? true,
@@ -145,6 +152,249 @@ export class ChecklistService {
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
     });
+  }
+  //#endregion
+
+  //#region Get checklist templates
+  async getChecklistTemplates(req: RequestUser, query: ChecklistQueryDto) {
+    const { organizationId } = req;
+
+    const { page = 1, limit = 10, search, sortBy, order, type } = query;
+
+    const allowedSortby = ['name'];
+
+    if (sortBy && !allowedSortby.includes(sortBy)) {
+      throw new BadRequestException('Invalid sortby');
+    }
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.ChecklistTemplateWhereInput = { organizationId };
+
+    if (type) {
+      filters.equipmentType = {
+        name: type,
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name'],
+      sortBy,
+    });
+
+    const [checklistTemplates, total] = await Promise.all([
+      this.prisma.checklistTemplate.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          organizationId: true,
+          name: true,
+          description: true,
+          isActive: true,
+          equipmentTypeId: true,
+          equipmentType: {
+            select: {
+              name: true,
+            },
+          },
+          items: {
+            select: {
+              id: true,
+              name: true,
+              order: true,
+              type: true,
+              expectedValue: true,
+              minValue: true,
+              maxValue: true,
+              options: true,
+              isRequired: true,
+              isActive: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.checklistTemplate.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    const formattedChecklists = checklistTemplates.map((list) => ({
+      id: list.id,
+      organizationId: list.organizationId,
+      name: list.name,
+      description: list.description,
+      isActive: list.isActive,
+      equipmentTypeId: list.equipmentTypeId,
+      equipmentType: list.equipmentType.name,
+      checklistItems: list.items,
+    }));
+
+    return {
+      data: formattedChecklists,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get checklist template by id
+  async getChecklistTemplateById(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    const checklistTemplate = await this.prisma.checklistTemplate.findFirst({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        organizationId: true,
+        name: true,
+        description: true,
+        isActive: true,
+        equipmentTypeId: true,
+        equipmentType: {
+          select: {
+            name: true,
+          },
+        },
+        items: {
+          select: {
+            id: true,
+            name: true,
+            order: true,
+            type: true,
+            expectedValue: true,
+            minValue: true,
+            maxValue: true,
+            options: true,
+            isRequired: true,
+            isActive: true,
+          },
+        },
+      },
+    });
+
+    if (!checklistTemplate) {
+      throw new NotFoundException('Checklist template not found');
+    }
+
+    const formattedChecklist = {
+      id: checklistTemplate.id,
+      organizationId: checklistTemplate.organizationId,
+      name: checklistTemplate.name,
+      description: checklistTemplate.description,
+      isActive: checklistTemplate.isActive,
+      equipmentTypeId: checklistTemplate.equipmentTypeId,
+      equipmentType: checklistTemplate.equipmentType.name,
+      checklistItems: checklistTemplate.items,
+    };
+
+    return formattedChecklist;
+  }
+  //#endregion
+
+  //#region Get checklist templates by type id
+  async getChecklistTemplateByTypeId(
+    id: number,
+    req: RequestUser,
+    query: QueryDto,
+  ) {
+    const { organizationId } = req;
+
+    const { page, limit, search, order, sortBy } = query;
+
+    const allowedSortby = ['name'];
+
+    if (sortBy && !allowedSortby.includes(sortBy)) {
+      throw new BadRequestException('Invalid sortby');
+    }
+
+    // Check equipment type is exist
+    const exisiting = await this.prisma.equipmentType.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!exisiting) throw new NotFoundException('Equipment type is not found');
+
+    if (!exisiting.isActive) {
+      throw new BadRequestException('Equipment type is deactivated');
+    }
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.ChecklistTemplateWhereInput = {
+      organizationId,
+      equipmentTypeId: id,
+    };
+
+    const { where, orderBy } = buildQueryOptions({
+      search,
+      order,
+      filters,
+      searchFields: ['name'],
+      sortBy,
+    });
+
+    const [checklists, total] = await Promise.all([
+      this.prisma.checklistTemplate.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          organizationId: true,
+          name: true,
+          description: true,
+          isActive: true,
+          equipmentTypeId: true,
+          equipmentType: {
+            select: {
+              name: true,
+            },
+          },
+          items: {
+            select: {
+              id: true,
+              name: true,
+              order: true,
+              type: true,
+              expectedValue: true,
+              minValue: true,
+              maxValue: true,
+              options: true,
+              isRequired: true,
+              isActive: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.checklistTemplate.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    const formattedChecklists = checklists.map((list) => ({
+      id: list.id,
+      organizationId: list.organizationId,
+      name: list.name,
+      description: list.description,
+      isActive: list.isActive,
+      equipmentTypeId: list.equipmentTypeId,
+      equipmentType: list.equipmentType.name,
+      checklistItems: list.items,
+    }));
+
+    return {
+      data: formattedChecklists,
+      pagination,
+    };
   }
   //#endregion
 }

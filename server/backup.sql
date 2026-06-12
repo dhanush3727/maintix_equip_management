@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict cCwVJ2D5AeQpSWJQYukpZdquD7fibfdv4LYlwSFjFA6o6xQcuc7LrtfytYzRVw1
+\restrict MbyRq0oyQRIkz1kwC8JJAKj3N3czBiibbnJLPbUgc2yHs00SRGipcvvQgbkP7bB
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -2079,6 +2079,19 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 680	3	3	CREATE_CHECKLIST	CHECKLIST	3	::ffff:127.0.0.1	2026-06-11 08:49:46.379
 681	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-11 08:49:46.523
 682	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-11 08:49:46.652
+683	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 07:52:52.247
+684	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 07:54:59.63
+685	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 08:36:37.699
+686	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 08:39:22.064
+687	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 08:40:18.315
+688	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 08:47:33.67
+689	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 09:00:52.787
+690	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 09:14:46.712
+691	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 09:15:23.081
+692	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 09:15:58.708
+693	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 09:28:37.95
+694	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 09:41:37.695
+695	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 10:33:04.753
 \.
 
 
@@ -2103,38 +2116,18 @@ COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy
 --
 
 COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt", "isActive", "isRequired", "maxValue", "minValue", options, type) FROM stdin;
-22	10	Check motor temperature	1	\N	2026-06-11 07:49:02.456	t	t	40	20	\N	NUMBER
-23	10	Inspector remarks	2	\N	2026-06-11 07:49:02.456	t	t	\N	\N	\N	TEXT
-24	10	Motor condition	3	AVERAGE	2026-06-11 07:49:02.456	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-25	10	Check abnormal noise	4	true	2026-06-11 07:49:02.456	t	t	\N	\N	\N	BOOLEAN
-26	11	Check motor temperature	1	\N	2026-06-11 07:54:27.705	t	t	40	20	\N	NUMBER
-27	11	Inspector remarks	2	\N	2026-06-11 07:54:27.705	t	t	\N	\N	\N	TEXT
-28	11	Motor condition	3	AVERAGE	2026-06-11 07:54:27.705	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-29	11	Check abnormal noise	4	true	2026-06-11 07:54:27.705	t	t	\N	\N	\N	BOOLEAN
-30	12	Inspector remarks	1	\N	2026-06-11 08:42:02.059	t	t	\N	\N	\N	TEXT
-31	13	Inspector remarks	1	\N	2026-06-11 08:42:02.804	t	t	40	20	\N	NUMBER
-32	14	Inspector remarks	1	AVERAGE	2026-06-11 08:42:03.818	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-33	15	Inspector remarks	1	true	2026-06-11 08:42:04.732	t	t	\N	\N	\N	BOOLEAN
-34	16	Inspector remarks	1	\N	2026-06-11 08:44:09.611	t	t	\N	\N	\N	TEXT
-35	17	Inspector remarks	1	\N	2026-06-11 08:44:10.21	t	t	40	20	\N	NUMBER
-36	18	Inspector remarks	1	AVERAGE	2026-06-11 08:44:10.987	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-37	19	Inspector remarks	1	true	2026-06-11 08:44:11.755	t	t	\N	\N	\N	BOOLEAN
-38	20	Inspector remarks	1	\N	2026-06-11 08:47:02.744	t	t	\N	\N	\N	TEXT
-39	21	Inspector remarks	1	\N	2026-06-11 08:47:03.31	t	t	40	20	\N	NUMBER
-40	22	Inspector remarks	1	AVERAGE	2026-06-11 08:47:04.275	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-41	23	Inspector remarks	1	true	2026-06-11 08:47:05.158	t	t	\N	\N	\N	BOOLEAN
-42	24	Inspector remarks	1	\N	2026-06-11 08:48:36.625	t	t	\N	\N	\N	TEXT
-43	25	Inspector remarks	1	\N	2026-06-11 08:48:37.441	t	t	40	20	\N	NUMBER
-44	26	Inspector remarks	1	AVERAGE	2026-06-11 08:48:38.408	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-45	27	Inspector remarks	1	true	2026-06-11 08:48:39.379	t	t	\N	\N	\N	BOOLEAN
-46	28	Inspector remarks	1	\N	2026-06-11 08:49:13.311	t	t	\N	\N	\N	TEXT
-47	29	Inspector remarks	1	\N	2026-06-11 08:49:13.79	t	t	40	20	\N	NUMBER
-48	30	Inspector remarks	1	AVERAGE	2026-06-11 08:49:14.93	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-49	31	Inspector remarks	1	true	2026-06-11 08:49:15.661	t	t	\N	\N	\N	BOOLEAN
-50	32	Inspector remarks	1	\N	2026-06-11 08:49:43.702	t	t	\N	\N	\N	TEXT
-51	33	Inspector remarks	1	\N	2026-06-11 08:49:44.284	t	t	40	20	\N	NUMBER
-52	34	Inspector remarks	1	AVERAGE	2026-06-11 08:49:45.495	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-53	35	Inspector remarks	1	true	2026-06-11 08:49:46.366	t	t	\N	\N	\N	BOOLEAN
+63	39	Check motor temperature	1	\N	2026-06-12 09:15:23.038	t	t	40	20	\N	NUMBER
+64	39	Inspector remarks	2	\N	2026-06-12 09:15:23.038	t	t	\N	\N	\N	TEXT
+65	39	Motor condition	3	AVERAGE	2026-06-12 09:15:23.038	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+66	39	Check abnormal noise	4	true	2026-06-12 09:15:23.038	t	t	\N	\N	\N	BOOLEAN
+67	40	Check motor temperature	1	\N	2026-06-12 09:15:58.688	t	t	40	20	\N	NUMBER
+68	40	Inspector remarks	2	\N	2026-06-12 09:15:58.688	t	t	\N	\N	\N	TEXT
+69	40	Motor condition	3	AVERAGE	2026-06-12 09:15:58.688	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+70	40	Check abnormal noise	4	true	2026-06-12 09:15:58.688	t	t	\N	\N	\N	BOOLEAN
+71	41	Check motor temperature	1	\N	2026-06-12 09:28:37.917	t	t	40	20	\N	NUMBER
+72	41	Inspector remarks	2	\N	2026-06-12 09:28:37.917	t	t	\N	\N	\N	TEXT
+73	41	Motor condition	3	AVERAGE	2026-06-12 09:28:37.917	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+74	41	Check abnormal noise	4	true	2026-06-12 09:28:37.917	t	t	\N	\N	\N	BOOLEAN
 \.
 
 
@@ -2143,32 +2136,9 @@ COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", 
 --
 
 COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt", "isActive", version) FROM stdin;
-10	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 07:49:02.456	2026-06-11 07:49:02.456	t	1
-11	3	6	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 07:54:27.705	2026-06-11 07:54:27.705	t	1
-12	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:42:02.059	2026-06-11 08:42:02.059	t	1
-13	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:42:02.804	2026-06-11 08:42:02.804	t	1
-14	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:42:03.818	2026-06-11 08:42:03.818	t	1
-15	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:42:04.732	2026-06-11 08:42:04.732	t	1
-16	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:44:09.611	2026-06-11 08:44:09.611	t	1
-17	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:44:10.21	2026-06-11 08:44:10.21	t	1
-18	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:44:10.987	2026-06-11 08:44:10.987	t	1
-19	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:44:11.755	2026-06-11 08:44:11.755	t	1
-20	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:47:02.744	2026-06-11 08:47:02.744	t	1
-21	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:47:03.31	2026-06-11 08:47:03.31	t	1
-22	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:47:04.275	2026-06-11 08:47:04.275	t	1
-23	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:47:05.158	2026-06-11 08:47:05.158	t	1
-24	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:48:36.625	2026-06-11 08:48:36.625	t	1
-25	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:48:37.441	2026-06-11 08:48:37.441	t	1
-26	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:48:38.408	2026-06-11 08:48:38.408	t	1
-27	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:48:39.379	2026-06-11 08:48:39.379	t	1
-28	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:13.311	2026-06-11 08:49:13.311	t	1
-29	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:13.79	2026-06-11 08:49:13.79	t	1
-30	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:14.93	2026-06-11 08:49:14.93	t	1
-31	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:15.661	2026-06-11 08:49:15.661	t	1
-32	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:43.702	2026-06-11 08:49:43.702	t	1
-33	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:44.284	2026-06-11 08:49:44.284	t	1
-34	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:45.495	2026-06-11 08:49:45.495	t	1
-35	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-11 08:49:46.366	2026-06-11 08:49:46.366	t	1
+39	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-12 09:15:23.038	2026-06-12 09:15:23.038	t	1
+40	3	1	Pump checklist	Routine inspection checklist for industrial motors	2026-06-12 09:15:58.688	2026-06-12 09:15:58.688	t	1
+41	3	6	Pump checklist	Routine inspection checklist for industrial motors	2026-06-12 09:28:37.917	2026-06-12 09:28:37.917	t	1
 \.
 
 
@@ -2851,6 +2821,13 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 508	3	$2b$10$sZHx7XSbzJSDAs6bkX0va.GnUauqaQquzMEJgG.P/8uTte1QCcLaS	unknown	::ffff:127.0.0.1	unknown	t	2026-06-11 08:49:46.127	2026-06-11 08:49:46.127	2026-06-18 08:49:46.126	d4c003ed-e0c4-44a9-92d2-10e65959bb30
 509	3	$2b$10$I/FPXp7wMTJr1JwqMatCNOXEfSAA8gYnz/2L6sOzw9L4DqPoG0OpW	unknown	::ffff:127.0.0.1	unknown	t	2026-06-11 08:49:46.515	2026-06-11 08:49:46.515	2026-06-18 08:49:46.515	7bee9a36-ff6b-48d6-afc2-dc87f39e017c
 510	3	$2b$10$SzrVZOYDVG9lSP9VFCbul.93IBi6jWBLCdKKQREUYACwFWmBdra7q	unknown	::ffff:127.0.0.1	unknown	t	2026-06-11 08:49:46.644	2026-06-11 08:49:46.644	2026-06-18 08:49:46.643	06371b82-b5a8-46e0-8351-6fdde2d28a5d
+517	3	$2b$10$.io5DT/0F4XR58AF1JkkAeFDUrb8qlrFIOrXeNiOopBFsv/.o6x3W	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 10:35:37.95	2026-06-12 10:33:04.723	2026-06-19 10:33:04.688	b316ba8f-63d0-4c73-9492-b07284d8c7ff
+511	3	$2b$10$hoc95iRs2LAkWwsIW8M8zuLlI.kGkMevVAP/I1tOqJUXQgXutgTkO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 08:00:01.86	2026-06-12 07:52:52.2	2026-06-19 07:52:52.174	ec0cb6eb-9b75-42fc-b706-907e2e78ce7c
+512	3	$2b$10$tmufxi.nz3/1MIGdKezh2urW7dQ7nqdIqTj8joHwBJF.hYd/8SW86	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 08:40:23.529	2026-06-12 08:36:37.672	2026-06-19 08:36:37.6	5b86881e-530c-4b98-aca0-775a4d0b5c1a
+513	3	$2b$10$wcVg0hA.wbJQt85k7qFDrOixWy.pEQuravEPuOcTwHHveSjirxLBm	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 08:59:48.048	2026-06-12 08:47:33.647	2026-06-19 08:47:33.611	e100f66f-3c04-4d5a-9bb1-a43c958a7121
+514	3	$2b$10$WhlmtoTOPmZ04Ev0jQgokejsrLMQlbiUdxj5pmsU3YGVDFd7Dj0ei	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:12:52.221	2026-06-12 09:00:52.771	2026-06-19 09:00:52.752	2258ee1e-6f34-49d2-90f9-56debf208ceb
+515	3	$2b$10$AL/QyPlohGvN07s3AFLGV.VV7x6OwNKZ4hMqe2VtYafj5lgXEk6je	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:28:37.955	2026-06-12 09:14:46.688	2026-06-19 09:14:46.667	c7d6b0ee-2762-491d-9f79-c4fd7ef0ae3a
+516	3	$2b$10$Pi6uLvYIOZ3KhFwuRpl7FuQ3XzSD9g.pMiqH0z9coaMGKs.0Oz.1u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:54:26.048	2026-06-12 09:41:37.671	2026-06-19 09:41:37.648	dbe81a5a-0a92-4a35-90ea-23b4afb7f9e7
 \.
 
 
@@ -2878,7 +2855,7 @@ aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 682, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 695, true);
 
 
 --
@@ -2899,14 +2876,14 @@ SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 1, false);
 -- Name: ChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 53, true);
+SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 74, true);
 
 
 --
 -- Name: ChecklistTemplate_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 35, true);
+SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 41, true);
 
 
 --
@@ -3018,7 +2995,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 19, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 510, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 517, true);
 
 
 --
@@ -3836,5 +3813,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict cCwVJ2D5AeQpSWJQYukpZdquD7fibfdv4LYlwSFjFA6o6xQcuc7LrtfytYzRVw1
+\unrestrict MbyRq0oyQRIkz1kwC8JJAKj3N3czBiibbnJLPbUgc2yHs00SRGipcvvQgbkP7bB
 

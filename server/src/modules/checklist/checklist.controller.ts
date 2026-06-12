@@ -1,9 +1,13 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -19,12 +23,14 @@ import type {
   MetaType,
 } from '../../common/types/auth.types';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
+import { ChecklistQueryDto } from './dto/checklist-query.dto';
+import { QueryDto } from '../../common/dto/query.dto';
 
 @Controller('checklist')
 export class ChecklistController {
   constructor(private checklist: ChecklistService) {}
 
-  // Create Checklist
+  //#region Create checklist
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN, RoleType.MANAGER)
   @Post('checklist-template')
@@ -40,4 +46,64 @@ export class ChecklistController {
       message: 'Checklist template created',
     };
   }
+  //#endregion
+
+  //#region Get checklist templates
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('checklist-template')
+  async getChecklistTemplates(
+    @Req() req: AuthenticateRequest,
+    @Query() query: ChecklistQueryDto,
+  ) {
+    const { data, pagination } = await this.checklist.getChecklistTemplates(
+      req.user,
+      query,
+    );
+
+    return {
+      data,
+      pagination,
+    };
+  }
+  //#endregion
+
+  //#region Get Checklist template by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Get('checklist-template/:id')
+  async getChecklistTemplateById(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const checklist = await this.checklist.getChecklistTemplateById(
+      id,
+      req.user,
+    );
+
+    return {
+      data: checklist,
+    };
+  }
+  //#endregion
+
+  //#region Get checklist templates by equipment type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Get('checklist-template/equipment-type/:typeId')
+  async getChecklistTemplatesByTypeId(
+    @Param('typeId', ParseIntPipe) typeId: number,
+    @Req() req: AuthenticateRequest,
+    @Query() query: QueryDto,
+  ) {
+    const checklists = await this.checklist.getChecklistTemplateByTypeId(
+      typeId,
+      req.user,
+      query,
+    );
+
+    return {
+      data: checklists,
+    };
+  }
+  //#endregion
 }
