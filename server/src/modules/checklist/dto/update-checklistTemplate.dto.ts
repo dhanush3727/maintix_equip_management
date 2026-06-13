@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
@@ -10,24 +10,26 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { CreateChecklistItemDto } from './create-checklistItem.dto';
+import { UpdateChecklistItemDto } from './update-checklistItem.dto';
 
-export class CreateChecklistTemplateDto {
-  @ApiProperty({ example: 'Checklist Template' })
+export class UpdateChecklistTemplateDto {
+  @ApiPropertyOptional({ example: 'Checklist Template' })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
     return value.trim().replace(/\s+/g, ' ');
   })
-  name!: string;
+  name?: string;
 
-  @ApiProperty({ example: 0 })
+  @ApiPropertyOptional({ example: 0 })
   @IsInt()
+  @IsOptional()
   @IsNotEmpty()
   @IsPositive()
-  equipmentTypeId!: number;
+  equipmentTypeId?: number;
 
   @ApiPropertyOptional({ example: 'Checklist template description' })
   @IsString()
@@ -35,12 +37,10 @@ export class CreateChecklistTemplateDto {
   @IsNotEmpty()
   description?: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
-  @Type(() => CreateChecklistItemDto)
-  items!: CreateChecklistItemDto[];
+  @Type(() => UpdateChecklistItemDto)
+  items!: UpdateChecklistItemDto[];
 }
-
-// @ValidateNested - Validate the objects inside this property using their own DTO rules.

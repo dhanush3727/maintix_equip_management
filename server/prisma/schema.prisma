@@ -406,10 +406,15 @@ model ChecklistTemplate {
   name                  String
   description           String?
   version               Int                 @default(1) //instead of update the record create with new version
+  parentId              Int?  //ID of the first template in a version group
   isActive              Boolean             @default(true)
 
   organization          Organization        @relation(fields: [organizationId], references: [id])
   equipmentType         EquipmentType       @relation(fields: [equipmentTypeId], references: [id])
+
+  // Self-relation to manage versions of the checklist template
+  parent                ChecklistTemplate?  @relation("TemplateVersion", fields: [parentId], references: [id])
+  childVersions         ChecklistTemplate[] @relation("TemplateVersion")
 
   items                 ChecklistItem[]
   schedules             PMSchedule[]
@@ -435,6 +440,8 @@ model ChecklistItem {
   options           String? //JSON
   isRequired        Boolean                 @default(true) // Defines whether this check is mandatory
   isActive          Boolean                 @default(true)
+
+  taskItems         TaskChecklistItem[]
 
   template          ChecklistTemplate       @relation(fields: [templateId], references: [id])
 

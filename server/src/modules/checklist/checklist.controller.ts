@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   Req,
@@ -25,6 +26,7 @@ import type {
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { ChecklistQueryDto } from './dto/checklist-query.dto';
 import { QueryDto } from '../../common/dto/query.dto';
+import { UpdateChecklistTemplateDto } from './dto/update-checklistTemplate.dto';
 
 @Controller('checklist')
 export class ChecklistController {
@@ -103,6 +105,29 @@ export class ChecklistController {
 
     return {
       data: checklists,
+    };
+  }
+  //#endregion
+
+  //#region Update checklist template version
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Patch('checklist-template/:id')
+  async updateChecklistTemplateVersion(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateChecklistTemplateDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.checklist.updateChecklistTemplateVersion(
+      id,
+      dto,
+      req.user,
+      meta,
+    );
+
+    return {
+      message: 'Create a new template version',
     };
   }
   //#endregion

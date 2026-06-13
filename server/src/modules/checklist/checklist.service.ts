@@ -16,6 +16,7 @@ import {
 } from '../../common/utils/query-builder.util';
 import { ChecklistQueryDto } from './dto/checklist-query.dto';
 import { QueryDto } from '../../common/dto/query.dto';
+import { UpdateChecklistTemplateDto } from './dto/update-checklistTemplate.dto';
 
 @Injectable()
 export class ChecklistService {
@@ -139,9 +140,6 @@ export class ChecklistService {
       },
       // Use `include` to fetch related items along with the checklist template in the same query.
       // Use `select` instead when you need to limit fields for better performance and smaller payload.
-      include: {
-        items: true,
-      },
     });
 
     await this.audit.logs({
@@ -395,6 +393,84 @@ export class ChecklistService {
       data: formattedChecklists,
       pagination,
     };
+  }
+  //#endregion
+
+  //#region  update template version
+  async updateChecklistTemplateVersion(
+    id: number,
+    dto: UpdateChecklistTemplateDto,
+    req: RequestUser,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+    const { name, equipmentTypeId, description, items } = dto;
+
+    // Check equipment type
+    const equipmentType = await this.prisma.equipmentType.findFirst({
+      where: { id: equipmentTypeId, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!equipmentType)
+      throw new NotFoundException('Equipment type is not found');
+
+    if (!equipmentType.isActive) {
+      throw new BadRequestException('Equipment type is deactivated');
+    }
+
+    const existing = await this.prisma.checklistTemplate.findFirst({
+      where: { id, organizationId, isActive: true },
+      include: { items: true },
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Checklist template is not found');
+    }
+
+    const rootParentId = existing.parentId ?? existing.id;
+
+    await this.prisma.$transaction(async (tx) => {
+      // deactivate old version
+      await tx.checklistTemplate.update({
+        where: { id: existing.id },
+        data: { isActive: false },
+      });
+
+      // Create new version
+      await tx.checklistTemplate.create({
+        data: {
+          organizationId,
+          equipmentTypeId: equipmentTypeId ?? existing.equipmentTypeId,
+          name: name ?? existing.name,
+          description: description ?? existing.description,
+          parentId: rootParentId,
+          version: existing.version + 1,
+          items: {
+            create: items.map((item) => ({
+              name: item.name,
+              order: item.order,
+              type: item.type,
+              expectedValue: item.expectedValue ?? null,
+              minValue: item.minValue ?? null,
+              maxValue: item.maxValue ?? null,
+              // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
+              options: item.options ? JSON.stringify(item.options) : null,
+              isRequired: item.isRequired ?? true,
+            })),
+          },
+        },
+      });
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_CHECKLIST,
+      module: AuditModule.CHECKLIST,
+      recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 }
