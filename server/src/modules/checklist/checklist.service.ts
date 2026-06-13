@@ -192,6 +192,7 @@ export class ChecklistService {
         select: {
           id: true,
           organizationId: true,
+          parentId: true,
           name: true,
           description: true,
           isActive: true,
@@ -226,6 +227,7 @@ export class ChecklistService {
     const formattedChecklists = checklistTemplates.map((list) => ({
       id: list.id,
       organizationId: list.organizationId,
+      parentId: list.parentId,
       name: list.name,
       description: list.description,
       isActive: list.isActive,
@@ -250,6 +252,7 @@ export class ChecklistService {
       select: {
         id: true,
         organizationId: true,
+        parentId: true,
         name: true,
         description: true,
         isActive: true,
@@ -283,6 +286,7 @@ export class ChecklistService {
     const formattedChecklist = {
       id: checklistTemplate.id,
       organizationId: checklistTemplate.organizationId,
+      parentId: checklistTemplate.parentId,
       name: checklistTemplate.name,
       description: checklistTemplate.description,
       isActive: checklistTemplate.isActive,
@@ -347,6 +351,7 @@ export class ChecklistService {
         select: {
           id: true,
           organizationId: true,
+          parentId: true,
           name: true,
           description: true,
           isActive: true,
@@ -381,6 +386,7 @@ export class ChecklistService {
     const formattedChecklists = checklists.map((list) => ({
       id: list.id,
       organizationId: list.organizationId,
+      parentId: list.parentId,
       name: list.name,
       description: list.description,
       isActive: list.isActive,
@@ -469,6 +475,51 @@ export class ChecklistService {
       action: AuditAction.UPDATE_CHECKLIST,
       module: AuditModule.CHECKLIST,
       recordId: userId.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Deactivate checklist template
+  async deactivateChecklistTemplate(
+    id: number,
+    req: RequestUser,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+
+    const exisiting = await this.prisma.checklistTemplate.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true, parentId: true },
+    });
+
+    if (!exisiting) throw new NotFoundException('Checklist template not found');
+
+    if (!exisiting.isActive) {
+      throw new BadRequestException('Checklist already deactivated');
+    }
+
+    const rootId = exisiting.parentId ?? exisiting.id;
+
+    const updated = await this.prisma.checklistTemplate.updateMany({
+      where: {
+        organizationId,
+        OR: [{ id: rootId }, { parentId: rootId }],
+        isActive: true,
+      },
+      data: { isActive: false },
+    });
+
+    if (updated.count === 0) {
+      throw new BadRequestException('No active templates found to deactivate');
+    }
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVATE_CHECKLIST,
+      module: AuditModule.CHECKLIST,
+      recordId: id.toString(),
       ipAddress: meta?.ipAddress,
     });
   }

@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict MbyRq0oyQRIkz1kwC8JJAKj3N3czBiibbnJLPbUgc2yHs00SRGipcvvQgbkP7bB
+\restrict 62H6dkIwBvnYZxRH6n3AKzxJcg3acQdlifBnGDrTtR27G00v8VN0vPETuFL8Js3
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -25,6 +25,7 @@ ALTER TABLE ONLY maintix."UserRole" DROP CONSTRAINT "UserRole_userId_fkey";
 ALTER TABLE ONLY maintix."UserRole" DROP CONSTRAINT "UserRole_roleId_fkey";
 ALTER TABLE ONLY maintix."UserDepartment" DROP CONSTRAINT "UserDepartment_userId_fkey";
 ALTER TABLE ONLY maintix."UserDepartment" DROP CONSTRAINT "UserDepartment_departmentId_fkey";
+ALTER TABLE ONLY maintix."TaskChecklistItem" DROP CONSTRAINT "TaskChecklistItem_templateItemId_fkey";
 ALTER TABLE ONLY maintix."TaskChecklistItem" DROP CONSTRAINT "TaskChecklistItem_taskId_fkey";
 ALTER TABLE ONLY maintix."PasswordReset" DROP CONSTRAINT "PasswordReset_userId_fkey";
 ALTER TABLE ONLY maintix."PMTask" DROP CONSTRAINT "PMTask_templateId_fkey";
@@ -49,6 +50,7 @@ ALTER TABLE ONLY maintix."Equipment" DROP CONSTRAINT "Equipment_departmentId_fke
 ALTER TABLE ONLY maintix."EquipmentType" DROP CONSTRAINT "EquipmentType_organizationId_fkey";
 ALTER TABLE ONLY maintix."EmailVerification" DROP CONSTRAINT "EmailVerification_userId_fkey";
 ALTER TABLE ONLY maintix."Department" DROP CONSTRAINT "Department_organizationId_fkey";
+ALTER TABLE ONLY maintix."ChecklistTemplate" DROP CONSTRAINT "ChecklistTemplate_parentId_fkey";
 ALTER TABLE ONLY maintix."ChecklistTemplate" DROP CONSTRAINT "ChecklistTemplate_organizationId_fkey";
 ALTER TABLE ONLY maintix."ChecklistTemplate" DROP CONSTRAINT "ChecklistTemplate_equipmentTypeId_fkey";
 ALTER TABLE ONLY maintix."ChecklistItem" DROP CONSTRAINT "ChecklistItem_templateId_fkey";
@@ -63,6 +65,7 @@ DROP INDEX maintix."User_email_key";
 DROP INDEX maintix."UserSession_jti_key";
 DROP INDEX maintix."UserRole_userId_roleId_key";
 DROP INDEX maintix."UserDepartment_userId_key";
+DROP INDEX maintix."TaskChecklistItem_templateItemId_idx";
 DROP INDEX maintix."TaskChecklistItem_taskId_idx";
 DROP INDEX maintix."Role_name_key";
 DROP INDEX maintix."PasswordReset_userId_idx";
@@ -581,7 +584,8 @@ CREATE TABLE maintix."ChecklistTemplate" (
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "updatedAt" timestamp(3) without time zone NOT NULL,
     "isActive" boolean DEFAULT true NOT NULL,
-    version integer DEFAULT 1 NOT NULL
+    version integer DEFAULT 1 NOT NULL,
+    "parentId" integer
 );
 
 
@@ -1059,7 +1063,11 @@ CREATE TABLE maintix."TaskChecklistItem" (
     "expectedValue" text,
     "actualValue" text,
     status maintix."ItemStatus",
-    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "maxValue" double precision,
+    "minValue" double precision,
+    options text,
+    "templateItemId" integer NOT NULL
 );
 
 
@@ -2092,6 +2100,17 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 693	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-12 09:28:37.95
 694	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 09:41:37.695
 695	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-12 10:33:04.753
+696	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 05:56:27.365
+697	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 05:57:20.695
+698	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 05:58:20.328
+699	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 06:47:57.618
+700	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 06:50:32.213
+701	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 07:57:49.921
+702	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 08:13:29.882
+703	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 08:31:54.121
+704	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 08:57:40.308
+705	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 09:03:16.772
+706	3	3	DEACTIVATE_CHECKLIST	CHECKLIST	45	::1	2026-06-13 09:04:17.885
 \.
 
 
@@ -2116,18 +2135,20 @@ COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy
 --
 
 COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt", "isActive", "isRequired", "maxValue", "minValue", options, type) FROM stdin;
-63	39	Check motor temperature	1	\N	2026-06-12 09:15:23.038	t	t	40	20	\N	NUMBER
-64	39	Inspector remarks	2	\N	2026-06-12 09:15:23.038	t	t	\N	\N	\N	TEXT
-65	39	Motor condition	3	AVERAGE	2026-06-12 09:15:23.038	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-66	39	Check abnormal noise	4	true	2026-06-12 09:15:23.038	t	t	\N	\N	\N	BOOLEAN
-67	40	Check motor temperature	1	\N	2026-06-12 09:15:58.688	t	t	40	20	\N	NUMBER
-68	40	Inspector remarks	2	\N	2026-06-12 09:15:58.688	t	t	\N	\N	\N	TEXT
-69	40	Motor condition	3	AVERAGE	2026-06-12 09:15:58.688	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-70	40	Check abnormal noise	4	true	2026-06-12 09:15:58.688	t	t	\N	\N	\N	BOOLEAN
-71	41	Check motor temperature	1	\N	2026-06-12 09:28:37.917	t	t	40	20	\N	NUMBER
-72	41	Inspector remarks	2	\N	2026-06-12 09:28:37.917	t	t	\N	\N	\N	TEXT
-73	41	Motor condition	3	AVERAGE	2026-06-12 09:28:37.917	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-74	41	Check abnormal noise	4	true	2026-06-12 09:28:37.917	t	t	\N	\N	\N	BOOLEAN
+75	42	Check motor temperature	1	\N	2026-06-13 05:57:20.655	t	t	40	20	\N	NUMBER
+76	42	Inspector remarks	2	\N	2026-06-13 05:57:20.655	t	t	\N	\N	\N	TEXT
+77	42	Motor condition	3	AVERAGE	2026-06-13 05:57:20.655	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+78	42	Check abnormal noise	4	true	2026-06-13 05:57:20.655	t	t	\N	\N	\N	BOOLEAN
+79	43	Check motor temperature	1	\N	2026-06-13 05:58:20.29	t	t	40	20	\N	NUMBER
+80	43	Inspector remarks	2	\N	2026-06-13 05:58:20.29	t	t	\N	\N	\N	TEXT
+81	43	Motor condition	3	AVERAGE	2026-06-13 05:58:20.29	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+82	43	Check abnormal noise	4	true	2026-06-13 05:58:20.29	t	t	\N	\N	\N	BOOLEAN
+83	44	Check pump temperature	1	\N	2026-06-13 06:50:32.19	t	t	40	20	\N	NUMBER
+84	44	Inspector remarks	2	\N	2026-06-13 06:50:32.19	t	t	\N	\N	\N	TEXT
+85	44	Pump condition	3	AVERAGE	2026-06-13 06:50:32.19	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+86	45	Check pump temperature	1	\N	2026-06-13 09:03:16.747	t	t	40	20	\N	NUMBER
+87	45	Inspector remarks	2	\N	2026-06-13 09:03:16.747	t	t	\N	\N	\N	TEXT
+88	45	Pump condition	3	AVERAGE	2026-06-13 09:03:16.747	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
 \.
 
 
@@ -2135,10 +2156,11 @@ COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", 
 -- Data for Name: ChecklistTemplate; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt", "isActive", version) FROM stdin;
-39	3	1	Motor Preventive Maintenance Checklist	Routine inspection checklist for industrial motors	2026-06-12 09:15:23.038	2026-06-12 09:15:23.038	t	1
-40	3	1	Pump checklist	Routine inspection checklist for industrial motors	2026-06-12 09:15:58.688	2026-06-12 09:15:58.688	t	1
-41	3	6	Pump checklist	Routine inspection checklist for industrial motors	2026-06-12 09:28:37.917	2026-06-12 09:28:37.917	t	1
+COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt", "isActive", version, "parentId") FROM stdin;
+44	3	1	Pump checklist	Routine inspection checklist for industrial motors	2026-06-13 06:50:32.19	2026-06-13 09:03:16.674	f	2	42
+45	3	1	Pump checklist	Routine inspection checklist for industrial motors	2026-06-13 09:03:16.747	2026-06-13 09:04:17.881	f	3	42
+43	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 05:58:20.29	2026-06-13 05:58:20.29	t	1	\N
+42	3	6	Pump checklist	Routine inspection checklist for industrial motors	2026-06-13 05:57:20.655	2026-06-13 06:50:32.125	f	1	\N
 \.
 
 
@@ -2270,7 +2292,7 @@ COPY maintix."Role" (id, name) FROM stdin;
 -- Data for Name: TaskChecklistItem; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."TaskChecklistItem" (id, "taskId", name, "order", "expectedValue", "actualValue", status, "createdAt") FROM stdin;
+COPY maintix."TaskChecklistItem" (id, "taskId", name, "order", "expectedValue", "actualValue", status, "createdAt", "maxValue", "minValue", options, "templateItemId") FROM stdin;
 \.
 
 
@@ -2823,10 +2845,16 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 510	3	$2b$10$SzrVZOYDVG9lSP9VFCbul.93IBi6jWBLCdKKQREUYACwFWmBdra7q	unknown	::ffff:127.0.0.1	unknown	t	2026-06-11 08:49:46.644	2026-06-11 08:49:46.644	2026-06-18 08:49:46.643	06371b82-b5a8-46e0-8351-6fdde2d28a5d
 517	3	$2b$10$.io5DT/0F4XR58AF1JkkAeFDUrb8qlrFIOrXeNiOopBFsv/.o6x3W	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 10:35:37.95	2026-06-12 10:33:04.723	2026-06-19 10:33:04.688	b316ba8f-63d0-4c73-9492-b07284d8c7ff
 511	3	$2b$10$hoc95iRs2LAkWwsIW8M8zuLlI.kGkMevVAP/I1tOqJUXQgXutgTkO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 08:00:01.86	2026-06-12 07:52:52.2	2026-06-19 07:52:52.174	ec0cb6eb-9b75-42fc-b706-907e2e78ce7c
+518	3	$2b$10$YiZu1Qwr5Ct0D2aBDhRVQetQKg9nYJX65ykkjNmDMBVzRX.CK7ufG	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 05:58:20.331	2026-06-13 05:56:27.339	2026-06-20 05:56:27.325	dbaf3d80-8d01-4aeb-bc39-c395415f429a
 512	3	$2b$10$tmufxi.nz3/1MIGdKezh2urW7dQ7nqdIqTj8joHwBJF.hYd/8SW86	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 08:40:23.529	2026-06-12 08:36:37.672	2026-06-19 08:36:37.6	5b86881e-530c-4b98-aca0-775a4d0b5c1a
+519	3	$2b$10$3TrbBDsA7Tctts5Bm8iwZOVln5.e1e5.H7NsXwfq8UtAtew1f8t12	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 06:50:32.216	2026-06-13 06:47:57.602	2026-06-20 06:47:57.592	98289b55-efd1-4c7b-ae87-79889aedce6b
 513	3	$2b$10$wcVg0hA.wbJQt85k7qFDrOixWy.pEQuravEPuOcTwHHveSjirxLBm	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 08:59:48.048	2026-06-12 08:47:33.647	2026-06-19 08:47:33.611	e100f66f-3c04-4d5a-9bb1-a43c958a7121
+520	3	$2b$10$k1fvFmISKpo56jI2m2kb5ODF8QDKJ9eBlau.6EZPL0LgDOY1gXMEW	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 08:02:15.437	2026-06-13 07:57:49.906	2026-06-20 07:57:49.893	70f66eb9-78df-448c-a6d6-c901e66d5029
+521	3	$2b$10$fKAJ8Wa2isJkC8B.6ey29Ol29Gwd4yl3IqUy3TyNXC4MfZl/.ZgV.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 08:26:18.391	2026-06-13 08:13:29.871	2026-06-20 08:13:29.857	3e23d12c-0f73-43ba-96fb-690d10d9f53a
 514	3	$2b$10$WhlmtoTOPmZ04Ev0jQgokejsrLMQlbiUdxj5pmsU3YGVDFd7Dj0ei	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:12:52.221	2026-06-12 09:00:52.771	2026-06-19 09:00:52.752	2258ee1e-6f34-49d2-90f9-56debf208ceb
+522	3	$2b$10$xK3OiNPcCCnMdk0vPXh0nOKuYzFoyZGjKglMe2i3UeKgiyCBzcmlu	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 08:33:19.377	2026-06-13 08:31:54.112	2026-06-20 08:31:54.11	2c743eba-54ba-4ac8-8bcf-5c49df264c40
 515	3	$2b$10$AL/QyPlohGvN07s3AFLGV.VV7x6OwNKZ4hMqe2VtYafj5lgXEk6je	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:28:37.955	2026-06-12 09:14:46.688	2026-06-19 09:14:46.667	c7d6b0ee-2762-491d-9f79-c4fd7ef0ae3a
+523	3	$2b$10$qyjgsPTHl94zI7wUt8PfDOB8zJHZ5ZpH5I3hRyraNw5P8cd1Q7eqS	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 09:04:17.887	2026-06-13 08:57:40.279	2026-06-20 08:57:40.246	71710ab3-18b8-48f3-9b21-30538346a140
 516	3	$2b$10$Pi6uLvYIOZ3KhFwuRpl7FuQ3XzSD9g.pMiqH0z9coaMGKs.0Oz.1u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:54:26.048	2026-06-12 09:41:37.671	2026-06-19 09:41:37.648	dbe81a5a-0a92-4a35-90ea-23b4afb7f9e7
 \.
 
@@ -2836,9 +2864,11 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 --
 
 COPY maintix._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
+3afbf743-80bb-4c8f-bd6e-fd54b3cbac7f	07f307a1ca7a06dae0ded769798a6744df626e006009463bd260d08f21e7ff02	2026-06-13 11:21:40.463418+05:30	20260613055140_self_relation_checklist	\N	\N	2026-06-13 11:21:40.417555+05:30	1
 54838640-ea2f-41ff-ba8e-2b3065f6e60e	b4402850a3c6541219bfcf25bf8ca80f005bea894d948f42b1c0392836b4c7ab	2026-05-27 15:43:11.52598+05:30	20260510102600_init	\N	\N	2026-05-27 15:43:11.503766+05:30	1
 1b794e6d-1001-4907-9328-fa882cfe8fd5	6cf8851451c4178c2bfa78fde77fd3294f47438833db367100553e6ff2070dbf	2026-05-27 15:43:11.728392+05:30	20260513161309_schema_created	\N	\N	2026-05-27 15:43:11.527143+05:30	1
 4e61a481-52f7-4b9b-ac82-6f4e4d2640f7	73b60d7d6f5ad21e94e75e40bc8f157d57cafcc88ab52e7242c5b50d8eaf1dc0	2026-05-27 15:43:11.735367+05:30	20260516104029_change_enum	\N	\N	2026-05-27 15:43:11.728653+05:30	1
+afd1f646-26ad-47b5-8a8d-38da02094d9a	983b569ebf602ffdab1b880064e63915500ca83424ac55e6a31d7410373b2f53	2026-06-13 11:23:36.302043+05:30	20260613055336_parent_id	\N	\N	2026-06-13 11:23:36.273882+05:30	1
 5cadf90b-8a1f-4c8e-9b29-d803a7a042a4	e0efb9853f985db93912089420b7963e205b711966a000f06894e042e87f6f3a	2026-05-27 15:43:11.742661+05:30	20260518083631_changed_role_enum	\N	\N	2026-05-27 15:43:11.735655+05:30	1
 919595c5-8d44-4981-b165-858c00ced962	42162cf8d0b9f2d5b4adb688cc8957899531df60adcca992e8b04fc727003f14	2026-05-27 15:43:11.749298+05:30	20260519051129_add_jti	\N	\N	2026-05-27 15:43:11.74303+05:30	1
 6401857d-004d-4129-85a4-20907f7c7a13	c69831e974c57f607e53f6c15c19f3daa461034d3ed6eb96a198ccd33b8f4072	2026-05-27 15:43:11.753676+05:30	20260523073200_password_reset	\N	\N	2026-05-27 15:43:11.749569+05:30	1
@@ -2848,6 +2878,7 @@ d21f9caa-e2d9-42be-a267-80044c624cc7	1c219de35db2852f0e0fbea8c795e265d75f0f65a0c
 ab4d9e42-2ebe-407e-a254-8d169a9bb738	a31ea9b42a86d895a7f164fe2d71b75b7880dd09f5971e05baccd2ae5ae53419	2026-05-28 14:30:27.816084+05:30	20260528090027_add_uniqueness	\N	\N	2026-05-28 14:30:27.764168+05:30	1
 aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8d88e590be124009d995e7	2026-06-05 10:27:23.170992+05:30	20260605045722_equipment	\N	\N	2026-06-05 10:27:22.952003+05:30	1
 77fa00d0-c80c-45f6-b226-a0682862a3fd	137ccaeea0a9f1206e24020b8dc5825b624e7a41323233836d2accd96cd727e7	2026-06-10 14:45:27.256064+05:30	20260610091526_checklist	\N	\N	2026-06-10 14:45:26.991122+05:30	1
+38ce2c71-e14c-4c9d-b6bd-efb12074640d	229b9b770220cffe5cd67964772619a54c033c9aa8d5fe5ad4dd086929872c97	2026-06-13 10:53:57.757869+05:30	20260613052357_checklisr_parent_id	\N	\N	2026-06-13 10:53:57.665698+05:30	1
 \.
 
 
@@ -2855,7 +2886,7 @@ aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 695, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 706, true);
 
 
 --
@@ -2876,14 +2907,14 @@ SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 1, false);
 -- Name: ChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 74, true);
+SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 88, true);
 
 
 --
 -- Name: ChecklistTemplate_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 41, true);
+SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 45, true);
 
 
 --
@@ -2995,7 +3026,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 19, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 517, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 523, true);
 
 
 --
@@ -3463,6 +3494,13 @@ CREATE INDEX "TaskChecklistItem_taskId_idx" ON maintix."TaskChecklistItem" USING
 
 
 --
+-- Name: TaskChecklistItem_templateItemId_idx; Type: INDEX; Schema: maintix; Owner: -
+--
+
+CREATE INDEX "TaskChecklistItem_templateItemId_idx" ON maintix."TaskChecklistItem" USING btree ("templateItemId");
+
+
+--
 -- Name: UserDepartment_userId_key; Type: INDEX; Schema: maintix; Owner: -
 --
 
@@ -3567,6 +3605,14 @@ ALTER TABLE ONLY maintix."ChecklistTemplate"
 
 ALTER TABLE ONLY maintix."ChecklistTemplate"
     ADD CONSTRAINT "ChecklistTemplate_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES maintix."Organization"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: ChecklistTemplate ChecklistTemplate_parentId_fkey; Type: FK CONSTRAINT; Schema: maintix; Owner: -
+--
+
+ALTER TABLE ONLY maintix."ChecklistTemplate"
+    ADD CONSTRAINT "ChecklistTemplate_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES maintix."ChecklistTemplate"(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
@@ -3762,6 +3808,14 @@ ALTER TABLE ONLY maintix."TaskChecklistItem"
 
 
 --
+-- Name: TaskChecklistItem TaskChecklistItem_templateItemId_fkey; Type: FK CONSTRAINT; Schema: maintix; Owner: -
+--
+
+ALTER TABLE ONLY maintix."TaskChecklistItem"
+    ADD CONSTRAINT "TaskChecklistItem_templateItemId_fkey" FOREIGN KEY ("templateItemId") REFERENCES maintix."ChecklistItem"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
 -- Name: UserDepartment UserDepartment_departmentId_fkey; Type: FK CONSTRAINT; Schema: maintix; Owner: -
 --
 
@@ -3813,5 +3867,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict MbyRq0oyQRIkz1kwC8JJAKj3N3czBiibbnJLPbUgc2yHs00SRGipcvvQgbkP7bB
+\unrestrict 62H6dkIwBvnYZxRH6n3AKzxJcg3acQdlifBnGDrTtR27G00v8VN0vPETuFL8Js3
 

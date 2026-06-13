@@ -131,4 +131,21 @@ export class ChecklistController {
     };
   }
   //#endregion
+
+  //#region Deactivate checklist template
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @Patch('checklist-template/:id/deactivate')
+  async deactivateChecklistTemplate(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.checklist.deactivateChecklistTemplate(id, req.user, meta);
+
+    return {
+      message: 'Templates deactivated successfully',
+    };
+  }
+  //#endregion
 }

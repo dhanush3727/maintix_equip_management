@@ -425,6 +425,7 @@ model ChecklistTemplate {
 
   @@index([organizationId])
   @@index([equipmentTypeId])
+  @@index([parentId])
 }
 
 model ChecklistItem {

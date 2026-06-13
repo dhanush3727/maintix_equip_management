@@ -51,6 +51,7 @@ export enum AuditAction {
   // Checklist Actions
   CREATE_CHECKLIST = 'CREATE_CHECKLIST',
   UPDATE_CHECKLIST = 'UPDATE_CHECKLIST',
+  DEACTIVATE_CHECKLIST = 'DEACTIVATE_CHECKLIST',
 }
 
 export enum AuditModule {
