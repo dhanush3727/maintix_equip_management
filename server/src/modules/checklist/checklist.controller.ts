@@ -89,8 +89,7 @@ export class ChecklistController {
   //#endregion
 
   //#region Get checklist templates by equipment type
-  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
-  @Roles(RoleType.ADMIN, RoleType.MANAGER)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Get('checklist-template/equipment-type/:typeId')
   async getChecklistTemplatesByTypeId(
     @Param('typeId', ParseIntPipe) typeId: number,
@@ -145,6 +144,24 @@ export class ChecklistController {
 
     return {
       message: 'Templates deactivated successfully',
+    };
+  }
+  //#endregion
+
+  //#region Get checklist by versions
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('checklist-template/:id/versions')
+  async getChecklistTemplatesByVersions(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const { data } = await this.checklist.getChecklistTemplatesVersions(
+      id,
+      req.user,
+    );
+
+    return {
+      data,
     };
   }
   //#endregion

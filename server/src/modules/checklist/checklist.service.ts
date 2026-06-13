@@ -117,29 +117,37 @@ export class ChecklistService {
       }
     }
 
-    // Create checklist template and item
-    await this.prisma.checklistTemplate.create({
-      data: {
-        organizationId,
-        equipmentTypeId,
-        name,
-        description,
-        items: {
-          create: items.map((item) => ({
-            name: item.name,
-            order: item.order,
-            type: item.type,
-            expectedValue: item.expectedValue ?? null,
-            minValue: item.minValue ?? null,
-            maxValue: item.maxValue ?? null,
-            // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
-            options: item.options ? JSON.stringify(item.options) : null,
-            isRequired: item.isRequired ?? true,
-          })),
+    await this.prisma.$transaction(async (tx) => {
+      // Create checklist template and item
+      const template = await tx.checklistTemplate.create({
+        data: {
+          organizationId,
+          equipmentTypeId,
+          name,
+          description,
+          parentId: null,
+          items: {
+            create: items.map((item) => ({
+              name: item.name,
+              order: item.order,
+              type: item.type,
+              expectedValue: item.expectedValue ?? null,
+              minValue: item.minValue ?? null,
+              maxValue: item.maxValue ?? null,
+              // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
+              options: item.options ? JSON.stringify(item.options) : null,
+              isRequired: item.isRequired ?? true,
+            })),
+          },
         },
-      },
-      // Use `include` to fetch related items along with the checklist template in the same query.
-      // Use `select` instead when you need to limit fields for better performance and smaller payload.
+        // Use `include` to fetch related items along with the checklist template in the same query.
+        // Use `select` instead when you need to limit fields for better performance and smaller payload.
+      });
+
+      await tx.checklistTemplate.update({
+        where: { id: template.id },
+        data: { parentId: template.id },
+      });
     });
 
     await this.audit.logs({
@@ -193,6 +201,7 @@ export class ChecklistService {
           id: true,
           organizationId: true,
           parentId: true,
+          version: true,
           name: true,
           description: true,
           isActive: true,
@@ -226,13 +235,14 @@ export class ChecklistService {
 
     const formattedChecklists = checklistTemplates.map((list) => ({
       id: list.id,
-      organizationId: list.organizationId,
-      parentId: list.parentId,
       name: list.name,
-      description: list.description,
-      isActive: list.isActive,
+      organizationId: list.organizationId,
       equipmentTypeId: list.equipmentTypeId,
       equipmentType: list.equipmentType.name,
+      parentId: list.parentId,
+      version: list.version,
+      description: list.description,
+      isActive: list.isActive,
       checklistItems: list.items,
     }));
 
@@ -256,6 +266,7 @@ export class ChecklistService {
         name: true,
         description: true,
         isActive: true,
+        version: true,
         equipmentTypeId: true,
         equipmentType: {
           select: {
@@ -285,13 +296,14 @@ export class ChecklistService {
 
     const formattedChecklist = {
       id: checklistTemplate.id,
-      organizationId: checklistTemplate.organizationId,
-      parentId: checklistTemplate.parentId,
       name: checklistTemplate.name,
-      description: checklistTemplate.description,
-      isActive: checklistTemplate.isActive,
+      organizationId: checklistTemplate.organizationId,
       equipmentTypeId: checklistTemplate.equipmentTypeId,
       equipmentType: checklistTemplate.equipmentType.name,
+      parentId: checklistTemplate.parentId,
+      version: checklistTemplate.version,
+      description: checklistTemplate.description,
+      isActive: checklistTemplate.isActive,
       checklistItems: checklistTemplate.items,
     };
 
@@ -352,6 +364,7 @@ export class ChecklistService {
           id: true,
           organizationId: true,
           parentId: true,
+          version: true,
           name: true,
           description: true,
           isActive: true,
@@ -385,13 +398,14 @@ export class ChecklistService {
 
     const formattedChecklists = checklists.map((list) => ({
       id: list.id,
-      organizationId: list.organizationId,
-      parentId: list.parentId,
       name: list.name,
-      description: list.description,
-      isActive: list.isActive,
+      organizationId: list.organizationId,
       equipmentTypeId: list.equipmentTypeId,
       equipmentType: list.equipmentType.name,
+      parentId: list.parentId,
+      version: list.version,
+      description: list.description,
+      isActive: list.isActive,
       checklistItems: list.items,
     }));
 
@@ -402,7 +416,7 @@ export class ChecklistService {
   }
   //#endregion
 
-  //#region  update template version
+  //#region update template version
   async updateChecklistTemplateVersion(
     id: number,
     dto: UpdateChecklistTemplateDto,
@@ -522,6 +536,58 @@ export class ChecklistService {
       recordId: id.toString(),
       ipAddress: meta?.ipAddress,
     });
+  }
+  //#endregion
+
+  //#region Get checklist templates by version
+  async getChecklistTemplatesVersions(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    // Check that template exist
+    const exisit = await this.prisma.checklistTemplate.findFirst({
+      where: { id, organizationId },
+      select: { id: true, parentId: true },
+    });
+
+    if (!exisit) throw new NotFoundException('Checklist template not found');
+
+    const rootId = exisit.parentId ?? exisit.id;
+
+    const versions = await this.prisma.checklistTemplate.findMany({
+      where: { organizationId, parentId: rootId },
+      orderBy: { version: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        organizationId: true,
+        parentId: true,
+        version: true,
+        description: true,
+        isActive: true,
+        equipmentTypeId: true,
+        equipmentType: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    const formattedVersions = versions.map((list) => ({
+      id: list.id,
+      name: list.name,
+      organizationId: list.organizationId,
+      parentId: list.parentId,
+      version: list.version,
+      description: list.description,
+      isActive: list.isActive,
+      equipmentTypeId: list.equipmentTypeId,
+      equipmentType: list.equipmentType.name,
+    }));
+
+    return {
+      data: formattedVersions,
+    };
   }
   //#endregion
 }

@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict 62H6dkIwBvnYZxRH6n3AKzxJcg3acQdlifBnGDrTtR27G00v8VN0vPETuFL8Js3
+\restrict iHzltjCbOrdQRCwe7lqDE4Vwb08ejecEcCq1gJaHrN7vBAbj2Ymj7zzWTPKEB7h
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -97,6 +97,7 @@ DROP INDEX maintix."EmailVerification_token_key";
 DROP INDEX maintix."EmailVerification_expiresAt_idx";
 DROP INDEX maintix."Department_organizationId_name_key";
 DROP INDEX maintix."Department_organizationId_code_key";
+DROP INDEX maintix."ChecklistTemplate_parentId_idx";
 DROP INDEX maintix."ChecklistTemplate_organizationId_idx";
 DROP INDEX maintix."ChecklistTemplate_equipmentTypeId_idx";
 DROP INDEX maintix."ChecklistItem_templateId_order_key";
@@ -2111,6 +2112,17 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 704	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 08:57:40.308
 705	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 09:03:16.772
 706	3	3	DEACTIVATE_CHECKLIST	CHECKLIST	45	::1	2026-06-13 09:04:17.885
+707	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 12:00:14.988
+708	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 12:35:54.419
+709	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-13 13:06:09.739
+710	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:11:17.235
+711	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:12:06.769
+712	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:13:39.982
+713	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:14:57.099
+714	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:16:11.603
+715	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:17:24.684
+716	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:19:00.623
+717	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:19:18.627
 \.
 
 
@@ -2135,20 +2147,33 @@ COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy
 --
 
 COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt", "isActive", "isRequired", "maxValue", "minValue", options, type) FROM stdin;
-75	42	Check motor temperature	1	\N	2026-06-13 05:57:20.655	t	t	40	20	\N	NUMBER
-76	42	Inspector remarks	2	\N	2026-06-13 05:57:20.655	t	t	\N	\N	\N	TEXT
-77	42	Motor condition	3	AVERAGE	2026-06-13 05:57:20.655	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-78	42	Check abnormal noise	4	true	2026-06-13 05:57:20.655	t	t	\N	\N	\N	BOOLEAN
-79	43	Check motor temperature	1	\N	2026-06-13 05:58:20.29	t	t	40	20	\N	NUMBER
-80	43	Inspector remarks	2	\N	2026-06-13 05:58:20.29	t	t	\N	\N	\N	TEXT
-81	43	Motor condition	3	AVERAGE	2026-06-13 05:58:20.29	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-82	43	Check abnormal noise	4	true	2026-06-13 05:58:20.29	t	t	\N	\N	\N	BOOLEAN
-83	44	Check pump temperature	1	\N	2026-06-13 06:50:32.19	t	t	40	20	\N	NUMBER
-84	44	Inspector remarks	2	\N	2026-06-13 06:50:32.19	t	t	\N	\N	\N	TEXT
-85	44	Pump condition	3	AVERAGE	2026-06-13 06:50:32.19	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-86	45	Check pump temperature	1	\N	2026-06-13 09:03:16.747	t	t	40	20	\N	NUMBER
-87	45	Inspector remarks	2	\N	2026-06-13 09:03:16.747	t	t	\N	\N	\N	TEXT
-88	45	Pump condition	3	AVERAGE	2026-06-13 09:03:16.747	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+89	47	Check motor temperature	1	\N	2026-06-13 13:11:17.204	t	t	40	20	\N	NUMBER
+90	47	Inspector remarks	2	\N	2026-06-13 13:11:17.204	t	t	\N	\N	\N	TEXT
+91	47	Motor condition	3	AVERAGE	2026-06-13 13:11:17.204	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+92	47	Check abnormal noise	4	true	2026-06-13 13:11:17.204	t	t	\N	\N	\N	BOOLEAN
+93	48	Check pump temperature	1	\N	2026-06-13 13:12:06.748	t	t	40	20	\N	NUMBER
+94	48	Inspector remarks	2	\N	2026-06-13 13:12:06.748	t	t	\N	\N	\N	TEXT
+95	48	Pump condition	3	AVERAGE	2026-06-13 13:12:06.748	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+96	48	Check abnormal noise	4	true	2026-06-13 13:12:06.748	t	t	\N	\N	\N	BOOLEAN
+97	49	Surface cleanliness	1	true	2026-06-13 13:13:39.965	t	t	\N	\N	\N	BOOLEAN
+98	49	Noise level	2	\N	2026-06-13 13:13:39.965	t	t	70	10	\N	NUMBER
+99	49	Operational status	3	RUNNING	2026-06-13 13:13:39.965	t	t	\N	\N	["RUNNING","IDLE","STOPPED"]	SELECT
+100	49	Visual damage	4	false	2026-06-13 13:13:39.965	t	t	\N	\N	\N	BOOLEAN
+101	49	Remarks	5	\N	2026-06-13 13:13:39.965	t	f	\N	\N	\N	TEXT
+102	50	Emergency access clear	1	true	2026-06-13 13:14:57.079	t	t	\N	\N	\N	BOOLEAN
+103	50	Ambient temperature	2	\N	2026-06-13 13:14:57.079	t	t	35	18	\N	NUMBER
+104	50	Indicator status	3	NORMAL	2026-06-13 13:14:57.079	t	t	\N	\N	["NORMAL","WARNING","CRITICAL"]	SELECT
+105	50	Power supply stable	4	true	2026-06-13 13:14:57.079	t	t	\N	\N	\N	BOOLEAN
+106	50	Visible wear or damage	5	false	2026-06-13 13:14:57.079	t	t	\N	\N	\N	BOOLEAN
+107	50	Inspector notes	6	\N	2026-06-13 13:14:57.079	t	f	\N	\N	\N	TEXT
+108	51	Check motor temperature	1	\N	2026-06-13 13:16:11.594	t	t	40	20	\N	NUMBER
+109	51	Motor condition	2	AVERAGE	2026-06-13 13:16:11.594	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+110	52	Inspector remarks	1	\N	2026-06-13 13:17:24.673	t	t	\N	\N	\N	TEXT
+111	53	Check pump temperature	1	\N	2026-06-13 13:19:00.616	t	t	40	20	\N	NUMBER
+112	53	Inspector remarks	2	\N	2026-06-13 13:19:00.616	t	t	\N	\N	\N	TEXT
+113	53	Pump condition	3	AVERAGE	2026-06-13 13:19:00.616	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+114	54	Check pump temperature	1	\N	2026-06-13 13:19:18.619	t	t	40	20	\N	NUMBER
+115	54	Pump condition	2	AVERAGE	2026-06-13 13:19:18.619	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
 \.
 
 
@@ -2157,10 +2182,14 @@ COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", 
 --
 
 COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt", "isActive", version, "parentId") FROM stdin;
-44	3	1	Pump checklist	Routine inspection checklist for industrial motors	2026-06-13 06:50:32.19	2026-06-13 09:03:16.674	f	2	42
-45	3	1	Pump checklist	Routine inspection checklist for industrial motors	2026-06-13 09:03:16.747	2026-06-13 09:04:17.881	f	3	42
-43	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 05:58:20.29	2026-06-13 05:58:20.29	t	1	\N
-42	3	6	Pump checklist	Routine inspection checklist for industrial motors	2026-06-13 05:57:20.655	2026-06-13 06:50:32.125	f	1	\N
+49	3	1	General Equipment Inspection	Standard checklist for routine inspection	2026-06-13 13:13:39.965	2026-06-13 13:13:39.973	t	1	49
+50	3	6	Workstation Safety Inspection	Checklist to ensure safety and operational readiness	2026-06-13 13:14:57.079	2026-06-13 13:14:57.086	t	1	50
+47	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 13:11:17.204	2026-06-13 13:16:11.588	f	1	47
+51	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 13:16:11.594	2026-06-13 13:17:24.669	f	2	47
+52	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 13:17:24.673	2026-06-13 13:17:24.673	t	3	47
+48	3	6	Pump checklist	Routine inspection checklist for industrial pumps	2026-06-13 13:12:06.748	2026-06-13 13:19:00.61	f	1	48
+53	3	1	Pump checklist	Routine inspection checklist for industrial pumps	2026-06-13 13:19:00.616	2026-06-13 13:19:18.614	f	2	48
+54	3	1	Pump checklist	Routine inspection checklist for industrial pumps	2026-06-13 13:19:18.619	2026-06-13 13:19:18.619	t	3	48
 \.
 
 
@@ -2856,6 +2885,9 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 515	3	$2b$10$AL/QyPlohGvN07s3AFLGV.VV7x6OwNKZ4hMqe2VtYafj5lgXEk6je	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:28:37.955	2026-06-12 09:14:46.688	2026-06-19 09:14:46.667	c7d6b0ee-2762-491d-9f79-c4fd7ef0ae3a
 523	3	$2b$10$qyjgsPTHl94zI7wUt8PfDOB8zJHZ5ZpH5I3hRyraNw5P8cd1Q7eqS	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 09:04:17.887	2026-06-13 08:57:40.279	2026-06-20 08:57:40.246	71710ab3-18b8-48f3-9b21-30538346a140
 516	3	$2b$10$Pi6uLvYIOZ3KhFwuRpl7FuQ3XzSD9g.pMiqH0z9coaMGKs.0Oz.1u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-12 09:54:26.048	2026-06-12 09:41:37.671	2026-06-19 09:41:37.648	dbe81a5a-0a92-4a35-90ea-23b4afb7f9e7
+524	3	$2b$10$/RwGuhMe1BmFlELRQzpEZu.HdnEFO7lX3J1P5Hthut8sR9F7sjNB2	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 12:00:14.967	2026-06-13 12:00:14.967	2026-06-20 12:00:14.949	5ba612d4-1153-4293-a359-5210ab0b6abc
+526	3	$2b$10$P3pwat8MQ42oX/O4hUOdD.4xK3jmITjZWDshkQ/JKHxkqZGbFj4Oe	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 13:20:34.515	2026-06-13 13:06:09.726	2026-06-20 13:06:09.708	01a12d74-e093-4256-b40c-83fb39d8ff4c
+525	3	$2b$10$ffCsr8Rtcu4KpPmEpWl16.28KY8FTGqn.cMu8bHurwuGNqXbqKVPi	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 12:44:30.498	2026-06-13 12:35:54.4	2026-06-20 12:35:54.384	833e686a-de5d-4363-946b-b9686763aa15
 \.
 
 
@@ -2879,6 +2911,9 @@ ab4d9e42-2ebe-407e-a254-8d169a9bb738	a31ea9b42a86d895a7f164fe2d71b75b7880dd09f59
 aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8d88e590be124009d995e7	2026-06-05 10:27:23.170992+05:30	20260605045722_equipment	\N	\N	2026-06-05 10:27:22.952003+05:30	1
 77fa00d0-c80c-45f6-b226-a0682862a3fd	137ccaeea0a9f1206e24020b8dc5825b624e7a41323233836d2accd96cd727e7	2026-06-10 14:45:27.256064+05:30	20260610091526_checklist	\N	\N	2026-06-10 14:45:26.991122+05:30	1
 38ce2c71-e14c-4c9d-b6bd-efb12074640d	229b9b770220cffe5cd67964772619a54c033c9aa8d5fe5ad4dd086929872c97	2026-06-13 10:53:57.757869+05:30	20260613052357_checklisr_parent_id	\N	\N	2026-06-13 10:53:57.665698+05:30	1
+7cd59ab1-23dd-4dd2-a528-a1d7e95c44e5	e54efe5eefada6cd3db71536721cb9d32ad4a97bfc1c5eddab72255af14a8c2e	2026-06-13 17:25:52.753946+05:30	20260613115552_checklist_parentid	\N	\N	2026-06-13 17:25:52.706916+05:30	1
+d2d5037e-4c36-47ed-a7ca-85684bb49532	f119af7878a2ffbcba4dd8fc29e211a2819541e241d3c1669a35626aa824364a	2026-06-13 18:33:01.719448+05:30	20260613130301_parent_id_not_optional	\N	\N	2026-06-13 18:33:01.672448+05:30	1
+c2954958-2518-4277-b3cd-1c6fdb6c355e	983b569ebf602ffdab1b880064e63915500ca83424ac55e6a31d7410373b2f53	2026-06-13 18:40:51.658809+05:30	20260613131051_parent_id_optional	\N	\N	2026-06-13 18:40:51.643445+05:30	1
 \.
 
 
@@ -2886,7 +2921,7 @@ aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 706, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 717, true);
 
 
 --
@@ -2907,14 +2942,14 @@ SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 1, false);
 -- Name: ChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 88, true);
+SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 115, true);
 
 
 --
 -- Name: ChecklistTemplate_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 45, true);
+SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 54, true);
 
 
 --
@@ -3026,7 +3061,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 19, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 523, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 526, true);
 
 
 --
@@ -3274,6 +3309,13 @@ CREATE INDEX "ChecklistTemplate_equipmentTypeId_idx" ON maintix."ChecklistTempla
 --
 
 CREATE INDEX "ChecklistTemplate_organizationId_idx" ON maintix."ChecklistTemplate" USING btree ("organizationId");
+
+
+--
+-- Name: ChecklistTemplate_parentId_idx; Type: INDEX; Schema: maintix; Owner: -
+--
+
+CREATE INDEX "ChecklistTemplate_parentId_idx" ON maintix."ChecklistTemplate" USING btree ("parentId");
 
 
 --
@@ -3867,5 +3909,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 62H6dkIwBvnYZxRH6n3AKzxJcg3acQdlifBnGDrTtR27G00v8VN0vPETuFL8Js3
+\unrestrict iHzltjCbOrdQRCwe7lqDE4Vwb08ejecEcCq1gJaHrN7vBAbj2Ymj7zzWTPKEB7h
 
