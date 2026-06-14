@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict iHzltjCbOrdQRCwe7lqDE4Vwb08ejecEcCq1gJaHrN7vBAbj2Ymj7zzWTPKEB7h
+\restrict 1M8szaQhYkx3vR6CzAIGOx4AdDrKjza3BXp6dLfJVq4CWOFaOsQkTaevv5Ccs2i
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -923,7 +923,8 @@ CREATE TABLE maintix."PMSchedule" (
     "assignedTo" integer NOT NULL,
     "isActive" boolean DEFAULT true NOT NULL,
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "updatedAt" timestamp(3) without time zone NOT NULL
+    "updatedAt" timestamp(3) without time zone NOT NULL,
+    "lastGeneratedAt" timestamp(3) without time zone
 );
 
 
@@ -2123,6 +2124,7 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 715	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:17:24.684
 716	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:19:00.623
 717	3	3	UPDATE_CHECKLIST	CHECKLIST	3	::1	2026-06-13 13:19:18.627
+718	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-14 05:14:08.294
 \.
 
 
@@ -2284,7 +2286,7 @@ COPY maintix."Organization" (id, name, slug, "industryType", "companySize", coun
 -- Data for Name: PMSchedule; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "frequencyType", "interval", "startDate", "nextDueDate", "assignedTo", "isActive", "createdAt", "updatedAt") FROM stdin;
+COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "frequencyType", "interval", "startDate", "nextDueDate", "assignedTo", "isActive", "createdAt", "updatedAt", "lastGeneratedAt") FROM stdin;
 \.
 
 
@@ -2333,6 +2335,12 @@ COPY maintix."User" (id, name, email, "createdAt", "isActive", "isEmailVerified"
 3	Charu	dhanush7825@gmail.com	2026-05-27 10:17:22.496	t	f	\N	3	$2b$10$ZMdO7/xBGcpbjpOEU3hxnOoJvDXiVixFAaS0zhIf6FbFdK7IvlrUG	2026-06-04 05:23:27.672
 2	Dhanush kumar	dhanush3727@gmail.com	2026-05-27 10:16:53.958	t	f	\N	2	$2b$10$2SNQJ2nd4P5upH.pYYHOt.pi1a0BJn1wKZTIi2edxKs96GhW7Mh0e	2026-06-04 05:31:01.546
 4	John	dhanush1@gmail.com	2026-05-29 09:38:54.476	t	t	\N	3	$2b$10$2EzMpYFNkHk5RHqpnFsnL.6.UemjscxnL7096o4NQ1dTjNtoJXIWW	2026-06-04 09:05:53.889
+5	User 1	testUser1@gmail.com	2026-06-14 05:27:12.389	t	f	\N	3	$2b$10$hKEzkNAeK0XYYrDoW.h...P.yx1bEqABLZ/iya.YlRVwPRdU5m2Ni	2026-06-14 05:27:12.389
+6	User 2	testUser2@gmail.com	2026-06-14 05:28:32.113	t	f	\N	3	$2b$10$XkFDj0EmrHyITM//ttHs6O7cdtxoTpHnKD/OJiVXlhSDo3WYdzCl.	2026-06-14 05:28:32.113
+8	Manager	testUser3@gmail.com	2026-06-14 05:29:51.247	t	f	\N	3	$2b$10$3v305YccmwWvChAKqkbOouZemgi4zSB5EtBhjQ2tKoDkwvv3xyDBu	2026-06-14 05:29:51.247
+10	Technician	technicianuser@gmail.com	2026-06-14 05:30:29.028	t	f	\N	3	$2b$10$BtSEWR4XrT..SGAYjROEhuXeJ4AYrIDEPonUH/RHnqXj.JIQwI1Dm	2026-06-14 05:30:29.028
+11	Inspector	inspectoruser@gmail.com	2026-06-14 05:31:00.273	t	f	\N	3	$2b$10$cM5etnJ9Lpi/EKPburdAtOldJ4VhMfkvNK1FgrcyA6TODH8HPGB9i	2026-06-14 05:31:00.273
+12	Engineer	engineeruser@gmail.com	2026-06-14 05:31:20.084	t	f	\N	3	$2b$10$Ho569/B9zMvGBMcbSrad/eDadqGnvzlpsFvsiT8p7AXp4vXTbHm06	2026-06-14 05:31:20.084
 \.
 
 
@@ -2354,6 +2362,12 @@ COPY maintix."UserRole" (id, "userId", "roleId") FROM stdin;
 2	3	1
 18	4	4
 19	4	5
+20	5	2
+21	6	3
+22	8	2
+23	10	3
+24	11	4
+25	12	4
 \.
 
 
@@ -2888,6 +2902,7 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 524	3	$2b$10$/RwGuhMe1BmFlELRQzpEZu.HdnEFO7lX3J1P5Hthut8sR9F7sjNB2	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 12:00:14.967	2026-06-13 12:00:14.967	2026-06-20 12:00:14.949	5ba612d4-1153-4293-a359-5210ab0b6abc
 526	3	$2b$10$P3pwat8MQ42oX/O4hUOdD.4xK3jmITjZWDshkQ/JKHxkqZGbFj4Oe	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 13:20:34.515	2026-06-13 13:06:09.726	2026-06-20 13:06:09.708	01a12d74-e093-4256-b40c-83fb39d8ff4c
 525	3	$2b$10$ffCsr8Rtcu4KpPmEpWl16.28KY8FTGqn.cMu8bHurwuGNqXbqKVPi	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-13 12:44:30.498	2026-06-13 12:35:54.4	2026-06-20 12:35:54.384	833e686a-de5d-4363-946b-b9686763aa15
+527	3	$2b$10$p6uxHGgdiEfJz4zx03JdTuAUEPY9jYBFsxpAwb7ZXb8/.0tSG7iTW	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-14 05:14:08.28	2026-06-14 05:14:08.28	2026-06-21 05:14:08.265	bb00d463-669d-44e7-a8eb-8d7296644d02
 \.
 
 
@@ -2914,6 +2929,7 @@ aecfa4d2-a838-4c43-b4cb-f5e55a354810	5d7ed9757f075cdce423645261de0220d3941ee5dc8
 7cd59ab1-23dd-4dd2-a528-a1d7e95c44e5	e54efe5eefada6cd3db71536721cb9d32ad4a97bfc1c5eddab72255af14a8c2e	2026-06-13 17:25:52.753946+05:30	20260613115552_checklist_parentid	\N	\N	2026-06-13 17:25:52.706916+05:30	1
 d2d5037e-4c36-47ed-a7ca-85684bb49532	f119af7878a2ffbcba4dd8fc29e211a2819541e241d3c1669a35626aa824364a	2026-06-13 18:33:01.719448+05:30	20260613130301_parent_id_not_optional	\N	\N	2026-06-13 18:33:01.672448+05:30	1
 c2954958-2518-4277-b3cd-1c6fdb6c355e	983b569ebf602ffdab1b880064e63915500ca83424ac55e6a31d7410373b2f53	2026-06-13 18:40:51.658809+05:30	20260613131051_parent_id_optional	\N	\N	2026-06-13 18:40:51.643445+05:30	1
+845d26d1-5b08-42b1-8475-91bf0befa2bc	143ed34989d8b9a9b612a434c78554ba5a89d007c5ad776497f2545c1b40fe00	2026-06-14 10:21:22.011105+05:30	20260614045121_pm_schedule	\N	\N	2026-06-14 10:21:22.002346+05:30	1
 \.
 
 
@@ -2921,7 +2937,7 @@ c2954958-2518-4277-b3cd-1c6fdb6c355e	983b569ebf602ffdab1b880064e63915500ca83424a
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 717, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 718, true);
 
 
 --
@@ -3054,21 +3070,21 @@ SELECT pg_catalog.setval('maintix."UserDepartment_id_seq"', 3, true);
 -- Name: UserRole_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 19, true);
+SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 25, true);
 
 
 --
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 526, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 527, true);
 
 
 --
 -- Name: User_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."User_id_seq"', 4, true);
+SELECT pg_catalog.setval('maintix."User_id_seq"', 12, true);
 
 
 --
@@ -3909,5 +3925,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict iHzltjCbOrdQRCwe7lqDE4Vwb08ejecEcCq1gJaHrN7vBAbj2Ymj7zzWTPKEB7h
+\unrestrict 1M8szaQhYkx3vR6CzAIGOx4AdDrKjza3BXp6dLfJVq4CWOFaOsQkTaevv5Ccs2i
 

@@ -1,6 +1,7 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient, RoleType } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 dotenv.config();
 
@@ -16,24 +17,25 @@ const adapter = new PrismaPg(
 const prisma = new PrismaClient({ adapter });
 
 async function main(): Promise<void> {
-  // It’s an array of RoleType that cannot be modified
-  const roles: ReadonlyArray<RoleType> = [
-    RoleType.ADMIN,
-    RoleType.MANAGER,
-    RoleType.TECHNICIAN,
-    RoleType.INSPECTOR,
-    RoleType.ENGINEER,
-  ];
+  const hashedPassword = await bcrypt.hash('Dhanush@3727', 10);
 
-  for (const role of roles) {
-    await prisma.role.upsert({
-      where: { name: role }, // Check that name is already have or not
-      update: {},
-      create: { name: role },
-    });
-  }
+  const user = await prisma.user.create({
+    data: {
+      name: 'Engineer',
+      organizationId: 3,
+      passwordHash: hashedPassword,
+      email: 'engineeruser@gmail.com',
+    },
+  });
 
-  console.log('Roles seeded successfully');
+  await prisma.userRole.create({
+    data: {
+      userId: user.id,
+      roleId: 4,
+    },
+  });
+
+  console.log('User seeded successfully');
 }
 
 main()

@@ -466,6 +466,7 @@ model PMSchedule {
 
   startDate           DateTime
   nextDueDate         DateTime
+  lastGeneratedAt     DateTime?
 
   assignedTo          Int
 
