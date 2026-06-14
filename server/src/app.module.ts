@@ -17,6 +17,7 @@ import { OrganizationModule } from './modules/organization/organization.module';
 import { UserModule } from './modules/user/user.module';
 import { EquipmentModule } from './modules/equipment/equipment.module';
 import { ChecklistModule } from './modules/checklist/checklist.module';
+import { PmschedulesModule } from './modules/pmschedules/pmschedules.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ChecklistModule } from './modules/checklist/checklist.module';
     UserModule,
     EquipmentModule,
     ChecklistModule,
+    PmschedulesModule,
   ],
   controllers: [AppController],
   providers: [
