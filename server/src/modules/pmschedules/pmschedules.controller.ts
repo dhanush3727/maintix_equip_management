@@ -16,13 +16,17 @@ import type {
   MetaType,
 } from '../../common/types/auth.types';
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { RoleType } from '@prisma/client';
 
 @Controller('pmschedules')
 export class PmschedulesController {
   constructor(private pmschedule: PmschedulesService) {}
 
   //#region Create PMSchedule
-  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.ENGINEER, RoleType.MANAGER)
   @Post()
   @HttpCode(HttpStatus.OK)
   async createPMSchedule(

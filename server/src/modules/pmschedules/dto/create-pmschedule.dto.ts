@@ -33,12 +33,6 @@ export class CreatePMScheduleDto {
   @IsNotEmpty()
   startDate!: Date;
 
-  @ApiProperty({ example: '2026-01-01' })
-  @Type(() => Date)
-  @IsDate()
-  @IsNotEmpty()
-  nextDueDate!: Date;
-
   @ApiProperty({ example: 1 })
   @IsNotEmpty()
   @IsInt()

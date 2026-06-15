@@ -9,6 +9,7 @@ import { CreatePMScheduleDto } from './dto/create-pmschedule.dto';
 import { MetaType, RequestUser } from '../../common/types/auth.types';
 import { EquipmentStatus } from '@prisma/client';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
+import { calculateNextDueDate } from './utils/calculateNextDueDate';
 
 @Injectable()
 export class PmschedulesService {
@@ -31,45 +32,67 @@ export class PmschedulesService {
       frequencyType,
       interval,
       startDate,
-      nextDueDate,
       assignedTo,
     } = dto;
 
+    const [equipment, template, user] = await Promise.all([
+      this.prisma.equipment.findFirst({
+        where: { id: equipmentId, organizationId },
+        select: { id: true, status: true },
+      }),
+      this.prisma.checklistTemplate.findFirst({
+        where: { id: templateId, organizationId },
+        select: { id: true, isActive: true },
+      }),
+      this.prisma.user.findFirst({
+        where: { id: assignedTo, organizationId },
+        select: {
+          id: true,
+          isActive: true,
+          roles: {
+            select: {
+              roleId: true,
+            },
+          },
+        },
+      }),
+    ]);
+
     // Check equipment exist
-    const equipment = await this.prisma.equipment.findFirst({
-      where: { id: equipmentId, organizationId },
-      select: { id: true, status: true },
-    });
-
     if (!equipment) throw new NotFoundException('Equipment not found');
-
     if (equipment.status === EquipmentStatus.INACTIVE) {
-      throw new BadRequestException('Equipment is deactivate');
+      throw new BadRequestException('Equipment is inactive');
     }
 
     // Check template
-    const template = await this.prisma.checklistTemplate.findFirst({
-      where: { id: templateId, organizationId },
-      select: { id: true, isActive: true },
-    });
-
     if (!template) throw new NotFoundException('Checklist template not found');
-
     if (!template.isActive) {
       throw new BadRequestException('Checklist template is deactivate');
     }
 
     // Check user
-    const user = await this.prisma.user.findFirst({
-      where: { id: assignedTo, organizationId },
-      select: { id: true, isActive: true },
-    });
-
     if (!user) throw new NotFoundException('User not found');
-
     if (!user.isActive) {
       throw new BadRequestException('User is deactivate');
     }
+    const isTechnician = user.roles.some((role) => role.roleId === 3);
+    if (!isTechnician) {
+      throw new BadRequestException('Assigned user must have Technician role');
+    }
+
+    // Allow only today/future dates
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for accurate comparison
+
+    if (startDate < today) {
+      throw new BadRequestException('Invalid start date');
+    }
+
+    const nextDueDate = calculateNextDueDate(
+      startDate,
+      frequencyType,
+      interval,
+    );
 
     await this.prisma.pMSchedule.create({
       data: {
