@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   Req,
@@ -24,6 +25,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RoleType } from '@prisma/client';
 import { PMScheduleQueryDto } from './dto/pmschedule-query.dto';
+import { UpdatePMScheduleDto } from './dto/update-pmschedule.dto';
 
 @Controller('pmschedules')
 export class PmschedulesController {
@@ -77,6 +79,58 @@ export class PmschedulesController {
 
     return {
       data,
+    };
+  }
+  //#endregion
+
+  //#region Update PM schedule
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER, RoleType.ENGINEER)
+  @Patch(':id')
+  async updatePMSchedule(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @Body() dto: UpdatePMScheduleDto,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.pmschedule.updatePMSchedule(id, req.user, dto, meta);
+
+    return {
+      message: 'PM Schedule updated successfully',
+    };
+  }
+  //#endregion
+
+  //#region Deactivate PM schedule
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER, RoleType.ENGINEER)
+  @Patch(':id/deactivate')
+  async deactivatePMSchedule(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.pmschedule.deactivatePMSchedule(id, req.user, meta);
+
+    return {
+      message: 'PM Schedule deactivated successfully',
+    };
+  }
+  //#endregion
+
+  //#region activate PM schedule
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.ADMIN, RoleType.MANAGER, RoleType.ENGINEER)
+  @Patch(':id/activate')
+  async activatePMSchedule(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.pmschedule.activatePMSchedule(id, req.user, meta);
+
+    return {
+      message: 'PM Schedule activated successfully',
     };
   }
   //#endregion

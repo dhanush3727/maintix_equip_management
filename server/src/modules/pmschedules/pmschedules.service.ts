@@ -16,6 +16,7 @@ import {
   buildQueryOptions,
   getPagination,
 } from '../../common/utils/query-builder.util';
+import { UpdatePMScheduleDto } from './dto/update-pmschedule.dto';
 
 @Injectable()
 export class PmschedulesService {
@@ -277,6 +278,190 @@ export class PmschedulesService {
     };
 
     return formattedPMSchedule;
+  }
+  //#endregion
+
+  //#region Get PMSchedule by equipment
+  async getPMScheduleByEquipment(
+    equipmentId: number,
+    req: RequestUser,
+    query: PMScheduleQueryDto,
+  ) {
+    const { organizationId } = req;
+
+    const { page, limit, sortBy, template, equipment, order } = query;
+  }
+  //#endregion
+
+  //#region update PMSchedule
+  async updatePMSchedule(
+    id: number,
+    req: RequestUser,
+    dto: UpdatePMScheduleDto,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+
+    const { frequencyType, interval, startDate, assignedTo } = dto;
+
+    const existing = await this.prisma.pMSchedule.findFirst({
+      where: { id, organizationId },
+      select: {
+        id: true,
+        startDate: true,
+        frequencyType: true,
+        interval: true,
+        isActive: true,
+      },
+    });
+
+    if (!existing) throw new NotFoundException('PMSchedule not found');
+
+    if (!existing.isActive) {
+      throw new BadRequestException('PMSchedule is deactivated');
+    }
+
+    const data: Prisma.PMScheduleUpdateInput = {};
+
+    if (frequencyType) data.frequencyType = frequencyType;
+
+    if (interval) data.interval = interval;
+
+    if (startDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0);
+
+      if (startDate < today) {
+        throw new BadRequestException('Invalid start date');
+      }
+
+      const nextDueDate = calculateNextDueDate(
+        startDate,
+        frequencyType ?? existing.frequencyType,
+        interval ?? existing.interval,
+      );
+
+      data.startDate = startDate;
+      data.nextDueDate = nextDueDate;
+    }
+
+    if (assignedTo) {
+      const user = await this.prisma.user.findFirst({
+        where: { id: assignedTo, organizationId },
+        select: { id: true, isActive: true, roles: true },
+      });
+
+      if (!user) throw new NotFoundException('User not found');
+      if (!user.isActive) {
+        throw new BadRequestException('User is deactivated');
+      }
+      const isTechnician = user.roles.some((role) => role.roleId === 3);
+      if (!isTechnician) {
+        throw new BadRequestException(
+          'Assigned user must have Technician role',
+        );
+      }
+
+      data.assignee = {
+        connect: {
+          id: assignedTo,
+        },
+      };
+    }
+
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('No valid fields provided');
+    }
+
+    if (frequencyType || interval || startDate) {
+      const finalStartDate = startDate ?? existing.startDate;
+      const finalFrequency = frequencyType ?? existing.frequencyType;
+      const finalInterval = interval ?? existing.interval;
+
+      const nextDueDate = calculateNextDueDate(
+        finalStartDate,
+        finalFrequency,
+        finalInterval,
+      );
+
+      data.nextDueDate = nextDueDate;
+    }
+
+    await this.prisma.pMSchedule.update({
+      where: { id, organizationId },
+      data,
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_PMSCHEDULE,
+      module: AuditModule.PM,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Deactivate PM Schedule
+  async deactivatePMSchedule(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const pmschedule = await this.prisma.pMSchedule.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!pmschedule) throw new NotFoundException('PM Schedule not found');
+
+    if (!pmschedule.isActive) {
+      throw new BadRequestException('PM Schedule already deactivated');
+    }
+
+    await this.prisma.pMSchedule.update({
+      where: { id, organizationId },
+      data: { isActive: false },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVATE_PMSCHEDULE,
+      module: AuditModule.PM,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Activate PM Schedule
+  async activatePMSchedule(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const pmschedule = await this.prisma.pMSchedule.findFirst({
+      where: { id, organizationId },
+      select: { id: true, isActive: true },
+    });
+
+    if (!pmschedule) throw new NotFoundException('PM Schedule not found');
+
+    if (pmschedule.isActive) {
+      throw new BadRequestException('PM Schedule already activated');
+    }
+
+    await this.prisma.pMSchedule.update({
+      where: { id, organizationId },
+      data: { isActive: true },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.DEACTIVATE_PMSCHEDULE,
+      module: AuditModule.PM,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
   }
   //#endregion
 }

@@ -192,8 +192,9 @@ export class EquipmentService {
 
     if (!equipType) throw new NotFoundException('Equipment type not found');
 
-    if (!equipType.isActive)
+    if (!equipType.isActive) {
       throw new ForbiddenException('The equipment type is deactivate');
+    }
 
     const data: Prisma.EquipmentTypeUpdateInput = {};
 
