@@ -129,8 +129,17 @@ export class PmschedulesService {
   async getPMSchedules(req: RequestUser, query: PMScheduleQueryDto) {
     const { organizationId } = req;
 
-    const { page, limit, sortBy, order, template, equipment, frequencyType } =
-      query;
+    const {
+      page,
+      limit,
+      sortBy,
+      order,
+      template,
+      equipment,
+      frequencyType,
+      from,
+      to,
+    } = query;
 
     const { skip, take } = getPagination(page, limit);
 
@@ -150,6 +159,15 @@ export class PmschedulesService {
 
     if (frequencyType) {
       filters.frequencyType = frequencyType;
+    }
+
+    if (from || to) {
+      filters.nextDueDate = {
+        gte: from,
+        lte: to,
+      };
+
+      console.log(from);
     }
 
     const { where, orderBy } = buildQueryOptions({
@@ -283,13 +301,118 @@ export class PmschedulesService {
 
   //#region Get PMSchedule by equipment
   async getPMScheduleByEquipment(
-    equipmentId: number,
+    id: number,
     req: RequestUser,
     query: PMScheduleQueryDto,
   ) {
     const { organizationId } = req;
 
-    const { page, limit, sortBy, template, equipment, order } = query;
+    const {
+      page,
+      limit,
+      sortBy,
+      template,
+      equipment,
+      order,
+      frequencyType,
+      from,
+      to,
+    } = query;
+
+    const { skip, take } = getPagination(page, limit);
+
+    const filters: Prisma.PMScheduleWhereInput = {
+      organizationId,
+      equipmentId: id,
+    };
+
+    if (frequencyType) filters.frequencyType = frequencyType;
+
+    if (template) {
+      filters.template = {
+        name: template,
+      };
+    }
+
+    if (equipment) {
+      filters.equipment = {
+        name: equipment,
+      };
+    }
+
+    if (from || to) {
+      filters.nextDueDate = {
+        gte: from,
+        lte: to,
+      };
+    }
+
+    const { where, orderBy } = buildQueryOptions({
+      order,
+      filters,
+      sortBy,
+    });
+
+    const [pmschedules, total] = await Promise.all([
+      this.prisma.pMSchedule.findMany({
+        where,
+        skip,
+        take,
+        orderBy: orderBy ?? { createdAt: 'desc' },
+        select: {
+          id: true,
+          organizationId: true,
+          equipmentId: true,
+          templateId: true,
+          frequencyType: true,
+          interval: true,
+          startDate: true,
+          nextDueDate: true,
+          assignedTo: true,
+          isActive: true,
+          equipment: {
+            select: {
+              name: true,
+            },
+          },
+          template: {
+            select: {
+              name: true,
+            },
+          },
+          assignee: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      }),
+
+      this.prisma.pMSchedule.count({ where }),
+    ]);
+
+    const pagination = buildPaginationMeta(page, limit, total);
+
+    const formattedPMSchedules = pmschedules.map((list) => ({
+      id: list.id,
+      organizationId: list.id,
+      equipmentId: list.equipmentId,
+      equipmentName: list.equipment.name,
+      templateId: list.templateId,
+      template: list.template.name,
+      assignedToId: list.assignedTo,
+      assignedTo: list.assignee.name,
+      frequencyType: list.frequencyType,
+      interval: list.interval,
+      startDate: list.startDate,
+      nextDueDate: list.nextDueDate,
+      isActive: list.isActive,
+    }));
+
+    return {
+      data: formattedPMSchedules,
+      pagination,
+    };
   }
   //#endregion
 

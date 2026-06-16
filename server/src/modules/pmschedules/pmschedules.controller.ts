@@ -83,6 +83,27 @@ export class PmschedulesController {
   }
   //#endregion
 
+  //#region Get PM Schedules by equipment
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get(':id/equipment')
+  async getPMSchedulesByEquipment(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @Query() query: PMScheduleQueryDto,
+  ) {
+    const { data, pagination } = await this.pmschedule.getPMScheduleByEquipment(
+      id,
+      req.user,
+      query,
+    );
+
+    return {
+      data,
+      pagination,
+    };
+  }
+  //#endregion
+
   //#region Update PM schedule
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN, RoleType.MANAGER, RoleType.ENGINEER)
