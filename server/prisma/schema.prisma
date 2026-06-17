@@ -496,6 +496,8 @@ model PMTask {
   equipmentId             Int
   templateId              Int
 
+  title                   String
+
   assignedTo              Int
 
   dueDate                 DateTime
@@ -521,6 +523,7 @@ model PMTask {
   @@index([scheduleId])
   @@index([dueDate])
   @@index([assignedTo])
+  @@index([status])
 }
 
 // Steps inside job
@@ -531,6 +534,7 @@ model TaskChecklistItem {
   templateItemId    Int // Reference to the original checklist item to get the type and validation rules
   name              String
   order             Int
+  type              ChecklistItemType
   expectedValue     String?
   minValue          Float?
   maxValue          Float?
@@ -541,7 +545,7 @@ model TaskChecklistItem {
   task              PMTask        @relation(fields: [taskId], references: [id])
   templateItem      ChecklistItem @relation(fields: [templateItemId], references: [id])
   createdAt         DateTime      @default(now())
-
+  updatedAt         DateTime      @updatedAt
   @@index([taskId])
   @@index([templateItemId])
 }
