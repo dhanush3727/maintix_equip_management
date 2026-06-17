@@ -19,6 +19,7 @@ import { EquipmentModule } from './modules/equipment/equipment.module';
 import { ChecklistModule } from './modules/checklist/checklist.module';
 import { PmschedulesModule } from './modules/pmschedules/pmschedules.module';
 import { PmtasksModule } from './modules/pmtasks/pmtasks.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -36,6 +37,8 @@ import { PmtasksModule } from './modules/pmtasks/pmtasks.module';
         },
       ],
     }),
+
+    ScheduleModule.forRoot(),
 
     PrismaModule,
     CloudinaryModule,
