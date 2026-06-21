@@ -30,45 +30,5 @@ type ScheduleWithTemplate = {
 export class CronService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   generateTask() {}
-
-  private async createTask(
-    schedule: ScheduleWithTemplate,
-    dueDate: Date,
-  ): Promise<void> {
-    const template = schedule.template;
-
-    await this.prisma.pMTask.create({
-      data: {
-        organizationId: schedule.organizationId,
-        scheduleId: schedule.id,
-        equipmentId: schedule.equipmentId,
-        templateId: schedule.templateId,
-
-        title: template.name, // snapshot
-
-        assignedTo: schedule.assignedTo,
-
-        dueDate,
-        status: 'PENDING',
-
-        checklistItems: {
-          create: template.items.map((item) => ({
-            templateItemId: item.id,
-            name: item.name,
-            order: item.order,
-            type: item.type,
-
-            expectedValue: item.expectedValue,
-            minValue: item.minValue,
-            maxValue: item.maxValue,
-            options: item.options,
-          })),
-        },
-      },
-    });
-
-    this.logger.log(
-      `Task created | Schedule: ${schedule.id} | Due: ${dueDate.toISOString()}`,
-    );
-  }
+  
 }
