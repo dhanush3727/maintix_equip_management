@@ -63,4 +63,33 @@ export class CronService {
 
     this.logger.log('PM Task generation completed');
   }
+
+    private async processSchedule(
+    schedule: ScheduleWithTemplate,
+    now: Date,
+  ): Promise<void> {
+    let nextDueDate: Date = new Date(schedule.nextDueDate);
+
+    // 🔥 Handle missed runs (critical)
+    while (nextDueDate <= now) {
+      // 3️⃣ Prevent duplicate task
+      const existing = await this.prisma.pMTask.findFirst({
+        where: {
+          scheduleId: schedule.id,
+          dueDate: nextDueDate,
+        },
+        select: { id: true },
+      });
+
+      if (!existing) {
+        await this.createTask(schedule, nextDueDate);
+      }
+
+      // 4️⃣ Move to next cycle
+      nextDueDate = this.calculateNextDueDate(
+        nextDueDate,
+        schedule.frequencyType,
+        schedule.interval,
+      );
+    }
 }
