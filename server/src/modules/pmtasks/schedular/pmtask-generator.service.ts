@@ -29,6 +29,38 @@ type ScheduleWithTemplate = {
 @Injectable()
 export class CronService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  generateTask() {}
-  
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async generateTasks(): Promise<void> {
+    this.logger.log('PM Task generation started');
+
+    const now: Date = new Date();
+    now.setHours(0, 0, 0, 0); // normalize
+
+    // 1️⃣ Get all due schedules
+    const schedules: ScheduleWithTemplate[] =
+      await this.prisma.pMSchedule.findMany({
+        where: {
+          isActive: true,
+          nextDueDate: {
+            lte: now,
+          },
+        },
+        include: {
+          template: {
+            include: {
+              items: true,
+            },
+          },
+        },
+      });
+
+    this.logger.log(`Schedules to process: ${schedules.length}`);
+
+    // 2️⃣ Process each schedule
+    for (const schedule of schedules) {
+      await this.processSchedule(schedule, now);
+    }
+
+    this.logger.log('PM Task generation completed');
+  }
 }
