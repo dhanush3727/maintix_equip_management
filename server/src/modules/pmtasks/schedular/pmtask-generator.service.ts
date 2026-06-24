@@ -1,143 +1,46 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
+import { calculateNextDueDate } from '../../pmschedules/utils/calculateNextDueDate';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PrismaService } from 'src/prisma/prisma.service';
 
-// 🔥 Strict typing for schedule (avoid "any" nonsense)
-type ScheduleWithTemplate = {
-  id: number;
-  organizationId: number;
-  equipmentId: number;
-  templateId: number;
-  assignedTo: number;
-  nextDueDate: Date;
-  frequencyType: 'DAILY' | 'WEEKLY' | 'MONTHLY';
-  interval: number;
-  template: {
-    id: number;
-    name: string;
-    items: {
-      id: number;
-      name: string;
-      order: number;
-      type: string;
-      expectedValue: string | null;
-      minValue: number | null;
-      maxValue: number | null;
-      options: unknown;
-    }[];
+// Define a type alias for the schedule with its related template and items
+type ScheduleType = Prisma.PMScheduleGetPayload<{
+  include: {
+    template: {
+      include: {
+        items: true;
+      };
+    };
   };
-};
+}>;
 
 @Injectable()
 export class PMTaskGeneratorService {
-  private readonly logger = new Logger(PMTaskGeneratorService.name);
+  constructor(private prisma: PrismaService) {}
 
-  constructor(private readonly prisma: PrismaService) {}
+  // #region Create a PMTask
+  async createTask(schedule: ScheduleType, dueDate: Date) {
+    const template = schedule.template; // Get the template associated with the schedule
 
-  // 🔥 Runs every midnight
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  async generateTasks(): Promise<void> {
-    this.logger.log('PM Task generation started');
-
-    const now: Date = new Date();
-    now.setHours(0, 0, 0, 0); // normalize
-
-    // 1️⃣ Get all due schedules
-    const schedules: ScheduleWithTemplate[] =
-      await this.prisma.pMSchedule.findMany({
-        where: {
-          isActive: true,
-          nextDueDate: {
-            lte: now,
-          },
-        },
-        include: {
-          template: {
-            include: {
-              items: true,
-            },
-          },
-        },
-      });
-
-    this.logger.log(`Schedules to process: ${schedules.length}`);
-
-    // 2️⃣ Process each schedule
-    for (const schedule of schedules) {
-      await this.processSchedule(schedule, now);
-    }
-
-    this.logger.log('PM Task generation completed');
-  }
-
-  // 🔥 Core logic per schedule
-  private async processSchedule(
-    schedule: ScheduleWithTemplate,
-    now: Date,
-  ): Promise<void> {
-    let nextDueDate: Date = new Date(schedule.nextDueDate);
-
-    // 🔥 Handle missed runs (critical)
-    while (nextDueDate <= now) {
-      // 3️⃣ Prevent duplicate task
-      const existing = await this.prisma.pMTask.findFirst({
-        where: {
-          scheduleId: schedule.id,
-          dueDate: nextDueDate,
-        },
-        select: { id: true },
-      });
-
-      if (!existing) {
-        await this.createTask(schedule, nextDueDate);
-      }
-
-      // 4️⃣ Move to next cycle
-      nextDueDate = this.calculateNextDueDate(
-        nextDueDate,
-        schedule.frequencyType,
-        schedule.interval,
-      );
-    }
-
-    // 5️⃣ Update schedule safely
-    await this.prisma.pMSchedule.update({
-      where: { id: schedule.id },
-      data: {
-        nextDueDate,
-        lastGeneratedAt: new Date(),
-      },
-    });
-  }
-
-  // 🔥 Task creation (snapshot logic)
-  private async createTask(
-    schedule: ScheduleWithTemplate,
-    dueDate: Date,
-  ): Promise<void> {
-    const template = schedule.template;
-
+    // Create a new PMTask with the provided schedule and due date, and also create checklist items based on the template
     await this.prisma.pMTask.create({
       data: {
         organizationId: schedule.organizationId,
         scheduleId: schedule.id,
         equipmentId: schedule.equipmentId,
         templateId: schedule.templateId,
-
-        title: template.name, // snapshot
-
+        title: template.name,
         assignedTo: schedule.assignedTo,
-
         dueDate,
-        status: 'PENDING',
 
+        // Create checklist items based on the template
         checklistItems: {
           create: template.items.map((item) => ({
             templateItemId: item.id,
             name: item.name,
             order: item.order,
             type: item.type,
-
             expectedValue: item.expectedValue,
             minValue: item.minValue,
             maxValue: item.maxValue,
@@ -146,37 +49,82 @@ export class PMTaskGeneratorService {
         },
       },
     });
-
-    this.logger.log(
-      `Task created | Schedule: ${schedule.id} | Due: ${dueDate.toISOString()}`,
-    );
   }
+  //#endregion
 
-  // 🔥 Frequency logic
-  private calculateNextDueDate(
-    current: Date,
-    frequencyType: 'DAILY' | 'WEEKLY' | 'MONTHLY',
-    interval: number,
-  ): Date {
-    const next = new Date(current);
+  // #region Process schedule
+  async processSchedule(schedule: ScheduleType, now: Date) {
+    // Start with the next due date from the schedule
+    // why we use new Date() here is to create a new Date object based on the nextDueDate from the schedule.
+    // This is important because the nextDueDate from the schedule might be a string or a different type,
+    // and we want to ensure that we are working with a Date object for accurate date comparisons and calculations.
+    let nextDueDate = new Date(schedule.nextDueDate);
 
-    switch (frequencyType) {
-      case 'DAILY':
-        next.setDate(next.getDate() + interval);
-        break;
+    // Loop to generate tasks for all due dates up to the current date
+    // This loop will continue generating tasks until the next due date is in the future (i.e., greater than now).
+    while (nextDueDate <= now) {
+      const existing = await this.prisma.pMTask.findFirst({
+        where: {
+          scheduleId: schedule.id,
+          dueDate: nextDueDate,
+        },
+        select: { id: true },
+      });
 
-      case 'WEEKLY':
-        next.setDate(next.getDate() + 7 * interval);
-        break;
+      // If no existing task is found for the current due date, create a new task
+      if (!existing) {
+        await this.createTask(schedule, nextDueDate);
+      }
 
-      case 'MONTHLY':
-        next.setMonth(next.getMonth() + interval);
-        break;
-
-      default:
-        throw new Error('Invalid frequency type');
+      // Calculate the next due date based on the schedule's frequency type and interval
+      nextDueDate = calculateNextDueDate(
+        nextDueDate,
+        schedule.frequencyType,
+        schedule.interval,
+      );
     }
 
-    return next;
+    // Update the schedule
+    await this.prisma.pMSchedule.update({
+      where: {
+        id: schedule.id,
+      },
+      data: {
+        nextDueDate,
+        lastGeneratedAt: new Date(),
+      },
+    });
   }
+  //#endregion
+
+  //#region Generate Task
+  @Cron(CronExpression.EVERY_10_SECONDS) // runs everyday at midnight
+  // This method is scheduled to run every day at midnight using the CronExpression.EVERY_DAY_AT_MIDNIGHT
+  async generateTask() {
+    // Get the current date and set the time to midnight for accurate comparison
+    const now = new Date();
+
+    // Fetch all active schedules where the next due date is less than or equal to the current date (now)
+    const schedules = await this.prisma.pMSchedule.findMany({
+      where: {
+        isActive: true,
+        nextDueDate: {
+          lte: now, // nextDueDate <= now
+        },
+      },
+      include: {
+        template: {
+          include: {
+            items: true,
+          },
+        },
+      },
+    });
+
+    // Process each schedule to generate tasks as needed
+    for (const schedule of schedules) {
+      await this.processSchedule(schedule, now);
+    }
+  }
+  //#endregion
 }
