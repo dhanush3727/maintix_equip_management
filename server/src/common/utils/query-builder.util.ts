@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common';
+
 type PrismaWhere = Record<string, unknown>;
 
 type PrismaOrderBy = Record<string, 'asc' | 'desc'>;
@@ -134,24 +136,28 @@ export function buildCursorQueryOptions(query: {
     // The cursor contains the createdAt and id of the last item from the previous page. We need to fetch items that are either:
     // 1. Created after the last item's createdAt (for ascending order) or before (for descending order)
     // 2. If createdAt is the same, then we compare the id to ensure we don't fetch the same item again.
-    const decoded = decodeCursor(cursor);
+    try {
+      const decoded = decodeCursor(cursor);
 
-    // It is the where clause to fetch records after the cursor. It uses OR to combine two conditions:
-    where['OR'] = [
-      // condition 1: createdAt is greater than (for asc) or less than (for desc) the cursor's createdAt
-      {
-        createdAt: {
-          [order === 'desc' ? 'lt' : 'gt']: new Date(decoded.createdAt),
+      // It is the where clause to fetch records after the cursor. It uses OR to combine two conditions:
+      where['OR'] = [
+        // condition 1: createdAt is greater than (for asc) or less than (for desc) the cursor's createdAt
+        {
+          createdAt: {
+            [order === 'desc' ? 'lt' : 'gt']: new Date(decoded.createdAt),
+          },
         },
-      },
-      // condition 2: if createdAt is the same, then id must be greater than (for asc) or less than (for desc) the cursor's id
-      {
-        createdAt: new Date(decoded.createdAt),
-        id: {
-          [order === 'desc' ? 'lt' : 'gt']: decoded.id,
+        // condition 2: if createdAt is the same, then id must be greater than (for asc) or less than (for desc) the cursor's id
+        {
+          createdAt: new Date(decoded.createdAt),
+          id: {
+            [order === 'desc' ? 'lt' : 'gt']: decoded.id,
+          },
         },
-      },
-    ];
+      ];
+    } catch {
+      throw new BadRequestException('Invalid cursor');
+    }
   }
 
   return {
@@ -169,19 +175,20 @@ export function buildCursorMeta<T extends { id: number; createdAt: Date }>(
 ) {
   const hasMore = data.length > limit;
 
-  if (hasMore) {
-    data.pop(); // remove extra item
-  }
+  const slicedData = hasMore ? data.slice(0, limit) : data;
 
-  const nextCursor = hasMore
-    ? encodeCursor({
-        id: data[data.length - 1].id,
-        createdAt: data[data.length - 1].createdAt.toISOString(),
-      })
-    : null;
+  const lastItem = slicedData[slicedData.length - 1];
+
+  const nextCursor =
+    hasMore && lastItem
+      ? encodeCursor({
+          id: lastItem.id,
+          createdAt: lastItem.createdAt.toISOString(),
+        })
+      : null;
 
   return {
-    data,
+    data: slicedData,
     meta: {
       limit,
       hasMore,

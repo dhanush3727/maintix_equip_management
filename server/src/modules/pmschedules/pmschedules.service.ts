@@ -166,8 +166,6 @@ export class PmschedulesService {
         gte: from,
         lte: to,
       };
-
-      console.log(from);
     }
 
     const { where, orderBy } = buildQueryOptions({

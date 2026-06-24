@@ -34,6 +34,11 @@ export class QueryDto {
   @IsOptional()
   @IsIn(['asc', 'desc'])
   order: 'asc' | 'desc' = 'desc';
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  cursor?: string;
 }
 
 //This DTO (Data Transfer Object) is designed to handle common query parameters for pagination, searching, and sorting in API requests.

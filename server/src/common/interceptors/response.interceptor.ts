@@ -15,6 +15,12 @@ type PaginationInfo = {
   limit: number;
 };
 
+type MetaInfo = {
+  limit: number;
+  hasMore: boolean;
+  nextCursor: string | null;
+};
+
 // This interface defines the structure of the API response that will be sent to the client.
 // T is a generic type that represents the type of the original response data from the controller.
 // Example: If a controller method returns an object of type User, then ApiResponse<User> will be the type of the response sent to the client, which will include the original User data along with success and message fields.
@@ -23,6 +29,7 @@ interface ApiResponse<T> {
   message: string;
   data?: T;
   pagination?: PaginationInfo;
+  meta?: MetaInfo;
 }
 
 @Injectable()
@@ -42,6 +49,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<
         let message = 'Success'; // Default message if the controller does not provide one
         let responseData: T | undefined; // This will hold the original response data from the controller
         let pagination: PaginationInfo | undefined; // This will hold pagination info if provided by the controller
+        let meta: MetaInfo | undefined;
 
         // If the controller returns an object that contains a 'message' or 'data' field, we extract those to use in our response.
         // If not, return raw data as response data and use default message
@@ -54,11 +62,13 @@ export class ResponseInterceptor<T> implements NestInterceptor<
             message?: string;
             data?: T;
             pagination?: PaginationInfo;
+            meta?: MetaInfo;
           };
 
           message = res.message ?? message;
           responseData = res.data;
           pagination = res.pagination;
+          meta = res.meta;
         } else {
           responseData = data;
         }
@@ -69,6 +79,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<
           message,
           data: responseData,
           pagination,
+          meta,
         };
       }),
     );
