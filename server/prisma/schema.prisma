@@ -438,7 +438,7 @@ model ChecklistItem {
   expectedValue     String?
   minValue          Float?
   maxValue          Float?
-  options           String? //JSON
+  options           Json? 
   isRequired        Boolean                 @default(true) // Defines whether this check is mandatory
   isActive          Boolean                 @default(true)
 
@@ -538,7 +538,7 @@ model TaskChecklistItem {
   expectedValue     String?
   minValue          Float?
   maxValue          Float?
-  options           String? //JSON
+  options           Json?
   actualValue       String?
   status            ItemStatus?
 

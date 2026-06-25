@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditService } from '../../common/audit/audit.service';
 import { RequestUser } from '../../common/types/auth.types';
@@ -111,7 +111,7 @@ export class PmtasksService {
       },
     });
 
-    const formattedTasks = tasks.map((task) => ({
+    const formattedPMTasks = tasks.map((task) => ({
       id: task.id,
       organizationId: task.organizationId,
       scheduleId: task.scheduleId,
@@ -134,12 +134,106 @@ export class PmtasksService {
         task.status !== TaskStatus.SKIPPED,
     }));
 
-    const { data, meta } = buildCursorMeta(formattedTasks, limit);
+    const { data, meta } = buildCursorMeta(formattedPMTasks, limit);
 
     return {
       data,
       meta,
     };
   }
+  //#endregion
+
+  //#region Get PM Task by id
+  async getPMTaskById(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    const now = new Date();
+
+    const pmtask = await this.prisma.pMTask.findFirst({
+      where: {
+        id,
+        organizationId,
+      },
+      select: {
+        id: true,
+        organizationId: true,
+        scheduleId: true,
+        equipmentId: true,
+        templateId: true,
+        title: true,
+        assignedTo: true,
+        dueDate: true,
+        completedAt: true,
+        status: true,
+        priority: true,
+        remarks: true,
+        createdAt: true,
+        assignee: {
+          select: {
+            name: true,
+          },
+        },
+        equipment: {
+          select: {
+            name: true,
+          },
+        },
+        template: {
+          select: {
+            name: true,
+          },
+        },
+        checklistItems: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    if (!pmtask) throw new NotFoundException('PM Task not found');
+
+    const formattedPMTask = {
+      id: pmtask.id,
+      organizationId: pmtask.organizationId,
+      scheduleId: pmtask.scheduleId,
+      templateId: pmtask.templateId,
+      template: pmtask.template.name,
+      equipmentId: pmtask.equipmentId,
+      equipment: pmtask.equipment.name,
+      assignedToId: pmtask.assignedTo,
+      assignedTo: pmtask.assignee.name,
+      title: pmtask.title,
+      dueDate: pmtask.dueDate,
+      completedAt: pmtask.completedAt,
+      status: pmtask.status,
+      priority: pmtask.priority,
+      remarks: pmtask.remarks,
+      createdAt: pmtask.createdAt,
+      isOverdue:
+        pmtask.dueDate < now &&
+        pmtask.status !== TaskStatus.COMPLETED &&
+        pmtask.status !== TaskStatus.SKIPPED,
+      checklistItems: pmtask.checklistItems.map((item) => ({
+        id: item.id,
+        taskId: item.taskId,
+        templateItemId: item.templateItemId,
+        name: item.name,
+        order: item.order,
+        type: item.type,
+        expectedValue: item.expectedValue,
+        minValue: item.minValue,
+        maxValue: item.maxValue,
+        options: item.options,
+        actualValue: item.actualValue,
+        status: item.status,
+      })),
+    };
+
+    return formattedPMTask;
+  }
+  //#endregion
+
+  //#region
   //#endregion
 }

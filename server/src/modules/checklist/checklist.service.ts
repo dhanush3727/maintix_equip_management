@@ -134,8 +134,7 @@ export class ChecklistService {
               expectedValue: item.expectedValue ?? null,
               minValue: item.minValue ?? null,
               maxValue: item.maxValue ?? null,
-              // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
-              options: item.options ? JSON.stringify(item.options) : null,
+              options: item.options,
               isRequired: item.isRequired ?? true,
             })),
           },
@@ -474,8 +473,7 @@ export class ChecklistService {
               expectedValue: item.expectedValue ?? null,
               minValue: item.minValue ?? null,
               maxValue: item.maxValue ?? null,
-              // Why we use JSON.stringify for options? because in prisma we can not save array of string directly in postgres, so we save it as string and when we get it we parse it back to array
-              options: item.options ? JSON.stringify(item.options) : null,
+              options: item.options,
               isRequired: item.isRequired ?? true,
             })),
           },

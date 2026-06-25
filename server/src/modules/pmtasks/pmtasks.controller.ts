@@ -1,4 +1,12 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { PmtasksService } from './pmtasks.service';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
@@ -21,6 +29,21 @@ export class PmtasksController {
     return {
       data,
       meta,
+    };
+  }
+  //#endregion
+
+  //#region Get PM Task by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get(':id')
+  async getPMTaskById(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const data = await this.pmtask.getPMTaskById(id, req.user);
+
+    return {
+      data,
     };
   }
   //#endregion

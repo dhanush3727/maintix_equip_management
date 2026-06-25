@@ -98,7 +98,7 @@ export class PMTaskGeneratorService {
   //#endregion
 
   //#region Generate Task
-  @Cron(CronExpression.EVERY_10_SECONDS) // runs everyday at midnight
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT) // runs everyday at midnight
   // This method is scheduled to run every day at midnight using the CronExpression.EVERY_DAY_AT_MIDNIGHT
   async generateTask() {
     // Get the current date and set the time to midnight for accurate comparison
