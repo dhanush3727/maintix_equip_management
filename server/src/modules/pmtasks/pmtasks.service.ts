@@ -1,13 +1,23 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditService } from '../../common/audit/audit.service';
 import { RequestUser } from '../../common/types/auth.types';
 import { PMTaskQueryDto } from './dto/pmtask-query.dto';
-import { Prisma, TaskStatus } from '@prisma/client';
+import {
+  ChecklistItemType,
+  ItemStatus,
+  Prisma,
+  TaskStatus,
+} from '@prisma/client';
 import {
   buildCursorMeta,
   buildCursorQueryOptions,
 } from '../../common/utils/query-builder.util';
+import { UpdatePMTaskItemDto } from './dto/update-pmtask.dto';
 
 @Injectable()
 export class PmtasksService {
@@ -234,6 +244,85 @@ export class PmtasksService {
   }
   //#endregion
 
-  //#region
+  //#region Update PM Task checklist items
+  async updatePMTaskItems(
+    id: number,
+    itemId: number,
+    dto: UpdatePMTaskItemDto,
+    req: RequestUser,
+  ) {
+    const { organizationId } = req;
+    const { actualValue } = dto;
+
+    // Check and validate the pmtask
+    const pmtask = await this.prisma.pMTask.findFirst({
+      where: {
+        id,
+        organizationId,
+      },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+
+    if (!pmtask) throw new NotFoundException('PM Task not found');
+
+    if (
+      pmtask.status === TaskStatus.COMPLETED ||
+      pmtask.status === TaskStatus.SKIPPED
+    ) {
+      throw new BadRequestException('Cannot update this task');
+    }
+
+    // Check and validate checklist item
+    const checklistItem = await this.prisma.taskChecklistItem.findFirst({
+      where: { id: itemId, taskId: id },
+    });
+
+    if (!checklistItem) throw new NotFoundException('Checklist Item not found');
+
+    const options = checklistItem.options as string[];
+
+    // Validate based on checklist item
+    switch (checklistItem.type) {
+      case ChecklistItemType.BOOLEAN:
+        if (!['true', 'false'].includes(actualValue)) {
+          throw new BadRequestException(
+            `${checklistItem.name} should only true or false`,
+          );
+        }
+        break;
+
+      case ChecklistItemType.NUMBER:
+        if (Number.isNaN(Number(actualValue))) {
+          throw new BadRequestException(
+            `${checklistItem.name} should only numeric value`,
+          );
+        }
+        break;
+
+      case ChecklistItemType.SELECT:
+        if (!options.includes(actualValue)) {
+          throw new BadRequestException(`${checklistItem.name}`);
+        }
+        break;
+
+      case ChecklistItemType.TEXT:
+        break;
+    }
+
+    let status: ItemStatus = checklistItem.status;
+
+    switch (checklistItem.type) {
+      case ChecklistItemType.BOOLEAN:
+        status =
+          checklistItem.actualValue?.toLowerCase() ===
+          checklistItem.expectedValue?.toLowerCase()
+            ? ItemStatus.OK
+            : ItemStatus.NOT_OK;
+        break;
+    }
+  }
   //#endregion
 }

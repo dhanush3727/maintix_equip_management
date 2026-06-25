@@ -37,14 +37,21 @@ export class PMTaskGeneratorService {
         // Create checklist items based on the template
         checklistItems: {
           create: template.items.map((item) => ({
-            templateItemId: item.id,
+            templateItem: {
+              connect: {
+                id: item.id,
+              },
+            },
             name: item.name,
             order: item.order,
             type: item.type,
             expectedValue: item.expectedValue,
             minValue: item.minValue,
             maxValue: item.maxValue,
-            options: item.options,
+            // why we use "as Prisma.InputJsonValue" here is to ensure that the options property is treated as a valid JSON value for Prisma.
+            // This is important because Prisma expects JSON fields to be of type InputJsonValue, which can represent any valid JSON data (object, array, string, number, boolean, or null).
+            // By casting item.options to Prisma.InputJsonValue, we ensure that the data is correctly formatted and compatible with the database schema defined in Prisma.
+            options: item.options as Prisma.InputJsonValue,
           })),
         },
       },
