@@ -57,10 +57,10 @@ export class PMTaskGeneratorService {
 
   // #region Process schedule
   async processSchedule(schedule: ScheduleType, now: Date) {
-    // Start with the next due date from the schedule
     // why we use new Date() here is to create a new Date object based on the nextDueDate from the schedule.
-    // This is important because the nextDueDate from the schedule might be a string or a different type,
-    // and we want to ensure that we are working with a Date object for accurate date comparisons and calculations.
+    // Create a copy of the schedule's nextDueDate.
+    // Date objects are mutable, so creating a new Date prevents us
+    // from accidentally modifying the original value stored in `schedule`.
     let nextDueDate = new Date(schedule.nextDueDate);
 
     // Loop to generate tasks for all due dates up to the current date

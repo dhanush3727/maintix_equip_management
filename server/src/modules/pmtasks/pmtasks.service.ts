@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -251,7 +252,7 @@ export class PmtasksService {
     dto: UpdatePMTaskItemDto,
     req: RequestUser,
   ) {
-    const { organizationId } = req;
+    const { organizationId, userId } = req;
     const { actualValue } = dto;
 
     // Check and validate the pmtask
@@ -263,6 +264,7 @@ export class PmtasksService {
       select: {
         id: true,
         status: true,
+        assignedTo: true,
       },
     });
 
@@ -282,8 +284,12 @@ export class PmtasksService {
 
     if (!checklistItem) throw new NotFoundException('Checklist Item not found');
 
+    if (pmtask.assignedTo !== userId) {
+      throw new ForbiddenException('You are not assigned to this task');
+    }
+
     // Validate based on checklist item
-    const options = checklistItem.options as string[];
+    const options = (checklistItem.options ?? []) as string[];
 
     switch (checklistItem.type) {
       case ChecklistItemType.BOOLEAN:
@@ -304,7 +310,9 @@ export class PmtasksService {
 
       case ChecklistItemType.SELECT:
         if (!options.includes(actualValue)) {
-          throw new BadRequestException(`${checklistItem.name}`);
+          throw new BadRequestException(
+            `${checklistItem.name} must be one of the option`,
+          );
         }
         break;
 
