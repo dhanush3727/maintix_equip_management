@@ -37,11 +37,7 @@ export class PMTaskGeneratorService {
         // Create checklist items based on the template
         checklistItems: {
           create: template.items.map((item) => ({
-            templateItem: {
-              connect: {
-                id: item.id,
-              },
-            },
+            templateItemId: item.id,
             name: item.name,
             order: item.order,
             type: item.type,

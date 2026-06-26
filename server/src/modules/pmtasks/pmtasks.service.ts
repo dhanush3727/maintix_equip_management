@@ -282,12 +282,12 @@ export class PmtasksService {
 
     if (!checklistItem) throw new NotFoundException('Checklist Item not found');
 
+    // Validate based on checklist item
     const options = checklistItem.options as string[];
 
-    // Validate based on checklist item
     switch (checklistItem.type) {
       case ChecklistItemType.BOOLEAN:
-        if (!['true', 'false'].includes(actualValue)) {
+        if (!['true', 'false'].includes(actualValue.toLowerCase())) {
           throw new BadRequestException(
             `${checklistItem.name} should only true or false`,
           );
@@ -312,17 +312,66 @@ export class PmtasksService {
         break;
     }
 
-    let status: ItemStatus = checklistItem.status;
+    let status: ItemStatus | null = checklistItem.status;
 
     switch (checklistItem.type) {
       case ChecklistItemType.BOOLEAN:
         status =
-          checklistItem.actualValue?.toLowerCase() ===
+          actualValue?.toLowerCase() ===
           checklistItem.expectedValue?.toLowerCase()
             ? ItemStatus.OK
             : ItemStatus.NOT_OK;
         break;
+
+      case ChecklistItemType.NUMBER:
+        if (
+          checklistItem.minValue !== null &&
+          Number(actualValue) < checklistItem.minValue
+        ) {
+          status = ItemStatus.NOT_OK;
+        } else if (
+          checklistItem.maxValue !== null &&
+          Number(actualValue) > checklistItem.maxValue
+        ) {
+          status = ItemStatus.NOT_OK;
+        } else {
+          status = ItemStatus.OK;
+        }
+
+        break;
+
+      case ChecklistItemType.SELECT:
+        status =
+          checklistItem.expectedValue &&
+          actualValue !== checklistItem.expectedValue
+            ? ItemStatus.NOT_OK
+            : ItemStatus.OK;
+        break;
+
+      case ChecklistItemType.TEXT:
+        break;
     }
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.taskChecklistItem.update({
+        where: {
+          id: itemId,
+        },
+        data: {
+          actualValue,
+          status,
+        },
+      });
+
+      if (pmtask.status === TaskStatus.PENDING) {
+        await tx.pMTask.update({
+          where: { id, organizationId },
+          data: {
+            status: TaskStatus.IN_PROGRESS,
+          },
+        });
+      }
+    });
   }
   //#endregion
 }

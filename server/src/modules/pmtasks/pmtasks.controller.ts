@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Query,
   Req,
   UseGuards,
@@ -12,6 +14,7 @@ import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
 import type { AuthenticateRequest } from '../../common/types/auth.types';
 import { PMTaskQueryDto } from './dto/pmtask-query.dto';
+import { UpdatePMTaskItemDto } from './dto/update-pmtask.dto';
 
 @Controller('pmtasks')
 export class PmtasksController {
@@ -44,6 +47,23 @@ export class PmtasksController {
 
     return {
       data,
+    };
+  }
+  //#endregion
+
+  //#region update PM task checklist items
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch(':id/checklist-items/:itemId')
+  async updatePMTaskItems(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('itemId', ParseIntPipe) itemId: number,
+    @Body() dto: UpdatePMTaskItemDto,
+    @Req() req: AuthenticateRequest,
+  ) {
+    await this.pmtask.updatePMTaskItems(id, itemId, dto, req.user);
+
+    return {
+      message: 'Checklist Items updated',
     };
   }
   //#endregion
