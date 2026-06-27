@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict ZIMeEju6KXwigmpohUM3heCdh908Da0FXQv488GCCTJaXYKTetFzs47BMR8BZt1
+\restrict ObH3jNzmbNV08cAgXVgDLA9GyTq3z7yFmkPf6OKoAQOQ6ESRJKXmajoq4c3FFb6
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -548,8 +548,8 @@ CREATE TABLE maintix."ChecklistItem" (
     "isRequired" boolean DEFAULT true NOT NULL,
     "maxValue" double precision,
     "minValue" double precision,
-    options text,
-    type maintix."ChecklistItemType" NOT NULL
+    type maintix."ChecklistItemType" NOT NULL,
+    options jsonb
 );
 
 
@@ -1070,10 +1070,10 @@ CREATE TABLE maintix."TaskChecklistItem" (
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "maxValue" double precision,
     "minValue" double precision,
-    options text,
     "templateItemId" integer NOT NULL,
     type maintix."ChecklistItemType" NOT NULL,
-    "updatedAt" timestamp(3) without time zone NOT NULL
+    "updatedAt" timestamp(3) without time zone NOT NULL,
+    options jsonb
 );
 
 
@@ -2186,6 +2186,20 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 773	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-24 10:48:22.151
 774	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-24 11:06:08.825
 775	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-24 11:29:30.658
+776	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-24 14:22:59.583
+777	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-24 14:38:42.219
+778	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-25 13:50:59.225
+779	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-25 14:07:27.995
+780	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-25 14:28:45.708
+781	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-25 14:29:01.453
+782	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-25 15:31:00.795
+783	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 14:59:47.842
+784	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 15:23:45.519
+785	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 15:30:12.073
+786	3	3	CREATE_CHECKLIST	CHECKLIST	3	::1	2026-06-26 15:30:42.015
+787	3	3	CREATE_PMSCHEDULE	PM	3	::1	2026-06-26 15:32:19.881
+788	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 15:40:52.272
+789	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 15:59:48.263
 \.
 
 
@@ -2209,34 +2223,13 @@ COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy
 -- Data for Name: ChecklistItem; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt", "isActive", "isRequired", "maxValue", "minValue", options, type) FROM stdin;
-89	47	Check motor temperature	1	\N	2026-06-13 13:11:17.204	t	t	40	20	\N	NUMBER
-90	47	Inspector remarks	2	\N	2026-06-13 13:11:17.204	t	t	\N	\N	\N	TEXT
-91	47	Motor condition	3	AVERAGE	2026-06-13 13:11:17.204	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-92	47	Check abnormal noise	4	true	2026-06-13 13:11:17.204	t	t	\N	\N	\N	BOOLEAN
-93	48	Check pump temperature	1	\N	2026-06-13 13:12:06.748	t	t	40	20	\N	NUMBER
-94	48	Inspector remarks	2	\N	2026-06-13 13:12:06.748	t	t	\N	\N	\N	TEXT
-95	48	Pump condition	3	AVERAGE	2026-06-13 13:12:06.748	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-96	48	Check abnormal noise	4	true	2026-06-13 13:12:06.748	t	t	\N	\N	\N	BOOLEAN
-97	49	Surface cleanliness	1	true	2026-06-13 13:13:39.965	t	t	\N	\N	\N	BOOLEAN
-98	49	Noise level	2	\N	2026-06-13 13:13:39.965	t	t	70	10	\N	NUMBER
-99	49	Operational status	3	RUNNING	2026-06-13 13:13:39.965	t	t	\N	\N	["RUNNING","IDLE","STOPPED"]	SELECT
-100	49	Visual damage	4	false	2026-06-13 13:13:39.965	t	t	\N	\N	\N	BOOLEAN
-101	49	Remarks	5	\N	2026-06-13 13:13:39.965	t	f	\N	\N	\N	TEXT
-102	50	Emergency access clear	1	true	2026-06-13 13:14:57.079	t	t	\N	\N	\N	BOOLEAN
-103	50	Ambient temperature	2	\N	2026-06-13 13:14:57.079	t	t	35	18	\N	NUMBER
-104	50	Indicator status	3	NORMAL	2026-06-13 13:14:57.079	t	t	\N	\N	["NORMAL","WARNING","CRITICAL"]	SELECT
-105	50	Power supply stable	4	true	2026-06-13 13:14:57.079	t	t	\N	\N	\N	BOOLEAN
-106	50	Visible wear or damage	5	false	2026-06-13 13:14:57.079	t	t	\N	\N	\N	BOOLEAN
-107	50	Inspector notes	6	\N	2026-06-13 13:14:57.079	t	f	\N	\N	\N	TEXT
-108	51	Check motor temperature	1	\N	2026-06-13 13:16:11.594	t	t	40	20	\N	NUMBER
-109	51	Motor condition	2	AVERAGE	2026-06-13 13:16:11.594	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-110	52	Inspector remarks	1	\N	2026-06-13 13:17:24.673	t	t	\N	\N	\N	TEXT
-111	53	Check pump temperature	1	\N	2026-06-13 13:19:00.616	t	t	40	20	\N	NUMBER
-112	53	Inspector remarks	2	\N	2026-06-13 13:19:00.616	t	t	\N	\N	\N	TEXT
-113	53	Pump condition	3	AVERAGE	2026-06-13 13:19:00.616	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
-114	54	Check pump temperature	1	\N	2026-06-13 13:19:18.619	t	t	40	20	\N	NUMBER
-115	54	Pump condition	2	AVERAGE	2026-06-13 13:19:18.619	t	t	\N	\N	["GOOD","AVERAGE","POOR"]	SELECT
+COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", "createdAt", "isActive", "isRequired", "maxValue", "minValue", type, options) FROM stdin;
+122	56	Emergency access clear	1	true	2026-06-26 15:30:41.98	t	t	\N	\N	BOOLEAN	\N
+123	56	Ambient temperature	2	\N	2026-06-26 15:30:41.98	t	t	35	18	NUMBER	\N
+124	56	Indicator status	3	NORMAL	2026-06-26 15:30:41.98	t	t	\N	\N	SELECT	["NORMAL", "WARNING", "CRITICAL"]
+125	56	Power supply stable	4	true	2026-06-26 15:30:41.98	t	t	\N	\N	BOOLEAN	\N
+126	56	Visible wear or damage	5	false	2026-06-26 15:30:41.98	t	t	\N	\N	BOOLEAN	\N
+127	56	Inspector notes	6	\N	2026-06-26 15:30:41.98	t	f	\N	\N	TEXT	\N
 \.
 
 
@@ -2245,14 +2238,7 @@ COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", 
 --
 
 COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name, description, "createdAt", "updatedAt", "isActive", version, "parentId") FROM stdin;
-49	3	1	General Equipment Inspection	Standard checklist for routine inspection	2026-06-13 13:13:39.965	2026-06-13 13:13:39.973	t	1	49
-50	3	6	Workstation Safety Inspection	Checklist to ensure safety and operational readiness	2026-06-13 13:14:57.079	2026-06-13 13:14:57.086	t	1	50
-47	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 13:11:17.204	2026-06-13 13:16:11.588	f	1	47
-51	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 13:16:11.594	2026-06-13 13:17:24.669	f	2	47
-52	3	1	Motor checklist	Routine inspection checklist for industrial motors	2026-06-13 13:17:24.673	2026-06-13 13:17:24.673	t	3	47
-48	3	6	Pump checklist	Routine inspection checklist for industrial pumps	2026-06-13 13:12:06.748	2026-06-13 13:19:00.61	f	1	48
-53	3	1	Pump checklist	Routine inspection checklist for industrial pumps	2026-06-13 13:19:00.616	2026-06-13 13:19:18.614	f	2	48
-54	3	1	Pump checklist	Routine inspection checklist for industrial pumps	2026-06-13 13:19:18.619	2026-06-13 13:19:18.619	t	3	48
+56	3	6	Workstation Safety Inspection	Checklist to ensure safety and operational readiness	2026-06-26 15:30:41.98	2026-06-26 15:30:42.004	t	1	56
 \.
 
 
@@ -2348,12 +2334,7 @@ COPY maintix."Organization" (id, name, slug, "industryType", "companySize", coun
 --
 
 COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "frequencyType", "interval", "startDate", "nextDueDate", "assignedTo", "isActive", "createdAt", "updatedAt", "lastGeneratedAt") FROM stdin;
-5	3	12	49	WEEKLY	2	2026-06-15 00:00:00	2026-06-29 00:00:00	10	t	2026-06-15 09:02:12.329	2026-06-15 09:02:12.329	\N
-6	3	7	49	YEARLY	1	2026-06-15 00:00:00	2027-06-15 00:00:00	10	t	2026-06-15 09:02:52.648	2026-06-15 09:02:52.648	\N
-3	3	11	49	WEEKLY	1	2026-06-20 00:00:00	2026-06-27 00:00:00	10	f	2026-06-15 09:01:44.141	2026-06-16 06:33:57.93	\N
-4	3	13	49	DAILY	1	2026-06-15 00:00:00	2026-06-25 00:00:00	10	t	2026-06-15 09:01:52.594	2026-06-24 06:05:00.229	2026-06-24 06:05:00.223
-2	3	10	50	DAILY	2	2026-06-16 00:00:00	2026-06-26 00:00:00	10	t	2026-06-15 09:01:28.837	2026-06-24 06:05:00.244	2026-06-24 06:05:00.244
-1	3	1	49	DAILY	1	2026-06-16 00:00:00	2026-06-25 00:00:00	10	t	2026-06-15 08:29:31.059	2026-06-24 06:05:00.253	2026-06-24 06:05:00.253
+7	3	7	56	DAILY	1	2026-06-26 00:00:00	2026-06-27 00:00:00	10	t	2026-06-26 15:32:19.874	2026-06-26 15:40:00.151	2026-06-26 15:40:00.149
 \.
 
 
@@ -2362,27 +2343,7 @@ COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "f
 --
 
 COPY maintix."PMTask" (id, "organizationId", "scheduleId", "equipmentId", "templateId", "assignedTo", "dueDate", "completedAt", status, priority, remarks, "createdAt", "updatedAt", title) FROM stdin;
-1	3	4	13	49	10	2026-06-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.499	2026-06-24 05:49:40.499	General Equipment Inspection
-2	3	4	13	49	10	2026-06-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.563	2026-06-24 05:49:40.563	General Equipment Inspection
-3	3	4	13	49	10	2026-06-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.579	2026-06-24 05:49:40.579	General Equipment Inspection
-4	3	4	13	49	10	2026-06-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.597	2026-06-24 05:49:40.597	General Equipment Inspection
-5	3	4	13	49	10	2026-06-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.619	2026-06-24 05:49:40.619	General Equipment Inspection
-6	3	4	13	49	10	2026-06-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.645	2026-06-24 05:49:40.645	General Equipment Inspection
-7	3	4	13	49	10	2026-06-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.672	2026-06-24 05:49:40.672	General Equipment Inspection
-8	3	4	13	49	10	2026-06-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.699	2026-06-24 05:49:40.699	General Equipment Inspection
-9	3	2	10	50	10	2026-06-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.766	2026-06-24 05:49:40.766	Workstation Safety Inspection
-10	3	2	10	50	10	2026-06-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.791	2026-06-24 05:49:40.791	Workstation Safety Inspection
-11	3	2	10	50	10	2026-06-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.817	2026-06-24 05:49:40.817	Workstation Safety Inspection
-12	3	1	1	49	10	2026-06-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.859	2026-06-24 05:49:40.859	General Equipment Inspection
-13	3	1	1	49	10	2026-06-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.883	2026-06-24 05:49:40.883	General Equipment Inspection
-14	3	1	1	49	10	2026-06-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.901	2026-06-24 05:49:40.901	General Equipment Inspection
-15	3	1	1	49	10	2026-06-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.92	2026-06-24 05:49:40.92	General Equipment Inspection
-16	3	1	1	49	10	2026-06-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.939	2026-06-24 05:49:40.939	General Equipment Inspection
-17	3	1	1	49	10	2026-06-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.977	2026-06-24 05:49:40.977	General Equipment Inspection
-18	3	1	1	49	10	2026-06-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 05:49:40.994	2026-06-24 05:49:40.994	General Equipment Inspection
-19	3	4	13	49	10	2026-06-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 06:05:00.211	2026-06-24 06:05:00.211	General Equipment Inspection
-20	3	2	10	50	10	2026-06-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 06:05:00.236	2026-06-24 06:05:00.236	Workstation Safety Inspection
-21	3	1	1	49	10	2026-06-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-06-24 06:05:00.25	2026-06-24 06:05:00.25	General Equipment Inspection
+24	3	7	7	56	10	2026-06-26 00:00:00	\N	IN_PROGRESS	MEDIUM	\N	2026-06-26 15:40:00.124	2026-06-26 15:42:24.214	Workstation Safety Inspection
 \.
 
 
@@ -2411,116 +2372,13 @@ COPY maintix."Role" (id, name) FROM stdin;
 -- Data for Name: TaskChecklistItem; Type: TABLE DATA; Schema: maintix; Owner: -
 --
 
-COPY maintix."TaskChecklistItem" (id, "taskId", name, "order", "expectedValue", "actualValue", status, "createdAt", "maxValue", "minValue", options, "templateItemId", type, "updatedAt") FROM stdin;
-1	1	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.499	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.499
-2	1	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.499	70	10	\N	98	NUMBER	2026-06-24 05:49:40.499
-3	1	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.499	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.499
-4	1	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.499	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.499
-5	1	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.499	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.499
-6	2	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.563	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.563
-7	2	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.563	70	10	\N	98	NUMBER	2026-06-24 05:49:40.563
-8	2	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.563	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.563
-9	2	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.563	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.563
-10	2	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.563	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.563
-11	3	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.579	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.579
-12	3	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.579	70	10	\N	98	NUMBER	2026-06-24 05:49:40.579
-13	3	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.579	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.579
-14	3	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.579	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.579
-15	3	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.579	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.579
-16	4	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.597	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.597
-17	4	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.597	70	10	\N	98	NUMBER	2026-06-24 05:49:40.597
-18	4	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.597	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.597
-19	4	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.597	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.597
-20	4	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.597	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.597
-21	5	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.619	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.619
-22	5	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.619	70	10	\N	98	NUMBER	2026-06-24 05:49:40.619
-23	5	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.619	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.619
-24	5	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.619	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.619
-25	5	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.619	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.619
-26	6	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.645	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.645
-27	6	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.645	70	10	\N	98	NUMBER	2026-06-24 05:49:40.645
-28	6	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.645	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.645
-29	6	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.645	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.645
-30	6	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.645	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.645
-31	7	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.672	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.672
-32	7	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.672	70	10	\N	98	NUMBER	2026-06-24 05:49:40.672
-33	7	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.672	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.672
-34	7	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.672	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.672
-35	7	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.672	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.672
-36	8	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.699	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.699
-37	8	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.699	70	10	\N	98	NUMBER	2026-06-24 05:49:40.699
-38	8	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.699	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.699
-39	8	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.699	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.699
-40	8	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.699	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.699
-41	9	Emergency access clear	1	true	\N	\N	2026-06-24 05:49:40.766	\N	\N	\N	102	BOOLEAN	2026-06-24 05:49:40.766
-42	9	Ambient temperature	2	\N	\N	\N	2026-06-24 05:49:40.766	35	18	\N	103	NUMBER	2026-06-24 05:49:40.766
-43	9	Indicator status	3	NORMAL	\N	\N	2026-06-24 05:49:40.766	\N	\N	["NORMAL","WARNING","CRITICAL"]	104	SELECT	2026-06-24 05:49:40.766
-44	9	Power supply stable	4	true	\N	\N	2026-06-24 05:49:40.766	\N	\N	\N	105	BOOLEAN	2026-06-24 05:49:40.766
-45	9	Visible wear or damage	5	false	\N	\N	2026-06-24 05:49:40.766	\N	\N	\N	106	BOOLEAN	2026-06-24 05:49:40.766
-46	9	Inspector notes	6	\N	\N	\N	2026-06-24 05:49:40.766	\N	\N	\N	107	TEXT	2026-06-24 05:49:40.766
-47	10	Emergency access clear	1	true	\N	\N	2026-06-24 05:49:40.791	\N	\N	\N	102	BOOLEAN	2026-06-24 05:49:40.791
-48	10	Ambient temperature	2	\N	\N	\N	2026-06-24 05:49:40.791	35	18	\N	103	NUMBER	2026-06-24 05:49:40.791
-49	10	Indicator status	3	NORMAL	\N	\N	2026-06-24 05:49:40.791	\N	\N	["NORMAL","WARNING","CRITICAL"]	104	SELECT	2026-06-24 05:49:40.791
-50	10	Power supply stable	4	true	\N	\N	2026-06-24 05:49:40.791	\N	\N	\N	105	BOOLEAN	2026-06-24 05:49:40.791
-51	10	Visible wear or damage	5	false	\N	\N	2026-06-24 05:49:40.791	\N	\N	\N	106	BOOLEAN	2026-06-24 05:49:40.791
-52	10	Inspector notes	6	\N	\N	\N	2026-06-24 05:49:40.791	\N	\N	\N	107	TEXT	2026-06-24 05:49:40.791
-53	11	Emergency access clear	1	true	\N	\N	2026-06-24 05:49:40.817	\N	\N	\N	102	BOOLEAN	2026-06-24 05:49:40.817
-54	11	Ambient temperature	2	\N	\N	\N	2026-06-24 05:49:40.817	35	18	\N	103	NUMBER	2026-06-24 05:49:40.817
-55	11	Indicator status	3	NORMAL	\N	\N	2026-06-24 05:49:40.817	\N	\N	["NORMAL","WARNING","CRITICAL"]	104	SELECT	2026-06-24 05:49:40.817
-56	11	Power supply stable	4	true	\N	\N	2026-06-24 05:49:40.817	\N	\N	\N	105	BOOLEAN	2026-06-24 05:49:40.817
-57	11	Visible wear or damage	5	false	\N	\N	2026-06-24 05:49:40.817	\N	\N	\N	106	BOOLEAN	2026-06-24 05:49:40.817
-58	11	Inspector notes	6	\N	\N	\N	2026-06-24 05:49:40.817	\N	\N	\N	107	TEXT	2026-06-24 05:49:40.817
-59	12	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.859	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.859
-60	12	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.859	70	10	\N	98	NUMBER	2026-06-24 05:49:40.859
-61	12	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.859	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.859
-62	12	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.859	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.859
-63	12	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.859	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.859
-64	13	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.883	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.883
-65	13	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.883	70	10	\N	98	NUMBER	2026-06-24 05:49:40.883
-66	13	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.883	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.883
-67	13	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.883	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.883
-68	13	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.883	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.883
-69	14	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.901	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.901
-70	14	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.901	70	10	\N	98	NUMBER	2026-06-24 05:49:40.901
-71	14	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.901	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.901
-72	14	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.901	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.901
-73	14	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.901	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.901
-74	15	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.92	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.92
-75	15	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.92	70	10	\N	98	NUMBER	2026-06-24 05:49:40.92
-76	15	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.92	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.92
-77	15	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.92	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.92
-78	15	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.92	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.92
-79	16	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.939	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.939
-80	16	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.939	70	10	\N	98	NUMBER	2026-06-24 05:49:40.939
-81	16	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.939	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.939
-82	16	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.939	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.939
-83	16	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.939	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.939
-84	17	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.977	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.977
-85	17	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.977	70	10	\N	98	NUMBER	2026-06-24 05:49:40.977
-86	17	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.977	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.977
-87	17	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.977	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.977
-88	17	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.977	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.977
-89	18	Surface cleanliness	1	true	\N	\N	2026-06-24 05:49:40.994	\N	\N	\N	97	BOOLEAN	2026-06-24 05:49:40.994
-90	18	Noise level	2	\N	\N	\N	2026-06-24 05:49:40.994	70	10	\N	98	NUMBER	2026-06-24 05:49:40.994
-91	18	Operational status	3	RUNNING	\N	\N	2026-06-24 05:49:40.994	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 05:49:40.994
-92	18	Visual damage	4	false	\N	\N	2026-06-24 05:49:40.994	\N	\N	\N	100	BOOLEAN	2026-06-24 05:49:40.994
-93	18	Remarks	5	\N	\N	\N	2026-06-24 05:49:40.994	\N	\N	\N	101	TEXT	2026-06-24 05:49:40.994
-94	19	Surface cleanliness	1	true	\N	\N	2026-06-24 06:05:00.211	\N	\N	\N	97	BOOLEAN	2026-06-24 06:05:00.211
-95	19	Noise level	2	\N	\N	\N	2026-06-24 06:05:00.211	70	10	\N	98	NUMBER	2026-06-24 06:05:00.211
-96	19	Operational status	3	RUNNING	\N	\N	2026-06-24 06:05:00.211	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 06:05:00.211
-97	19	Visual damage	4	false	\N	\N	2026-06-24 06:05:00.211	\N	\N	\N	100	BOOLEAN	2026-06-24 06:05:00.211
-98	19	Remarks	5	\N	\N	\N	2026-06-24 06:05:00.211	\N	\N	\N	101	TEXT	2026-06-24 06:05:00.211
-99	20	Emergency access clear	1	true	\N	\N	2026-06-24 06:05:00.236	\N	\N	\N	102	BOOLEAN	2026-06-24 06:05:00.236
-100	20	Ambient temperature	2	\N	\N	\N	2026-06-24 06:05:00.236	35	18	\N	103	NUMBER	2026-06-24 06:05:00.236
-101	20	Indicator status	3	NORMAL	\N	\N	2026-06-24 06:05:00.236	\N	\N	["NORMAL","WARNING","CRITICAL"]	104	SELECT	2026-06-24 06:05:00.236
-102	20	Power supply stable	4	true	\N	\N	2026-06-24 06:05:00.236	\N	\N	\N	105	BOOLEAN	2026-06-24 06:05:00.236
-103	20	Visible wear or damage	5	false	\N	\N	2026-06-24 06:05:00.236	\N	\N	\N	106	BOOLEAN	2026-06-24 06:05:00.236
-104	20	Inspector notes	6	\N	\N	\N	2026-06-24 06:05:00.236	\N	\N	\N	107	TEXT	2026-06-24 06:05:00.236
-105	21	Surface cleanliness	1	true	\N	\N	2026-06-24 06:05:00.25	\N	\N	\N	97	BOOLEAN	2026-06-24 06:05:00.25
-106	21	Noise level	2	\N	\N	\N	2026-06-24 06:05:00.25	70	10	\N	98	NUMBER	2026-06-24 06:05:00.25
-107	21	Operational status	3	RUNNING	\N	\N	2026-06-24 06:05:00.25	\N	\N	["RUNNING","IDLE","STOPPED"]	99	SELECT	2026-06-24 06:05:00.25
-108	21	Visual damage	4	false	\N	\N	2026-06-24 06:05:00.25	\N	\N	\N	100	BOOLEAN	2026-06-24 06:05:00.25
-109	21	Remarks	5	\N	\N	\N	2026-06-24 06:05:00.25	\N	\N	\N	101	TEXT	2026-06-24 06:05:00.25
+COPY maintix."TaskChecklistItem" (id, "taskId", name, "order", "expectedValue", "actualValue", status, "createdAt", "maxValue", "minValue", "templateItemId", type, "updatedAt", options) FROM stdin;
+120	24	Emergency access clear	1	true	false	NOT_OK	2026-06-26 15:40:00.124	\N	\N	122	BOOLEAN	2026-06-26 15:42:56.912	null
+125	24	Inspector notes	6	\N	completed	\N	2026-06-26 15:40:00.124	\N	\N	127	TEXT	2026-06-26 15:43:57.978	null
+121	24	Ambient temperature	2	\N	5	NOT_OK	2026-06-26 15:40:00.124	35	18	123	NUMBER	2026-06-26 15:44:49.978	null
+122	24	Indicator status	3	NORMAL	CRITICAL	NOT_OK	2026-06-26 15:40:00.124	\N	\N	124	SELECT	2026-06-26 15:45:44.782	["NORMAL", "WARNING", "CRITICAL"]
+123	24	Power supply stable	4	true	true	OK	2026-06-26 15:40:00.124	\N	\N	125	BOOLEAN	2026-06-26 15:46:11.699	null
+124	24	Visible wear or damage	5	false	true	NOT_OK	2026-06-26 15:40:00.124	\N	\N	126	BOOLEAN	2026-06-26 15:46:35.776	null
 \.
 
 
@@ -3141,6 +2999,17 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 566	3	$2b$10$qMZokTjJmE44taj1d27XDOcAJCL0XnXMEozOSzBURpUkFfKlDzXhC	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 10:59:08.387	2026-06-24 10:48:22.132	2026-07-01 10:48:22.111	a5905056-05d4-4221-80b7-924177cc1e45
 567	3	$2b$10$fvAJNHLByzJPSrxBix3BguXlQxjC.Dz77Wc1rf0LRTOeMvz30oDrW	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 11:19:34.224	2026-06-24 11:06:08.806	2026-07-01 11:06:08.785	7c64bffe-10ff-491c-bf87-2822b3b656a7
 568	3	$2b$10$ClXggkYY0eKaKSBtq0O4qONyKiUPgMYZf5FGpfqkaPHAUcudzQclK	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 11:35:07.274	2026-06-24 11:29:30.643	2026-07-01 11:29:30.634	2dcb8efe-4d99-4ebe-a4d3-8b9ecfffd3c7
+569	3	$2b$10$DTSiJkWVGweCC8iuha/hmOwDOuLs95FYt0NdCE3MWCe.macwFCVTi	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 14:37:22.746	2026-06-24 14:22:59.567	2026-07-01 14:22:59.55	bd41bec6-8d14-4061-98ed-84df2f600658
+570	3	$2b$10$F.dEnTTlb.en/bnYBVw2Au2ySwUtMDexXbMiCuHWeGR4di1LqTkA6	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 14:39:45.307	2026-06-24 14:38:42.214	2026-07-01 14:38:42.209	f22119ba-6784-459e-bcb7-08310867ba51
+571	3	$2b$10$14k6iZGtaXXXH/Wbg.2bM.3nlf8rM8xYh.woRDa6qI2JrC2NZsCT.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 14:00:03.815	2026-06-25 13:50:59.188	2026-07-02 13:50:59.172	25eb94d2-f0b4-49d0-9f8c-b2854cb43b53
+572	3	$2b$10$5KSSrP5rVlqUij1RWFE6TOWs2D6nUn9LRAJbvFNi.68cXPS95Bfma	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 14:12:06.227	2026-06-25 14:07:27.958	2026-07-02 14:07:27.943	e7b03ed7-c8df-4148-b47e-7c6acb18103c
+573	3	$2b$10$ZrGOrYvRX4KsmVK2k/KBMulcCjeaujlaQkHyp9EirWYda.RA9dJ9u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 14:28:45.684	2026-06-25 14:28:45.684	2026-07-02 14:28:45.669	73fdf56a-f1be-4bbe-a15c-4b7c36ef6e2d
+574	3	$2b$10$uRVqirQGcvCz0YJrrAxM5.ceBCvgoC9sAiSoS4o2VaQ9TUwSGcQ3K	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 15:31:00.772	2026-06-25 15:31:00.772	2026-07-02 15:31:00.754	94399d0c-243a-4e02-9dd2-00b77aea5109
+575	3	$2b$10$VweUUZKhbdnOBP6R2fmfF.O5zfWGgPeGrn0ZJECpTbQQfJGzAYRJ.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:12:43.351	2026-06-26 14:59:47.823	2026-07-03 14:59:47.805	49075bfe-959d-4443-9599-ce93ab918698
+576	3	$2b$10$Uk9yDeODFKBDkncL.sybhOWNaEMeSfX2poWMrz4VD0txWNq/RfwKe	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:23:45.503	2026-06-26 15:23:45.503	2026-07-03 15:23:45.486	fdba555a-28f2-4575-807e-8ec6bdec5a7c
+577	3	$2b$10$ymk9rr0aku53UAbW3mSu1uVJmg.2BupP8PgTWw/RdiaowZyDqUAK6	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:32:19.883	2026-06-26 15:30:12.057	2026-07-03 15:30:12.037	b5e4de84-7d80-41bb-bdd4-09e39f5bd440
+578	3	$2b$10$vsv4LyKlnk95gSb2qbzQU.d.Il7jg.ysFUW02B23QVEDFkmy4wsYa	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:46:11.703	2026-06-26 15:40:52.26	2026-07-03 15:40:52.257	8d791dd8-032a-4b96-bbf0-7b3c8a18e14b
+579	3	$2b$10$V1sMRjQoLF7y4FuKeiKUFO5pPVYXctEeUkAPYiYYF6SqQ4B5fs1WW	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:59:48.25	2026-06-26 15:59:48.25	2026-07-03 15:59:48.234	0a9a648a-b2ea-4cbb-aa70-a0176e2d4145
 \.
 
 
@@ -3169,6 +3038,7 @@ d2d5037e-4c36-47ed-a7ca-85684bb49532	f119af7878a2ffbcba4dd8fc29e211a2819541e241d
 c2954958-2518-4277-b3cd-1c6fdb6c355e	983b569ebf602ffdab1b880064e63915500ca83424ac55e6a31d7410373b2f53	2026-06-13 18:40:51.658809+05:30	20260613131051_parent_id_optional	\N	\N	2026-06-13 18:40:51.643445+05:30	1
 845d26d1-5b08-42b1-8475-91bf0befa2bc	143ed34989d8b9a9b612a434c78554ba5a89d007c5ad776497f2545c1b40fe00	2026-06-14 10:21:22.011105+05:30	20260614045121_pm_schedule	\N	\N	2026-06-14 10:21:22.002346+05:30	1
 cfb557d5-1484-450d-9366-7177c281133d	d39d29ff573f89313554c40f476767d0b5f465882bac0ea1c7e7a1761ea9b792	2026-06-24 09:12:50.163033+05:30	20260617095236_pmtask	\N	\N	2026-06-24 09:12:50.110323+05:30	1
+a65fe948-56a8-4ce4-bdc0-f26429ae7d23	f0f0f90a8ee5a63a3de47aeb8d1092b9e9245c915e344acef6c1a7aa31d14d38	2026-06-25 19:49:43.877021+05:30	20260625141943_options_checklist	\N	\N	2026-06-25 19:49:43.86013+05:30	1
 \.
 
 
@@ -3176,7 +3046,7 @@ cfb557d5-1484-450d-9366-7177c281133d	d39d29ff573f89313554c40f476767d0b5f465882ba
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 775, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 789, true);
 
 
 --
@@ -3197,14 +3067,14 @@ SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 1, false);
 -- Name: ChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 115, true);
+SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 127, true);
 
 
 --
 -- Name: ChecklistTemplate_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 54, true);
+SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 56, true);
 
 
 --
@@ -3267,14 +3137,14 @@ SELECT pg_catalog.setval('maintix."Organization_id_seq"', 3, true);
 -- Name: PMSchedule_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."PMSchedule_id_seq"', 6, true);
+SELECT pg_catalog.setval('maintix."PMSchedule_id_seq"', 7, true);
 
 
 --
 -- Name: PMTask_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."PMTask_id_seq"', 21, true);
+SELECT pg_catalog.setval('maintix."PMTask_id_seq"', 24, true);
 
 
 --
@@ -3295,7 +3165,7 @@ SELECT pg_catalog.setval('maintix."Role_id_seq"', 5, true);
 -- Name: TaskChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."TaskChecklistItem_id_seq"', 109, true);
+SELECT pg_catalog.setval('maintix."TaskChecklistItem_id_seq"', 125, true);
 
 
 --
@@ -3316,7 +3186,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 25, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 568, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 579, true);
 
 
 --
@@ -4171,5 +4041,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ZIMeEju6KXwigmpohUM3heCdh908Da0FXQv488GCCTJaXYKTetFzs47BMR8BZt1
+\unrestrict ObH3jNzmbNV08cAgXVgDLA9GyTq3z7yFmkPf6OKoAQOQ6ESRJKXmajoq4c3FFb6
 
