@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditService } from '../../common/audit/audit.service';
-import { RequestUser } from '../../common/types/auth.types';
+import { MetaType, RequestUser } from '../../common/types/auth.types';
 import { PMTaskQueryDto } from './dto/pmtask-query.dto';
 import {
   ChecklistItemType,
@@ -19,6 +19,7 @@ import {
   buildCursorQueryOptions,
 } from '../../common/utils/query-builder.util';
 import { UpdatePMTaskItemDto } from './dto/update-pmtask.dto';
+import { AuditAction, AuditModule } from '../../common/audit/audit.types';
 
 @Injectable()
 export class PmtasksService {
@@ -251,9 +252,10 @@ export class PmtasksService {
     itemId: number,
     dto: UpdatePMTaskItemDto,
     req: RequestUser,
+    meta?: MetaType,
   ) {
     const { organizationId, userId } = req;
-    const { actualValue } = dto;
+    const { actualValue, remarks } = dto;
 
     // Check and validate the pmtask
     const pmtask = await this.prisma.pMTask.findFirst({
@@ -375,10 +377,75 @@ export class PmtasksService {
         await tx.pMTask.update({
           where: { id, organizationId },
           data: {
+            remarks,
             status: TaskStatus.IN_PROGRESS,
           },
         });
       }
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_PMTASK,
+      module: AuditModule.PM,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Complete PM Task
+  async completePMTaskService(id: number, req: RequestUser, meta?: MetaType) {
+    const { organizationId, userId } = req;
+
+    const pmtask = await this.prisma.pMTask.findFirst({
+      where: { id, organizationId },
+      include: {
+        checklistItems: true,
+      },
+    });
+
+    if (!pmtask) throw new NotFoundException('PM Task not found');
+
+    if (
+      pmtask.status === TaskStatus.COMPLETED ||
+      pmtask.status === TaskStatus.SKIPPED
+    ) {
+      throw new BadRequestException('Cannot complete this task');
+    }
+
+    if (pmtask.assignedTo !== userId) {
+      throw new ForbiddenException('You are not assigned to this task');
+    }
+
+    if (pmtask.checklistItems.length === 0) {
+      throw new BadRequestException('Task has no checklist items');
+    }
+
+    const hasIncompleteItems = pmtask.checklistItems.some(
+      (item) => item.actualValue === null,
+    );
+
+    if (hasIncompleteItems) {
+      throw new BadRequestException('Complete all items in checklist');
+    }
+
+    await this.prisma.pMTask.update({
+      where: { id, organizationId },
+      data: {
+        status: TaskStatus.COMPLETED,
+        completedAt: new Date(),
+      },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.COMPLETE_PMTASK,
+      module: AuditModule.PM,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
     });
   }
   //#endregion

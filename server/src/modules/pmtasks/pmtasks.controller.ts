@@ -12,9 +12,13 @@ import {
 import { PmtasksService } from './pmtasks.service';
 import { AccessTokenGuard } from '../../common/guards/access-token.guard';
 import { OrganizationActiveGuard } from '../../common/guards/org-active.guard';
-import type { AuthenticateRequest } from '../../common/types/auth.types';
+import type {
+  AuthenticateRequest,
+  MetaType,
+} from '../../common/types/auth.types';
 import { PMTaskQueryDto } from './dto/pmtask-query.dto';
 import { UpdatePMTaskItemDto } from './dto/update-pmtask.dto';
+import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 
 @Controller('pmtasks')
 export class PmtasksController {
@@ -59,11 +63,28 @@ export class PmtasksController {
     @Param('itemId', ParseIntPipe) itemId: number,
     @Body() dto: UpdatePMTaskItemDto,
     @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
   ) {
-    await this.pmtask.updatePMTaskItems(id, itemId, dto, req.user);
+    await this.pmtask.updatePMTaskItems(id, itemId, dto, req.user, meta);
 
     return {
       message: 'Checklist Items updated',
+    };
+  }
+  //#endregion
+
+  //#region Complete PM Task
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch(':id/complete')
+  async completePMTask(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.pmtask.completePMTaskService(id, req.user, meta);
+
+    return {
+      message: 'PM Task Completed',
     };
   }
   //#endregion
