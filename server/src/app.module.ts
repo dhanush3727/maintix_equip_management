@@ -20,6 +20,7 @@ import { ChecklistModule } from './modules/checklist/checklist.module';
 import { PmschedulesModule } from './modules/pmschedules/pmschedules.module';
 import { PmtasksModule } from './modules/pmtasks/pmtasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { BreakdownModule } from './modules/breakdown/breakdown.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ChecklistModule,
     PmschedulesModule,
     PmtasksModule,
+    BreakdownModule,
   ],
   controllers: [AppController],
   providers: [

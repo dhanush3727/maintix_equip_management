@@ -62,6 +62,10 @@ export enum AuditAction {
   // PMTask Actions
   UPDATE_PMTASK = 'UPDATE_PMTASK',
   COMPLETE_PMTASK = 'COMPLETE_PMTASK',
+
+  // Breakdown Actions
+  CREATE_BREAKDOWN = 'CREATE_BREAKDOWN',
+  UPDATE_BREAKDOWN = 'UPDATE_BREAKDOWN',
 }
 
 export enum AuditModule {

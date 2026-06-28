@@ -563,7 +563,7 @@ model BreakdownReport {
   assignedTo          Int?
 
   title               String
-  rootCause           String
+  rootCause           String?
   description         String?
 
   severity            BreakdownSeverity
