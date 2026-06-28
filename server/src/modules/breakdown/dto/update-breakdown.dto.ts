@@ -1,25 +1,19 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { BreakdownSeverity } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import {
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsPositive,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateBreakdownDto {
-  @ApiProperty({ example: 'Machine failure' })
+export class UpdateBreakdownDto {
+  @ApiPropertyOptional({ example: 'Machine failure' })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
     return value.trim().replace(/\s+/g, ' ');
   })
-  title!: string;
+  title?: string;
 
   @ApiPropertyOptional({ example: 'Description' })
   @IsString()
@@ -32,14 +26,9 @@ export class CreateBreakdownDto {
   })
   description?: string;
 
-  @ApiProperty({ example: 'LOW' })
+  @ApiPropertyOptional({ example: 'LOW' })
   @IsEnum(BreakdownSeverity)
   @IsNotEmpty()
-  severity!: BreakdownSeverity;
-
-  @ApiProperty({ example: 1 })
-  @IsNotEmpty()
-  @IsInt()
-  @IsPositive()
-  equipmentId!: number;
+  @IsOptional()
+  severity?: BreakdownSeverity;
 }

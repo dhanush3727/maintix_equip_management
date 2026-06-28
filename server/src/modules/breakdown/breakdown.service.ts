@@ -7,10 +7,14 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { AuditService } from '../../common/audit/audit.service';
 import { CreateBreakdownDto } from './dto/create-breakdown.dto';
 import { MetaType, RequestUser } from '../../common/types/auth.types';
-import { EquipmentStatus, Prisma } from '@prisma/client';
+import { BreakdownStatus, EquipmentStatus, Prisma } from '@prisma/client';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
 import { BreakdownQueryDto } from './dto/breakdown-query.dto';
-import { buildCursorQueryOptions } from '../../common/utils/query-builder.util';
+import {
+  buildCursorMeta,
+  buildCursorQueryOptions,
+} from '../../common/utils/query-builder.util';
+import { UpdateBreakdownDto } from './dto/update-breakdown.dto';
 
 @Injectable()
 export class BreakdownService {
@@ -74,7 +78,7 @@ export class BreakdownService {
   //#endregion
 
   //#region Get all breakdowns
-  async getBreakdownsService(req: RequestUser, query: BreakdownQueryDto) {
+  async getAllBreakdowns(req: RequestUser, query: BreakdownQueryDto) {
     const { organizationId } = req;
 
     const { cursor, limit, order, equipment, severity, status } = query;
@@ -106,7 +110,169 @@ export class BreakdownService {
         id: true,
         organizationId: true,
         equipmentId: true,
+        reportedBy: true,
+        assignedTo: true,
+        title: true,
+        rootCause: true,
+        description: true,
+        severity: true,
+        status: true,
+        createdAt: true,
+        equipment: {
+          select: {
+            name: true,
+          },
+        },
+        reporter: {
+          select: {
+            name: true,
+          },
+        },
+        assignee: {
+          select: {
+            name: true,
+          },
+        },
       },
+    });
+
+    const formattedBreakdowns = breakdowns.map((breakdown) => ({
+      id: breakdown.id,
+      organizationId: breakdown.organizationId,
+      equipmentId: breakdown.equipmentId,
+      equipment: breakdown.equipment.name,
+      reportedById: breakdown.reportedBy,
+      reportedBy: breakdown.reporter.name,
+      assignedToId: breakdown.assignedTo,
+      assignedTo: breakdown.assignee?.name,
+      title: breakdown.title,
+      rootCause: breakdown.rootCause,
+      description: breakdown.description,
+      severity: breakdown.severity,
+      status: breakdown.status,
+      createdAt: breakdown.createdAt,
+    }));
+
+    const { data, meta } = buildCursorMeta(formattedBreakdowns, limit);
+
+    return { data, meta };
+  }
+  //#endregion
+
+  //#region Get breakdown by id
+  async getBreakdownbyId(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: {
+        id,
+        organizationId,
+      },
+      select: {
+        id: true,
+        organizationId: true,
+        equipmentId: true,
+        reportedBy: true,
+        assignedTo: true,
+        title: true,
+        rootCause: true,
+        description: true,
+        severity: true,
+        status: true,
+        createdAt: true,
+        equipment: {
+          select: {
+            name: true,
+          },
+        },
+        reporter: {
+          select: {
+            name: true,
+          },
+        },
+        assignee: {
+          select: {
+            name: true,
+          },
+        },
+        actions: true,
+      },
+    });
+
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+
+    const formattedBreakdowns = {
+      id: breakdown.id,
+      organizationId: breakdown.organizationId,
+      equipmentId: breakdown.equipmentId,
+      equipment: breakdown.equipment.name,
+      reportedById: breakdown.reportedBy,
+      reportedBy: breakdown.reporter.name,
+      assignedToId: breakdown.assignedTo,
+      assignedTo: breakdown.assignee?.name,
+      title: breakdown.title,
+      rootCause: breakdown.rootCause,
+      description: breakdown.description,
+      severity: breakdown.severity,
+      status: breakdown.status,
+      createdAt: breakdown.createdAt,
+      actions: breakdown.actions,
+    };
+
+    return formattedBreakdowns;
+  }
+  //#endregion
+
+  //#region Update breakdown
+  async updateBreakdown(
+    id: number,
+    dto: UpdateBreakdownDto,
+    req: RequestUser,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+
+    const { title, description, severity } = dto;
+
+    const data: Prisma.BreakdownReportUpdateInput = {};
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: {
+        id,
+        organizationId,
+      },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+
+    if (breakdown.status !== BreakdownStatus.OPEN) {
+      throw new BadRequestException('This breakdown cannot be updated');
+    }
+
+    if (title) data.title = title;
+    if (description) data.description = description;
+    if (severity) data.severity = severity;
+
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('No valid fields provided');
+    }
+
+    await this.prisma.breakdownReport.update({
+      where: { id, organizationId },
+      data,
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.UPDATE_BREAKDOWN,
+      module: AuditModule.BREAKDOWN,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
     });
   }
   //#endregion

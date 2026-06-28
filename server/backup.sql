@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict ObH3jNzmbNV08cAgXVgDLA9GyTq3z7yFmkPf6OKoAQOQ6ESRJKXmajoq4c3FFb6
+\restrict zoOlyET3vd9rkL80p043Kfmv8IogXCsxMqHBg9xI1xub8LPBxQUsRhryHPwdgS4
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -502,7 +502,7 @@ CREATE TABLE maintix."BreakdownReport" (
     "reportedBy" integer NOT NULL,
     "assignedTo" integer,
     title text NOT NULL,
-    "rootCause" text NOT NULL,
+    "rootCause" text,
     description text,
     severity maintix."BreakdownSeverity" NOT NULL,
     status maintix."BreakdownStatus" DEFAULT 'OPEN'::maintix."BreakdownStatus" NOT NULL,
@@ -2200,6 +2200,22 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 787	3	3	CREATE_PMSCHEDULE	PM	3	::1	2026-06-26 15:32:19.881
 788	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 15:40:52.272
 789	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-26 15:59:48.263
+790	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-27 12:38:20.349
+791	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-27 12:57:45.312
+792	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-06-27 12:58:29.537
+793	3	10	COMPLETE_PMTASK	PM	24	::1	2026-06-27 12:59:27.721
+794	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-06-28 12:47:38.485
+795	3	10	CREATE_BREAKDOWN	BREAKDOWN	10	::1	2026-06-28 12:55:42.328
+796	3	10	CREATE_BREAKDOWN	BREAKDOWN	10	::1	2026-06-28 12:59:17.263
+797	3	10	CREATE_BREAKDOWN	BREAKDOWN	10	::1	2026-06-28 13:00:14.222
+798	2	2	LOGIN_SUCCESS	AUTH	2	::1	2026-06-28 13:54:45.69
+799	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-28 13:55:17.453
+800	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-28 14:06:16.204
+801	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-28 15:39:53.392
+802	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-28 15:42:39.36
+803	3	3	CREATE_BREAKDOWN	BREAKDOWN	3	::ffff:127.0.0.1	2026-06-28 15:42:39.51
+804	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-28 15:42:39.71
+805	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-28 15:42:39.894
 \.
 
 
@@ -2216,6 +2232,10 @@ COPY maintix."BreakdownAction" (id, "breakdownId", "performedBy", action, remark
 --
 
 COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy", "assignedTo", title, "rootCause", description, severity, status, "reportedAt", "resolvedAt", "createdAt", "updatedAt") FROM stdin;
+1	3	1	10	\N	New Breakdown	\N	this is a new breakdown for testing purpose	LOW	OPEN	2026-06-28 12:55:42.286	\N	2026-06-28 12:55:42.286	2026-06-28 12:55:42.286
+2	3	3	10	\N	New Breakdown 2	\N	this is a new breakdown for testing purpose	MEDIUM	OPEN	2026-06-28 12:59:17.218	\N	2026-06-28 12:59:17.218	2026-06-28 12:59:17.218
+3	3	7	10	\N	New Breakdown 3	\N	this is a new breakdown for testing purpose	HIGH	OPEN	2026-06-28 13:00:14.176	\N	2026-06-28 13:00:14.176	2026-06-28 13:00:14.176
+4	3	5	3	\N	Test Breakdown	\N	Testing purpose	LOW	OPEN	2026-06-28 15:42:39.491	\N	2026-06-28 15:42:39.491	2026-06-28 15:42:39.491
 \.
 
 
@@ -2268,14 +2288,14 @@ COPY maintix."EmailVerification" (id, "userId", token, "expiresAt", "createdAt",
 --
 
 COPY maintix."Equipment" (id, "organizationId", "equipmentTypeId", name, "serialNumber", status, "installedDate", "warrantyExpiry", manufacturer, model, "createdAt", "updatedAt", code, "departmentId", "locationId") FROM stdin;
-7	3	6	Pump	\N	ACTIVE	\N	\N	\N	\N	2026-06-06 10:52:54.116	2026-06-06 10:52:54.116	eq-04	1	1
 10	3	6	Screw	4	ACTIVE	2003-10-09 00:00:00	2026-10-09 00:00:00	MCF	screw type	2026-06-06 11:05:35.108	2026-06-06 11:05:35.108	eq-05	1	1
 11	3	1	Newequip	\N	ACTIVE	\N	\N	\N	\N	2026-06-06 11:05:36.296	2026-06-06 11:05:36.296	eq-10	10	1
 12	3	6	Screw	4	ACTIVE	2003-10-09 00:00:00	2026-10-09 00:00:00	MCF	screw type	2026-06-06 11:13:40.186	2026-06-06 11:13:40.186	eq-06	1	1
 13	3	6	Screw	4	ACTIVE	2003-10-09 00:00:00	2026-10-09 00:00:00	MCF	screw type	2026-06-06 11:14:31.309	2026-06-06 11:14:31.309	eq-07	1	1
-5	3	6	Handsaw	003	ACTIVE	2024-10-14 00:00:00	2026-10-14 00:00:00	Tatasteel	Saw	2026-06-06 10:26:22.403	2026-06-09 07:28:36.112	EQ-003	10	2
 1	3	6	Screw	07	ACTIVE	2003-10-09 00:00:00	2003-12-01 00:00:00	TATA	Screw v2	2026-06-06 10:23:48.286	2026-06-09 08:41:49.986	EQ-10	10	2
-3	3	1	Pump	1	ACTIVE	2024-01-01 00:00:00	2026-10-01 00:00:00	PVT	centrifugal	2026-06-06 10:25:45.717	2026-06-09 08:50:14.804	eq-02	1	1
+3	3	1	Pump	1	BREAKDOWN	2024-01-01 00:00:00	2026-10-01 00:00:00	PVT	centrifugal	2026-06-06 10:25:45.717	2026-06-28 12:59:17.236	eq-02	1	1
+7	3	6	Pump	\N	UNDER_MAINTENANCE	\N	\N	\N	\N	2026-06-06 10:52:54.116	2026-06-28 13:00:14.197	eq-04	1	1
+5	3	6	Handsaw	003	UNDER_MAINTENANCE	2024-10-14 00:00:00	2026-10-14 00:00:00	Tatasteel	Saw	2026-06-06 10:26:22.403	2026-06-28 15:42:39.503	EQ-003	10	2
 \.
 
 
@@ -2343,7 +2363,7 @@ COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "f
 --
 
 COPY maintix."PMTask" (id, "organizationId", "scheduleId", "equipmentId", "templateId", "assignedTo", "dueDate", "completedAt", status, priority, remarks, "createdAt", "updatedAt", title) FROM stdin;
-24	3	7	7	56	10	2026-06-26 00:00:00	\N	IN_PROGRESS	MEDIUM	\N	2026-06-26 15:40:00.124	2026-06-26 15:42:24.214	Workstation Safety Inspection
+24	3	7	7	56	10	2026-06-26 00:00:00	2026-06-27 12:59:27.69	COMPLETED	MEDIUM	\N	2026-06-26 15:40:00.124	2026-06-27 12:59:27.698	Workstation Safety Inspection
 \.
 
 
@@ -3001,15 +3021,26 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 568	3	$2b$10$ClXggkYY0eKaKSBtq0O4qONyKiUPgMYZf5FGpfqkaPHAUcudzQclK	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 11:35:07.274	2026-06-24 11:29:30.643	2026-07-01 11:29:30.634	2dcb8efe-4d99-4ebe-a4d3-8b9ecfffd3c7
 569	3	$2b$10$DTSiJkWVGweCC8iuha/hmOwDOuLs95FYt0NdCE3MWCe.macwFCVTi	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 14:37:22.746	2026-06-24 14:22:59.567	2026-07-01 14:22:59.55	bd41bec6-8d14-4061-98ed-84df2f600658
 570	3	$2b$10$F.dEnTTlb.en/bnYBVw2Au2ySwUtMDexXbMiCuHWeGR4di1LqTkA6	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-24 14:39:45.307	2026-06-24 14:38:42.214	2026-07-01 14:38:42.209	f22119ba-6784-459e-bcb7-08310867ba51
+583	10	$2b$10$VlRzfSRwcXrhZKn2gMwOHuQG6KyeS6RRVqsm/U1XaHTa/S1JDiENO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-28 12:59:17.269	2026-06-28 12:47:38.451	2026-07-05 12:47:38.431	ff40dccc-4d18-442b-928d-346f899f59af
 571	3	$2b$10$14k6iZGtaXXXH/Wbg.2bM.3nlf8rM8xYh.woRDa6qI2JrC2NZsCT.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 14:00:03.815	2026-06-25 13:50:59.188	2026-07-02 13:50:59.172	25eb94d2-f0b4-49d0-9f8c-b2854cb43b53
 572	3	$2b$10$5KSSrP5rVlqUij1RWFE6TOWs2D6nUn9LRAJbvFNi.68cXPS95Bfma	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 14:12:06.227	2026-06-25 14:07:27.958	2026-07-02 14:07:27.943	e7b03ed7-c8df-4148-b47e-7c6acb18103c
 573	3	$2b$10$ZrGOrYvRX4KsmVK2k/KBMulcCjeaujlaQkHyp9EirWYda.RA9dJ9u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 14:28:45.684	2026-06-25 14:28:45.684	2026-07-02 14:28:45.669	73fdf56a-f1be-4bbe-a15c-4b7c36ef6e2d
 574	3	$2b$10$uRVqirQGcvCz0YJrrAxM5.ceBCvgoC9sAiSoS4o2VaQ9TUwSGcQ3K	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-25 15:31:00.772	2026-06-25 15:31:00.772	2026-07-02 15:31:00.754	94399d0c-243a-4e02-9dd2-00b77aea5109
+584	2	$2b$10$8NqRjpSFOcFhaut6yubJL.jFWB0Z36bh6s052T.q950qqYFsoVgfm	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-28 13:54:45.682	2026-06-28 13:54:45.682	2026-07-05 13:54:45.665	b59c05ff-3aa9-4d90-9dc5-af6f59bbb9f9
+585	3	$2b$10$KKKpoaJygWwhWfP6nYCo.Ocoap/2DRnkvUGd3P1u/mH35gNO7QmSq	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-28 13:56:24.943	2026-06-28 13:55:17.442	2026-07-05 13:55:17.441	e40e8c9a-8378-43d7-a8c6-54ed37ddad1f
+586	3	$2b$10$3bO.ltdsuPG6ZCgByeoi/eKPydcQ0GVfxG/UiUcZmbUb4/oEk1gXO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-28 14:06:16.192	2026-06-28 14:06:16.192	2026-07-05 14:06:16.181	c6d6f10f-2c38-49b8-81d6-60e8ffb94a25
+587	3	$2b$10$GosN/OwZfLABIYi9cfHK2.1w9GyH9LVViG3XdUX6PBk3sj9PfJiHi	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-28 15:39:53.368	2026-06-28 15:39:53.368	2026-07-05 15:39:53.359	7e2b8eee-94a7-4eee-9b2a-4bcb7f239099
 575	3	$2b$10$VweUUZKhbdnOBP6R2fmfF.O5zfWGgPeGrn0ZJECpTbQQfJGzAYRJ.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:12:43.351	2026-06-26 14:59:47.823	2026-07-03 14:59:47.805	49075bfe-959d-4443-9599-ce93ab918698
 576	3	$2b$10$Uk9yDeODFKBDkncL.sybhOWNaEMeSfX2poWMrz4VD0txWNq/RfwKe	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:23:45.503	2026-06-26 15:23:45.503	2026-07-03 15:23:45.486	fdba555a-28f2-4575-807e-8ec6bdec5a7c
 577	3	$2b$10$ymk9rr0aku53UAbW3mSu1uVJmg.2BupP8PgTWw/RdiaowZyDqUAK6	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:32:19.883	2026-06-26 15:30:12.057	2026-07-03 15:30:12.037	b5e4de84-7d80-41bb-bdd4-09e39f5bd440
+588	3	$2b$10$SjKVm9F55ZBD0I.1MS1GP.aj70gRG6N7pq0WESd.w3QTN.L1551.G	unknown	::ffff:127.0.0.1	unknown	t	2026-06-28 15:42:39.338	2026-06-28 15:42:39.338	2026-07-05 15:42:39.329	33a0c8ae-1d9b-41d8-92df-8d1f3e436f87
+589	3	$2b$10$sJy2yH1QcagmcwwmzsiN2.OeO7zamycs2D0w10lpDLrlokarS67pK	unknown	::ffff:127.0.0.1	unknown	t	2026-06-28 15:42:39.692	2026-06-28 15:42:39.692	2026-07-05 15:42:39.691	6a8c1da0-83ae-4005-bba3-c42ee0fe706d
+590	3	$2b$10$b1R/1x63pkrLfPbPqot7OOT81aBmVORZViRzOrLzYfAejOVmyAePe	unknown	::ffff:127.0.0.1	unknown	t	2026-06-28 15:42:39.891	2026-06-28 15:42:39.891	2026-07-05 15:42:39.89	63a93ca5-055e-430a-8235-6ae17123af7e
 578	3	$2b$10$vsv4LyKlnk95gSb2qbzQU.d.Il7jg.ysFUW02B23QVEDFkmy4wsYa	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:46:11.703	2026-06-26 15:40:52.26	2026-07-03 15:40:52.257	8d791dd8-032a-4b96-bbf0-7b3c8a18e14b
 579	3	$2b$10$V1sMRjQoLF7y4FuKeiKUFO5pPVYXctEeUkAPYiYYF6SqQ4B5fs1WW	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-26 15:59:48.25	2026-06-26 15:59:48.25	2026-07-03 15:59:48.234	0a9a648a-b2ea-4cbb-aa70-a0176e2d4145
+580	3	$2b$10$m8nM2087sO302xZpk6K1Cuom.VwNJdOJuCZmEsA6FVAHMwx40kv8S	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-27 12:42:59.387	2026-06-27 12:38:20.311	2026-07-04 12:38:20.294	c52e3e6e-dd32-4d47-ac2b-a7c93e6ce987
+581	3	$2b$10$LqOn5gGsMawl6LBKf2Y31eljelGct2KHS.QDIAQ/YdVz7wJxEDY.u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-27 12:57:45.288	2026-06-27 12:57:45.288	2026-07-04 12:57:45.271	23a65fc4-612d-442a-b889-deb8ee879585
+582	10	$2b$10$gCdaQkE.pGwDmRfVdmw36uhHwiT4bu5ABG1lG/rIG1A5ko1it0DxO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-27 12:58:29.515	2026-06-27 12:58:29.515	2026-07-04 12:58:29.514	d0f58fa8-444d-4b24-9d62-8ea44a96c637
 \.
 
 
@@ -3039,6 +3070,7 @@ c2954958-2518-4277-b3cd-1c6fdb6c355e	983b569ebf602ffdab1b880064e63915500ca83424a
 845d26d1-5b08-42b1-8475-91bf0befa2bc	143ed34989d8b9a9b612a434c78554ba5a89d007c5ad776497f2545c1b40fe00	2026-06-14 10:21:22.011105+05:30	20260614045121_pm_schedule	\N	\N	2026-06-14 10:21:22.002346+05:30	1
 cfb557d5-1484-450d-9366-7177c281133d	d39d29ff573f89313554c40f476767d0b5f465882bac0ea1c7e7a1761ea9b792	2026-06-24 09:12:50.163033+05:30	20260617095236_pmtask	\N	\N	2026-06-24 09:12:50.110323+05:30	1
 a65fe948-56a8-4ce4-bdc0-f26429ae7d23	f0f0f90a8ee5a63a3de47aeb8d1092b9e9245c915e344acef6c1a7aa31d14d38	2026-06-25 19:49:43.877021+05:30	20260625141943_options_checklist	\N	\N	2026-06-25 19:49:43.86013+05:30	1
+3082472d-3bcd-4cf4-ab26-09926632336e	b260794a25bceadda4eee10dc63cd2b7adf88a8e3d233b625d44637fedc9fab6	2026-06-28 17:50:54.5997+05:30	20260628122054_breakdown_root_cause	\N	\N	2026-06-28 17:50:54.574518+05:30	1
 \.
 
 
@@ -3046,7 +3078,7 @@ a65fe948-56a8-4ce4-bdc0-f26429ae7d23	f0f0f90a8ee5a63a3de47aeb8d1092b9e9245c915e3
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 789, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 805, true);
 
 
 --
@@ -3060,7 +3092,7 @@ SELECT pg_catalog.setval('maintix."BreakdownAction_id_seq"', 1, false);
 -- Name: BreakdownReport_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 1, false);
+SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 4, true);
 
 
 --
@@ -3186,7 +3218,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 25, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 579, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 590, true);
 
 
 --
@@ -4041,5 +4073,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ObH3jNzmbNV08cAgXVgDLA9GyTq3z7yFmkPf6OKoAQOQ6ESRJKXmajoq4c3FFb6
+\unrestrict zoOlyET3vd9rkL80p043Kfmv8IogXCsxMqHBg9xI1xub8LPBxQUsRhryHPwdgS4
 
