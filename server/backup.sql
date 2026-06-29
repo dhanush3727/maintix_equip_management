@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict zoOlyET3vd9rkL80p043Kfmv8IogXCsxMqHBg9xI1xub8LPBxQUsRhryHPwdgS4
+\restrict 8jBr4iL4Bxi5D2xkPQXP10XcpvcKqQmC992ZKXxbrrvhIOBIstOYGbnp46qb1nu
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -2216,6 +2216,31 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 803	3	3	CREATE_BREAKDOWN	BREAKDOWN	3	::ffff:127.0.0.1	2026-06-28 15:42:39.51
 804	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-28 15:42:39.71
 805	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-28 15:42:39.894
+806	3	3	UPDATE_BREAKDOWN	BREAKDOWN	1	::1	2026-06-29 05:13:40.033
+807	3	3	UPDATE_BREAKDOWN	BREAKDOWN	1	::1	2026-06-29 05:15:33.116
+808	3	3	UPDATE_BREAKDOWN	BREAKDOWN	1	::1	2026-06-29 05:16:22.845
+809	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-29 05:31:03.637
+810	3	3	UPDATE_BREAKDOWN	BREAKDOWN	4	::ffff:127.0.0.1	2026-06-29 05:31:04.122
+811	3	3	LOGIN_SUCCESS	AUTH	3	::ffff:127.0.0.1	2026-06-29 05:31:04.716
+812	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-29 07:19:28.366
+813	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-06-29 07:21:30.925
+814	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-06-29 07:23:02.839
+815	3	8	LOGIN_SUCCESS	AUTH	8	::1	2026-06-29 07:32:05.646
+816	3	8	ASSIGN_TECHNICIAN	BREAKDOWN	4	::1	2026-06-29 07:33:41.2
+817	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 07:57:16.462
+818	3	8	ASSIGN_TECHNICIAN	BREAKDOWN	1	::ffff:127.0.0.1	2026-06-29 07:57:16.688
+819	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 07:57:16.888
+820	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 07:57:17.076
+821	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 07:57:17.252
+822	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 07:57:17.409
+823	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 08:00:02.039
+824	3	8	ASSIGN_TECHNICIAN	BREAKDOWN	2	::ffff:127.0.0.1	2026-06-29 08:00:02.283
+825	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 08:00:02.457
+826	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 08:00:02.61
+827	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 08:00:02.816
+828	3	8	LOGIN_SUCCESS	AUTH	8	::ffff:127.0.0.1	2026-06-29 08:00:02.966
+829	3	8	LOGIN_SUCCESS	AUTH	8	::1	2026-06-29 08:29:43.411
+830	3	8	ASSIGN_TECHNICIAN	BREAKDOWN	3	::1	2026-06-29 08:30:05.805
 \.
 
 
@@ -2232,10 +2257,10 @@ COPY maintix."BreakdownAction" (id, "breakdownId", "performedBy", action, remark
 --
 
 COPY maintix."BreakdownReport" (id, "organizationId", "equipmentId", "reportedBy", "assignedTo", title, "rootCause", description, severity, status, "reportedAt", "resolvedAt", "createdAt", "updatedAt") FROM stdin;
-1	3	1	10	\N	New Breakdown	\N	this is a new breakdown for testing purpose	LOW	OPEN	2026-06-28 12:55:42.286	\N	2026-06-28 12:55:42.286	2026-06-28 12:55:42.286
-2	3	3	10	\N	New Breakdown 2	\N	this is a new breakdown for testing purpose	MEDIUM	OPEN	2026-06-28 12:59:17.218	\N	2026-06-28 12:59:17.218	2026-06-28 12:59:17.218
-3	3	7	10	\N	New Breakdown 3	\N	this is a new breakdown for testing purpose	HIGH	OPEN	2026-06-28 13:00:14.176	\N	2026-06-28 13:00:14.176	2026-06-28 13:00:14.176
-4	3	5	3	\N	Test Breakdown	\N	Testing purpose	LOW	OPEN	2026-06-28 15:42:39.491	\N	2026-06-28 15:42:39.491	2026-06-28 15:42:39.491
+4	3	5	3	10	Update Breakdown	\N	Update the description	HIGH	OPEN	2026-06-28 15:42:39.491	\N	2026-06-28 15:42:39.491	2026-06-29 07:33:41.108
+1	3	1	10	10	Update the breakdown	\N	Update the description	CRITICAL	OPEN	2026-06-28 12:55:42.286	\N	2026-06-28 12:55:42.286	2026-06-29 07:57:16.678
+2	3	3	10	10	New Breakdown 2	\N	this is a new breakdown for testing purpose	MEDIUM	OPEN	2026-06-28 12:59:17.218	\N	2026-06-28 12:59:17.218	2026-06-29 08:00:02.276
+3	3	7	10	10	New Breakdown 3	\N	this is a new breakdown for testing purpose	HIGH	OPEN	2026-06-28 13:00:14.176	\N	2026-06-28 13:00:14.176	2026-06-29 08:30:05.79
 \.
 
 
@@ -2412,10 +2437,10 @@ COPY maintix."User" (id, name, email, "createdAt", "isActive", "isEmailVerified"
 4	John	dhanush1@gmail.com	2026-05-29 09:38:54.476	t	t	\N	3	$2b$10$2EzMpYFNkHk5RHqpnFsnL.6.UemjscxnL7096o4NQ1dTjNtoJXIWW	2026-06-04 09:05:53.889
 5	User 1	testUser1@gmail.com	2026-06-14 05:27:12.389	t	f	\N	3	$2b$10$hKEzkNAeK0XYYrDoW.h...P.yx1bEqABLZ/iya.YlRVwPRdU5m2Ni	2026-06-14 05:27:12.389
 6	User 2	testUser2@gmail.com	2026-06-14 05:28:32.113	t	f	\N	3	$2b$10$XkFDj0EmrHyITM//ttHs6O7cdtxoTpHnKD/OJiVXlhSDo3WYdzCl.	2026-06-14 05:28:32.113
-8	Manager	testUser3@gmail.com	2026-06-14 05:29:51.247	t	f	\N	3	$2b$10$3v305YccmwWvChAKqkbOouZemgi4zSB5EtBhjQ2tKoDkwvv3xyDBu	2026-06-14 05:29:51.247
 10	Technician	technicianuser@gmail.com	2026-06-14 05:30:29.028	t	f	\N	3	$2b$10$BtSEWR4XrT..SGAYjROEhuXeJ4AYrIDEPonUH/RHnqXj.JIQwI1Dm	2026-06-14 05:30:29.028
 11	Inspector	inspectoruser@gmail.com	2026-06-14 05:31:00.273	t	f	\N	3	$2b$10$cM5etnJ9Lpi/EKPburdAtOldJ4VhMfkvNK1FgrcyA6TODH8HPGB9i	2026-06-14 05:31:00.273
 12	Engineer	engineeruser@gmail.com	2026-06-14 05:31:20.084	t	f	\N	3	$2b$10$Ho569/B9zMvGBMcbSrad/eDadqGnvzlpsFvsiT8p7AXp4vXTbHm06	2026-06-14 05:31:20.084
+8	Manager	manageruser@gmail.com	2026-06-14 05:29:51.247	t	f	\N	3	$2b$10$3v305YccmwWvChAKqkbOouZemgi4zSB5EtBhjQ2tKoDkwvv3xyDBu	2026-06-14 05:29:51.247
 \.
 
 
@@ -3041,6 +3066,23 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 580	3	$2b$10$m8nM2087sO302xZpk6K1Cuom.VwNJdOJuCZmEsA6FVAHMwx40kv8S	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-27 12:42:59.387	2026-06-27 12:38:20.311	2026-07-04 12:38:20.294	c52e3e6e-dd32-4d47-ac2b-a7c93e6ce987
 581	3	$2b$10$LqOn5gGsMawl6LBKf2Y31eljelGct2KHS.QDIAQ/YdVz7wJxEDY.u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-27 12:57:45.288	2026-06-27 12:57:45.288	2026-07-04 12:57:45.271	23a65fc4-612d-442a-b889-deb8ee879585
 582	10	$2b$10$gCdaQkE.pGwDmRfVdmw36uhHwiT4bu5ABG1lG/rIG1A5ko1it0DxO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-27 12:58:29.515	2026-06-27 12:58:29.515	2026-07-04 12:58:29.514	d0f58fa8-444d-4b24-9d62-8ea44a96c637
+591	3	$2b$10$pI6VIA3CjCXZHV2xmGzycO19iHo0BfjfRwPasqMfcYK0Pua6qut2e	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 05:31:03.413	2026-06-29 05:31:03.413	2026-07-06 05:31:03.364	6e71da08-b215-4858-b3b6-eda6f8d478eb
+592	3	$2b$10$XYm3vSJRq43HINfpgPOCMOn9GnsoC8LFlkr3gBhDI0JmExp/EkYsy	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 05:31:04.709	2026-06-29 05:31:04.709	2026-07-06 05:31:04.708	33599898-f35c-4d34-b47e-862ff401f80c
+593	3	$2b$10$DpE5pYvYccaqFl3hKINI2uFA9fCn8LXJrbh.T/uzh9zoxY0TnhUs.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-29 07:19:28.288	2026-06-29 07:19:28.288	2026-07-06 07:19:28.251	2748c20c-66b7-4ff3-b8b8-ab85dd515214
+595	10	$2b$10$8isyYFZryb4OicbF1DPl4.3ZrK3exlRP82mQK9w33za7Q2.PK7ypW	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-29 07:23:02.819	2026-06-29 07:23:02.819	2026-07-06 07:23:02.818	d06f14f1-5030-4b9e-92f6-d34d9e154af8
+594	3	$2b$10$vxbSDyvPEcrKtNNlIbVjKOQtigbL0Jzvzs6VJm7liiVb8RUvc5NGu	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-29 07:23:34.525	2026-06-29 07:21:30.897	2026-07-06 07:21:30.893	0aa49ec2-6932-43bb-9075-4c93397715f1
+596	8	$2b$10$Ju1G8lqjVbBjlrR9CZjgPuXv1VlvlnMGpOcSAnqZac5a4ogBsFqYG	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-29 07:33:41.258	2026-06-29 07:32:05.453	2026-07-06 07:32:05.345	af56e381-2f5b-4da7-bccf-36c36ac5add2
+597	8	$2b$10$s10O.GKpjLK00yRpiOAWt.sF4KbXBVsdd4avj54JwgXs2oTgJEgeG	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 07:57:16.434	2026-06-29 07:57:16.434	2026-07-06 07:57:16.418	472f979f-ffcb-414d-90a6-6a4e3f453ca0
+598	8	$2b$10$CXcKDHYZ2Ojblr/MJlDoXe8a3.KNiR0t95XwcFwb6s5ukfiVp/YjC	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 07:57:16.883	2026-06-29 07:57:16.883	2026-07-06 07:57:16.882	57b086b4-ec94-44f6-8863-520db5e66b83
+599	8	$2b$10$M1y4f7CepLxtCYoekrmQMuw/gQysoIzNialyPeSp9XYmuw4Io5FKq	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 07:57:17.071	2026-06-29 07:57:17.071	2026-07-06 07:57:17.07	acc06a9e-f8fe-4941-81f4-25ea2e4f2716
+600	8	$2b$10$8vmxOxRvH170qtmmFFoR2OKVkQeI2qpoPDAb/Qz/X2Pe8jdUDVGyK	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 07:57:17.249	2026-06-29 07:57:17.249	2026-07-06 07:57:17.248	cdb5b9e5-aebc-4104-8686-7468180f6e15
+601	8	$2b$10$hiY2k7hx/J4EK/VW9zl.R.vCXpVaiV//3y4SJtNRZqN9KmiK8ADI6	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 07:57:17.407	2026-06-29 07:57:17.407	2026-07-06 07:57:17.406	e54f156b-98e2-4107-8b3f-da7517f94eb9
+602	8	$2b$10$6b.09H1uYQwXtkK5Ymzvh.TgU.ra5CRCRJz4644TiCze4ThlZYpRm	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 08:00:02.022	2026-06-29 08:00:02.022	2026-07-06 08:00:02.011	dc781299-6223-496a-9f7d-ffc5192e0bb8
+603	8	$2b$10$gJFDQVH9F.fOJMj5SMRtkO8V4q.TmOovurzzJiwFANYDlZ8qsXmna	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 08:00:02.455	2026-06-29 08:00:02.455	2026-07-06 08:00:02.454	e64159be-bbda-49fc-bfdf-97766883fcca
+604	8	$2b$10$K0j.8gFbGrdu3IyBjVxOhO3waAtQVNibx2bzNDlY/pQphqV.pprAa	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 08:00:02.608	2026-06-29 08:00:02.608	2026-07-06 08:00:02.607	3d7baec9-d735-487f-b3b9-0ff91c6dc16b
+605	8	$2b$10$KzyofaLoSt/yEyYTqwAg1eAeBtSr8XlZU3YYhkkBfQQBmysVs1qiq	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 08:00:02.813	2026-06-29 08:00:02.813	2026-07-06 08:00:02.813	6dc92f50-c181-4d9d-a638-f72d163727ee
+606	8	$2b$10$CNP2s8mZJfyvsJbDNRxljuemaqu5r.nPvggH.hUV/jfpAElqwzwHW	unknown	::ffff:127.0.0.1	unknown	t	2026-06-29 08:00:02.961	2026-06-29 08:00:02.961	2026-07-06 08:00:02.961	ff18260b-ee71-4a29-a9a6-4ebab7b5370c
+607	8	$2b$10$6lxHxOOBR7yMVm/Gz/YceueRUYEFZI/XTbyMR5Q/Apdhn7TLQgCIS	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-06-29 08:29:43.377	2026-06-29 08:29:43.377	2026-07-06 08:29:43.323	87fc5e6c-0eef-4d29-96cf-cb7fdeaf4fd7
 \.
 
 
@@ -3078,7 +3120,7 @@ a65fe948-56a8-4ce4-bdc0-f26429ae7d23	f0f0f90a8ee5a63a3de47aeb8d1092b9e9245c915e3
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 805, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 830, true);
 
 
 --
@@ -3218,7 +3260,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 25, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 590, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 607, true);
 
 
 --
@@ -4073,5 +4115,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict zoOlyET3vd9rkL80p043Kfmv8IogXCsxMqHBg9xI1xub8LPBxQUsRhryHPwdgS4
+\unrestrict 8jBr4iL4Bxi5D2xkPQXP10XcpvcKqQmC992ZKXxbrrvhIOBIstOYGbnp46qb1nu
 
