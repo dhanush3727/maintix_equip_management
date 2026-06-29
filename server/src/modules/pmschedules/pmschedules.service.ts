@@ -17,6 +17,7 @@ import {
   getPagination,
 } from '../../common/utils/query-builder.util';
 import { UpdatePMScheduleDto } from './dto/update-pmschedule.dto';
+import { ROLE_IDS } from '../../common/constants/roles.constants';
 
 @Injectable()
 export class PmschedulesService {
@@ -82,7 +83,9 @@ export class PmschedulesService {
     if (!user.isActive) {
       throw new BadRequestException('User is deactivate');
     }
-    const isTechnician = user.roles.some((role) => role.roleId === 3);
+    const isTechnician = user.roles.some(
+      (role) => role.roleId === ROLE_IDS.TECHNICIAN,
+    );
     if (!isTechnician) {
       throw new BadRequestException('Assigned user must have Technician role');
     }
@@ -476,7 +479,9 @@ export class PmschedulesService {
       if (!user.isActive) {
         throw new BadRequestException('User is deactivated');
       }
-      const isTechnician = user.roles.some((role) => role.roleId === 3);
+      const isTechnician = user.roles.some(
+        (role) => role.roleId === ROLE_IDS.TECHNICIAN,
+      );
       if (!isTechnician) {
         throw new BadRequestException(
           'Assigned user must have Technician role',

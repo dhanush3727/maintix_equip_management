@@ -21,6 +21,11 @@ import type {
 import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 import { BreakdownQueryDto } from './dto/breakdown-query.dto';
 import { UpdateBreakdownDto } from './dto/update-breakdown.dto';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { RoleType } from '@prisma/client';
+import { AssignTechnicianDto } from './dto/assign-breakdown.dto';
+import { StartBreakdownDto } from './dto/start-breakdown.dto';
 
 @Controller('breakdowns')
 export class BreakdownController {
@@ -85,10 +90,46 @@ export class BreakdownController {
     @Req() req: AuthenticateRequest,
     @ReqMeta() meta: MetaType,
   ) {
-    await this.breakdown.updateBreakdown(id, dto, req.user, meta);
+    await this.breakdown.updateBreakdownService(id, dto, req.user, meta);
 
     return {
       message: 'Breakdown update successfully',
+    };
+  }
+  //#endregion
+
+  //#region Assign Technician
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.MANAGER)
+  @Patch(':id/assign')
+  async assignTechnician(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AssignTechnicianDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.breakdown.assignTechnicianService(id, dto, req.user, meta);
+
+    return {
+      message: 'Technician Assigned',
+    };
+  }
+  //#endregion
+
+  //#region Start the breakdown
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.TECHNICIAN)
+  @Patch(':id/start')
+  async startBreakdown(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: StartBreakdownDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.breakdown.startBreakdownService(id, dto, req.user, meta);
+
+    return {
+      message: 'Breakdown starts',
     };
   }
   //#endregion

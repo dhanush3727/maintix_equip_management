@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -15,6 +16,9 @@ import {
   buildCursorQueryOptions,
 } from '../../common/utils/query-builder.util';
 import { UpdateBreakdownDto } from './dto/update-breakdown.dto';
+import { AssignTechnicianDto } from './dto/assign-breakdown.dto';
+import { ROLE_IDS } from '../../common/constants/roles.constants';
+import { StartBreakdownDto } from './dto/start-breakdown.dto';
 
 @Injectable()
 export class BreakdownService {
@@ -224,7 +228,7 @@ export class BreakdownService {
   //#endregion
 
   //#region Update breakdown
-  async updateBreakdown(
+  async updateBreakdownService(
     id: number,
     dto: UpdateBreakdownDto,
     req: RequestUser,
@@ -270,6 +274,127 @@ export class BreakdownService {
       organizationId,
       userId,
       action: AuditAction.UPDATE_BREAKDOWN,
+      module: AuditModule.BREAKDOWN,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Assign technician
+  async assignTechnicianService(
+    id: number,
+    dto: AssignTechnicianDto,
+    req: RequestUser,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+    const { assignedTo } = dto;
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: { id, organizationId },
+      select: {
+        status: true,
+        assignedTo: true,
+      },
+    });
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+    if (breakdown.status !== BreakdownStatus.OPEN) {
+      throw new BadRequestException('Cannot assign technician');
+    }
+    if (breakdown.assignedTo !== null) {
+      throw new BadRequestException('Technician already assigned');
+    }
+
+    const user = await this.prisma.user.findFirst({
+      where: { id: assignedTo, organizationId },
+      select: {
+        id: true,
+        isActive: true,
+        roles: {
+          select: {
+            roleId: true,
+          },
+        },
+      },
+    });
+    if (!user) throw new NotFoundException('User Not found');
+    const isTechnician = user.roles.some(
+      (role) => role.roleId === ROLE_IDS.TECHNICIAN,
+    );
+    if (!isTechnician) {
+      throw new BadRequestException('User must have technician role');
+    }
+    if (!user.isActive) throw new BadRequestException('User is in active');
+
+    await this.prisma.breakdownReport.update({
+      where: {
+        id,
+        organizationId,
+      },
+      data: {
+        assignedTo,
+      },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.ASSIGN_TECHNICIAN,
+      module: AuditModule.BREAKDOWN,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Start the breakdown
+  async startBreakdownService(
+    id: number,
+    dto: StartBreakdownDto,
+    req: RequestUser,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+    const { rootCause } = dto;
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: {
+        id,
+        organizationId,
+      },
+      select: {
+        id: true,
+        status: true,
+        assignedTo: true,
+      },
+    });
+
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+
+    if (breakdown.assignedTo !== userId) {
+      throw new ForbiddenException('You are not assigned to this breakdown');
+    }
+
+    if (breakdown.status !== BreakdownStatus.OPEN) {
+      throw new BadRequestException('Breakdown already in progress');
+    }
+
+    await this.prisma.breakdownReport.update({
+      where: {
+        id,
+        organizationId,
+      },
+      data: {
+        rootCause,
+        status: BreakdownStatus.IN_PROGRESS,
+      },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.START_BREAKDOWN,
       module: AuditModule.BREAKDOWN,
       recordId: id.toString(),
       ipAddress: meta?.ipAddress,
