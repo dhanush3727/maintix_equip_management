@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -25,7 +28,8 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RoleType } from '@prisma/client';
 import { AssignTechnicianDto } from './dto/assign-breakdown.dto';
-import { StartBreakdownDto } from './dto/start-breakdown.dto';
+import { CreateActionsDto } from './dto/create-actions.dto';
+import { UpdateActionsDto } from './dto/update-actions.dto';
 
 @Controller('breakdowns')
 export class BreakdownController {
@@ -116,20 +120,56 @@ export class BreakdownController {
   }
   //#endregion
 
-  //#region Start the breakdown
+  //#region Create breakdown action
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.TECHNICIAN)
-  @Patch(':id/start')
-  async startBreakdown(
+  @Post(':id/actions')
+  @HttpCode(HttpStatus.OK)
+  async createActions(
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: StartBreakdownDto,
+    @Body() dto: CreateActionsDto,
     @Req() req: AuthenticateRequest,
     @ReqMeta() meta: MetaType,
   ) {
-    await this.breakdown.startBreakdownService(id, dto, req.user, meta);
+    await this.breakdown.createActionsService(id, dto, req.user, meta);
 
     return {
-      message: 'Breakdown starts',
+      message: 'Action added',
+    };
+  }
+  //#endregion
+
+  //#region Update breakdown action
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.TECHNICIAN)
+  @Patch(':id/actions/:actionId')
+  async updateActions(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('actionId', ParseIntPipe) actionId: number,
+    @Body() dto: UpdateActionsDto,
+    @Req() req: AuthenticateRequest,
+  ) {
+    await this.breakdown.updateActionsService(id, actionId, dto, req.user);
+
+    return {
+      message: 'Action updated',
+    };
+  }
+  //#endregion
+
+  //#region Delete breakdown action
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.TECHNICIAN)
+  @Delete(':id/actions/:actionId')
+  async deleteActions(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('actionId', ParseIntPipe) actionId: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    await this.breakdown.deleteActionsService(id, actionId, req.user);
+
+    return {
+      message: 'Action deleted',
     };
   }
   //#endregion

@@ -18,7 +18,8 @@ import {
 import { UpdateBreakdownDto } from './dto/update-breakdown.dto';
 import { AssignTechnicianDto } from './dto/assign-breakdown.dto';
 import { ROLE_IDS } from '../../common/constants/roles.constants';
-import { StartBreakdownDto } from './dto/start-breakdown.dto';
+import { CreateActionsDto } from './dto/create-actions.dto';
+import { UpdateActionsDto } from './dto/update-actions.dto';
 
 @Injectable()
 export class BreakdownService {
@@ -73,7 +74,7 @@ export class BreakdownService {
     await this.audit.logs({
       organizationId,
       userId,
-      action: AuditAction.CREATE_BREAKDOWN,
+      action: AuditAction.CREATE_BREAKDOWN_REPORT,
       module: AuditModule.BREAKDOWN,
       recordId: userId.toString(),
       ipAddress: meta?.ipAddress,
@@ -273,7 +274,7 @@ export class BreakdownService {
     await this.audit.logs({
       organizationId,
       userId,
-      action: AuditAction.UPDATE_BREAKDOWN,
+      action: AuditAction.UPDATE_BREAKDOWN_REPORT,
       module: AuditModule.BREAKDOWN,
       recordId: id.toString(),
       ipAddress: meta?.ipAddress,
@@ -334,59 +335,6 @@ export class BreakdownService {
       },
       data: {
         assignedTo,
-      },
-    });
-
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.ASSIGN_TECHNICIAN,
-      module: AuditModule.BREAKDOWN,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
-    });
-  }
-  //#endregion
-
-  //#region Start the breakdown
-  async startBreakdownService(
-    id: number,
-    dto: StartBreakdownDto,
-    req: RequestUser,
-    meta?: MetaType,
-  ) {
-    const { organizationId, userId } = req;
-    const { rootCause } = dto;
-
-    const breakdown = await this.prisma.breakdownReport.findFirst({
-      where: {
-        id,
-        organizationId,
-      },
-      select: {
-        id: true,
-        status: true,
-        assignedTo: true,
-      },
-    });
-
-    if (!breakdown) throw new NotFoundException('Breakdown not found');
-
-    if (breakdown.assignedTo !== userId) {
-      throw new ForbiddenException('You are not assigned to this breakdown');
-    }
-
-    if (breakdown.status !== BreakdownStatus.OPEN) {
-      throw new BadRequestException('Breakdown already in progress');
-    }
-
-    await this.prisma.breakdownReport.update({
-      where: {
-        id,
-        organizationId,
-      },
-      data: {
-        rootCause,
         status: BreakdownStatus.IN_PROGRESS,
       },
     });
@@ -394,11 +342,144 @@ export class BreakdownService {
     await this.audit.logs({
       organizationId,
       userId,
-      action: AuditAction.START_BREAKDOWN,
+      action: AuditAction.ASSIGN_TECHNICIAN_REPORT,
       module: AuditModule.BREAKDOWN,
       recordId: id.toString(),
       ipAddress: meta?.ipAddress,
     });
+  }
+  //#endregion
+
+  //#region Create breakdown actions
+  async createActionsService(
+    id: number,
+    dto: CreateActionsDto,
+    req: RequestUser,
+    meta?: MetaType,
+  ) {
+    const { organizationId, userId } = req;
+    const { action, remarks } = dto;
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: { id, organizationId },
+      select: {
+        status: true,
+        assignedTo: true,
+      },
+    });
+
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+    if (breakdown.status !== BreakdownStatus.IN_PROGRESS) {
+      throw new BadRequestException('Breakdown is not in progress');
+    }
+    if (breakdown.assignedTo !== userId) {
+      throw new ForbiddenException('Only assigned technician can add action');
+    }
+
+    await this.prisma.breakdownAction.create({
+      data: {
+        breakdownId: id,
+        performedBy: userId,
+        action,
+        remarks,
+      },
+    });
+
+    await this.audit.logs({
+      organizationId,
+      userId,
+      action: AuditAction.CREATE_BREAKDOWN_ACTION,
+      module: AuditModule.BREAKDOWN,
+      recordId: id.toString(),
+      ipAddress: meta?.ipAddress,
+    });
+  }
+  //#endregion
+
+  //#region Update breakdown action
+  async updateActionsService(
+    id: number,
+    actionId: number,
+    dto: UpdateActionsDto,
+    req: RequestUser,
+  ) {
+    const { organizationId, userId } = req;
+    const { action, remarks } = dto;
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: { id, organizationId },
+      select: {
+        status: true,
+        assignedTo: true,
+      },
+    });
+
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+    if (breakdown.status !== BreakdownStatus.IN_PROGRESS) {
+      throw new BadRequestException('Breakdown is not in progress');
+    }
+    if (breakdown.assignedTo !== userId) {
+      throw new ForbiddenException(
+        'Only assigned technician can update action',
+      );
+    }
+
+    const existingAction = await this.prisma.breakdownAction.findFirst({
+      where: { id: actionId, breakdownId: id },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!existingAction) {
+      throw new NotFoundException('Breakdown Action not found');
+    }
+
+    const data: Prisma.BreakdownActionUpdateInput = {};
+
+    if (action) data.action = action;
+    if (remarks) data.remarks = remarks;
+
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('No valid fields provided');
+    }
+
+    await this.prisma.breakdownAction.update({
+      where: { id: actionId, breakdownId: id },
+      data,
+    });
+  }
+  //#endregion
+
+  //#region Delete breakdown
+  async deleteActionsService(id: number, actionId: number, req: RequestUser) {
+    const { organizationId, userId } = req;
+
+    const breakdown = await this.prisma.breakdownReport.findFirst({
+      where: { id, organizationId },
+      select: {
+        status: true,
+        assignedTo: true,
+      },
+    });
+
+    if (!breakdown) throw new NotFoundException('Breakdown not found');
+    if (breakdown.status !== BreakdownStatus.IN_PROGRESS) {
+      throw new BadRequestException('Breakdown is not in progress');
+    }
+    if (breakdown.assignedTo !== userId) {
+      throw new ForbiddenException(
+        'Only assigned technician can delete action',
+      );
+    }
+
+    const actions = await this.prisma.breakdownAction.deleteMany({
+      where: { id: actionId, breakdownId: id },
+    });
+
+    if (actions.count === 0) {
+      throw new NotFoundException('Action not found');
+    }
   }
   //#endregion
 }
