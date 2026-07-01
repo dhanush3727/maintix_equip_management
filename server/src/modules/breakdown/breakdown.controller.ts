@@ -30,6 +30,7 @@ import { RoleType } from '@prisma/client';
 import { AssignTechnicianDto } from './dto/assign-breakdown.dto';
 import { CreateActionsDto } from './dto/create-actions.dto';
 import { UpdateActionsDto } from './dto/update-actions.dto';
+import { ResolveBreakdownDto } from './dto/resolve-breakdown.dto';
 
 @Controller('breakdowns')
 export class BreakdownController {
@@ -170,6 +171,41 @@ export class BreakdownController {
 
     return {
       message: 'Action deleted',
+    };
+  }
+  //#endregion
+
+  //#region Resolve breakdown
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.TECHNICIAN)
+  @Patch(':id/resolve')
+  async resolveBreakdown(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: ResolveBreakdownDto,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.breakdown.resolveBreakdownService(id, dto, req.user, meta);
+
+    return {
+      message: 'Breakdown resolved successfully',
+    };
+  }
+  //#endregion
+
+  //#region Close breakdown
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
+  @Roles(RoleType.MANAGER)
+  @Patch(':id/close')
+  async closeBreakdown(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+    @ReqMeta() meta: MetaType,
+  ) {
+    await this.breakdown.closeBreakdownService(id, req.user, meta);
+
+    return {
+      message: 'Breakdown closed successfully',
     };
   }
   //#endregion

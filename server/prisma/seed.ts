@@ -24,14 +24,14 @@ async function main(): Promise<void> {
       name: 'Engineer',
       organizationId: 3,
       passwordHash: hashedPassword,
-      email: 'engineeruser@gmail.com',
+      email: 'technicianuser3@gmail.com',
     },
   });
 
   await prisma.userRole.create({
     data: {
       userId: user.id,
-      roleId: 4,
+      roleId: 3,
     },
   });
 
