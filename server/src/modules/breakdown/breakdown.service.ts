@@ -559,6 +559,9 @@ export class BreakdownService {
     });
 
     if (!breakdown) throw new NotFoundException('Breakdown not found');
+    if (breakdown.status === BreakdownStatus.CLOSED) {
+      throw new BadRequestException('Breakdown already closed');
+    }
     if (breakdown.status !== BreakdownStatus.RESOLVED) {
       throw new BadRequestException('First resolve the breakdown');
     }

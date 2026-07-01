@@ -21,6 +21,7 @@ import { PmschedulesModule } from './modules/pmschedules/pmschedules.module';
 import { PmtasksModule } from './modules/pmtasks/pmtasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BreakdownModule } from './modules/breakdown/breakdown.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { BreakdownModule } from './modules/breakdown/breakdown.module';
     PmschedulesModule,
     PmtasksModule,
     BreakdownModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [
