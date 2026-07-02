@@ -119,6 +119,7 @@ enum BreakdownStatus {
 }
 
 enum NotificationType {
+  SCHEDULE_ASSIGNED
   TASK_ASSIGNED
   TASK_OVERDUE
   BREAKDOWN_RAISED
@@ -127,6 +128,7 @@ enum NotificationType {
 }
 
 enum ReferenceType {
+  SCHEDULE
   TASK
   BREAKDOWN
 }

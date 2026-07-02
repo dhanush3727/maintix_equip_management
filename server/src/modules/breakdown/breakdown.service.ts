@@ -50,7 +50,7 @@ export class BreakdownService {
     }
 
     await this.prisma.$transaction(async (tx) => {
-      await tx.breakdownReport.create({
+      const breakdown = await tx.breakdownReport.create({
         data: {
           organizationId,
           equipmentId,
@@ -58,6 +58,9 @@ export class BreakdownService {
           title,
           description,
           severity,
+        },
+        select: {
+          id: true,
         },
       });
 
@@ -70,15 +73,15 @@ export class BreakdownService {
           status: EquipmentStatus.UNDER_MAINTENANCE,
         },
       });
-    });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_BREAKDOWN_REPORT,
-      module: AuditModule.BREAKDOWN,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.CREATE_BREAKDOWN_REPORT,
+        module: AuditModule.BREAKDOWN,
+        recordId: breakdown.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -267,18 +270,20 @@ export class BreakdownService {
       throw new BadRequestException('No valid fields provided');
     }
 
-    await this.prisma.breakdownReport.update({
-      where: { id, organizationId },
-      data,
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.breakdownReport.update({
+        where: { id, organizationId },
+        data,
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_BREAKDOWN_REPORT,
-      module: AuditModule.BREAKDOWN,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_BREAKDOWN_REPORT,
+        module: AuditModule.BREAKDOWN,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -329,24 +334,26 @@ export class BreakdownService {
     }
     if (!user.isActive) throw new BadRequestException('User is in active');
 
-    await this.prisma.breakdownReport.update({
-      where: {
-        id,
-        organizationId,
-      },
-      data: {
-        assignedTo,
-        status: BreakdownStatus.IN_PROGRESS,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.breakdownReport.update({
+        where: {
+          id,
+          organizationId,
+        },
+        data: {
+          assignedTo,
+          status: BreakdownStatus.IN_PROGRESS,
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.ASSIGN_TECHNICIAN_REPORT,
-      module: AuditModule.BREAKDOWN,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.ASSIGN_TECHNICIAN_REPORT,
+        module: AuditModule.BREAKDOWN,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -377,22 +384,24 @@ export class BreakdownService {
       throw new ForbiddenException('Only assigned technician can add action');
     }
 
-    await this.prisma.breakdownAction.create({
-      data: {
-        breakdownId: id,
-        performedBy: userId,
-        action,
-        remarks,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.breakdownAction.create({
+        data: {
+          breakdownId: id,
+          performedBy: userId,
+          action,
+          remarks,
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_BREAKDOWN_ACTION,
-      module: AuditModule.BREAKDOWN,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.CREATE_BREAKDOWN_ACTION,
+        module: AuditModule.BREAKDOWN,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -524,25 +533,27 @@ export class BreakdownService {
       );
     }
 
-    await this.prisma.breakdownReport.update({
-      where: {
-        id,
-        organizationId,
-      },
-      data: {
-        rootCause,
-        status: BreakdownStatus.RESOLVED,
-        resolvedAt: new Date(),
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.breakdownReport.update({
+        where: {
+          id,
+          organizationId,
+        },
+        data: {
+          rootCause,
+          status: BreakdownStatus.RESOLVED,
+          resolvedAt: new Date(),
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.RESOLVE_BREAKDOWN_REPORT,
-      module: AuditModule.BREAKDOWN,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.RESOLVE_BREAKDOWN_REPORT,
+        module: AuditModule.BREAKDOWN,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -566,23 +577,25 @@ export class BreakdownService {
       throw new BadRequestException('First resolve the breakdown');
     }
 
-    await this.prisma.breakdownReport.update({
-      where: {
-        id,
-        organizationId,
-      },
-      data: {
-        status: BreakdownStatus.CLOSED,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.breakdownReport.update({
+        where: {
+          id,
+          organizationId,
+        },
+        data: {
+          status: BreakdownStatus.CLOSED,
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CLOSE_BREAKDOWN_REPORT,
-      module: AuditModule.BREAKDOWN,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.CLOSE_BREAKDOWN_REPORT,
+        module: AuditModule.BREAKDOWN,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion

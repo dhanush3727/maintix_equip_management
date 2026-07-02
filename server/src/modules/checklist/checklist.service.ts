@@ -147,15 +147,15 @@ export class ChecklistService {
         where: { id: template.id },
         data: { parentId: template.id },
       });
-    });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_CHECKLIST,
-      module: AuditModule.CHECKLIST,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.CREATE_CHECKLIST,
+        module: AuditModule.CHECKLIST,
+        recordId: template.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -479,15 +479,15 @@ export class ChecklistService {
           },
         },
       });
-    });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_CHECKLIST,
-      module: AuditModule.CHECKLIST,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_CHECKLIST,
+        module: AuditModule.CHECKLIST,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -513,27 +513,31 @@ export class ChecklistService {
 
     const rootId = exisiting.parentId ?? exisiting.id;
 
-    const updated = await this.prisma.checklistTemplate.updateMany({
-      where: {
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const result = await tx.checklistTemplate.updateMany({
+        where: {
+          organizationId,
+          OR: [{ id: rootId }, { parentId: rootId }],
+          isActive: true,
+        },
+        data: { isActive: false },
+      });
+
+      await this.audit.logs(tx, {
         organizationId,
-        OR: [{ id: rootId }, { parentId: rootId }],
-        isActive: true,
-      },
-      data: { isActive: false },
+        userId,
+        action: AuditAction.DEACTIVATE_CHECKLIST,
+        module: AuditModule.CHECKLIST,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+
+      return result;
     });
 
     if (updated.count === 0) {
       throw new BadRequestException('No active templates found to deactivate');
     }
-
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVATE_CHECKLIST,
-      module: AuditModule.CHECKLIST,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 

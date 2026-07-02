@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { NotificationService } from './notification.service';
+import { PrismaService } from '../../prisma/prisma.service';
 
+@Global()
 @Module({
-  providers: [NotificationService]
+  providers: [NotificationService, PrismaService],
+  exports: [NotificationService],
 })
 export class NotificationModule {}

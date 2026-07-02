@@ -18,12 +18,18 @@ import {
 } from '../../common/utils/query-builder.util';
 import { UpdatePMScheduleDto } from './dto/update-pmschedule.dto';
 import { ROLE_IDS } from '../../common/constants/roles.constants';
+import { NotificationService } from '../../common/notification/notification.service';
+import {
+  NotificationType,
+  ReferenceType,
+} from '../../common/notification/notification.type';
 
 @Injectable()
 export class PmschedulesService {
   constructor(
     private prisma: PrismaService,
     private audit: AuditService,
+    private notification: NotificationService,
   ) {}
 
   //#region Create pmschedule
@@ -104,26 +110,46 @@ export class PmschedulesService {
       interval,
     );
 
-    await this.prisma.pMSchedule.create({
-      data: {
-        organizationId,
-        equipmentId,
-        templateId,
-        frequencyType,
-        interval,
-        startDate,
-        nextDueDate,
-        assignedTo,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      const pmschedule = await tx.pMSchedule.create({
+        data: {
+          organizationId,
+          equipmentId,
+          templateId,
+          frequencyType,
+          interval,
+          startDate,
+          nextDueDate,
+          assignedTo,
+        },
+        select: {
+          id: true,
+          equipment: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_PMSCHEDULE,
-      module: AuditModule.PM,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.notification.create(tx, {
+        organizationId,
+        userId: assignedTo,
+        type: NotificationType.SCHEDULE_ASSIGNED,
+        title: 'PM Schedule Assigned',
+        message: `You have been assigned a PM schedule for "${pmschedule.equipment.name}".`,
+        referenceId: pmschedule.id,
+        referenceType: ReferenceType.SCHEDULE,
+      });
+
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.CREATE_PMSCHEDULE,
+        module: AuditModule.PM,
+        recordId: pmschedule.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -513,18 +539,20 @@ export class PmschedulesService {
       data.nextDueDate = nextDueDate;
     }
 
-    await this.prisma.pMSchedule.update({
-      where: { id, organizationId },
-      data,
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.pMSchedule.update({
+        where: { id, organizationId },
+        data,
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_PMSCHEDULE,
-      module: AuditModule.PM,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_PMSCHEDULE,
+        module: AuditModule.PM,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -544,18 +572,20 @@ export class PmschedulesService {
       throw new BadRequestException('PM Schedule already deactivated');
     }
 
-    await this.prisma.pMSchedule.update({
-      where: { id, organizationId },
-      data: { isActive: false },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.pMSchedule.update({
+        where: { id, organizationId },
+        data: { isActive: false },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVATE_PMSCHEDULE,
-      module: AuditModule.PM,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.DEACTIVATE_PMSCHEDULE,
+        module: AuditModule.PM,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -575,18 +605,20 @@ export class PmschedulesService {
       throw new BadRequestException('PM Schedule already activated');
     }
 
-    await this.prisma.pMSchedule.update({
-      where: { id, organizationId },
-      data: { isActive: true },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.pMSchedule.update({
+        where: { id, organizationId },
+        data: { isActive: true },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVATE_PMSCHEDULE,
-      module: AuditModule.PM,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.DEACTIVATE_PMSCHEDULE,
+        module: AuditModule.PM,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion

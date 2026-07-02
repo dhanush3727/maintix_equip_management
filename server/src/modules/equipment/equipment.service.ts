@@ -40,32 +40,37 @@ export class EquipmentService {
     const { organizationId, userId } = req;
 
     try {
-      await this.prisma.equipmentType.create({
-        data: {
-          name,
-          code,
-          description,
+      await this.prisma.$transaction(async (tx) => {
+        const equipment = await tx.equipmentType.create({
+          data: {
+            name,
+            code,
+            description,
+            organizationId,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        await this.audit.logs(tx, {
           organizationId,
-        },
+          userId,
+          action: AuditAction.CREATE_EQUIPMENT_TYPE,
+          module: AuditModule.EQUIPMENT,
+          recordId: equipment.id.toString(),
+          ipAddress: meta?.ipAddress,
+        });
       });
     } catch (err) {
       if (
         err instanceof Prisma.PrismaClientKnownRequestError &&
         err.code === 'P2002'
       ) {
-        throw new ConflictException('Equipment Type already exist');
+        throw new ConflictException('Equipment Type already exists');
       }
       throw err;
     }
-
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_EQUIPMENT_TYPE,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 
@@ -207,9 +212,20 @@ export class EquipmentService {
     }
 
     try {
-      await this.prisma.equipmentType.update({
-        where: { id, organizationId },
-        data,
+      await this.prisma.$transaction(async (tx) => {
+        await tx.equipmentType.update({
+          where: { id, organizationId },
+          data,
+        });
+
+        await this.audit.logs(tx, {
+          organizationId,
+          userId,
+          action: AuditAction.UPDATE_EQUIPMENT_TYPE,
+          module: AuditModule.EQUIPMENT,
+          recordId: id.toString(),
+          ipAddress: meta?.ipAddress,
+        });
       });
     } catch (err) {
       if (
@@ -220,15 +236,6 @@ export class EquipmentService {
       }
       throw err;
     }
-
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_EQUIPMENT_TYPE,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 
@@ -262,18 +269,20 @@ export class EquipmentService {
       );
     }
 
-    await this.prisma.equipmentType.update({
-      where: { id },
-      data: { isActive: false },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.equipmentType.update({
+        where: { id },
+        data: { isActive: false },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVATE_EQUIPMENT_TYPE,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.DEACTIVATE_EQUIPMENT_TYPE,
+        module: AuditModule.EQUIPMENT,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -293,18 +302,20 @@ export class EquipmentService {
       throw new BadRequestException('Equipment type already in active');
     }
 
-    await this.prisma.equipmentType.update({
-      where: { id },
-      data: { isActive: true },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.equipmentType.update({
+        where: { id },
+        data: { isActive: true },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.ACTIVATE_EQUIPMENT_TYPE,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.ACTIVATE_EQUIPMENT_TYPE,
+        module: AuditModule.EQUIPMENT,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -361,20 +372,34 @@ export class EquipmentService {
     if (!department) throw new NotFoundException('Department not found');
 
     try {
-      await this.prisma.equipment.create({
-        data: {
-          name,
-          code,
-          serialNumber,
-          equipmentTypeId,
+      await this.prisma.$transaction(async (tx) => {
+        const equipment = await tx.equipment.create({
+          data: {
+            name,
+            code,
+            serialNumber,
+            equipmentTypeId,
+            organizationId,
+            locationId,
+            departmentId,
+            installedDate,
+            warrantyExpiry,
+            manufacturer,
+            model,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        await this.audit.logs(tx, {
           organizationId,
-          locationId,
-          departmentId,
-          installedDate,
-          warrantyExpiry,
-          manufacturer,
-          model,
-        },
+          userId,
+          action: AuditAction.CREATE_EQUIPMENT,
+          module: AuditModule.EQUIPMENT,
+          recordId: equipment.id.toString(),
+          ipAddress: meta?.ipAddress,
+        });
       });
     } catch (err) {
       if (
@@ -385,15 +410,6 @@ export class EquipmentService {
       }
       throw err;
     }
-
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_EQUIPMENT,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 
@@ -996,9 +1012,20 @@ export class EquipmentService {
     }
 
     try {
-      await this.prisma.equipment.update({
-        where: { id, organizationId },
-        data,
+      await this.prisma.$transaction(async (tx) => {
+        await tx.equipment.update({
+          where: { id, organizationId },
+          data,
+        });
+
+        await this.audit.logs(tx, {
+          organizationId,
+          userId,
+          action: AuditAction.UPDATE_EQUIPMENT,
+          module: AuditModule.EQUIPMENT,
+          recordId: id.toString(),
+          ipAddress: meta?.ipAddress,
+        });
       });
     } catch (err) {
       if (
@@ -1009,15 +1036,6 @@ export class EquipmentService {
       }
       throw err;
     }
-
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_EQUIPMENT,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 
@@ -1043,18 +1061,20 @@ export class EquipmentService {
       throw new BadRequestException('Cannot deactivate equipment');
     }
 
-    await this.prisma.equipment.update({
-      where: { id, organizationId },
-      data: { status: EquipmentStatus.INACTIVE },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.equipment.update({
+        where: { id, organizationId },
+        data: { status: EquipmentStatus.INACTIVE },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVATE_EQUIPMENT,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.DEACTIVATE_EQUIPMENT,
+        module: AuditModule.EQUIPMENT,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -1074,18 +1094,20 @@ export class EquipmentService {
       throw new BadRequestException('Equipment is already active');
     }
 
-    await this.prisma.equipment.update({
-      where: { id, organizationId },
-      data: { status: EquipmentStatus.ACTIVE },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.equipment.update({
+        where: { id, organizationId },
+        data: { status: EquipmentStatus.ACTIVE },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.ACTIVATE_EQUIPMENT,
-      module: AuditModule.EQUIPMENT,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.ACTIVATE_EQUIPMENT,
+        module: AuditModule.EQUIPMENT,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion

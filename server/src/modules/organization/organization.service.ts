@@ -92,27 +92,32 @@ export class OrganizationService {
       logoPublicId = updated.publicId;
     }
 
-    // Create organization profile
-    await this.prisma.organization.update({
-      where: { id: org.id },
-      data: {
-        industryType,
-        companySize,
-        country,
-        city,
-        logoUrl,
-        logoPublicId,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      // Create organization profile
+      await tx.organization.update({
+        where: { id: org.id },
+        data: {
+          industryType,
+          companySize,
+          country,
+          city,
+          logoUrl,
+          logoPublicId,
+        },
+        select: {
+          id: true,
+        },
+      });
 
-    // Create audit log
-    await this.auditSerivce.logs({
-      organizationId: org.id,
-      userId,
-      action: AuditAction.CREATE_ORG,
-      module: AuditModule.ORG,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      // Create audit log
+      await this.auditSerivce.logs(tx, {
+        organizationId: org.id,
+        userId,
+        action: AuditAction.CREATE_ORG,
+        module: AuditModule.ORG,
+        recordId: org.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -183,20 +188,22 @@ export class OrganizationService {
     if (logoUrl) data.logoUrl = logoUrl;
     if (logoPublicId) data.logoPublicId = logoPublicId;
 
-    // Update organization
-    await this.prisma.organization.update({
-      where: { id: organizationId },
-      data,
-    });
+    await this.prisma.$transaction(async (tx) => {
+      // Update organization
+      await tx.organization.update({
+        where: { id: organizationId },
+        data,
+      });
 
-    // Audit log
-    await this.auditSerivce.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_ORG,
-      module: AuditModule.ORG,
-      recordId: organizationId.toString(),
-      ipAddress: meta?.ipAddress,
+      // Audit log
+      await this.auditSerivce.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_ORG,
+        module: AuditModule.ORG,
+        recordId: organizationId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -208,9 +215,23 @@ export class OrganizationService {
     meta?: MetaType,
   ) {
     // why updateMany? this does two things in one query check org and checks that is active then update
-    const updated = await this.prisma.organization.updateMany({
-      where: { id: organizationId, isActive: true },
-      data: { isActive: false },
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const result = await tx.organization.updateMany({
+        where: { id: organizationId, isActive: true },
+        data: { isActive: false },
+      });
+
+      // Audit log
+      await this.auditSerivce.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.DEACTIVE_ORG,
+        module: AuditModule.ORG,
+        recordId: organizationId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+
+      return result;
     });
 
     // the updated return with {count: 1} how many rows affected
@@ -221,16 +242,6 @@ export class OrganizationService {
         'Organization not found or already deactivate',
       );
     }
-
-    // Audit log
-    await this.auditSerivce.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVE_ORG,
-      module: AuditModule.ORG,
-      recordId: organizationId.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 
@@ -257,24 +268,29 @@ export class OrganizationService {
     // Check already location exist
     if (existing) throw new BadRequestException('Location already exist');
 
-    // Create location
-    await this.prisma.location.create({
-      data: {
-        name,
-        type,
-        address,
-        organizationId,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      // Create location
+      const location = await tx.location.create({
+        data: {
+          name,
+          type,
+          address,
+          organizationId,
+        },
+        select: {
+          id: true,
+        },
+      });
 
-    // Audit logs
-    await this.auditSerivce.logs({
-      organizationId,
-      userId,
-      action: AuditAction.CREATE_LOCATION,
-      module: AuditModule.ORG,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      // Audit logs
+      await this.auditSerivce.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.CREATE_LOCATION,
+        module: AuditModule.ORG,
+        recordId: location.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -387,23 +403,25 @@ export class OrganizationService {
     if (type) data.type = type;
     if (address) data.address = address;
 
-    await this.prisma.location.update({
-      where: { id },
-      data: {
-        name,
-        type,
-        address,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.location.update({
+        where: { id },
+        data: {
+          name,
+          type,
+          address,
+        },
+      });
 
-    // Audit log
-    await this.auditSerivce.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_LOCATION,
-      module: AuditModule.ORG,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      // Audit log
+      await this.auditSerivce.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_LOCATION,
+        module: AuditModule.ORG,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -429,23 +447,28 @@ export class OrganizationService {
     const { name, code, type } = dto;
 
     try {
-      await this.prisma.department.create({
-        data: {
-          name,
-          code,
-          type,
-          organizationId,
-        },
-      });
+      await this.prisma.$transaction(async (tx) => {
+        const department = await tx.department.create({
+          data: {
+            name,
+            code,
+            type,
+            organizationId,
+          },
+          select: {
+            id: true,
+          },
+        });
 
-      // Audit log
-      await this.auditSerivce.logs({
-        organizationId,
-        userId,
-        action: AuditAction.CREATE_DEPARTMENT,
-        module: AuditModule.ORG,
-        recordId: userId.toString(),
-        ipAddress: meta?.ipAddress,
+        // Audit log
+        await this.auditSerivce.logs(tx, {
+          organizationId,
+          userId,
+          action: AuditAction.CREATE_DEPARTMENT,
+          module: AuditModule.ORG,
+          recordId: department.id.toString(),
+          ipAddress: meta?.ipAddress,
+        });
       });
     } catch (err) {
       if (
@@ -555,20 +578,23 @@ export class OrganizationService {
     if (name) data.name = name;
     if (code) data.code = code;
     if (type) data.type = type;
-    try {
-      await this.prisma.department.update({
-        where: { id },
-        data,
-      });
 
-      // Audit log
-      await this.auditSerivce.logs({
-        organizationId,
-        userId,
-        action: AuditAction.UPDATE_DEPARTMENT,
-        module: AuditModule.ORG,
-        recordId: id.toString(),
-        ipAddress: meta?.ipAddress,
+    try {
+      await this.prisma.$transaction(async (tx) => {
+        await tx.department.update({
+          where: { id },
+          data,
+        });
+
+        // Audit log
+        await this.auditSerivce.logs(tx, {
+          organizationId,
+          userId,
+          action: AuditAction.UPDATE_DEPARTMENT,
+          module: AuditModule.ORG,
+          recordId: id.toString(),
+          ipAddress: meta?.ipAddress,
+        });
       });
     } catch (err) {
       if (
@@ -667,36 +693,47 @@ export class OrganizationService {
 
     const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000); //48 hours
 
-    if (existingInvite) {
-      if (existingInvite.expiresAt > new Date()) {
-        throw new BadRequestException('Invitation already sent');
+    await this.prisma.$transaction(async (tx) => {
+      if (existingInvite) {
+        if (existingInvite.expiresAt > new Date()) {
+          throw new BadRequestException('Invitation already sent');
+        }
+
+        await tx.invitation.update({
+          where: {
+            id: existingInvite.id,
+          },
+          data: {
+            token: hashedToken,
+            expiresAt,
+            roleId,
+            departmentId,
+            organizationId,
+            status: InvitationStatus.PENDING,
+          },
+        });
+      } else {
+        await tx.invitation.create({
+          data: {
+            email,
+            token: hashedToken,
+            expiresAt,
+            roleId,
+            departmentId,
+            organizationId,
+          },
+        });
       }
 
-      await this.prisma.invitation.update({
-        where: {
-          id: existingInvite.id,
-        },
-        data: {
-          token: hashedToken,
-          expiresAt,
-          roleId,
-          departmentId,
-          organizationId,
-          status: InvitationStatus.PENDING,
-        },
+      await this.auditSerivce.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.SEND_INVITATION,
+        module: AuditModule.ORG,
+        recordId: organizationId.toString(),
+        ipAddress: meta?.ipAddress,
       });
-    } else {
-      await this.prisma.invitation.create({
-        data: {
-          email,
-          token: hashedToken,
-          expiresAt,
-          roleId,
-          departmentId,
-          organizationId,
-        },
-      });
-    }
+    });
 
     const invitationLink = `http://localhost:5000/api/auth/accept-invite?token=${token}`;
 
@@ -724,14 +761,6 @@ export class OrganizationService {
     });
 
     // Audit logs
-    await this.auditSerivce.logs({
-      organizationId,
-      userId,
-      action: AuditAction.SEND_INVITATION,
-      module: AuditModule.ORG,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
-    });
   }
   //#endregion
 

@@ -192,18 +192,20 @@ export class UserService {
 
     if (name) data.name = name;
 
-    await this.prisma.user.update({
-      where: { id: userId },
-      data,
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id: userId },
+        data,
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_USER_NAME,
-      module: AuditModule.USER,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_USER_NAME,
+        module: AuditModule.USER,
+        recordId: userId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -264,16 +266,16 @@ export class UserService {
         },
         data: { isActive: false },
       });
-    });
 
-    // Audit log
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_USER_PASSWORD,
-      module: AuditModule.USER,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      // Audit log
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_USER_PASSWORD,
+        module: AuditModule.USER,
+        recordId: userId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -477,18 +479,20 @@ export class UserService {
 
     if (existing) throw new ConflictException('This email already exist');
 
-    await this.prisma.user.update({
-      where: { id },
-      data,
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id },
+        data,
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_USER_EMAIL,
-      module: AuditModule.USER,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_USER_EMAIL,
+        module: AuditModule.USER,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -549,17 +553,17 @@ export class UserService {
           userId: id,
           roleId,
         })),
-        skipDuplicates: true,
+        skipDuplicates: true, // skipDuplicates is used to avoid duplicate entries in case the same roleId is provided multiple times
       });
-    });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_USER_ROLE,
-      module: AuditModule.USER,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_USER_ROLE,
+        module: AuditModule.USER,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -593,24 +597,26 @@ export class UserService {
     // why upsert? because if we use update then if user have no department assigned then it will throw error but
     // with upsert if user have no department then it will create new record with user id and department id and if
     // user already have department then it will update the department id with new one
-    await this.prisma.userDepartment.upsert({
-      where: { userId: id },
-      update: {
-        departmentId,
-      },
-      create: {
-        userId: id,
-        departmentId,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.userDepartment.upsert({
+        where: { userId: id },
+        update: {
+          departmentId,
+        },
+        create: {
+          userId: id,
+          departmentId,
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_USER_DEPARTMENT,
-      module: AuditModule.USER,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_USER_DEPARTMENT,
+        module: AuditModule.USER,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -645,15 +651,15 @@ export class UserService {
         where: { userId: id, isActive: true },
         data: { isActive: false },
       });
-    });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.DEACTIVATE_USER,
-      module: AuditModule.USER,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.DEACTIVATE_USER,
+        module: AuditModule.USER,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -673,20 +679,22 @@ export class UserService {
       throw new BadRequestException('User already active');
     }
 
-    // Activate user
-    await this.prisma.user.update({
-      where: { id, isActive: false },
-      data: { isActive: true },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      // Activate user
+      await tx.user.update({
+        where: { id, isActive: false },
+        data: { isActive: true },
+      });
 
-    //audit logs
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.ACTIVATE_USER,
-      module: AuditModule.USER,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      //audit logs
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.ACTIVATE_USER,
+        module: AuditModule.USER,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion

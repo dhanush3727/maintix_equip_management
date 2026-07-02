@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuditParamsType } from './audit.types';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AuditService {
-  constructor(private prisma: PrismaService) {}
-
-  async logs(params: AuditParamsType) {
-    await this.prisma.auditLog
+  async logs(
+    prisma: Prisma.TransactionClient | PrismaService,
+    params: AuditParamsType,
+  ) {
+    await prisma.auditLog
       .create({
         data: {
           organizationId: params.organizationId,

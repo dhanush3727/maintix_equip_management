@@ -382,15 +382,15 @@ export class PmtasksService {
           },
         });
       }
-    });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.UPDATE_PMTASK,
-      module: AuditModule.PM,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.UPDATE_PMTASK,
+        module: AuditModule.PM,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -431,21 +431,23 @@ export class PmtasksService {
       throw new BadRequestException('Complete all items in checklist');
     }
 
-    await this.prisma.pMTask.update({
-      where: { id, organizationId },
-      data: {
-        status: TaskStatus.COMPLETED,
-        completedAt: new Date(),
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.pMTask.update({
+        where: { id, organizationId },
+        data: {
+          status: TaskStatus.COMPLETED,
+          completedAt: new Date(),
+        },
+      });
 
-    await this.audit.logs({
-      organizationId,
-      userId,
-      action: AuditAction.COMPLETE_PMTASK,
-      module: AuditModule.PM,
-      recordId: id.toString(),
-      ipAddress: meta?.ipAddress,
+      await this.audit.logs(tx, {
+        organizationId,
+        userId,
+        action: AuditAction.COMPLETE_PMTASK,
+        module: AuditModule.PM,
+        recordId: id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
