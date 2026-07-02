@@ -8,4 +8,8 @@ export class NotificationsService {
     private prisma: PrismaService,
     private audit: AuditService,
   ) {}
+
+  // #region Create notification
+  async createNotification() {}
+  //#endregion
 }

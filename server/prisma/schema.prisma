@@ -119,7 +119,7 @@ enum BreakdownStatus {
 }
 
 enum NotificationType {
-  TASK_DUE
+  TASK_ASSIGNED
   TASK_OVERDUE
   BREAKDOWN_RAISED
   BREAKDOWN_ASSIGNED
