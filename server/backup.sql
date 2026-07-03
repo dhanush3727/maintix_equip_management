@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict WsFaEdTm5fSsp5N6SCmfKBc0sWrDNqpKQuH3nNHazSCwKnWWVIZjGo4M8j77dSD
+\restrict iqA4cv4UXQ0tQukdi4D79dhXw9KaaSfUH9P0WZEe9STLAOAxiTEr173iS5asHHs
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -2375,6 +2375,14 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 963	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 11:21:36.12
 964	3	14	LOGIN_SUCCESS	AUTH	14	::1	2026-07-03 11:27:30.742
 965	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-03 11:28:42.342
+966	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-03 15:11:36.034
+967	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-03 15:27:27.57
+968	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-03 15:54:39.042
+969	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 15:56:22.062
+970	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 16:07:04.446
+971	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 16:29:19.422
+972	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-03 16:29:56.789
+973	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 16:33:05.242
 \.
 
 
@@ -3349,6 +3357,14 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 703	3	$2b$10$vfpT52yteiBmeMCITzvz1e3XGwtXDX.nJUehhDRHTlrxVrMSdpd/G	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 11:26:48.243	2026-07-03 11:21:36.083	2026-07-10 11:21:36.052	7afefcc1-9c8f-4640-9ad9-34a49d6f71ab
 704	14	$2b$10$xzAJtcKd7vNsjDKMLyetruRsQBx0dmLDjef6swyHgXklQYQlXgqqO	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 11:29:17.299	2026-07-03 11:27:30.71	2026-07-10 11:27:30.679	eb6a2e40-712f-4f9c-9a79-664972705e50
 705	10	$2b$10$GtRRKufRIF8ym2dAsW0T5uQ4a/ehZow8fsoB/omX61pGD6nhK0Qtu	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 11:28:42.323	2026-07-03 11:28:42.323	2026-07-10 11:28:42.322	0d531cdb-2fc5-4e77-b44d-2fb672722677
+706	10	$2b$10$mQoY94fXI8kGkevOegGYDu4URrdL7NleLQqET6Tv0I9nZ6W0jSuyG	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 15:11:36.001	2026-07-03 15:11:36.001	2026-07-10 15:11:35.983	892eeee6-32ea-40ad-9a61-1eda2f3e159b
+707	10	$2b$10$tBon40qODu3oTk77jqzTZ.HG1Zam09Xnjw9kSftDk5MrHA1HLXP0u	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 15:27:27.552	2026-07-03 15:27:27.552	2026-07-10 15:27:27.536	6ec842f9-422c-4cf3-b95f-8585e21d21d6
+708	10	$2b$10$9XGKhYU2v39DaJkugmusRezT.ApjmGz61NTDgeLCF14FjKRsRx4oC	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 15:56:10.557	2026-07-03 15:54:39.013	2026-07-10 15:54:38.993	bf580972-14c7-44d3-b899-6491298ae121
+709	3	$2b$10$RrBdX4A/FQ4XJWU1cCdJpuyfmA/YZsrsVfdhjy8y4zLg7XIsmpC82	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 15:56:22.037	2026-07-03 15:56:22.037	2026-07-10 15:56:22.027	a9555148-62ee-4c17-a17d-9d3025c40132
+710	3	$2b$10$ws01apa3P6uwA1bRsE9V8ek/nvFPPUBNh.e5uFXqCAoEhztDgWChS	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:07:04.438	2026-07-03 16:07:04.438	2026-07-10 16:07:04.423	a1e406dd-1ec2-4321-b233-b5ce3dd38148
+711	3	$2b$10$.kjW3c4cD5C7DVh8eMgTkOCSavuyeosMPIDht7/UT4/nEaHECtrI6	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:29:19.412	2026-07-03 16:29:19.412	2026-07-10 16:29:19.394	0046621c-32b1-42bd-b123-b45af30bf87d
+712	10	$2b$10$ahDjFXdowzz0WBCMQ.M1K.NORJb0HA0h4KSySJppp.rwf5YUthCna	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:32:31.866	2026-07-03 16:29:56.765	2026-07-10 16:29:56.75	9341bf11-4b4b-4fa9-8dfb-be8597a03b6b
+713	3	$2b$10$HwQ0Z8nPExw5wPA.sgBdFuCzHRqRWwHXkQH3d9GQYKl8EZmCmu.Oe	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:33:05.217	2026-07-03 16:33:05.217	2026-07-10 16:33:05.203	a7e5d48c-e171-4007-bde1-8f27d93763eb
 \.
 
 
@@ -3389,7 +3405,7 @@ c778c177-86d5-47c4-a7a8-884bea8e9204	f6f55ee5225cd339db18722edcb3f16117e6f20b1d6
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 965, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 973, true);
 
 
 --
@@ -3529,7 +3545,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 27, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 705, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 713, true);
 
 
 --
@@ -4363,5 +4379,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict WsFaEdTm5fSsp5N6SCmfKBc0sWrDNqpKQuH3nNHazSCwKnWWVIZjGo4M8j77dSD
+\unrestrict iqA4cv4UXQ0tQukdi4D79dhXw9KaaSfUH9P0WZEe9STLAOAxiTEr173iS5asHHs
 
