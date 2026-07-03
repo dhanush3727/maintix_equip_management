@@ -21,12 +21,18 @@ import { ROLE_IDS } from '../../common/constants/roles.constants';
 import { CreateActionsDto } from './dto/create-actions.dto';
 import { UpdateActionsDto } from './dto/update-actions.dto';
 import { ResolveBreakdownDto } from './dto/resolve-breakdown.dto';
+import { NotificationService } from '../../common/notification/notification.service';
+import {
+  NotificationType,
+  ReferenceType,
+} from '../../common/notification/notification.type';
 
 @Injectable()
 export class BreakdownService {
   constructor(
     private prisma: PrismaService,
     private audit: AuditService,
+    private notification: NotificationService,
   ) {}
 
   //#region Create breakdown
@@ -334,8 +340,8 @@ export class BreakdownService {
     }
     if (!user.isActive) throw new BadRequestException('User is in active');
 
-    await this.prisma.$transaction(async (tx) => {
-      await tx.breakdownReport.update({
+    const result = await this.prisma.$transaction(async (tx) => {
+      const updated = await tx.breakdownReport.update({
         where: {
           id,
           organizationId,
@@ -343,6 +349,13 @@ export class BreakdownService {
         data: {
           assignedTo,
           status: BreakdownStatus.IN_PROGRESS,
+        },
+        select: {
+          equipment: {
+            select: {
+              name: true,
+            },
+          },
         },
       });
 
@@ -354,6 +367,18 @@ export class BreakdownService {
         recordId: id.toString(),
         ipAddress: meta?.ipAddress,
       });
+
+      return updated;
+    });
+
+    await this.notification.create(this.prisma, {
+      organizationId,
+      userId: assignedTo,
+      type: NotificationType.BREAKDOWN_ASSIGNED,
+      title: 'Breakdown Assigned',
+      message: `You have been assigned a breakdown for ${result.equipment.name}`,
+      referenceId: id,
+      referenceType: ReferenceType.BREAKDOWN,
     });
   }
   //#endregion

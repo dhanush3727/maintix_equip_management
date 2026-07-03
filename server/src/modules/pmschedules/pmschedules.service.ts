@@ -110,7 +110,7 @@ export class PmschedulesService {
       interval,
     );
 
-    await this.prisma.$transaction(async (tx) => {
+    const result = await this.prisma.$transaction(async (tx) => {
       const pmschedule = await tx.pMSchedule.create({
         data: {
           organizationId,
@@ -132,16 +132,6 @@ export class PmschedulesService {
         },
       });
 
-      await this.notification.create(tx, {
-        organizationId,
-        userId: assignedTo,
-        type: NotificationType.SCHEDULE_ASSIGNED,
-        title: 'PM Schedule Assigned',
-        message: `You have been assigned a PM schedule for "${pmschedule.equipment.name}".`,
-        referenceId: pmschedule.id,
-        referenceType: ReferenceType.SCHEDULE,
-      });
-
       await this.audit.logs(tx, {
         organizationId,
         userId,
@@ -150,6 +140,18 @@ export class PmschedulesService {
         recordId: pmschedule.id.toString(),
         ipAddress: meta?.ipAddress,
       });
+
+      return pmschedule;
+    });
+
+    await this.notification.create(this.prisma, {
+      organizationId,
+      userId: assignedTo,
+      type: NotificationType.SCHEDULE_ASSIGNED,
+      title: 'PM Schedule Assigned',
+      message: `You have been assigned a PM schedule for "${result.equipment.name}".`,
+      referenceId: result.id,
+      referenceType: ReferenceType.SCHEDULE,
     });
   }
   //#endregion

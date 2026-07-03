@@ -202,6 +202,16 @@ export class AuthService {
         },
       });
 
+      // Create audit for register success
+      await this.auditService.logs(tx, {
+        organizationId: organization.id,
+        userId: user.id,
+        action: AuditAction.REGISTER_SUCCESS,
+        module: AuditModule.AUTH,
+        recordId: user.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
+
       return { user, organization };
     });
 
@@ -223,16 +233,6 @@ export class AuthService {
 
     // Store session
     await this.saveRefreshToken(result.user.id, refreshToken, jti, metadata);
-
-    // Create audit for register success
-    await this.auditService.logs({
-      organizationId: result.organization.id,
-      userId: result.user.id,
-      action: AuditAction.REGISTER_SUCCESS,
-      module: AuditModule.AUTH,
-      recordId: result.user.id.toString(),
-      ipAddress: meta?.ipAddress,
-    });
 
     // Return response
     return {
@@ -276,7 +276,7 @@ export class AuthService {
 
     if (!isPasswordValid) {
       // Create audit for login failed
-      await this.auditService.logs({
+      await this.auditService.logs(this.prisma, {
         organizationId: user.organizationId,
         userId: user.id,
         action: AuditAction.LOGIN_FAILED,
@@ -306,7 +306,7 @@ export class AuthService {
     await this.saveRefreshToken(user.id, refreshToken, jti, metadata);
 
     // Create audit for login success
-    await this.auditService.logs({
+    await this.auditService.logs(this.prisma, {
       organizationId: user.organizationId,
       userId: user.id,
       action: AuditAction.LOGIN_SUCCESS,
@@ -355,20 +355,22 @@ export class AuthService {
       throw new BadRequestException('Session alreadt logged out');
     }
 
-    // Deactivate session
-    await this.prisma.userSession.update({
-      where: { jti },
-      data: { isActive: false },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      // Deactivate session
+      await tx.userSession.update({
+        where: { jti },
+        data: { isActive: false },
+      });
 
-    //Audit log
-    await this.auditService.logs({
-      organizationId: session.user.organizationId,
-      userId,
-      action: AuditAction.LOGOUT_CURRENT_SESSION,
-      module: AuditModule.AUTH,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      //Audit log
+      await this.auditService.logs(tx, {
+        organizationId: session.user.organizationId,
+        userId,
+        action: AuditAction.LOGOUT_CURRENT_SESSION,
+        module: AuditModule.AUTH,
+        recordId: userId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -393,20 +395,22 @@ export class AuthService {
       throw new BadRequestException('Session already logged out');
     }
 
-    // Deactivate session
-    await this.prisma.userSession.update({
-      where: { jti },
-      data: { isActive: false },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      // Deactivate session
+      await tx.userSession.update({
+        where: { jti },
+        data: { isActive: false },
+      });
 
-    //Audit log
-    await this.auditService.logs({
-      organizationId: session.user.organizationId,
-      userId,
-      action: AuditAction.LOGOUT_SPECIFIC_SESSION,
-      module: AuditModule.AUTH,
-      recordId: userId.toString(),
-      ipAddress: meta?.ipAddress,
+      //Audit log
+      await this.auditService.logs(tx, {
+        organizationId: session.user.organizationId,
+        userId,
+        action: AuditAction.LOGOUT_SPECIFIC_SESSION,
+        module: AuditModule.AUTH,
+        recordId: userId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -427,7 +431,7 @@ export class AuthService {
     });
 
     //Audit log
-    await this.auditService.logs({
+    await this.auditService.logs(this.prisma, {
       organizationId: 0,
       userId,
       action: AuditAction.LOGOUT_SPECIFIC_SESSION,
@@ -520,7 +524,7 @@ export class AuthService {
     });
 
     // Audit log
-    await this.auditService.logs({
+    await this.auditService.logs(this.prisma, {
       organizationId: user.organizationId,
       userId: user.id,
       action: AuditAction.FORGOT_PASSWORD,
@@ -572,16 +576,16 @@ export class AuthService {
         where: { userId: resetRecord.userId, isActive: true },
         data: { isActive: false },
       });
-    });
 
-    // Audit logs
-    await this.auditService.logs({
-      organizationId: user.organizationId,
-      userId: user.id,
-      action: AuditAction.RESET_PASSWORD,
-      module: AuditModule.AUTH,
-      recordId: user.id.toString(),
-      ipAddress: meta?.ipAddress,
+      // Audit logs
+      await this.auditService.logs(tx, {
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: AuditAction.RESET_PASSWORD,
+        module: AuditModule.AUTH,
+        recordId: user.id.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion
@@ -657,7 +661,7 @@ export class AuthService {
     });
 
     // Audit log
-    await this.auditService.logs({
+    await this.auditService.logs(this.prisma, {
       organizationId: user.organizationId,
       userId: user.id,
       action: AuditAction.EMAIL_VERIFICATION,
@@ -698,16 +702,16 @@ export class AuthService {
         where: { id: record.userId },
         data: { isEmailVerified: true },
       });
-    });
 
-    // Audit log
-    await this.auditService.logs({
-      organizationId: record.user.organizationId,
-      userId: record.userId,
-      action: AuditAction.EMAIL_VERIFICATION,
-      module: AuditModule.AUTH,
-      recordId: record.userId.toString(),
-      ipAddress: meta?.ipAddress,
+      // Audit log
+      await this.auditService.logs(tx, {
+        organizationId: record.user.organizationId,
+        userId: record.userId,
+        action: AuditAction.EMAIL_VERIFICATION,
+        module: AuditModule.AUTH,
+        recordId: record.userId.toString(),
+        ipAddress: meta?.ipAddress,
+      });
     });
   }
   //#endregion

@@ -3,6 +3,11 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { calculateNextDueDate } from '../../pmschedules/utils/calculateNextDueDate';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { NotificationService } from '../../../common/notification/notification.service';
+import {
+  NotificationType,
+  ReferenceType,
+} from '../../../common/notification/notification.type';
 
 // Define a type alias for the schedule with its related template and items
 type ScheduleType = Prisma.PMScheduleGetPayload<{
@@ -12,19 +17,27 @@ type ScheduleType = Prisma.PMScheduleGetPayload<{
         items: true;
       };
     };
+    equipment: {
+      select: {
+        name: true;
+      };
+    };
   };
 }>;
 
 @Injectable()
 export class PMTaskGeneratorService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notification: NotificationService,
+  ) {}
 
   // #region Create a PMTask
   async createTask(schedule: ScheduleType, dueDate: Date) {
     const template = schedule.template; // Get the template associated with the schedule
 
     // Create a new PMTask with the provided schedule and due date, and also create checklist items based on the template
-    await this.prisma.pMTask.create({
+    const task = await this.prisma.pMTask.create({
       data: {
         organizationId: schedule.organizationId,
         scheduleId: schedule.id,
@@ -51,6 +64,16 @@ export class PMTaskGeneratorService {
           })),
         },
       },
+    });
+
+    await this.notification.create(this.prisma, {
+      organizationId: schedule.organizationId,
+      userId: schedule.assignedTo,
+      type: NotificationType.TASK_ASSIGNED,
+      title: 'PM Task Assigned',
+      message: `A PM task has been assigned to you for "${schedule.equipment.name}".`,
+      referenceId: task.id,
+      referenceType: ReferenceType.TASK,
     });
   }
   //#endregion
@@ -119,6 +142,11 @@ export class PMTaskGeneratorService {
         template: {
           include: {
             items: true,
+          },
+        },
+        equipment: {
+          select: {
+            name: true,
           },
         },
       },
