@@ -89,4 +89,74 @@ export class NotificationsService {
     return notification;
   }
   //#endregion
+
+  //#region Mark all as read
+  async markAllAsReadService(req: RequestUser) {
+    const { organizationId, userId } = req;
+
+    await this.prisma.notification.updateMany({
+      where: {
+        organizationId,
+        userId,
+        isRead: false,
+      },
+      data: {
+        isRead: true,
+        readAt: new Date(),
+      },
+    });
+  }
+  //#endregion
+
+  //#region Mark as read
+  async markAsReadByIdService(id: number, req: RequestUser) {
+    const { organizationId, userId } = req;
+
+    await this.prisma.notification.updateMany({
+      where: {
+        id,
+        organizationId,
+        userId,
+        isRead: false,
+      },
+      data: {
+        isRead: true,
+        readAt: new Date(),
+      },
+    });
+  }
+  //#endregion
+
+  //#region Delete all notification
+  async deleteAllNotifications(req: RequestUser) {
+    const { organizationId, userId } = req;
+
+    await this.prisma.notification.deleteMany({
+      where: {
+        organizationId,
+        userId,
+        isRead: true,
+      },
+    });
+  }
+  //#endregion
+
+  //#region Delete notification by id
+  async deleteNotificationById(id: number, req: RequestUser) {
+    const { organizationId, userId } = req;
+
+    const deleted = await this.prisma.notification.deleteMany({
+      where: {
+        id,
+        organizationId,
+        userId,
+        isRead: true,
+      },
+    });
+
+    if (deleted.count === 0) {
+      throw new NotFoundException('Notification not found');
+    }
+  }
+  //#endregion
 }

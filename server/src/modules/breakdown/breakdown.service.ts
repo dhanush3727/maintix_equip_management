@@ -76,7 +76,7 @@ export class BreakdownService {
           organizationId,
         },
         data: {
-          status: EquipmentStatus.UNDER_MAINTENANCE,
+          status: EquipmentStatus.BREAKDOWN,
         },
       });
 
@@ -398,6 +398,7 @@ export class BreakdownService {
       select: {
         status: true,
         assignedTo: true,
+        equipmentId: true,
       },
     });
 
@@ -416,6 +417,16 @@ export class BreakdownService {
           performedBy: userId,
           action,
           remarks,
+        },
+      });
+
+      await tx.equipment.update({
+        where: {
+          id: breakdown.equipmentId,
+          organizationId,
+        },
+        data: {
+          status: EquipmentStatus.UNDER_MAINTENANCE,
         },
       });
 
@@ -591,6 +602,7 @@ export class BreakdownService {
       where: { id, organizationId },
       select: {
         status: true,
+        equipmentId: true,
       },
     });
 
@@ -610,6 +622,16 @@ export class BreakdownService {
         },
         data: {
           status: BreakdownStatus.CLOSED,
+        },
+      });
+
+      await tx.equipment.update({
+        where: {
+          id: breakdown.equipmentId,
+          organizationId,
+        },
+        data: {
+          status: EquipmentStatus.ACTIVE,
         },
       });
 

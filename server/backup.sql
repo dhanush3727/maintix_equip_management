@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict iqA4cv4UXQ0tQukdi4D79dhXw9KaaSfUH9P0WZEe9STLAOAxiTEr173iS5asHHs
+\restrict 2sqyQedTZe7UpdZn390N4lPJrwBSBzbDYdhtcOgFIrmOp9IJmqC0b8JA9VEbFxE
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -2383,6 +2383,11 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 971	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 16:29:19.422
 972	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-03 16:29:56.789
 973	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-03 16:33:05.242
+974	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-07-04 04:33:52.263
+975	3	14	LOGIN_SUCCESS	AUTH	14	::1	2026-07-04 04:38:15.311
+976	3	14	LOGIN_SUCCESS	AUTH	14	::1	2026-07-04 04:47:51.767
+977	3	14	LOGIN_SUCCESS	AUTH	14	::1	2026-07-04 05:41:43.589
+978	3	10	LOGIN_SUCCESS	AUTH	10	::1	2026-07-04 05:43:54.617
 \.
 
 
@@ -2516,13 +2521,8 @@ COPY maintix."Location" (id, "organizationId", name, type, address, "createdAt")
 --
 
 COPY maintix."Notification" (id, "organizationId", "userId", type, title, message, "referenceId", "referenceType", "isRead", "createdAt", "readAt") FROM stdin;
-1	3	14	BREAKDOWN_ASSIGNED	Breakdown Assigned	You have been assigned a breakdown for Screw	6	BREAKDOWN	f	2026-07-03 10:44:08.401	\N
-7	3	10	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Pump".	13	SCHEDULE	f	2026-07-03 10:50:02.598	\N
-8	3	14	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Pump".	14	SCHEDULE	f	2026-07-03 10:50:21.234	\N
 9	3	10	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Pump".	15	SCHEDULE	f	2026-07-03 10:50:27.575	\N
-10	3	14	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Pump".	16	SCHEDULE	f	2026-07-03 10:50:32.388	\N
 11	3	10	BREAKDOWN_ASSIGNED	Breakdown Assigned	You have been assigned a breakdown for Screw	7	BREAKDOWN	f	2026-07-03 10:51:52.678	\N
-12	3	14	BREAKDOWN_ASSIGNED	Breakdown Assigned	You have been assigned a breakdown for Screw	8	BREAKDOWN	f	2026-07-03 10:52:00.493	\N
 13	3	10	BREAKDOWN_ASSIGNED	Breakdown Assigned	You have been assigned a breakdown for Screw	9	BREAKDOWN	f	2026-07-03 10:52:08.358	\N
 \.
 
@@ -3365,6 +3365,11 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 711	3	$2b$10$.kjW3c4cD5C7DVh8eMgTkOCSavuyeosMPIDht7/UT4/nEaHECtrI6	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:29:19.412	2026-07-03 16:29:19.412	2026-07-10 16:29:19.394	0046621c-32b1-42bd-b123-b45af30bf87d
 712	10	$2b$10$ahDjFXdowzz0WBCMQ.M1K.NORJb0HA0h4KSySJppp.rwf5YUthCna	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:32:31.866	2026-07-03 16:29:56.765	2026-07-10 16:29:56.75	9341bf11-4b4b-4fa9-8dfb-be8597a03b6b
 713	3	$2b$10$HwQ0Z8nPExw5wPA.sgBdFuCzHRqRWwHXkQH3d9GQYKl8EZmCmu.Oe	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-03 16:33:05.217	2026-07-03 16:33:05.217	2026-07-10 16:33:05.203	a7e5d48c-e171-4007-bde1-8f27d93763eb
+714	3	$2b$10$y99qK4S5ByVo7M6VIfU.9OKOmZkz05lnBF.Uamya1pvy3gWYkDgW2	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-04 04:33:52.236	2026-07-04 04:33:52.236	2026-07-11 04:33:52.211	f21c031a-6f7a-43ad-9e47-e5965ac0b0ce
+715	14	$2b$10$.q4I5gne5VKAKDxeTXxQleBldA2XYKp2L/Hui/vRY.m0meK8EX6Vu	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-04 04:38:15.273	2026-07-04 04:38:15.273	2026-07-11 04:38:15.265	3c88fd49-43f0-4b31-9af6-c3b03ca45a2a
+716	14	$2b$10$s6zrT3zeiMSif4WVNbI0VOt4SdarP7vHcEacJDxxVDDJZRqJzPf66	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-04 04:51:21.107	2026-07-04 04:47:51.735	2026-07-11 04:47:51.711	da8f27f3-d07d-4dd7-a1d8-eda3622ed730
+717	14	$2b$10$QIElqjngJXR/KBK6lmzM8uMgS959VNe/6rWqtANXe9O7eJ3EtYvb.	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-04 05:41:43.561	2026-07-04 05:41:43.561	2026-07-11 05:41:43.542	26b1c36e-f5bd-44b0-8ddc-ee2f9c132277
+718	10	$2b$10$gOXqBnpo3ZtlZr.N/.5SveGDZMFXzr6wlt7kSBjlHO1IMtRTNoc32	PostmanRuntime/7.54.0	::1	PostmanRuntime/7.54.0	t	2026-07-04 05:43:54.603	2026-07-04 05:43:54.603	2026-07-11 05:43:54.6	a60592dc-dd3c-4e1e-a981-e004428da011
 \.
 
 
@@ -3405,7 +3410,7 @@ c778c177-86d5-47c4-a7a8-884bea8e9204	f6f55ee5225cd339db18722edcb3f16117e6f20b1d6
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 973, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 978, true);
 
 
 --
@@ -3545,7 +3550,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 27, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 713, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 718, true);
 
 
 --
@@ -4379,5 +4384,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict iqA4cv4UXQ0tQukdi4D79dhXw9KaaSfUH9P0WZEe9STLAOAxiTEr173iS5asHHs
+\unrestrict 2sqyQedTZe7UpdZn390N4lPJrwBSBzbDYdhtcOgFIrmOp9IJmqC0b8JA9VEbFxE
 

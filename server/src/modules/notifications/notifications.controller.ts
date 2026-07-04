@@ -1,8 +1,10 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Query,
   Req,
   UseGuards,
@@ -56,6 +58,60 @@ export class NotificationsController {
 
     return {
       data,
+    };
+  }
+  //#endregion
+
+  //#region Mark all as read
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch('read-all')
+  async markAllAsRead(@Req() req: AuthenticateRequest) {
+    await this.notification.markAllAsReadService(req.user);
+
+    return {
+      message: 'All notifications marked as read',
+    };
+  }
+  //#endregion
+
+  //#region Mark as read
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch(':id/read')
+  async markAsRead(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    await this.notification.markAsReadByIdService(id, req.user);
+
+    return {
+      message: 'Mark as read',
+    };
+  }
+  //#endregion
+
+  //#region Delete all notifications
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Delete('delete-all')
+  async deleteAllNotifications(@Req() req: AuthenticateRequest) {
+    await this.notification.deleteAllNotifications(req.user);
+
+    return {
+      message: 'All notifications deleted',
+    };
+  }
+  //#endregion
+
+  //#region Delete notification by id
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Delete(':id/delete')
+  async deleteNotificationById(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    await this.notification.deleteNotificationById(id, req.user);
+
+    return {
+      message: 'Notification deleted',
     };
   }
   //#endregion
