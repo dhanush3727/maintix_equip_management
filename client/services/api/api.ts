@@ -63,37 +63,88 @@ let refreshPromise: Promise<string> | null = null;
  * The response interceptor will catch the error and try to refresh the accesstoken using the refreshToken stored in the HttpOnly cookie.
  */
 api.interceptors.response.use(
+  /**
+   * For successful responses, simply return the response.
+   */
   (response) => response,
+
+  /**
+   * Handles all failed responses
+   */
   async (error: AxiosError) => {
+    // The original request that caused the error.
+    // It will be retried ater the access token is refreshed.
     const originalRequest = error.config;
 
+    console.log("originalRequest", originalRequest);
+
+    // If there is no request configuration,
+    // the request cannot be retried.
     if (!originalRequest) {
       return Promise.reject(error);
     }
 
-    if (error.status === 401 && !originalRequest._retry) {
+    // Handle only 401 Unauthorized errors.
+    // Also ensure that the same request is refreshed only once
+    // to prevent an infinite refresh loop.
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      // Mark this request as already retried.
+      originalRequest._retry = true;
+
       try {
-        if (isRefreshing && refreshPromise) {
-          await refreshPromise;
-        } else {
+        /**
+         * If no refresh operation is currently running,
+         * start a new refresh request.
+         *
+         * Otherwise, other requests will simply wait
+         * for the existing refresh operation to complete.
+         */
+        if (!isRefreshing) {
           isRefreshing = true;
 
-          refreshPromise = refreshTokenRotation();
-
-          await refreshPromise;
+          refreshPromise = refreshTokenRotation().finally(() => {
+            /**
+             * Cleanup after the refresh request finishes,
+             * regardless of whether it succeeds or fails.
+             *
+             * This allows future 401 response to start
+             * a new refresh operation
+             */
+            isRefreshing = false;
+            refreshPromise = null;
+          });
         }
 
+        // Extra safety check.
+        // refreshPromise should always exist at this point.
+        if (!refreshPromise) {
+          return Promise.reject(error);
+        }
+
+        // Wait until the access token has been refreshed.
+        await refreshPromise;
+
+        /**
+         * Retry the original request
+         *
+         * The request interceptor will automatically attach
+         * the newly refreshed access token to the Authorization header.
+         */
         return api(originalRequest);
       } catch (refreshErr) {
+        /**
+         * Refresh failed
+         *
+         * Clear the stored access token.
+         * The application can then redirect the user to the login page.
+         */
         clearToken();
 
         return Promise.reject(refreshErr);
-      } finally {
-        isRefreshing = false;
-        refreshPromise = null;
       }
     }
 
+    // For all other errors, simply return the original error.
     return Promise.reject(error);
   },
 );
