@@ -74,9 +74,8 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     // The original request that caused the error.
     // It will be retried ater the access token is refreshed.
-    const originalRequest = error.config;
-
-    console.log("originalRequest", originalRequest);
+    const originalRequest: InternalAxiosRequestConfig | undefined =
+      error.config;
 
     // If there is no request configuration,
     // the request cannot be retried.
@@ -139,6 +138,10 @@ api.interceptors.response.use(
          * The application can then redirect the user to the login page.
          */
         clearToken();
+
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
 
         return Promise.reject(refreshErr);
       }

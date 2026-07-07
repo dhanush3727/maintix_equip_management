@@ -7,7 +7,7 @@
 
 let accessToken: string | null = null;
 
-// Get the current accessToek
+// Get the current access token
 export function getToken(): string | null {
   return accessToken;
 }
