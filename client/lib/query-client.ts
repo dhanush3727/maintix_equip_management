@@ -12,7 +12,7 @@ export const queryClient = new QueryClient({
       // Retry failed requests only once
       retry: 1,
 
-      // Don't refetch when switching back to the browser tab. It prevents if user switch tab frequently
+      // Don't refetch when switching back to the browser tab. It prevents refetch if user switch tab frequently
       refetchOnWindowFocus: false,
 
       // Refetch stale queries when internet reconnects

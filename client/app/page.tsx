@@ -7,5 +7,6 @@ export default function Home() {
   console.log(data);
   console.log(isPending);
   console.log(error);
+
   return <div></div>;
 }

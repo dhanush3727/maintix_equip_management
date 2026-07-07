@@ -14,6 +14,7 @@ export class AppController {
 
   //#region Get organization meta data
   @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
   @Get('meta')
   getOrganizationMeta() {
     const data = this.appService.getOrganizationMetaService();
