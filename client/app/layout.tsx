@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"], // 
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Maintix",
@@ -14,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-full flex flex-col">
+      <body className={poppins.variable}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
