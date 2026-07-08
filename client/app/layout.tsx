@@ -3,11 +3,13 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { Poppins } from "next/font/google";
 
+// This is a custom font that is being imported from Google Fonts using the Next.js font optimization feature.
+// The Poppins font is being used in this layout and is configured with specific subsets, weights, and a CSS variable for easy usage throughou the application.
 const poppins = Poppins({
-  subsets: ["latin"], // 
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-  display: "swap",
+  subsets: ["latin"], // Specifies the character subsets to include for the font, in this case, Latin characters.
+  weight: ["400", "500", "600", "700"], // Specifies the font weights to include for the Poppins font. This allows for different font weights to be used in the application.
+  variable: "--font-poppins", // Defines a CSS variable that can be used to reference the Poppins font throughout the application. This allows for easy theming and font management.
+  display: "swap", // Specifies the font display strategy. "swap" means that the browser will use a fallback font until the Poppins font is fully loaded, improving perceived performance.
 });
 
 export const metadata: Metadata = {
