@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
-import { Poppins } from "next/font/google";
+import { Poppins, Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 
 // This is a custom font that is being imported from Google Fonts using the Next.js font optimization feature.
 // The Poppins font is being used in this layout and is configured with specific subsets, weights, and a CSS variable for easy usage throughou the application.
@@ -23,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn("font-sans", geist.variable)}>
       <body className={poppins.variable}>
         <QueryProvider>{children}</QueryProvider>
       </body>

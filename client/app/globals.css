@@ -1,44 +1,51 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
+  /* -------------------------------------------------------------------------- */
+  /* Design Tokens (Used by shadcn Components)                                */
+  /* -------------------------------------------------------------------------- */
   /* Brand */
-  --color-primary: #ea6721;
-  --color-primary-hover: #d95d1c;
-  --color-primary-light: #fff3ec;
+  --brand-primary: #ea6721;
+  --brand-primary-hover: #d95d1c;
+  --brand-primary-light: #fff3ec;
 
   /* Background */
-  --color-background: #fcfaf7;
-  --color-surface: #ffffff;
-  --color-surface-secondary: #f8f5f1;
+  --surface-page: #fcfaf7;
+  --surface-card: #ffffff;
+  --surface-secondary: #f8f5f1;
 
   /* Text */
-  --color-text-primary: #2c231b;
-  --color-text-secondary: #6e655e;
-  --color-text-muted: #a69c92;
-  --color-text-disabled: #c8c1b9;
+  --text-primary: #2c231b;
+  --text-secondary: #6e655e;
+  --text-muted: #a69c92;
+  --text-disabled: #c8c1b9;
 
   /* Borders */
-  --color-border: #e8e2da;
-  --color-border-light: #f2eee9;
+  --border-default: #e8e2da;
+  --border-light: #f2eee9;
 
   /* Sidebar */
-  --color-sidebar: #ffffff;
-  --color-sidebar-hover: #f6f2ee;
-  --color-sidebar-active: #2c231b;
-  --color-sidebar-icon: #8a8178;
+  --sidebar-background: #ffffff;
+  --sidebar-hover: #f6f2ee;
+  --sidebar-active: #2c231b;
+  --sidebar-icon: #8a8178;
 
   /* Status */
-  --color-success: #23864f;
-  --color-success-light: #eaf8f0;
+  --success: #23864f;
+  --success-light: #eaf8f0;
 
-  --color-warning: #d8a30e;
-  --color-warning-light: #fff8e6;
+  --warning: #d8a30e;
+  --warning-light: #fff8e6;
 
-  --color-danger: #d84a3a;
-  --color-danger-light: #fdeeee;
+  --danger: #d84a3a;
+  --danger-light: #fdeeee;
 
-  --color-info: #4d87f5;
-  --color-info-light: #eef4ff;
+  --info: #4d87f5;
+  --info-light: #eef4ff;
 
   /* Radius */
   --radius-sm: 6px;
@@ -55,42 +62,119 @@
 
   /* Fonts */
   --font-sans: var(--font-poppins), sans-serif;
+
+  /* -------------------------------------------------------------------------- */
+  /* Semantic Tokens (Used by shadcn Components)                                */
+  /* -------------------------------------------------------------------------- */
+  /* Background */
+  --background: var(--surface-page);
+  --foreground: var(--text-primary);
+
+  /* Card */
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+
+  /* Popover */
+  --popover: var(--surface-card);
+  --popover-foreground: var(--text-primary);
+
+  /* Primary */
+  --primary: var(--brand-primary);
+  --primary-hover: var(--brand-primary-hover);
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: var(--surface-secondary);
+  --secondary-foreground: var(--text-primary);
+
+  /* Muted */
+  --muted: var(--surface-secondary);
+  --muted-foreground: var(--text-secondary);
+
+  /* Accent */
+  --accent: var(--surface-secondary);
+  --accent-foreground: var(--text-primary);
+
+  /* Destructive */
+  --destructive: var(--danger);
+  --destructive-foreground: #ffffff;
+
+  /* Form Elements */
+  --border: var(--border-default);
+  --input: var(--border-default);
+  --ring: var(--brand-primary);
+
+  /* Charts (Reserved for future dashboard charts) */
+  --chart-1: var(--brand-primary);
+  --chart-2: var(--success);
+  --chart-3: var(--info);
+  --chart-4: var(--warning);
+  --chart-5: var(--danger);
+
+  /* Sidebar */
+  --sidebar: var(--sidebar-background);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--brand-primary);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--surface-secondary);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border-default);
+  --sidebar-ring: var(--brand-primary);
+
+  /* Base Radius (used by shadcn components) */
+  --radius: var(--radius-md);
 }
 
-@theme {
+@theme inline {
   /* Colors */
-  --color-primary: var(--color-primary);
-  --color-primary-hover: var(--color-primary-hover);
-  --color-primary-light: var(--color-primary-light);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
-  --color-background: var(--color-background);
-  --color-surface: var(--color-surface);
-  --color-surface-secondary: var(--color-surface-secondary);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
 
-  --color-text-primary: var(--color-text-primary);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-muted: var(--color-text-muted);
-  --color-text-disabled: var(--color-text-disabled);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
-  --color-border: var(--color-border);
-  --color-border-light: var(--color-border-light);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
 
-  --color-sidebar: var(--color-sidebar);
-  --color-sidebar-hover: var(--color-sidebar-hover);
-  --color-sidebar-active: var(--color-sidebar-active);
-  --color-sidebar-icon: var(--color-sidebar-icon);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
-  --color-success: var(--color-success);
-  --color-success-light: var(--color-success-light);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 
-  --color-warning: var(--color-warning);
-  --color-warning-light: var(--color-warning-light);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 
-  --color-danger: var(--color-danger);
-  --color-danger-light: var(--color-danger-light);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
-  --color-info: var(--color-info);
-  --color-info-light: var(--color-info-light);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
   /* Radius */
   --radius-sm: var(--radius-sm);
@@ -99,55 +183,56 @@
   --radius-xl: var(--radius-xl);
   --radius-full: var(--radius-full);
 
-  /* Shadows */
-  --shadow-xs: var(--shadow-xs);
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-
-  /* Font */
+  /* Typography */
   --font-sans: var(--font-sans);
 }
 
-/* Base styles */
-*, /* The '*' is Universal Selector. It select every element on the page*/
+/* Base Layer */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+}
+
+*,
 *::before,
 *::after {
+  /* margin: 0; */
+  /* padding: 0; */
   box-sizing: border-box;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  min-height: 100vh;
-  background: var(--color-background);
-  color: var(--color-text-primary);
-  font-family: var(--font-sans);
-}
-
+/* Form Elements */
 button,
 input,
 textarea,
 select {
-  font: inherit; /* Take the value from the parent element. */
+  font: inherit;
 }
 
 button {
   cursor: pointer;
 }
 
+/* Links */
 a {
   color: inherit;
   text-decoration: none;
 }
 
+/* Media */
 img,
 picture,
 svg {
@@ -155,6 +240,7 @@ svg {
   max-width: 100%;
 }
 
+/* Lists */
 ul,
 ol {
   list-style: none;
@@ -162,13 +248,13 @@ ol {
 
 /* Selection */
 ::selection {
-  background-color: var(--color-primary);
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 
 /* Focus */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -179,7 +265,7 @@ ol {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface-secondary);
+  background: var(--secondary);
 }
 
 ::-webkit-scrollbar-thumb {

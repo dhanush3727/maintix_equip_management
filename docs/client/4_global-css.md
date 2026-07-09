@@ -22,23 +22,68 @@ ex:
 ```
 Instead of writing `text-[#ea6721]` in your components, you can use `text-[var(--color-primary)]` to make it more maintainable. If you want to change the primary color, you only need to update the value in the `:root` selector.
 
-## @theme directive
-The `@theme` directive is a special feature in Next.js that allows you to define theme-specific styles in your global CSS file. It enables you to create different themes for your application, such as light and dark modes, and apply them based on the user's preference or system settings.
+## Design Tokens & Semantic Tokens
+1. Design Tokens
+Design Tokens are the raw design values that define your application's visual identity. They are the single source of truth for colors, spacing, typography, radius, shadows, and other design properties. Think of them as your design palette.
 Ex:
 ```css
-@theme {
-  --color-primary: var(--color-primary);
-  --color-background: var(--color-background);
-}
+--brand-primary: #ea6721; 
+--brand-primary-hover: #d95d1c; 
+--surface-page: #fcfaf7; 
+--surface-card: #ffffff; 
+--text-primary: #2c231b; 
+--text-secondary: #6e655e; 
+--radius-md: 10px; --shadow-sm: 0 4px 12px rgb(44 35 27 / 0.06);
 ```
-Instead of writing
-```tsx
-className="bg-[var(--color-background)]"
+Notice that these names describe what the value is, not where it is used. For example:
+`--brand-primary` -> Brand color
+`--surface-card` -> Card background color
+`--text-primary` -> Primary text color
+They represent the visual language of the application.
+
+2. Semantic Tokens
+Semantic Tokens describe the purpose of value instead of the value itself.
+Ex:
+```css
+--primary: var(--brand-primary); 
+--background: var(--surface-page); 
+--foreground: var(--text-primary); 
+--border: var(--border-default);
 ```
-We can simply write
-```tsx
-className="bg-background"
+These tokens don't care what the actual color is, they only describe its role in the interface.
+
+3. Real Example
+Design Tokens
+--brand-primary: #ea6721;
+--surface-page: #fcfaf7;
+--text-primary: #2c231b;
+
+Semantic Tokens
+--primary: var(--brand-primary);
+--background: var(--surface-page);
+--foreground: var(--text-primary);
+
+Component
+<Button className="bg-primary text-primary-foreground" />
+
+The Button doesn't know that the primary color is orange. It simply uses the semantic meaning of "primary."
+
+## @theme inline
+`@theme inline` is a Taillwind CSS v4 feature that maps your CSS custom properties (variables) to Tailwind theme tokens. In simple words it tell Tailwind "When someone uses `bg-primary`, use the value stored in `--primary`."
+Without `@theme inline`, Tailwind does not know that your CSS variables should become utility classes.
+Ex:
+```css
+@theme inline { --color-primary: var(--primary); }
 ```
+Now Tailwind generates utility classes like:
+```
+bg-primary 
+text-primary 
+border-primary 
+fill-primary 
+stroke-primary
+```
+All of these use the value stored in, `--primary`
 
 ## CSS Resets
 1. Universal Selector: The universal selector `*` selects all elements on the page. It is used to apply styles to every element, ensuring a consistent baseline for styling.
