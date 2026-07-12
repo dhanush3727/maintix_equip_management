@@ -10,3 +10,6 @@ export * from "./skeleton/skeleton";
 export * from "./textarea/textarea";
 export * from "./dialog/dialog";
 export * from "./alert-dialog/alert-dialog";
+export * from "./sidebar/sidebar";
+export * from "./sheet/sheet";
+export * from "./tooltip/tooltip";
