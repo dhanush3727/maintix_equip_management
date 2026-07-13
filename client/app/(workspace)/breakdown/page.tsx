@@ -1,1 +1,1 @@
-export function Breakdown() {}
+export default function Breakdown() {}

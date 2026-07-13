@@ -1,1 +1,1 @@
-export function Settings() {}
+export default function Settings() {}

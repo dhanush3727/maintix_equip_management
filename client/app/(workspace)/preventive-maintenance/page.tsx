@@ -1,1 +1,1 @@
-export function PreventiveMaintenance() {}
+export default function PreventiveMaintenance() {}

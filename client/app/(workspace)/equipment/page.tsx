@@ -1,1 +1,1 @@
-export function Equipment() {}
+export default function Equipment() {}

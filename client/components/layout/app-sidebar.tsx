@@ -9,9 +9,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from "../ui";
 import Logo from "@/assets/logo.png";
 import { LayoutDashboard } from "lucide-react";
+import Link from "next/link";
 
 export function AppSidebar() {
   return (
@@ -29,14 +31,17 @@ export function AppSidebar() {
           </div>
         </div>
       </SidebarHeader>
-      <Separator />
+
+      <SidebarSeparator />
 
       <SidebarContent className="py-3">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
               <LayoutDashboard />
-              <span className="text-lg">Dashboard</span>
+              <Link href={"/dashboard"} className="text-lg">
+                Dashboard
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

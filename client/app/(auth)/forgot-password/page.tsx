@@ -1,1 +1,1 @@
-export function ForgotPassword() {}
+export default function ForgotPassword() {}

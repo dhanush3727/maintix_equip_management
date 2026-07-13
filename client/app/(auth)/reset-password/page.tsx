@@ -1,1 +1,1 @@
-export function ResetPassword() {}
+export default function ResetPassword() {}
