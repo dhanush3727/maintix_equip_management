@@ -3,9 +3,10 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { Poppins, Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { AppShell } from "@/components/layout/app-shell";
+import { TooltipProvider } from "@/components/ui";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 // This is a custom font that is being imported from Google Fonts using the Next.js font optimization feature.
 // The Poppins font is being used in this layout and is configured with specific subsets, weights, and a CSS variable for easy usage throughou the application.
@@ -29,7 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body className={poppins.variable}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <TooltipProvider>
+            <AppShell>{children}</AppShell>
+          </TooltipProvider>
+        </QueryProvider>
       </body>
     </html>
   );
