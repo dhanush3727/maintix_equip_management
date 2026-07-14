@@ -1,1 +1,3 @@
-export default function Breakdown() {}
+export default function Breakdown() {
+  return <div>Breakdown</div>;
+}

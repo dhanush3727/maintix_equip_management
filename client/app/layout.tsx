@@ -3,7 +3,6 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { Poppins, Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { AppShell } from "@/components/layout/app-shell";
 import { TooltipProvider } from "@/components/ui";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -31,9 +30,7 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body className={poppins.variable}>
         <QueryProvider>
-          <TooltipProvider>
-            <AppShell>{children}</AppShell>
-          </TooltipProvider>
+          <TooltipProvider>{children}</TooltipProvider>
         </QueryProvider>
       </body>
     </html>
