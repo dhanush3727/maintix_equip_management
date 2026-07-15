@@ -1,1 +1,3 @@
-export default function Organization() {}
+export default function Organization() {
+    return <>Organization</>;
+}

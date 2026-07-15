@@ -8,7 +8,7 @@ import {
   SidebarHeader,
   SidebarSeparator,
 } from "../ui";
-import Logo from "@/assets/logo.png";
+import Logo from "@/constants/logo.constant";
 import { NavItem } from "./NavItem";
 import { NavUser } from "./NavUser";
 

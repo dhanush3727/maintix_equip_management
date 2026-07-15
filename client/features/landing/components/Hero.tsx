@@ -10,38 +10,47 @@ import {
 import Image from "next/image";
 import Logo from "@/assets/logo.png";
 import { BellDot } from "lucide-react";
+import {
+  HERO_BUTTON,
+  HERO_CARD,
+  HERO_CONTENT,
+} from "../constants/hero.constant";
+import Link from "next/link";
+import React from "react";
 
 export function Hero() {
   return (
-    <main className="flex justify-between flex-col gap-10 p-[3%]">
-      <div className="text-center sm:text-start">
+    <main className="flex justify-between flex-col gap-10 p-[3%] lg:flex-row">
+      <div className="text-center md:text-start">
         <p className="text-primary mb-3 tracking-widest font-semibold text-xs">
-          EQUIPMENT MAINTENANCE SYSTEM
+          {HERO_CONTENT.badge}
         </p>
 
-        <h1 className="text-4xl font-bold sm:hidden">
-          Every assets. Every Check. On time.
+        <h1 className="text-4xl font-bold md:hidden">
+          {HERO_CONTENT.title.mobile}
         </h1>
 
-        <h1 className="hidden text-6xl font-bold mb-1 sm:block">
-          Every assets.
-        </h1>
-        <h1 className="hidden text-6xl font-bold mb-1 sm:block">
-          Every check.
-        </h1>
-        <h1 className="hidden text-6xl font-bold sm:block">On time.</h1>
+        {HERO_CONTENT.title.desktop.map((item) => (
+          <h1 key={item} className="hidden text-6xl font-bold mb-1 md:block">
+            {item}
+          </h1>
+        ))}
 
-        <p className="text-xs text-muted-foreground mt-3 sm:text-sm">
-          Maintix runs preventive maintenance and breakdown response for process
-          plants — schedules, field checklists, and reliability metrics in one
-          place.
+        <p className="text-xs text-muted-foreground mt-3 md:text-sm">
+          {HERO_CONTENT.description}
         </p>
 
-        <div className="mt-5 flex gap-3 justify-center">
-          <Button className={"rounded-xl"}>Get Start</Button>
-          <Button variant={"outline"} className={"rounded-xl"}>
-            Login
-          </Button>
+        <div className="mt-5 flex gap-3 justify-center md:justify-start">
+          {HERO_BUTTON.map((item) => (
+            <Link key={item.label} href={item.href}>
+              <Button
+                className="rounded-xl"
+                variant={`${item.label === "Login" ? "outline" : "default"}`}
+              >
+                {item.label}
+              </Button>
+            </Link>
+          ))}
         </div>
       </div>
 
@@ -50,59 +59,67 @@ export function Hero() {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex gap-2">
-                <Image src={Logo} alt="logo.png" className="w-5 h-5" />
-                <h1 className="text-sm font-medium">Dashboard</h1>
+                <Image
+                  src={Logo}
+                  alt="logo.png"
+                  className="w-5 h-5 lg:w-6 lg:h-6"
+                />
+                <h1 className="text-sm font-medium lg:text-base">
+                  {HERO_CARD.title}
+                </h1>
               </div>
               <BellDot size={20} />
             </CardTitle>
 
             <CardContent className="mt-5">
               <div className="flex justify-between">
-                <div>
-                  <h3 className="text-sm font-bold">150</h3>
-                  <p className="text-xs text-muted-foreground">Equipemnts</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-bold">10</h3>
-                  <p className="text-xs text-muted-foreground">Due today</p>
-                </div>
-
-                <div className="text-destructive">
-                  <h3 className="text-sm font-bold">5</h3>
-                  <p className="text-xs text-muted-foreground">Overdue</p>
-                </div>
+                {HERO_CARD.counts.map((item) => (
+                  <div
+                    key={item.label}
+                    className={`${item.label === "Overdue" && "text-destructive"}`}
+                  >
+                    <h3 className="text-sm font-bold lg:text-base">
+                      {item.count}
+                    </h3>
+                    <p
+                      className={`text-xs lg:text-sm ${item.label !== "Overdue" && "text-muted-foreground"}`}
+                    >
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </CardContent>
 
-            <CardContent className="text-sm">
-              <div className="flex justify-between py-3">
-                <h4>
-                  <span className="text-muted-foreground">P-401:</span> Transfer
-                  Pump
-                </h4>
-                <Badge variant={"info"}>INPROGRESS</Badge>
-              </div>
-              <Separator />
-              <div className="flex justify-between py-3">
-                <h4>
-                  <span className="text-muted-foreground">C-102:</span> Air
-                  Compressor
-                </h4>
-                <Badge variant={"warning"}>PENDING</Badge>
-              </div>
+            <CardContent className="text-sm lg:text-base">
+              {HERO_CARD.list.map((item, index) => (
+                <React.Fragment key={item.equipment}>
+                  <div className="flex justify-between py-3">
+                    <h4>
+                      <span className="text-muted-foreground">
+                        {item.equipId}:{" "}
+                      </span>
+                      {item.equipment}
+                    </h4>
+                    <Badge variant={item.variant}>{item.badge}</Badge>
+                  </div>
+
+                  {/* Render a separator after each item except the last one */}
+                  {index < HERO_CARD.list.length - 1 && <Separator />}
+                </React.Fragment>
+              ))}
             </CardContent>
           </CardHeader>
         </Card>
 
-        <div className="absolute right-0 -bottom-1.25">
+        <div className="absolute -bottom-5 -right-10 lg:bottom-5">
           <Card className="w-full max-w-xs bg-foreground text-sm text-card shadow-xl">
             <CardContent className="p-3 flex gap-3 items-center">
               <div className="w-4 h-4 bg-primary rounded-lg"></div>
               <div>
-                <h4>Breakdown raised - P-401</h4>
+                <h4>{HERO_CARD.sub_card.title}</h4>
                 <p className="text-muted-foreground">
-                  Manager notified assign a technician
+                  {HERO_CARD.sub_card.description}
                 </p>
               </div>
             </CardContent>
