@@ -20,7 +20,7 @@ import React from "react";
 
 export function Hero() {
   return (
-    <main className="flex justify-between flex-col gap-10 p-[3%] lg:flex-row">
+    <main className="my-10 flex justify-between flex-col gap-10 p-[3%] lg:flex-row">
       <div className="text-center md:text-start">
         <p className="text-primary mb-3 tracking-widest font-semibold text-xs">
           {HERO_CONTENT.badge}
@@ -55,7 +55,7 @@ export function Hero() {
       </div>
 
       <div className="w-full relative">
-        <Card className="w-full">
+        <Card className="w-full px-6">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex gap-2">
@@ -70,46 +70,46 @@ export function Hero() {
               </div>
               <BellDot size={20} />
             </CardTitle>
-
-            <CardContent className="mt-5">
-              <div className="flex justify-between">
-                {HERO_CARD.counts.map((item) => (
-                  <div
-                    key={item.label}
-                    className={`${item.label === "Overdue" && "text-destructive"}`}
-                  >
-                    <h3 className="text-sm font-bold lg:text-base">
-                      {item.count}
-                    </h3>
-                    <p
-                      className={`text-xs lg:text-sm ${item.label !== "Overdue" && "text-muted-foreground"}`}
-                    >
-                      {item.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-
-            <CardContent className="text-sm lg:text-base">
-              {HERO_CARD.list.map((item, index) => (
-                <React.Fragment key={item.equipment}>
-                  <div className="flex justify-between py-3">
-                    <h4>
-                      <span className="text-muted-foreground">
-                        {item.equipId}:{" "}
-                      </span>
-                      {item.equipment}
-                    </h4>
-                    <Badge variant={item.variant}>{item.badge}</Badge>
-                  </div>
-
-                  {/* Render a separator after each item except the last one */}
-                  {index < HERO_CARD.list.length - 1 && <Separator />}
-                </React.Fragment>
-              ))}
-            </CardContent>
           </CardHeader>
+
+          <CardContent className="mt-5">
+            <div className="flex justify-between">
+              {HERO_CARD.counts.map((item) => (
+                <div
+                  key={item.label}
+                  className={`${item.label === "Overdue" && "text-destructive"}`}
+                >
+                  <h3 className="text-sm font-bold lg:text-base">
+                    {item.count}
+                  </h3>
+                  <p
+                    className={`text-xs lg:text-sm ${item.label !== "Overdue" && "text-muted-foreground"}`}
+                  >
+                    {item.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+
+          <CardContent className="text-sm lg:text-base">
+            {HERO_CARD.list.map((item, index) => (
+              <React.Fragment key={item.equipment}>
+                <div className="flex justify-between py-3">
+                  <h4>
+                    <span className="text-muted-foreground">
+                      {item.equipId}:{" "}
+                    </span>
+                    {item.equipment}
+                  </h4>
+                  <Badge variant={item.variant}>{item.badge}</Badge>
+                </div>
+
+                {/* Render a separator after each item except the last one */}
+                {index < HERO_CARD.list.length - 1 && <Separator />}
+              </React.Fragment>
+            ))}
+          </CardContent>
         </Card>
 
         <div className="absolute -bottom-5 -right-10 lg:bottom-5">
