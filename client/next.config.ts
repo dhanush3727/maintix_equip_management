@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   turbopack: {
-    root: __dirname,
+    root: __dirname, // why is this needed? because turbopack needs to know the root directory of the project to resolve paths correctly. It helps in optimizing the build process and managing dependencies effectively.
   },
 };
 

@@ -1,3 +1,5 @@
-export default function Login() {
-  return <>Login</>;
+import { Login } from "@/features/auth";
+
+export default function LoginPage() {
+  return <Login />;
 }
