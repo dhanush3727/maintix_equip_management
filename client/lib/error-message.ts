@@ -20,10 +20,6 @@ export function getErrorMessage(err: unknown): string {
       return "You do not have permission for this action.";
     }
 
-    if (err.response.status === 404) {
-      return "The requested source was not found";
-    }
-
     const data = err.response.data as ApiErrorResponse;
 
     return data.message;
