@@ -11,6 +11,7 @@ import {
   useSidebar,
 } from "../ui";
 import { LogOut, User } from "lucide-react";
+import { ROUTES } from "@/constants";
 
 export function NavUser() {
   const { isMobile, setOpenMobile } = useSidebar();
@@ -35,7 +36,7 @@ export function NavUser() {
           className={"p-3 cursor-pointer"}
           render={
             <Link
-              href={"/account"}
+              href={ROUTES.ACCOUNT}
               onClick={() => {
                 if (isMobile) setOpenMobile(false);
               }}

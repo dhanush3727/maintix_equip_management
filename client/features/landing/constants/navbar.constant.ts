@@ -1,3 +1,5 @@
+import { ROUTES } from "@/constants";
+
 export const NAV_ITEMS = [
   {
     label: "Features",
@@ -12,11 +14,11 @@ export const NAV_ITEMS = [
 export const NAV_BUTTON = [
   {
     label: "Login",
-    href: "/login",
+    href: ROUTES.LOGIN,
   },
   {
     label: "Register",
-    href: "/register",
+    href: ROUTES.REGISTER,
   },
 ] as const; // Treat this value as completely immutable and infer the most specific types possible
 

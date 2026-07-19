@@ -1,3 +1,5 @@
+import { ROUTES } from "@/constants";
+
 export const HERO_CONTENT = {
   badge: "EQUIPMENT MAINTENANCE SYSTEM",
 
@@ -13,11 +15,11 @@ export const HERO_CONTENT = {
 export const HERO_BUTTON = [
   {
     label: "Get started — it's free",
-    href: "/register",
+    href: ROUTES.REGISTER,
   },
   {
     label: "Login",
-    href: "/login",
+    href: ROUTES.LOGIN,
   },
 ] as const;
 

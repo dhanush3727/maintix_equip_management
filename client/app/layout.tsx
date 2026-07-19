@@ -4,6 +4,7 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { Poppins, Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui";
+import { Toaster } from "@/components/ui";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -27,10 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html
+      lang="en"
+      className={cn("font-sans", geist.variable)}
+      data-scroll-behavior="smooth"
+    >
       <body className={poppins.variable}>
         <QueryProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            {children}
+            <Toaster position="top-center" />
+          </TooltipProvider>
         </QueryProvider>
       </body>
     </html>

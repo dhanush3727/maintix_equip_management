@@ -19,32 +19,33 @@ import {
   TriangleAlert,
   Wrench,
 } from "lucide-react";
+import { ROUTES } from "@/constants";
 
 export const navItems = [
   {
     title: "Dashboard",
     icon: LayoutDashboard,
-    url: "/dashboard",
+    url: ROUTES.DASHBOARD,
   },
   {
     title: "Equipment",
     icon: Cog,
-    url: "/equipment",
+    url: ROUTES.EQUIPMENT,
   },
   {
     title: "Checklist",
     icon: ClipboardCheck,
-    url: "/checklist",
+    url: ROUTES.CHECKLIST,
   },
   {
     title: "Preventive Maintenance",
     icon: Wrench,
-    url: "/preventive-maintenance",
+    url: ROUTES.PREVENTIVE_MAINTENANCE,
   },
   {
     title: "Breakdown",
     icon: TriangleAlert,
-    url: "/breakdown",
+    url: ROUTES.BREAKDOWN,
   },
 ];
 
