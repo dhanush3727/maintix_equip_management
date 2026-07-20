@@ -22,3 +22,11 @@ export const PROTECTED_ROUTES = [
   "/account",
   "/organization",
 ];
+
+export const AUTH_ROUTES = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/email-verification",
+  "/reset-password",
+];

@@ -29,15 +29,21 @@ import { AcceptInviteDto } from './dto/accept-invite.dto';
 import { InvitationStatus } from '@prisma/client';
 import { generateSlug } from '../../common/utils/generate-slug.util';
 import { hashVerificationToken } from '../../common/utils/generate-token.util';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
+  private readonly clientUrl: string | undefined;
+
   constructor(
     private prisma: PrismaService,
     private readonly tokenService: TokenService,
     private auditService: AuditService,
     private mailService: MailService,
-  ) {}
+    private readonly config: ConfigService,
+  ) {
+    this.clientUrl = this.config.get<string>('client.url');
+  }
 
   //#region Generate access token and refresh token
   async generateAuthTokens(userId: number) {
@@ -505,7 +511,7 @@ export class AuthService {
     });
 
     // Create reset link
-    const resetLink = `http://localhost:5000/api/auth/reset-password?token=${token}`;
+    const resetLink = `${this.clientUrl}reset-password?token=${token}`;
 
     // Send mail
     await this.mailService.sendEmail({
@@ -518,8 +524,9 @@ export class AuthService {
       <a href="${resetLink}">${resetLink}</a>
       <p>This link will expire in 15 minutes.</p>
       <p>If you did not request this, please ignore this email</p>
-      <p>Thanks</p>
-      <p>Maintix Team</p>
+      <p>Thanks <br/>
+      Maintix Team
+      </p> 
       `,
     });
 
@@ -643,7 +650,7 @@ export class AuthService {
     });
 
     // Create verfication link
-    const verificationLink = `http://localhost:5000/api/auth/email-verification?token=${token}`;
+    const verificationLink = `${this.clientUrl}email-verification?token=${token}`;
 
     // Send mail
     await this.mailService.sendEmail({

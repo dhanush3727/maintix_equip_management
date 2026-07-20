@@ -20,4 +20,7 @@ export default () => ({
     user: process.env.EMAIL_ID,
     pass: process.env.EMAIL_PASSWORD,
   },
+  client: {
+    url: process.env.CLIENT_URL,
+  },
 });

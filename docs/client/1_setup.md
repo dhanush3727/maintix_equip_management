@@ -1,6 +1,7 @@
 # Project Setup
 ## 1. Create the Next.js Project
 Maintix frontend is built using Next.js, React, and TypeScript.
+**Hydration is the process where React takes the static HTML rendered by the server and attaches its JavaScript logic, event handlers, and state to make the page interactive.**
 
 Create the project by running the following command:
 ```bash

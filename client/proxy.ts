@@ -1,5 +1,5 @@
 import { ROUTES } from "@/constants";
-import { isProtectedRoutes } from "@/lib/utils";
+import { isAuthRoutes, isProtectedRoutes } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(req: NextRequest) {
@@ -11,7 +11,7 @@ export function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
 
   // If the user is trying to access the login or register page and they already have a refresh token, redirect them to the dashboard.
-  if ((pathname === ROUTES.LOGIN || pathname === ROUTES.REGISTER) && token) {
+  if (isAuthRoutes(pathname) && token) {
     return NextResponse.redirect(new URL(ROUTES.DASHBOARD, req.url));
   }
 

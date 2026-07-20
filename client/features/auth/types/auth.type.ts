@@ -17,6 +17,7 @@ export interface LoginData {
   accessToken: string;
 }
 
-export type LoginProps = {
-  redirect?: string | null;
-};
+// Forgot password request
+export interface ForgotPasswordRequest {
+  email: string;
+}

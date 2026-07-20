@@ -220,7 +220,7 @@ export class AuthController {
     await this.authService.forgotPasswordService(dto, meta);
 
     return {
-      message: 'Email sent',
+      message: 'Email sent successfully. Please check your inbox',
     };
   }
   //#endregion

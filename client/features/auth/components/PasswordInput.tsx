@@ -30,9 +30,9 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
         onClick={togglePasswordVisibility}
       >
         {showPassword ? (
-          <EyeOff className="size-4" />
+          <EyeOff className="size-5" />
         ) : (
-          <Eye className="size-4" />
+          <Eye className="size-5" />
         )}
       </Button>
     </div>

@@ -1,4 +1,4 @@
-import { PROTECTED_ROUTES } from "@/constants";
+import { AUTH_ROUTES, PROTECTED_ROUTES } from "@/constants";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { UAParser } from "ua-parser-js";
@@ -14,6 +14,14 @@ export function isProtectedRoutes(pathName: string): boolean {
   );
 }
 
+// Auth routes check
+export function isAuthRoutes(pathName: string): boolean {
+  return AUTH_ROUTES.some(
+    (route) => pathName === route || pathName.startsWith(`${route}/`),
+  );
+}
+
+// Get the device information
 export function getDeviceInfo(): string {
   const parser = new UAParser();
 
