@@ -1,1 +1,3 @@
-export default function EmailVerification() {}
+export default function EmailVerification() {
+  return <>Email verification</>;
+}

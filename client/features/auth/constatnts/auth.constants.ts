@@ -1,3 +1,5 @@
+import { ROUTES } from "@/constants";
+
 export const APP_NAME = "MAINTIX";
 
 export const AUTH_ENDPOINTS = {
@@ -5,3 +7,5 @@ export const AUTH_ENDPOINTS = {
   REGISTER: "auth/register",
   LOGOUT: "auth/logout",
 };
+
+export const DEFAULT_REDIRECT_PATH = ROUTES.DASHBOARD;

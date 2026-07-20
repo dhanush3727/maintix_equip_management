@@ -12,3 +12,13 @@ export const ROUTES = {
   EQUIPMENT: "/equipment",
   PREVENTIVE_MAINTENANCE: "/preventive-maintenance",
 } as const;
+
+export const PROTECTED_ROUTES = [
+  "/dashboard",
+  "/equipment",
+  "/preventive-maintenance",
+  "/checklist",
+  "/breakdown",
+  "/account",
+  "/organization",
+];

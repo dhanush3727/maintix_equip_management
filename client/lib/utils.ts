@@ -1,6 +1,23 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { PROTECTED_ROUTES } from "@/constants";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { UAParser } from "ua-parser-js";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+// Protect routes
+export function isProtectedRoutes(pathName: string): boolean {
+  return PROTECTED_ROUTES.some(
+    (route) => pathName === route || pathName.startsWith(`${route}/`),
+  );
+}
+
+export function getDeviceInfo(): string {
+  const parser = new UAParser();
+
+  const result = parser.getResult();
+
+  return `${result.browser.name} on ${result.os}`;
 }

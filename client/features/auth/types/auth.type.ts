@@ -16,3 +16,7 @@ export interface LoginData {
   user: User;
   accessToken: string;
 }
+
+export type LoginProps = {
+  redirect?: string | null;
+};

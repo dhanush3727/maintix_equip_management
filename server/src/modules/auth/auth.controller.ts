@@ -54,7 +54,7 @@ export class AuthController {
     // Set refresh token in cookie
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      // sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     });
 
@@ -83,7 +83,7 @@ export class AuthController {
     // Set refresh token in cookie
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      // sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     });
 
@@ -104,7 +104,7 @@ export class AuthController {
   async loginUser(
     @Body() dto: LoginDto,
     @ReqMeta() meta: ReqMetaType, // Using the custom decorator to extract metadata from the request
-    @Res({ passthrough: true }) res: Response,
+    @Res({ passthrough: true }) res: Response, //
   ) {
     const metadata: MetaType = {
       ipAddress: meta.ipAddress,
@@ -117,7 +117,7 @@ export class AuthController {
     // Set refresh token in cookie
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      // sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     });
 

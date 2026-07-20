@@ -21,20 +21,25 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ROUTES } from "@/constants";
 import { APP_NAME } from "../constatnts/auth.constants";
+import { LoginProps } from "../types/auth.type";
+import { getRedirectPath } from "../utils/auth.utils";
+import { LOGIN_CONTENT } from "../constatnts/login.constants";
+import { getDeviceInfo } from "@/lib/utils";
 
-export function LoginForm() {
+export function LoginForm({ redirect }: LoginProps) {
   const router = useRouter();
   const [error, setError] = useState<string>("");
+  const loginMutation = useLogin();
 
   const form = useForm<LoginFormValues>({
+    // zodResolver integrates Zod schema validation with React Hook Form.
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
+      deviceInfo: getDeviceInfo(),
     },
   });
-
-  const loginMutation = useLogin();
 
   const onSubmit = (values: LoginFormValues) => {
     setError("");
@@ -42,7 +47,8 @@ export function LoginForm() {
     loginMutation.mutate(values, {
       onSuccess: (data) => {
         toast.success(data.message);
-        router.push(ROUTES.DASHBOARD);
+        console.log(redirect);
+        router.replace(getRedirectPath(redirect));
         form.reset();
       },
 
@@ -75,7 +81,7 @@ export function LoginForm() {
         <Field className="mb-8">
           <FieldLabel className="gap-1 text-base" htmlFor="email">
             {/* aria-hidden = "true" hides decorative icons from screen readers. */}
-            <Mail size={18} aria-hidden="true" /> Email
+            <Mail size={18} aria-hidden="true" /> {LOGIN_CONTENT.EMAIL}
           </FieldLabel>
 
           <FieldContent>
@@ -85,7 +91,6 @@ export function LoginForm() {
               autoComplete="email" // Helps the browser autofill the user's email.
               placeholder="Enter your email"
               {...form.register("email")}
-              onChange={() => setError("")}
               className="mb-1"
             />
 
@@ -96,7 +101,7 @@ export function LoginForm() {
         <Field className="mb-6">
           <FieldLabel className="gap-1 text-base" htmlFor="password">
             <Lock size={17} aria-hidden="true" />
-            Password
+            {LOGIN_CONTENT.PASSWORD}
           </FieldLabel>
 
           <FieldContent>
@@ -105,7 +110,6 @@ export function LoginForm() {
               autoComplete="current-password" // Identifies the field as the user's current login password.
               placeholder="Enter your password"
               {...form.register("password")}
-              onChange={() => setError("")}
               className="mb-1"
             />
 
@@ -121,15 +125,19 @@ export function LoginForm() {
           {loginMutation.isPending && (
             <LoaderCircle className="size-4 animate-spin" />
           )}
-          Login
+          {LOGIN_CONTENT.LOGIN}
         </Button>
 
-        <p className="text-sm text-center">
-          Don&apos;t have an account?{" "}
-          <Link href={ROUTES.REGISTER} className="text-red-500">
-            Register
+        <div className="text-center text-xs flex gap-2 mb-3 justify-center text-primary sm:text-sm">
+          <p className="text-muted-foreground">{LOGIN_CONTENT.NEW_ACCOUNT}</p>
+          <Link href={ROUTES.REGISTER}>{LOGIN_CONTENT.REGISTER}</Link>
+        </div>
+
+        <div className="text-xs text-center text-muted-foreground sm:text-sm">
+          <Link href={ROUTES.FORGOT_PASSWORD}>
+            {LOGIN_CONTENT.FORGOT_PASSWORD}
           </Link>
-        </p>
+        </div>
       </form>
     </div>
   );
