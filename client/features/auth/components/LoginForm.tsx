@@ -82,7 +82,8 @@ export function LoginForm({ redirect }: LoginProps) {
         <Field className="mb-8">
           <FieldLabel className="gap-1 text-base" htmlFor="email">
             {/* aria-hidden = "true" hides decorative icons from screen readers. */}
-            <Mail size={18} aria-hidden="true" /> {AUTH_CONTENT.EMAIL}
+            <Mail size={18} aria-hidden="true" />
+            {AUTH_CONTENT.EMAIL}
           </FieldLabel>
 
           <FieldContent>

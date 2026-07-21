@@ -3,6 +3,7 @@ import {
   ForgotPasswordRequest,
   LoginData,
   LoginRequest,
+  ResetPasswordRequest,
 } from "../types/auth.type";
 import { AUTH_ENDPOINTS } from "../constatnts/auth.constants";
 import { ApiResponse } from "@/types/api-response.types";
@@ -24,6 +25,18 @@ export const authService = {
   ): Promise<ApiResponse<void>> {
     const { data } = await authApi.post<ApiResponse<void>>(
       AUTH_ENDPOINTS.FORGOT_PASSWORD,
+      payload,
+    );
+
+    return data;
+  },
+
+  // Reset Password
+  async resetPassword(
+    payload: ResetPasswordRequest,
+  ): Promise<ApiResponse<void>> {
+    const { data } = await authApi.post<ApiResponse<void>>(
+      AUTH_ENDPOINTS.RESET_PASSWORD,
       payload,
     );
 

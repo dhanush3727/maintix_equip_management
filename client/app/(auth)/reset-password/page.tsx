@@ -1,3 +1,10 @@
-export default function ResetPassword() {
-  return <>Reset password</>;
+export const metadata = {
+  title: "Reset Password | Maintix",
+  description: "Reset the password",
+};
+
+import { ResetPassword } from "@/features/auth/components/ResetPassword";
+
+export default function ResetPasswordPage() {
+  return <ResetPassword />;
 }

@@ -21,3 +21,9 @@ export interface LoginData {
 export interface ForgotPasswordRequest {
   email: string;
 }
+
+// Reset password request
+export interface ResetPasswordRequest {
+  token: string;
+  password: string;
+}
