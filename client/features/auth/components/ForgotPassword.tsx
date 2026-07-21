@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui";
-import { ArrowLeft, LoaderCircle, Mail } from "lucide-react";
+import { ArrowLeft, LoaderCircle, Mail, Send } from "lucide-react";
 import { AUTH_CONTENT } from "../constatnts/auth.constants";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,7 +22,6 @@ import {
 } from "../schemas/forgot-password.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForgotPassword } from "../hooks/useForgotPassword";
-import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/error-message";
 import { ROUTES } from "@/constants";
 
@@ -42,9 +41,10 @@ export function ForgotPassword() {
     setError("");
 
     forgotPasswordMutation.mutate(values, {
-      onSuccess: (data) => {
-        toast.success(data.message);
-        // router.push(ROUTES.LOGIN);
+      onSuccess: () => {
+        // to get the email from check email page
+        sessionStorage.setItem("resend-link", values.email);
+        router.push(ROUTES.CHECK_EMAIL);
         form.reset();
       },
 
@@ -62,19 +62,21 @@ export function ForgotPassword() {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <Tooltip>
-          <TooltipTrigger className={"absolute left-3"}>
-            <Button
-              variant={"ghost"}
-              size={"icon"}
-              onClick={() => router.push(ROUTES.LOGIN)}
-              disabled={forgotPasswordMutation.isPending}
-            >
-              <ArrowLeft />
-            </Button>
-          </TooltipTrigger>
-
+          <TooltipTrigger
+            className={"absolute left-3"}
+            render={
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                onClick={() => router.push(ROUTES.LOGIN)}
+                disabled={forgotPasswordMutation.isPending}
+              >
+                <ArrowLeft />
+              </Button>
+            }
+          />
           <TooltipContent>
-            <p>Back</p>
+            <p>{AUTH_CONTENT.BACK}</p>
           </TooltipContent>
         </Tooltip>
 
@@ -115,8 +117,10 @@ export function ForgotPassword() {
           className={"w-full mb-3"}
           disabled={forgotPasswordMutation.isPending}
         >
-          {forgotPasswordMutation.isPending && (
-            <LoaderCircle className="size-4 animate-spin" />
+          {forgotPasswordMutation.isPending ? (
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+          ) : (
+            <Send aria-hidden="true" className="size-4" />
           )}
           {AUTH_CONTENT.SEND}
         </Button>

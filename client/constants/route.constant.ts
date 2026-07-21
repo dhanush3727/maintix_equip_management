@@ -1,4 +1,5 @@
 export const ROUTES = {
+  HOME: "/",
   DASHBOARD: "/dashboard",
   LOGIN: "/login",
   ORGANIZATION: "/organization",
@@ -11,6 +12,7 @@ export const ROUTES = {
   CHECKLIST: "/checklist",
   EQUIPMENT: "/equipment",
   PREVENTIVE_MAINTENANCE: "/preventive-maintenance",
+  CHECK_EMAIL: "/check-email",
 } as const;
 
 export const PROTECTED_ROUTES = [
@@ -24,9 +26,11 @@ export const PROTECTED_ROUTES = [
 ];
 
 export const AUTH_ROUTES = [
+  "/",
   "/login",
   "/register",
   "/forgot-password",
   "/email-verification",
   "/reset-password",
+  "/check-email",
 ];

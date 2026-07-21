@@ -13,7 +13,7 @@ import {
   Input,
 } from "@/components/ui";
 import { PasswordInput } from "./PasswordInput";
-import { LoaderCircle, Lock, Mail } from "lucide-react";
+import { LoaderCircle, Lock, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { getErrorMessage } from "@/lib/error-message";
@@ -123,8 +123,10 @@ export function LoginForm({ redirect }: LoginProps) {
           disabled={loginMutation.isPending}
           className={"w-full mb-3"}
         >
-          {loginMutation.isPending && (
-            <LoaderCircle className="size-4 animate-spin" />
+          {loginMutation.isPending ? (
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+          ) : (
+            <LogIn aria-hidden="true" className="size-4" />
           )}
           {AUTH_CONTENT.LOGIN}
         </Button>
