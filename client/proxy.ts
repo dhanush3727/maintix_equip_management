@@ -17,7 +17,7 @@ export function proxy(req: NextRequest) {
 
   // If the user is trying to access a protected route and they don't have a refresh token, redirect them to the login page with a redirect query parameter.
   if (isProtectedRoutes(pathname) && !token) {
-    const redirectUrl = new URL(ROUTES.HOME, req.url);
+    const redirectUrl = new URL(ROUTES.LOGIN, req.url);
     redirectUrl.searchParams.set("redirect", `${pathname}${search}`);
     return NextResponse.redirect(redirectUrl);
   }

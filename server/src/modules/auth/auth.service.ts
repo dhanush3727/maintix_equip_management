@@ -554,11 +554,11 @@ export class AuthService {
     });
 
     if (!resetRecord || resetRecord.isUsed) {
-      throw new BadRequestException('Invalid or expired token');
+      throw new BadRequestException('Invalid or expired link');
     }
 
     if (resetRecord.expiresAt < new Date()) {
-      throw new BadRequestException('Token expired');
+      throw new BadRequestException('Link expired. Try again');
     }
 
     const user = resetRecord.user;

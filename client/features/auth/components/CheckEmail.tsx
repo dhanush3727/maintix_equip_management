@@ -6,8 +6,9 @@ import { CircleCheckBig, LoaderCircle, LogIn, Send } from "lucide-react";
 import { ROUTES } from "@/constants";
 import { useForgotPassword } from "../hooks/useForgotPassword";
 import { useState } from "react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ErrorMessage } from "@/components/common/ErrorMessage";
+import { appToast } from "@/lib/toast";
 
 export function CheckEmail() {
   const router = useRouter();
@@ -30,11 +31,11 @@ export function CheckEmail() {
       { email },
       {
         onSuccess: (data) => {
-          toast.success(data.message);
+          appToast.success(data.message);
         },
 
         onError: () => {
-          setError("Something went wrong. Please try again.");
+          appToast.error("Something went wrong. Please try again.");
         },
       },
     );
@@ -58,14 +59,7 @@ export function CheckEmail() {
           </p>
         </div>
 
-        {error && (
-          <div
-            role="alert" // Announces login/register errors to screen readers immediately.
-            className="border border-danger text-danger text-center text-sm mb-6 p-3"
-          >
-            {error}
-          </div>
-        )}
+        {error && <ErrorMessage error={error} />}
 
         <div className="flex justify-center items-center gap-3">
           <Button

@@ -15,14 +15,13 @@ import {
 import { PasswordInput } from "./PasswordInput";
 import { LoaderCircle, Lock, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { getErrorMessage } from "@/lib/error-message";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { ROUTES } from "@/constants";
 import { AUTH_CONTENT } from "../constatnts/auth.constants";
 import { getRedirectPath } from "../utils/auth.utils";
 import { getDeviceInfo } from "@/lib/utils";
+import { appToast } from "@/lib/toast";
 
 export type LoginProps = {
   redirect?: string | null;
@@ -30,7 +29,6 @@ export type LoginProps = {
 
 export function LoginForm({ redirect }: LoginProps) {
   const router = useRouter();
-  const [error, setError] = useState<string>("");
   const loginMutation = useLogin();
 
   const form = useForm<LoginFormValues>({
@@ -44,17 +42,15 @@ export function LoginForm({ redirect }: LoginProps) {
   });
 
   const onSubmit = (values: LoginFormValues) => {
-    setError("");
-
     loginMutation.mutate(values, {
       onSuccess: (data) => {
-        toast.success(data.message);
+        appToast.success(data.message);
         router.replace(getRedirectPath(redirect));
         form.reset();
       },
 
       onError: (err) => {
-        setError(getErrorMessage(err));
+        appToast.error(getErrorMessage(err));
       },
     });
   };
@@ -66,18 +62,9 @@ export function LoginForm({ redirect }: LoginProps) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full max-w-xs mx-2 bg-background px-6 py-10 rounded-md shadow-xl sm:max-w-sm"
       >
-        <h1 className="text-primary font-bold text-2xl text-center mb-8 sm:text-3xl">
+        <h1 className="text-primary font-bold text-2xl text-center mb-6 sm:text-3xl">
           {AUTH_CONTENT.LOGIN}
         </h1>
-
-        {error && (
-          <div
-            role="alert" // Announces login/register errors to screen readers immediately.
-            className="border-2 border-danger text-danger text-center text-lg mb-6 py-3"
-          >
-            {error}
-          </div>
-        )}
 
         <Field className="mb-8">
           <FieldLabel className="gap-1 text-base" htmlFor="email">

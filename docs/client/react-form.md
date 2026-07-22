@@ -65,6 +65,7 @@ In this example,
 - Finally, we render the form with input fields for email and password, along with a submit button.
 
 ## Zod
+### Introduction
 Zod is a TypeScript-first schema declaration and validation library. It allows you to define schemas for your data and validate them at runtime. To install Zod, run the following command:
 ```bash
 npm install zod
@@ -92,3 +93,15 @@ const form = useForm<LoginFormValues>({
 In this updated example,
 - We import the `zodResolver` from `@hookform/resolvers/zod`.
 - We pass the `zodResolver` with the `loginSchema` to the `useForm` hook, which enables Zod validation for the form.
+
+### refine()
+In Zod, the `refine()` method allows you to add custom validation logic to your schema. It can be used to perform complex validations that are not covered by the built-in methods. Here's an example of how to use `refine()` in the login schema:
+```tsx
+export const loginSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+}).refine((data) => data.email !== data.password, {
+    message: "Email and password cannot be the same", });
+```
+In this example,
+- We use the `refine()` method to add a custom validation rule that checks if the email and password are not the same.

@@ -5,6 +5,7 @@ import {
   KeyRound,
   CircleX,
   CircleCheck,
+  LoaderCircle,
 } from "lucide-react";
 import {
   AUTH_CONTENT,
@@ -33,12 +34,25 @@ import { ROUTES } from "@/constants";
 import { getErrorMessage } from "@/lib/error-message";
 import { cn } from "@/lib/utils";
 import { ResetPasswordRequest } from "../types/auth.type";
+import { ErrorMessage } from "@/components/common/ErrorMessage";
+import { appToast } from "@/lib/toast";
+
+export type CheckType = {
+  minLength: boolean;
+  uppercase: boolean;
+  number: boolean;
+  symbol: boolean;
+};
+
+export type PasswordRequirement = {
+  label: string;
+  valid: boolean;
+};
 
 export function ResetPassword() {
   const resetPasswordMutation = useResetPassword();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [error, setError] = useState<string>("");
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -52,42 +66,61 @@ export function ResetPassword() {
     name: "password",
   });
 
-  const check = {
+  const check: CheckType = {
     minLength: password.length >= PASSWORD_RULES.minLength,
     uppercase: PASSWORD_RULES.uppercase.test(password),
     number: PASSWORD_RULES.number.test(password),
     symbol: PASSWORD_RULES.symbol.test(password),
   };
 
-  const onSubmit = (values: ResetPasswordValues) => {
-    setError("");
+  const passwordRequirements: PasswordRequirement[] = [
+    {
+      label: "Minimum 8 characters",
+      valid: check.minLength,
+    },
+    {
+      label: "Must contain uppercase",
+      valid: check.uppercase,
+    },
+    {
+      label: "Must contain number",
+      valid: check.number,
+    },
+    {
+      label: "Must contain symbol",
+      valid: check.symbol,
+    },
+  ];
 
+  const onSubmit = (values: ResetPasswordValues) => {
     const token = searchParams.get("token");
 
+    console.log("token", token);
+
     if (!token) {
-      setError("Something wrong try again");
+      appToast.error("Invalid or expired link. Try again");
       return;
     }
 
-    const payload: ResetPasswordRequest = {
-      token,
-      password: values.password,
-    };
+    // const payload: ResetPasswordRequest = {
+    //   token,
+    //   password: values.password,
+    // };
 
-    resetPasswordMutation.mutate(payload, {
-      onSuccess: (data) => {
-        toast.success(data.message);
-        sessionStorage.removeItem("reset-link");
-        form.reset();
-        setTimeout(() => {
-          router.push(ROUTES.LOGIN);
-        }, 1000);
-      },
+    // resetPasswordMutation.mutate(payload, {
+    //   onSuccess: (data) => {
+    //     appToast.success(data.message);
+    //     sessionStorage.removeItem("resend-link");
+    //     form.reset();
+    //     setTimeout(() => {
+    //       router.replace(ROUTES.LOGIN);
+    //     }, 1000);
+    //   },
 
-      onError: (err) => {
-        setError(getErrorMessage(err));
-      },
-    });
+    //   onError: (err) => {
+    //     appToast.error(getErrorMessage(err));
+    //   },
+    // });
   };
 
   return (
@@ -100,15 +133,6 @@ export function ResetPassword() {
         <h1 className="text-primary font-bold text-2xl text-center mb-6 sm:text-3xl">
           {AUTH_CONTENT.RESET_PASSWORD}
         </h1>
-
-        {error && (
-          <div
-            role="alert" // Announces login/register errors to screen readers immediately.
-            className="border-2 border-danger text-danger text-center text-lg mb-3 py-3"
-          >
-            {error}
-          </div>
-        )}
 
         <Field className="mb-4">
           <FieldLabel htmlFor="new-password" className="gap-1 text-base">
@@ -148,66 +172,35 @@ export function ResetPassword() {
           <FieldError errors={[form.formState.errors.confirmPassword]} />
         </Field>
 
-        <div className="text-xs mb-3 text-danger grid gap-1">
-          <p
-            className={cn(
-              "flex gap-1 items-center",
-              check.minLength && "text-success",
-            )}
-          >
-            {check.minLength ? (
-              <CircleCheck className="size-3" />
-            ) : (
-              <CircleX className="size-3" />
-            )}
-            Minimum 8 characters
-          </p>
-
-          <p
-            className={cn(
-              "flex gap-1 items-center",
-              check.uppercase && "text-success",
-            )}
-          >
-            {check.uppercase ? (
-              <CircleCheck className="size-3" />
-            ) : (
-              <CircleX className="size-3" />
-            )}
-            Contain one uppercase
-          </p>
-
-          <p
-            className={cn(
-              "flex gap-1 items-center",
-              check.number && "text-success",
-            )}
-          >
-            {check.number ? (
-              <CircleCheck className="size-3" />
-            ) : (
-              <CircleX className="size-3" />
-            )}
-            Contain numbers
-          </p>
-
-          <p
-            className={cn(
-              "flex gap-1 items-center",
-              check.symbol && "text-success",
-            )}
-          >
-            {check.symbol ? (
-              <CircleCheck className="size-3" />
-            ) : (
-              <CircleX className="size-3" />
-            )}
-            Contain one special character
-          </p>
+        <div className="text-xs mb-3 text-muted-foreground grid gap-1 sm:grid-cols-2">
+          {passwordRequirements.map((requirement) => (
+            <p
+              key={requirement.label}
+              className={cn(
+                "flex gap-1 items-center",
+                requirement.valid && "text-success",
+              )}
+            >
+              {requirement.valid ? (
+                <CircleCheck aria-hidden="true" className="size-3" />
+              ) : (
+                <CircleX aria-hidden="true" className="size-3" />
+              )}
+              {requirement.label}
+            </p>
+          ))}
         </div>
 
-        <Button type="submit" className={"w-full"}>
-          <KeyRound aria-hidden="true" />
+        <Button
+          type="submit"
+          className={"w-full"}
+          disabled={resetPasswordMutation.isPending}
+        >
+          {resetPasswordMutation.isPending ? (
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+          ) : (
+            <KeyRound aria-hidden="true" className="size-4" />
+          )}
           {RESET_PASSWORD_CONTENT.CHANGE_PASSWORD}
         </Button>
       </form>

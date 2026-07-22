@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForgotPassword } from "../hooks/useForgotPassword";
 import { getErrorMessage } from "@/lib/error-message";
 import { ROUTES } from "@/constants";
+import { ErrorMessage } from "@/components/common/ErrorMessage";
 
 export function ForgotPassword() {
   const router = useRouter();
@@ -84,14 +85,7 @@ export function ForgotPassword() {
           {AUTH_CONTENT.FORGOT_PASSWORD}
         </h1>
 
-        {error && (
-          <div
-            role="alert" // Announces login/register errors to screen readers immediately.
-            className="border-2 border-danger text-danger text-center text-lg mb-6 py-3"
-          >
-            {error}
-          </div>
-        )}
+        {error && <ErrorMessage error={error} />}
 
         <Field className="mb-6">
           <FieldLabel htmlFor="email" className="gap-1 text-base">
