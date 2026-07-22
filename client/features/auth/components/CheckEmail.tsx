@@ -18,7 +18,7 @@ export function CheckEmail() {
   const onSubmit = () => {
     setError("");
 
-    const email: string | null = sessionStorage.getItem("resend-link");
+    const email: string | null = localStorage.getItem("resend-email");
 
     if (!email) {
       setError(

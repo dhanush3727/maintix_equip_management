@@ -44,7 +44,7 @@ export function ForgotPassword() {
     forgotPasswordMutation.mutate(values, {
       onSuccess: () => {
         // to get the email from check email page
-        sessionStorage.setItem("resend-link", values.email);
+        localStorage.setItem("resend-email", values.email);
         router.push(ROUTES.CHECK_EMAIL);
         form.reset();
       },

@@ -22,6 +22,12 @@ export const AUTH_CONTENT = {
 
 export const DEFAULT_REDIRECT_PATH = ROUTES.DASHBOARD;
 
+export const REGISTER_CONTENT = {
+  NAME: "Name",
+  ORGANIZATION: "Organization Name",
+  EXISTING_ACCOUNT: "Already have an account?",
+};
+
 // Check email contents
 export const CHECK_EMAIL_CONTENT = {
   HEAD: "Check your email",

@@ -3,6 +3,8 @@ import {
   ForgotPasswordRequest,
   LoginData,
   LoginRequest,
+  RegisterData,
+  RegisterRequest,
   ResetPasswordRequest,
 } from "../types/auth.type";
 import { AUTH_ENDPOINTS } from "../constatnts/auth.constants";
@@ -13,6 +15,16 @@ export const authService = {
   async login(payload: LoginRequest): Promise<ApiResponse<LoginData>> {
     const { data } = await authApi.post<ApiResponse<LoginData>>(
       AUTH_ENDPOINTS.LOGIN,
+      payload,
+    );
+
+    return data;
+  },
+
+  // Register
+  async register(payload: RegisterRequest): Promise<ApiResponse<RegisterData>> {
+    const { data } = await authApi.post<ApiResponse<RegisterData>>(
+      AUTH_ENDPOINTS.REGISTER,
       payload,
     );
 
