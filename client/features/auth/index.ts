@@ -4,3 +4,4 @@ export { CheckEmail } from "./components/CheckEmail";
 export { ResetPassword } from "./components/ResetPassword";
 export { RegisterForm } from "./components/RegisterForm";
 export { EmailVerification } from "./components/EmailVerification";
+export { CheckVerifyEmail } from "./components/CheckVerifyEmail";

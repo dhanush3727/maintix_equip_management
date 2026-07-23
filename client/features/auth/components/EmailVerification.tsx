@@ -1,8 +1,45 @@
+"use client";
+
 import { MailCheck } from "lucide-react";
 import { VERIFY_EMAIL_CONTENT } from "../constatnts/auth.constants";
-import { Button } from "@/components/ui";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ROUTES } from "@/constants";
+import { useEffect } from "react";
+import { appToast } from "@/lib/toast";
+import { getErrorMessage } from "@/lib/error-message";
+import { useVerifyEmail } from "../hooks/useVerifyEmail";
 
 export function EmailVerification() {
+  const router = useRouter();
+  const verifyEmailMutation = useVerifyEmail();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+
+    if (!token) {
+      appToast.error("Invalid or expired link. Try again");
+      return;
+    }
+
+    verifyEmailMutation.mutate(
+      { token },
+      {
+        onSuccess: (data) => {
+          appToast.success(data.message);
+          localStorage.removeItem("verify-email");
+          setTimeout(() => {
+            router.replace(ROUTES.LOGIN);
+          }, 1000);
+        },
+
+        onError: (err) => {
+          appToast.error(getErrorMessage(err));
+        },
+      },
+    );
+  }, [searchParams, verifyEmailMutation, router]);
+
   return (
     <div className="flex min-h-screen justify-center items-center flex-col">
       <div className="w-full max-w-sm sm:max-w-lg lg:max-w-xl">
@@ -17,13 +54,6 @@ export function EmailVerification() {
           <p className="text-sm text-muted-foreground sm:text-base">
             {VERIFY_EMAIL_CONTENT.description}
           </p>
-        </div>
-
-        <div className="flex justify-center items-center gap-3">
-          <Button size={"sm"}>{VERIFY_EMAIL_CONTENT.resend}</Button>
-          <Button variant={"ghost"} size={"sm"}>
-            {VERIFY_EMAIL_CONTENT.back}
-          </Button>
         </div>
       </div>
     </div>

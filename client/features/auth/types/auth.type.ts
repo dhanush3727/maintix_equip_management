@@ -33,6 +33,16 @@ export interface RegisterData {
   verificationEmailSent: string;
 }
 
+// Send Email Verification
+export interface SendEmailRequest {
+  email: string;
+}
+
+// Verify Email
+export interface VerifyEmailRequest {
+  token: string;
+}
+
 // Forgot password request
 export interface ForgotPasswordRequest {
   email: string;

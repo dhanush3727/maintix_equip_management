@@ -3,9 +3,16 @@ import { ROUTES } from "@/constants";
 export const AUTH_ENDPOINTS = {
   LOGIN: "auth/login",
   REGISTER: "auth/register",
+  SEND_EMAIL_VERIFICATION: "auth/send-verification",
+  VERIFY_EMAIL: "auth/verify-email",
+  RESEND_EMAIL_VERIFICATION: "auth/resend-verification",
   LOGOUT: "auth/logout",
+  LOGOUT_ALL: "auth/logout-all",
   FORGOT_PASSWORD: "auth/forgot-password",
   RESET_PASSWORD: "auth/reset-password",
+  SESSIONS: "auth/sessions",
+  SESSION: (jti: string) => `auth/sessions/${jti}`,
+  ME: "auth/me",
 } as const;
 
 export const AUTH_CONTENT = {
@@ -33,7 +40,7 @@ export const REGISTER_CONTENT = {
 export const VERIFY_EMAIL_CONTENT = {
   title: "Verify Your Email",
   description:
-    "We've sent a verification link to your email address. Please check your inbox and click the link to activate your Maintix account. If didn't receive any email request another one",
+    "We've sent a verification link to your email address. Please check your inbox and click the link to activate your Maintix account. If didn't receive any email request another one after 1 minute.",
   resend: "Resend Link",
   back: "Back to Login",
 };

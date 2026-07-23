@@ -632,6 +632,7 @@ export class AuthService {
       orderBy: { createdAt: 'desc' },
     });
 
+    // Set a cooldown of 1 minute before allowing another request
     if (lastToken) {
       const diff = Date.now() - lastToken.createdAt.getTime();
       if (diff < 60 * 1000)
@@ -698,11 +699,11 @@ export class AuthService {
     });
 
     if (!record || record.isUsed) {
-      throw new BadRequestException('Invalid or expired token');
+      throw new BadRequestException('Invalid or expired link');
     }
 
     if (record.expiresAt < new Date()) {
-      throw new BadRequestException('Token expired');
+      throw new BadRequestException('link expired');
     }
 
     await this.prisma.$transaction(async (tx) => {

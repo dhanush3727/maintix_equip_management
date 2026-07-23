@@ -13,6 +13,7 @@ export const ROUTES = {
   EQUIPMENT: "/equipment",
   PREVENTIVE_MAINTENANCE: "/preventive-maintenance",
   CHECK_EMAIL: "/check-email",
+  CHECK_VERIFY_EMAIL: "/check-verify-email",
 } as const;
 
 export const PROTECTED_ROUTES = [

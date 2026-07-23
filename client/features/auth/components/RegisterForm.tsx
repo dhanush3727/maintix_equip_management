@@ -19,7 +19,7 @@ import { RegiserFormValues, registerSchema } from "../schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { appToast } from "@/lib/toast";
 import { getErrorMessage } from "@/lib/error-message";
-import { getDeviceInfo } from "@/lib/utils";
+import { cn, getDeviceInfo } from "@/lib/utils";
 import {
   Building2,
   LoaderCircle,
@@ -55,7 +55,8 @@ export function RegisterForm() {
           );
         }
 
-        router.push(ROUTES.EMAIL_VERIFICATION)
+        router.push(`${ROUTES.CHECK_VERIFY_EMAIL}?email=${values.email}`);
+        form.reset();
       },
 
       onError: (err) => {
@@ -171,7 +172,12 @@ export function RegisterForm() {
           <p className="text-muted-foreground">
             {REGISTER_CONTENT.EXISTING_ACCOUNT}
           </p>
-          <Link href={ROUTES.LOGIN}>{AUTH_CONTENT.LOGIN}</Link>
+          <Link
+            href={ROUTES.LOGIN}
+            className={cn(registerMutation.isPending && "pointer-events-none")}
+          >
+            {AUTH_CONTENT.LOGIN}
+          </Link>
         </div>
       </form>
     </div>

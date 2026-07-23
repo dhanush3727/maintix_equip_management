@@ -22,7 +22,7 @@ export function CheckEmail() {
 
     if (!email) {
       setError(
-        "Your reset request has expired. Please enter your email address again to receive a new password reset link.,",
+        "Your reset request has expired. Please enter your email address again to receive a new password reset link.",
       );
       return;
     }

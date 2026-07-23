@@ -6,6 +6,8 @@ import {
   RegisterData,
   RegisterRequest,
   ResetPasswordRequest,
+  SendEmailRequest,
+  VerifyEmailRequest,
 } from "../types/auth.type";
 import { AUTH_ENDPOINTS } from "../constatnts/auth.constants";
 import { ApiResponse } from "@/types/api-response.types";
@@ -25,6 +27,28 @@ export const authService = {
   async register(payload: RegisterRequest): Promise<ApiResponse<RegisterData>> {
     const { data } = await authApi.post<ApiResponse<RegisterData>>(
       AUTH_ENDPOINTS.REGISTER,
+      payload,
+    );
+
+    return data;
+  },
+
+  // Send email verification
+  async sendEmailVerification(
+    payload: SendEmailRequest,
+  ): Promise<ApiResponse<void>> {
+    const { data } = await authApi.post<ApiResponse<void>>(
+      AUTH_ENDPOINTS.SEND_EMAIL_VERIFICATION,
+      payload,
+    );
+
+    return data;
+  },
+
+  // Verify email
+  async verifyEmail(payload: VerifyEmailRequest): Promise<ApiResponse<void>> {
+    const { data } = await authApi.post<ApiResponse<void>>(
+      AUTH_ENDPOINTS.VERIFY_EMAIL,
       payload,
     );
 
