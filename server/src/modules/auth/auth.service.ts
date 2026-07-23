@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -34,6 +35,7 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   private readonly clientUrl: string | undefined;
+  private readonly logger = new Logger(AuthService.name);
 
   constructor(
     private prisma: PrismaService,
@@ -232,13 +234,20 @@ export class AuthService {
       deviceInfo,
     };
 
-    // Generate tokens
-    const { accessToken, refreshToken, jti } = await this.generateAuthTokens(
-      result.user.id,
-    );
+    let verificationEmailSent: boolean = true;
 
-    // Store session
-    await this.saveRefreshToken(result.user.id, refreshToken, jti, metadata);
+    try {
+      await this.sendEmailVerificationService(
+        { email: result.user.email },
+        metadata,
+      );
+    } catch (err) {
+      verificationEmailSent = false;
+      this.logger.error(
+        'Failed to send mail',
+        err instanceof Error ? err.stack : err,
+      );
+    }
 
     // Return response
     return {
@@ -247,8 +256,7 @@ export class AuthService {
         name: result.user.name,
         email: result.user.email,
       },
-      accessToken,
-      refreshToken,
+      verificationEmailSent,
     };
   }
   //#endregion

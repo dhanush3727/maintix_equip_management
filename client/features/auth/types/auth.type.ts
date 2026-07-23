@@ -30,7 +30,7 @@ export interface RegisterRequest {
 // Register data
 export interface RegisterData {
   user: User;
-  accessToken: string;
+  verificationEmailSent: string;
 }
 
 // Forgot password request

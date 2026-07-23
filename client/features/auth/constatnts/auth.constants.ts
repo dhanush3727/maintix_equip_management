@@ -22,17 +22,27 @@ export const AUTH_CONTENT = {
 
 export const DEFAULT_REDIRECT_PATH = ROUTES.DASHBOARD;
 
+// Register contents
 export const REGISTER_CONTENT = {
   NAME: "Name",
   ORGANIZATION: "Organization Name",
   EXISTING_ACCOUNT: "Already have an account?",
 };
 
+// Verify email contents
+export const VERIFY_EMAIL_CONTENT = {
+  title: "Verify Your Email",
+  description:
+    "We've sent a verification link to your email address. Please check your inbox and click the link to activate your Maintix account. If didn't receive any email request another one",
+  resend: "Resend Link",
+  back: "Back to Login",
+};
+
 // Check email contents
 export const CHECK_EMAIL_CONTENT = {
   HEAD: "Check your email",
   SUB_HEAD:
-    "If an account exists for the email address you entered, we've sent a password reset link. Please check your inbox and follow the instructions to reset your password.",
+    "If an account exists for the email address you entered, we've sent a password reset link. Please check your inbox and follow the instructions to reset your password. If didn't receive any email request another one",
   DESCRIPTION: "Didn't receive the email?",
   TEXT: [
     "- Check your spam or junk folder.",

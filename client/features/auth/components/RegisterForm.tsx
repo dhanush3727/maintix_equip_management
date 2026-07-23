@@ -47,9 +47,15 @@ export function RegisterForm() {
   const onSubmit = (values: RegiserFormValues) => {
     registerMutation.mutate(values, {
       onSuccess: (data) => {
-        appToast.success(data.message);
-        router.push(ROUTES.CHECK_EMAIL);
-        form.reset();
+        if (data.data?.verificationEmailSent) {
+          appToast.success("Registration successful. Check your email.");
+        } else {
+          appToast.warning(
+            "Registration successful, but we couldn't send the verification email. Click 'Resend Verification Email'.",
+          );
+        }
+
+        router.push(ROUTES.EMAIL_VERIFICATION)
       },
 
       onError: (err) => {

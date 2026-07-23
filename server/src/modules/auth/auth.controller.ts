@@ -70,7 +70,6 @@ export class AuthController {
   async registerUser(
     @Body() dto: RegisterDto,
     @ReqMeta() meta: ReqMetaType, // Using the custom decorator to extract metadata from the request
-    @Res({ passthrough: true }) res: Response, // Passthrough allows us to set cookies in the response while still returning a JSON response
   ) {
     const metadata: MetaType = {
       ipAddress: meta.ipAddress,
@@ -80,18 +79,11 @@ export class AuthController {
 
     const result = await this.authService.registerService(dto, metadata);
 
-    // Set refresh token in cookie
-    res.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      // sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
-    });
-
     return {
       message: 'Register Successfully',
       data: {
         user: result.user,
-        accessToken: result.accessToken,
+        verificationEmailSent: result.verificationEmailSent,
       },
     };
   }
