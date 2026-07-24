@@ -33,7 +33,7 @@ import { getErrorMessage } from "@/lib/error-message";
 import { cn } from "@/lib/utils";
 import { ResetPasswordRequest } from "../types/auth.type";
 import { appToast } from "@/lib/toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type CheckType = {
   minLength: boolean;
@@ -50,8 +50,15 @@ export type PasswordRequirement = {
 export function ResetPassword() {
   const resetPasswordMutation = useResetPassword();
   const searchParams = useSearchParams();
+  const token = searchParams.get("token");
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!token) {
+      router.replace(ROUTES.LOGIN);
+    }
+  }, [token, router]);
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -92,8 +99,6 @@ export function ResetPassword() {
   ];
 
   const onSubmit = (values: ResetPasswordValues) => {
-    const token = searchParams.get("token");
-
     if (!token) {
       appToast.error("Invalid or expired link. Try again");
       return;

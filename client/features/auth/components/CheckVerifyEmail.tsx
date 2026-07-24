@@ -1,7 +1,6 @@
 "use client";
 
-import { LoaderCircle, MailCheck, Send } from "lucide-react";
-import { VERIFY_EMAIL_CONTENT } from "../constatnts/auth.constants";
+import { CircleCheckBig, LoaderCircle, Send } from "lucide-react";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { Button } from "@/components/ui";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { appToast } from "@/lib/toast";
 import { getErrorMessage } from "@/lib/error-message";
 import { ROUTES } from "@/constants";
+import { CHECK_VERIFY_EMAIL_CONTENT } from "../constatnts/auth.constants";
 
 export function CheckVerifyEmail() {
   const router = useRouter();
@@ -38,7 +38,6 @@ export function CheckVerifyEmail() {
       {
         onSuccess: (data) => {
           appToast.success(data.message);
-          console.log(data);
         },
 
         onError: (err) => {
@@ -52,15 +51,15 @@ export function CheckVerifyEmail() {
     <div className="flex min-h-screen justify-center items-center flex-col">
       <div className="w-full max-w-sm sm:max-w-lg lg:max-w-xl">
         <div className="text-center mb-6 flex flex-col justify-center items-center">
-          <div className="mb-6 bg-black/10 w-15 rounded-md h-15 flex justify-center items-center">
-            <MailCheck aria-hidden="true" className="size-10" />
+          <div className="mb-6 bg-success-light w-15 rounded-md h-15 flex justify-center items-center">
+            <CircleCheckBig aria-hidden="true" className="size-10 text-success" />
           </div>
 
           <h1 className="text-base font-bold mb-2 sm:text-xl lg:text-2xl">
-            {VERIFY_EMAIL_CONTENT.title}
+            {CHECK_VERIFY_EMAIL_CONTENT.title}
           </h1>
           <p className="text-sm text-muted-foreground sm:text-base">
-            {VERIFY_EMAIL_CONTENT.description}
+            {CHECK_VERIFY_EMAIL_CONTENT.description}
           </p>
         </div>
 
@@ -80,7 +79,7 @@ export function CheckVerifyEmail() {
             ) : (
               <Send aria-hidden="true" className="size-4" />
             )}
-            {VERIFY_EMAIL_CONTENT.resend}
+            {CHECK_VERIFY_EMAIL_CONTENT.resend}
           </Button>
 
           <Button
@@ -89,7 +88,7 @@ export function CheckVerifyEmail() {
             onClick={() => router.replace(ROUTES.LOGIN)}
             disabled={sendEmailMutation.isPending}
           >
-            {VERIFY_EMAIL_CONTENT.back}
+            {CHECK_VERIFY_EMAIL_CONTENT.back}
           </Button>
         </div>
       </div>

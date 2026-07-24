@@ -55,7 +55,12 @@ export function RegisterForm() {
           );
         }
 
-        router.push(`${ROUTES.CHECK_VERIFY_EMAIL}?email=${values.email}`);
+        // encodeURIComponent() is a built-in JavaScript function that converts special characters into a URL-safe format.
+        // when email have some characters like +, &, ?, and etc. It can cause parsing issues or be interpreted differently depending on the context.
+        // So we use this built-in function
+        router.push(
+          `${ROUTES.CHECK_VERIFY_EMAIL}?email=${encodeURIComponent(values.email)}`,
+        );
         form.reset();
       },
 

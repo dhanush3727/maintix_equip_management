@@ -10,7 +10,7 @@ import {
   VerifyEmailRequest,
 } from "../types/auth.type";
 import { AUTH_ENDPOINTS } from "../constatnts/auth.constants";
-import { ApiResponse } from "@/types/api-response.types";
+import { ApiResponse } from "@/types";
 
 export const authService = {
   // Login
@@ -74,6 +74,15 @@ export const authService = {
     const { data } = await authApi.post<ApiResponse<void>>(
       AUTH_ENDPOINTS.RESET_PASSWORD,
       payload,
+    );
+
+    return data;
+  },
+
+  // Logout current session
+  async logout(): Promise<ApiResponse<void>> {
+    const { data } = await authApi.post<ApiResponse<void>>(
+      AUTH_ENDPOINTS.LOGOUT,
     );
 
     return data;

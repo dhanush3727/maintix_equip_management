@@ -302,6 +302,13 @@ export class AuthService {
       throw new UnauthorizedException('Password not match');
     }
 
+    if (!user.isEmailVerified) {
+      throw new ForbiddenException({
+        message: 'Your email is not verified',
+        code: 'EMAIL_NOT_VERIFIED',
+      });
+    }
+
     const deviceInfo =
       dto.deviceInfo ??
       (meta?.userAgent ? meta?.userAgent?.slice(0, 50) : 'Unknown');
@@ -659,7 +666,7 @@ export class AuthService {
     });
 
     // Create verfication link
-    const verificationLink = `${this.clientUrl}email-verification?token=${token}`;
+    const verificationLink = `${this.clientUrl}email-verification?token=${token}&email=${encodeURIComponent(user.email)}`;
 
     // Send mail
     await this.mailService.sendEmail({
@@ -703,7 +710,7 @@ export class AuthService {
     }
 
     if (record.expiresAt < new Date()) {
-      throw new BadRequestException('link expired');
+      throw new BadRequestException('Link expired');
     }
 
     await this.prisma.$transaction(async (tx) => {

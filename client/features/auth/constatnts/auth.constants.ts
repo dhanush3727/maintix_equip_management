@@ -29,6 +29,14 @@ export const AUTH_CONTENT = {
 
 export const DEFAULT_REDIRECT_PATH = ROUTES.DASHBOARD;
 
+export const LOGIN_CONTENT = {
+  verify_title: "Email Verification Required",
+  verify_description:
+    "Your email address hasn't been verified yet. Please verify your email before signing in.",
+  verify_email: "Verify Email",
+  verify_cancel: "Cancel",
+};
+
 // Register contents
 export const REGISTER_CONTENT = {
   NAME: "Name",
@@ -36,13 +44,26 @@ export const REGISTER_CONTENT = {
   EXISTING_ACCOUNT: "Already have an account?",
 };
 
-// Verify email contents
-export const VERIFY_EMAIL_CONTENT = {
-  title: "Verify Your Email",
+// Check verify email contents
+export const CHECK_VERIFY_EMAIL_CONTENT = {
+  title: "Check your email",
   description:
     "We've sent a verification link to your email address. Please check your inbox and click the link to activate your Maintix account. If didn't receive any email request another one after 1 minute.",
   resend: "Resend Link",
   back: "Back to Login",
+};
+
+// Verify email contents
+export const VERIFY_EMAIL_CONTENT = {
+  title: "Verifying Your Email",
+  description:
+    "Please wait while we verify your email address. This will only take a moment.",
+  success_title: "Email Verified",
+  success_description: "Your email has been successfully verified.",
+  fail_title: "Verification Failed",
+  fail_description: "This verification link is invalid or has expired.",
+  fail_resend: "Resend Link",
+  fail_back: "Back to login",
 };
 
 // Check email contents

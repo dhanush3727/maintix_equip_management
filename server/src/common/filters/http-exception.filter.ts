@@ -19,6 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // Default to 500 Internal Server Error for unhandled exceptions
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | string[] = 'Internal server error';
+    let code: string | undefined;
 
     // Handle known http exceptions
     if (exception instanceof HttpException) {
@@ -37,8 +38,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const res = exceptionResponse as {
           message?: string | string[];
           error?: string;
+          code?: string;
         };
         message = res.message ?? res.error ?? message;
+        code = res.code;
       }
 
       // If the message is an array, take the first element as the message
@@ -50,6 +53,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     response.status(statusCode).json({
       success: false,
       message,
+      code,
     });
   }
 }

@@ -1,10 +1,19 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormValues, loginSchema } from "../schemas/login.schema";
 import { useLogin } from "../hooks/useLogin";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   Button,
   Field,
   FieldContent,
@@ -13,15 +22,19 @@ import {
   Input,
 } from "@/components/ui";
 import { PasswordInput } from "./PasswordInput";
-import { LoaderCircle, Lock, LogIn, Mail } from "lucide-react";
+import { LoaderCircle, Lock, LogIn, Mail, MailX } from "lucide-react";
 import Link from "next/link";
 import { getErrorMessage } from "@/lib/error-message";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
-import { AUTH_CONTENT } from "../constatnts/auth.constants";
+import { AUTH_CONTENT, LOGIN_CONTENT } from "../constatnts/auth.constants";
 import { getRedirectPath } from "../utils/auth.utils";
 import { getDeviceInfo } from "@/lib/utils";
 import { appToast } from "@/lib/toast";
+import { useState } from "react";
+import axios from "axios";
+import { ApiErrorResponse } from "@/types";
+import { useSendEmail } from "../hooks/useSendEmail";
 
 export type LoginProps = {
   redirect?: string | null;
@@ -30,6 +43,8 @@ export type LoginProps = {
 export function LoginForm({ redirect }: LoginProps) {
   const router = useRouter();
   const loginMutation = useLogin();
+  const sendEmail = useSendEmail();
+  const [isEmailVerify, setIsEmailVerify] = useState<boolean>(false);
 
   const form = useForm<LoginFormValues>({
     // zodResolver integrates Zod schema validation with React Hook Form.
@@ -41,6 +56,11 @@ export function LoginForm({ redirect }: LoginProps) {
     },
   });
 
+  const email = useWatch({
+    control: form.control,
+    name: "email",
+  });
+
   const onSubmit = (values: LoginFormValues) => {
     loginMutation.mutate(values, {
       onSuccess: (data) => {
@@ -50,9 +70,34 @@ export function LoginForm({ redirect }: LoginProps) {
       },
 
       onError: (err) => {
+        if (axios.isAxiosError(err)) {
+          const data = err.response?.data as ApiErrorResponse;
+
+          if (data.code === "EMAIL_NOT_VERIFIED") {
+            setIsEmailVerify(true);
+            return;
+          }
+        }
+
         appToast.error(getErrorMessage(err));
       },
     });
+  };
+
+  const verifyEmail = () => {
+    sendEmail.mutate(
+      { email },
+      {
+        onSuccess: (data) => {
+          appToast.success(data.message);
+          router.push(`${ROUTES.CHECK_VERIFY_EMAIL}?email=${email}`);
+          form.reset();
+        },
+        onError: (err) => {
+          appToast.error(getErrorMessage(err));
+        },
+      },
+    );
   };
 
   return (
@@ -130,6 +175,37 @@ export function LoginForm({ redirect }: LoginProps) {
           </Link>
         </div>
       </form>
+
+      <AlertDialog open={isEmailVerify} onOpenChange={setIsEmailVerify}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{LOGIN_CONTENT.verify_title}</AlertDialogTitle>
+
+            <AlertDialogDescription>
+              {LOGIN_CONTENT.verify_description}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter className="border-none">
+            <AlertDialogCancel disabled={sendEmail.isPending}>
+              {LOGIN_CONTENT.verify_cancel}
+            </AlertDialogCancel>
+
+            <AlertDialogAction
+              onClick={verifyEmail}
+              disabled={sendEmail.isPending}
+            >
+              {sendEmail.isPending && (
+                <LoaderCircle
+                  aria-hidden="true"
+                  className="size-4 animate-spin"
+                />
+              )}
+              {LOGIN_CONTENT.verify_email}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

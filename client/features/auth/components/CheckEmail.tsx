@@ -5,20 +5,26 @@ import { CHECK_EMAIL_CONTENT } from "../constatnts/auth.constants";
 import { CircleCheckBig, LoaderCircle, LogIn, Send } from "lucide-react";
 import { ROUTES } from "@/constants";
 import { useForgotPassword } from "../hooks/useForgotPassword";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { appToast } from "@/lib/toast";
 
 export function CheckEmail() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
   const forgotPasswordMutation = useForgotPassword();
   const [error, setError] = useState<string>("");
 
+  useEffect(() => {
+    if (!email) {
+      router.replace(ROUTES.LOGIN);
+    }
+  }, [email, router]);
+
   const onSubmit = () => {
     setError("");
-
-    const email: string | null = localStorage.getItem("resend-email");
 
     if (!email) {
       setError(
