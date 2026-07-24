@@ -297,7 +297,6 @@ export class AuthController {
     const result = await this.authService.getCurrentUserService(user.userId);
 
     return {
-      message: 'Fetched current user successfully',
       data: result,
     };
   }

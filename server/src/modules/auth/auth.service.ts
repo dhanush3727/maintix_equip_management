@@ -830,16 +830,31 @@ export class AuthService {
         organizationId: true,
         isEmailVerified: true,
         isActive: true,
+        organization: {
+          select: {
+            name: true,
+          },
+        },
         roles: {
           select: {
             id: true,
             roleId: true,
+            role: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
         department: {
           select: {
             id: true,
             departmentId: true,
+            department: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -847,7 +862,23 @@ export class AuthService {
 
     if (!user) throw new NotFoundException('User not found');
 
-    return user;
+    const formattedUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      organizationId: user.organizationId,
+      organizationName: user.organization.name,
+      isActive: user.isActive,
+      isEmailVerified: user.isEmailVerified,
+      roles: user.roles.map((role) => ({
+        id: role.roleId,
+        name: role.role.name,
+      })),
+      departmentId: user.department?.departmentId,
+      departmentName: user.department?.department.name,
+    };
+
+    return formattedUser;
   }
   //#endregion
 }

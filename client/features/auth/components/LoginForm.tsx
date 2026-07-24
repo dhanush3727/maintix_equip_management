@@ -13,7 +13,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
   Button,
   Field,
   FieldContent,
@@ -22,7 +21,7 @@ import {
   Input,
 } from "@/components/ui";
 import { PasswordInput } from "./PasswordInput";
-import { LoaderCircle, Lock, LogIn, Mail, MailX } from "lucide-react";
+import { LoaderCircle, Lock, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
 import { getErrorMessage } from "@/lib/error-message";
 import { useRouter } from "next/navigation";

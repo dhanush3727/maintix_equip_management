@@ -1,0 +1,9 @@
+import { getCurrentUser } from "@/services";
+import { useQuery } from "@tanstack/react-query";
+
+export const useCurrentUser = () => {
+  return useQuery({
+    queryKey: ["mer"],
+    queryFn: getCurrentUser,
+  });
+};

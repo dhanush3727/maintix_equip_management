@@ -48,7 +48,7 @@ export const REGISTER_CONTENT = {
 export const CHECK_VERIFY_EMAIL_CONTENT = {
   title: "Check your email",
   description:
-    "We've sent a verification link to your email address. Please check your inbox and click the link to activate your Maintix account. If didn't receive any email request another one after 1 minute.",
+    "We've sent a verification link to your email address. Please check your inbox and click the link to activate your Maintix account. If didn't receive any email, request another one after 1 minute.",
   resend: "Resend Link",
   back: "Back to Login",
 };
