@@ -92,6 +92,10 @@ export class OrganizationService {
       logoPublicId = updated.publicId;
     }
 
+    if (org.onboardingStep !== OnboardingStep.ORGANIZATION) {
+      throw new BadRequestException('Complete previos setup step first');
+    }
+
     await this.prisma.$transaction(async (tx) => {
       // Create organization profile
       await tx.organization.update({
@@ -103,7 +107,7 @@ export class OrganizationService {
           city,
           logoUrl,
           logoPublicId,
-          isSetupCompleted: OnboardingStep.LOCATION,
+          onboardingStep: OnboardingStep.LOCATION,
         },
         select: {
           id: true,
@@ -261,6 +265,21 @@ export class OrganizationService {
       .replace(/\b\w/g, (char) => char.toUpperCase());
     const address = dto.address.replace(/\s+/g, ' ');
 
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: {
+        onboardingStep: true,
+      },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Oranization not found');
+    }
+
+    if (organization.onboardingStep !== OnboardingStep.LOCATION) {
+      throw new BadRequestException('Complete previous setup step first');
+    }
+
     // findFirst is used instead of findUnique because we are checking the location name for the same organization, not globally unique.
     const existing = await this.prisma.location.findFirst({
       where: { name, organizationId },
@@ -286,7 +305,7 @@ export class OrganizationService {
       await tx.organization.update({
         where: { id: organizationId },
         data: {
-          isSetupCompleted: OnboardingStep.DEPARTMENT,
+          onboardingStep: OnboardingStep.DEPARTMENT,
         },
       });
 
@@ -454,6 +473,21 @@ export class OrganizationService {
   ) {
     const { name, code, type } = dto;
 
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: {
+        onboardingStep: true,
+      },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Oranization not found');
+    }
+
+    if (organization.onboardingStep !== OnboardingStep.DEPARTMENT) {
+      throw new BadRequestException('Complete previous setup step first');
+    }
+
     try {
       await this.prisma.$transaction(async (tx) => {
         const department = await tx.department.create({
@@ -471,7 +505,7 @@ export class OrganizationService {
         await tx.organization.update({
           where: { id: organizationId },
           data: {
-            isSetupCompleted: OnboardingStep.USERS,
+            onboardingStep: OnboardingStep.USERS,
           },
         });
 
@@ -652,6 +686,7 @@ export class OrganizationService {
         select: {
           id: true,
           name: true,
+          onboardingStep: true,
         },
       }),
 
@@ -692,12 +727,17 @@ export class OrganizationService {
 
     if (!org) throw new NotFoundException('Organization not found');
 
-    if (existingUser) {
-      if (existingUser?.organizationId === organizationId) {
-        throw new BadRequestException('User already in this organization');
-      }
-      throw new ConflictException('This email alreay register');
+    if (org.onboardingStep !== OnboardingStep.USERS) {
+      throw new BadRequestException('Complete previous setup step first');
     }
+
+    if (org)
+      if (existingUser) {
+        if (existingUser?.organizationId === organizationId) {
+          throw new BadRequestException('User already in this organization');
+        }
+        throw new ConflictException('This email alreay register');
+      }
 
     if (!dep) throw new BadRequestException('Invalid department');
 
@@ -743,7 +783,7 @@ export class OrganizationService {
       await tx.organization.update({
         where: { id: organizationId },
         data: {
-          isSetupCompleted: OnboardingStep.COMPLETED,
+          onboardingStep: OnboardingStep.COMPLETED,
         },
       });
 
@@ -812,6 +852,21 @@ export class OrganizationService {
         value: dep.id,
         label: dep.name,
       })),
+    };
+  }
+  //#endregion
+
+  //#region Get organization onboarding step
+  async getOnboardingStepService(organizationId: number) {
+    const onboardingStep = await this.prisma.organization.findFirst({
+      where: { id: organizationId },
+      select: {
+        onboardingStep: true,
+      },
+    });
+
+    return {
+      data: onboardingStep,
     };
   }
   //#endregion

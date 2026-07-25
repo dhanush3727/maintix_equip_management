@@ -281,7 +281,7 @@ export class AuthService {
           select: {
             id: true,
             name: true,
-            isSetupCompleted: true,
+            onboardingStep: true,
             isActive: true,
           },
         },
@@ -369,7 +369,7 @@ export class AuthService {
       name: user.name,
       organizationId: user.organizationId,
       email: user.email,
-      isSetupCompleted: user.organization.isSetupCompleted,
+      onboardingStep: user.organization.onboardingStep,
       isActive: user.isActive,
       roles: user.roles.map((role) => ({
         id: role.roleId,

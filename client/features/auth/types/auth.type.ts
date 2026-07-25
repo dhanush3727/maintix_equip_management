@@ -11,7 +11,7 @@ export interface User {
   name: string;
   organizationId: number;
   email: string;
-  isSetupCompleted: OnboardingSetup;
+  onboardingStep: OnboardingSetup;
   isActive: boolean;
   roles: UserRole[];
 }

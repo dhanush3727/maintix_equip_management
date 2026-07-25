@@ -413,4 +413,19 @@ export class OrganizationController {
     };
   }
   //#endregion
+
+  //#region Get Onboarding step
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('onboarding')
+  async getOnboardingStep(@Req() req: AuthenticateRequest) {
+    const { organizationId } = req.user;
+
+    const { data } =
+      await this.organizationService.getOnboardingStepService(organizationId);
+
+    return {
+      data,
+    };
+  }
+  //#endregion
 }

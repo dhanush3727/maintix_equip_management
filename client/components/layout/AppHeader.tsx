@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
   Separator,
   SidebarTrigger,
+  Skeleton,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -30,15 +31,14 @@ import { appToast } from "@/lib/toast";
 import { getErrorMessage } from "@/lib/error-message";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { useUserStore } from "@/stores";
+import { useAuth } from "@/hooks";
 
 export function AppHeader() {
   const logoutMutation = useLogout();
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const user = useUserStore((state) => state.user);
-  const clearUser = useUserStore((state) => state.clearUser);
+  const { user, clearUser, isLoading } = useAuth();
 
   const [isLogout, setIsLogout] = useState<boolean>(false);
 
@@ -83,11 +83,15 @@ export function AppHeader() {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="flex gap-2 items-center cursor-pointer p-2 rounded-md hover:bg-secondary">
-                <Avatar size="sm">
-                  <AvatarFallback className={"bg-card"}>
-                    {user?.name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                {isLoading ? (
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                ) : (
+                  <Avatar size="sm">
+                    <AvatarFallback className={"bg-card"}>
+                      {user?.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
               </div>
             </DropdownMenuTrigger>
 
@@ -98,8 +102,14 @@ export function AppHeader() {
                 }
                 render={<Link href={ROUTES.ACCOUNT} />}
               >
-                <span className="text-base font-medium">{user?.name}</span>
-                <User size={25} />
+                {isLoading ? (
+                  <Skeleton className="h-8 w-full" />
+                ) : (
+                  <>
+                    <span className="text-base font-medium">{user?.name}</span>
+                    <User size={25} />
+                  </>
+                )}
               </DropdownMenuItem>
 
               <DropdownMenuItem

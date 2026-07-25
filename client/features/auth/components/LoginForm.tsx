@@ -72,14 +72,12 @@ export function LoginForm({ redirect }: LoginProps) {
           (role) => role.id === ROLE_IDS.ADMIN,
         );
 
-        const onboardingStep = data.data?.user.isSetupCompleted;
+        const onboardingStep = data.data?.user.onboardingStep;
 
         if (!onboardingStep) {
           router.replace(getRedirectPath(redirect));
           return;
         }
-
-        console.log(isAdmin, onboardingStep);
 
         if (isAdmin && onboardingStep !== OnboardingSetup.COMPLETED) {
           router.replace(setupRoutes[onboardingStep]);

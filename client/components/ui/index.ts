@@ -17,3 +17,4 @@ export * from "./popover/popover";
 export * from "./dropdown-menu/dropdown-menu";
 export * from "./field/field";
 export * from "./sonner/sonner";
+export * from "./progress/progress";

@@ -281,7 +281,7 @@ model Organization {
   logoUrl             String?
   logoPublicId        String?
   isActive            Boolean         @default(true)
-  isSetupCompleted     OnboardingStep  @default(ORGANIZATION)
+  onboardingStep      OnboardingStep  @default(ORGANIZATION)
 
   users               User[]
   locations           Location[]
