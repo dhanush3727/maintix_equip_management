@@ -269,7 +269,35 @@ export class AuthService {
     // Find User
     const user = await this.prisma.user.findUnique({
       where: { email },
-      include: { organization: true },
+      select: {
+        id: true,
+        organizationId: true,
+        name: true,
+        passwordHash: true,
+        email: true,
+        isActive: true,
+        isEmailVerified: true,
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            isSetupCompleted: true,
+            isActive: true,
+          },
+        },
+
+        roles: {
+          select: {
+            id: true,
+            roleId: true,
+            role: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     // Check user
@@ -336,12 +364,21 @@ export class AuthService {
       ipAddress: meta?.ipAddress,
     });
 
+    const formattedUser = {
+      id: user.id,
+      name: user.name,
+      organizationId: user.organizationId,
+      email: user.email,
+      isSetupCompleted: user.organization.isSetupCompleted,
+      isActive: user.isActive,
+      roles: user.roles.map((role) => ({
+        id: role.roleId,
+        name: role.role.name,
+      })),
+    };
+
     return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
+      user: formattedUser,
       accessToken,
       refreshToken,
     };

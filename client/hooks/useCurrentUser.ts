@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useCurrentUser = () => {
   return useQuery({
-    queryKey: ["mer"],
+    queryKey: ["me"],
     queryFn: getCurrentUser,
   });
 };

@@ -34,6 +34,9 @@ import { useState } from "react";
 import axios from "axios";
 import { ApiErrorResponse } from "@/types";
 import { useSendEmail } from "../hooks/useSendEmail";
+import { ROLE_IDS } from "@/constants/role.constant";
+import { OnboardingSetup } from "@/types/enum/onboarding-setup.enum";
+import { setupRoutes } from "../constatnts/setup.constants";
 
 export type LoginProps = {
   redirect?: string | null;
@@ -64,6 +67,25 @@ export function LoginForm({ redirect }: LoginProps) {
     loginMutation.mutate(values, {
       onSuccess: (data) => {
         appToast.success(data.message);
+
+        const isAdmin = data.data?.user.roles.some(
+          (role) => role.id === ROLE_IDS.ADMIN,
+        );
+
+        const onboardingStep = data.data?.user.isSetupCompleted;
+
+        if (!onboardingStep) {
+          router.replace(getRedirectPath(redirect));
+          return;
+        }
+
+        console.log(isAdmin, onboardingStep);
+
+        if (isAdmin && onboardingStep !== OnboardingSetup.COMPLETED) {
+          router.replace(setupRoutes[onboardingStep]);
+          return;
+        }
+
         router.replace(getRedirectPath(redirect));
         form.reset();
       },

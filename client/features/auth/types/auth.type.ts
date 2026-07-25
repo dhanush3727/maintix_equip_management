@@ -1,8 +1,19 @@
+import { OnboardingSetup, Role } from "@/types";
+
 // User data
+export interface UserRole {
+  id: number;
+  name: Role;
+}
+
 export interface User {
   id: number;
   name: string;
+  organizationId: number;
   email: string;
+  isSetupCompleted: OnboardingSetup;
+  isActive: boolean;
+  roles: UserRole[];
 }
 
 // Login Request

@@ -12,6 +12,7 @@ import {
   ItemStatus,
   LocationType,
   NotificationType,
+  OnboardingStep,
   ReferenceType,
   RoleType,
   TaskPriority,
@@ -42,6 +43,7 @@ export class AppService {
       breakdownStatus: formatEnum(BreakdownStatus),
       notificationType: formatEnum(NotificationType),
       referenceType: formatEnum(ReferenceType),
+      onboardingStep: formatEnum(OnboardingStep),
     };
   }
   //#endregion

@@ -1,0 +1,7 @@
+export enum OnboardingSetup {
+  ORGANIZATION = "ORGANIZATION",
+  LOCATION = "LOCATION",
+  DEPARTMENT = "DEPARTMENT",
+  USERS = "USERS",
+  COMPLETED = "COMPLETED",
+}

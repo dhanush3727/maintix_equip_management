@@ -18,7 +18,7 @@ import { CreateOrganizationDto } from './dto/create-org.dto';
 import { UpdateOrganizationDto } from './dto/update-org.dto';
 import { generateSlug } from '../../common/utils/generate-slug.util';
 import { UpdateLocationDto } from './dto/update-location.dto';
-import { InvitationStatus, Prisma } from '@prisma/client';
+import { InvitationStatus, OnboardingStep, Prisma } from '@prisma/client';
 import { CreateDepartmentDto } from './dto/create-dep.dto';
 import { UpdateDepartmentDto } from './dto/update-dep.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
@@ -103,6 +103,7 @@ export class OrganizationService {
           city,
           logoUrl,
           logoPublicId,
+          isSetupCompleted: OnboardingStep.LOCATION,
         },
         select: {
           id: true,
@@ -282,6 +283,13 @@ export class OrganizationService {
         },
       });
 
+      await tx.organization.update({
+        where: { id: organizationId },
+        data: {
+          isSetupCompleted: OnboardingStep.DEPARTMENT,
+        },
+      });
+
       // Audit logs
       await this.auditSerivce.logs(tx, {
         organizationId,
@@ -457,6 +465,13 @@ export class OrganizationService {
           },
           select: {
             id: true,
+          },
+        });
+
+        await tx.organization.update({
+          where: { id: organizationId },
+          data: {
+            isSetupCompleted: OnboardingStep.USERS,
           },
         });
 
@@ -724,6 +739,13 @@ export class OrganizationService {
           },
         });
       }
+
+      await tx.organization.update({
+        where: { id: organizationId },
+        data: {
+          isSetupCompleted: OnboardingStep.COMPLETED,
+        },
+      });
 
       await this.auditSerivce.logs(tx, {
         organizationId,
