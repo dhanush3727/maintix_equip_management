@@ -9,5 +9,10 @@ export const ORGANIZATION_CONTENT = {
   city: "City",
   submit: "Submit",
   logo_title: "Upload your organization logo",
-  logo_description: "PNG, JPG or SVG"
+  logo_description: "PNG, JPG or SVG",
+  logo_file: "Choose File",
+} as const;
+
+export const SETUP_ORGANIZATION_ENDPOINTS = {
+  SETUP_ORGANIZATION: "organization",
 };
