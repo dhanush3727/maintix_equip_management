@@ -1,9 +1,9 @@
-import { OnboardingSetup, Role } from "@/types";
+import { OnboardingSetup, RoleType } from "@/types";
 
 // User data
 export interface UserRole {
   id: number;
-  name: Role;
+  name: RoleType;
 }
 
 export interface User {

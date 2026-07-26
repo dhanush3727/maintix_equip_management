@@ -1,4 +1,4 @@
-import { OnboardingSetup } from "./enum/onboarding-setup.enum";
+import { OnboardingSetup } from "./enum/metadata.enum";
 
 export interface Onboarding {
   onboardingStep: OnboardingSetup;

@@ -284,6 +284,10 @@ ol {
   outline-offset: 2px;
 }
 
+[data-slot="command-input"]:focus-visible {
+  outline: none;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

@@ -18,3 +18,4 @@ export * from "./dropdown-menu/dropdown-menu";
 export * from "./field/field";
 export * from "./sonner/sonner";
 export * from "./progress/progress";
+export * from "./search-select/search-select";

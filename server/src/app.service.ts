@@ -3,6 +3,7 @@ import { formatEnum } from './common/utils/format-enum.util';
 import {
   BreakdownSeverity,
   BreakdownStatus,
+  ChecklistItemType,
   CompanySize,
   DepartmentType,
   EquipmentStatus,
@@ -44,6 +45,7 @@ export class AppService {
       notificationType: formatEnum(NotificationType),
       referenceType: formatEnum(ReferenceType),
       onboardingStep: formatEnum(OnboardingStep),
+      checklistItemType: formatEnum(ChecklistItemType),
     };
   }
   //#endregion

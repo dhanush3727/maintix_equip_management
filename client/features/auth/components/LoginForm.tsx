@@ -32,10 +32,9 @@ import { getDeviceInfo } from "@/lib/utils";
 import { appToast } from "@/lib/toast";
 import { useState } from "react";
 import axios from "axios";
-import { ApiErrorResponse } from "@/types";
+import { ApiErrorResponse, OnboardingSetup } from "@/types";
 import { useSendEmail } from "../hooks/useSendEmail";
 import { ROLE_IDS } from "@/constants/role.constant";
-import { OnboardingSetup } from "@/types/enum/onboarding-setup.enum";
 import { setupRoutes } from "../constatnts/setup.constants";
 
 export type LoginProps = {

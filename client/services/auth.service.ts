@@ -2,6 +2,7 @@ import { setToken } from "@/lib/token-manager";
 import authApi from "./api/authApi";
 import { ApiResponse, User } from "@/types";
 import api from "./api/api";
+import { API_ENDPOINTS } from "@/constants";
 
 interface RefreshTokenResponse {
   message: string;
@@ -19,7 +20,7 @@ interface RefreshTokenResponse {
  *
  */
 export async function refreshTokenRotation(): Promise<string> {
-  const res = await authApi.post<RefreshTokenResponse>("auth/refresh");
+  const res = await authApi.post<RefreshTokenResponse>(API_ENDPOINTS.REFRESH);
 
   const accessToken = res.data.data.accessToken;
 
@@ -29,7 +30,7 @@ export async function refreshTokenRotation(): Promise<string> {
 }
 
 export async function getCurrentUser(): Promise<ApiResponse<User>> {
-  const { data } = await api.get<ApiResponse<User>>("auth/me");
+  const { data } = await api.get<ApiResponse<User>>(API_ENDPOINTS.ME);
 
   return data;
 }

@@ -13,7 +13,7 @@ export function Header() {
 
   return (
     <>
-      <header className="flex flex-col p-[2%] sm:p-[5%] gap-10">
+      <header className="flex flex-col p-[2%] sm:px-[5%] gap-10">
         <div>
           <h1 className="text-sm font-bold md:text-lg">
             {HEADER_CONTENT.title}

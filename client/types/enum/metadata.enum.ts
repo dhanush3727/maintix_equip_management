@@ -1,0 +1,125 @@
+export enum RoleType {
+  ADMIN = "ADMIN",
+  MANAGER = "MANAGER",
+  ENGINEER = "ENGINEER",
+  TECHNICIAN = "TECHNICIAN",
+  INSPECTOR = "INSPECTOR",
+}
+
+export enum OnboardingSetup {
+  ORGANIZATION = "ORGANIZATION",
+  LOCATION = "LOCATION",
+  DEPARTMENT = "DEPARTMENT",
+  USERS = "USERS",
+  COMPLETED = "COMPLETED",
+}
+
+export enum InvitationStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  EXPIRED = "EXPIRED",
+  REVOKED = "REVOKED",
+}
+
+export enum LocationType {
+  PLANT = "PLANT",
+  WAREHOUSE = "WAREHOUSE",
+  OFFICE = "OFFICE",
+  FACILITY = "FACILITY",
+  OTHERS = "OTHERS",
+}
+
+export enum DepartmentType {
+  MECHANICAL = "MECHANICAL",
+  ELECTRICAL = "ELECTRICAL",
+  INSTRUMENTATION = "INSTRUMENTATION",
+  CIVIL = "CIVIL",
+  OTHERS = "OTHERS",
+}
+
+export enum IndustryType {
+  MANUFACTURING = "MANUFACTURING",
+  CHEMICAL = "CHEMICAL",
+  OIL_GAS = "OIL_GAS",
+  FERTILIZER = "FERTILIZER",
+  GENERAL = "GENERAL",
+  OTHERS = "OTHERS",
+}
+
+export enum CompanySize {
+  SMALL = "SMALL",
+  MEDIUM = "MEDIUM",
+  LARGE = "LARGE",
+  ENTERPRISE = "ENTERPRISE",
+}
+
+export enum EquipmentStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  UNDER_MAINTENANCE = "UNDER_MAINTENANCE",
+  BREAKDOWN = "BREAKDOWN",
+  DECOMMISSIONED = "DECOMMISSIONED",
+}
+
+export enum ChecklistItemType {
+  TEXT = "TEXT",
+  NUMBER = "NUMBER",
+  BOOLEAN = "BOOLEAN",
+  SELECT = "SELECT",
+}
+
+export enum FrequencyType {
+  DAILY = "DAILY",
+  WEEKLY = "WEEKLY",
+  MONTHLY = "MONTHLY",
+  YEARLY = "YEARLY",
+}
+
+export enum TaskStatus {
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  SKIPPED = "SKIPPED",
+}
+
+export enum TaskPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+}
+
+export enum ItemStatus {
+  PENDING = "PENDING",
+  OK = "OK",
+  NOT_OK = "NOT_OK",
+  SKIPPED = "SKIPPED",
+}
+
+export enum BreakdownSeverity {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL",
+}
+
+export enum BreakdownStatus {
+  OPEN = "OPEN",
+  IN_PROGRESS = "IN_PROGRESS",
+  RESOLVED = "RESOLVED",
+  CLOSED = "CLOSED",
+}
+
+export enum NotificationType {
+  SCHEDULE_ASSIGNED = "SCHEDULE_ASSIGNED",
+  TASK_ASSIGNED = "TASK_ASSIGNED",
+  TASK_OVERDUE = "TASK_OVERDUE",
+  BREAKDOWN_RAISED = "BREAKDOWN_RAISED",
+  BREAKDOWN_ASSIGNED = "BREAKDOWN_ASSIGNED",
+  BREAKDOWN_RESOLVED = "BREAKDOWN_RESOLVED",
+}
+
+export enum ReferenceType {
+  SCHEDULE = "SCHEDULE",
+  TASK = "TASK",
+  BREAKDOWN = "BREAKDOWN",
+}
