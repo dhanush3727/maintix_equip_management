@@ -30,6 +30,19 @@ export class UserService {
     private audit: AuditService,
   ) {}
 
+  //#region Get role dropdown
+  async getRolesService() {
+    const roles = await this.prisma.role.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    return { data: roles };
+  }
+  //#endregion
+
   //#region Get all users
   async getAllUsersService(query: UserQueryDto) {
     const {

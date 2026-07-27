@@ -19,3 +19,18 @@ export interface Organization {
   isActive: boolean;
   logoUrl: string;
 }
+
+export interface DropDown {
+  value: number;
+  label: string;
+}
+
+export interface OrganizationDD {
+  location: DropDown[];
+  department: DropDown[];
+}
+
+export interface RoleDD {
+  id: number;
+  name: string;
+}

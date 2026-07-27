@@ -334,6 +334,7 @@ export function Organization() {
                   type="text"
                   id="country"
                   placeholder="Enter your country"
+                  autoComplete="country"
                   {...form.register("country")}
                   disabled={isDisabled}
                 />
@@ -357,6 +358,7 @@ export function Organization() {
                   type="text"
                   id="city"
                   placeholder="Enter your city"
+                  autoComplete="address-level2"
                   {...form.register("city")}
                   disabled={isDisabled}
                 />

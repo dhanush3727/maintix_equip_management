@@ -428,4 +428,18 @@ export class OrganizationController {
     };
   }
   //#endregion
+
+  //#region Complete onboarding step
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Patch('onboarding/complete')
+  async completeOnboarding(@Req() req: AuthenticateRequest) {
+    const { organizationId } = req.user;
+
+    await this.organizationService.completeOnboardingService(organizationId);
+
+    return {
+      message: 'Onboarding completed',
+    };
+  }
+  //#endregion
 }

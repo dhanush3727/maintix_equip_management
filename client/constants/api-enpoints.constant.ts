@@ -4,4 +4,6 @@ export const API_ENDPOINTS = {
   ONBOARDING: "organization/onboarding",
   META: "meta",
   ORGANIZATION: "organization",
+  ORGANIZATION_DROPDOWN: "organization/dropdown",
+  ROLE_DROPDOWN: "users/roles",
 } as const;

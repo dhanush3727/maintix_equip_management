@@ -10,5 +10,10 @@ export const QUERY_KEYS = {
   organization: {
     details: ["org-details"],
     onboarding: ["org-onboarding"],
+    dropdown: ["org-dropdown"],
+  },
+
+  role: {
+    dropdown: ["role-dropdown"],
   },
 } as const;

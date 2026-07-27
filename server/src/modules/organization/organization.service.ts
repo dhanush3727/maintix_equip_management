@@ -473,7 +473,7 @@ export class OrganizationService {
   }
   //#endregion
 
-  //#region Create Document
+  //#region Create Department
   async createDepartmentService(
     dto: CreateDepartmentDto,
     organizationId: number,
@@ -797,13 +797,6 @@ export class OrganizationService {
         });
       }
 
-      await tx.organization.update({
-        where: { id: organizationId },
-        data: {
-          onboardingStep: OnboardingStep.COMPLETED,
-        },
-      });
-
       await this.auditSerivce.logs(tx, {
         organizationId,
         userId,
@@ -885,6 +878,36 @@ export class OrganizationService {
     return {
       data: onboardingStep,
     };
+  }
+  //#endregion
+
+  //#region complete organization onboarding step
+  async completeOnboardingService(organizationId: number) {
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: {
+        onboardingStep: true,
+      },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    if (organization.onboardingStep !== OnboardingStep.USERS) {
+      throw new BadRequestException({
+        message:
+          'This onboarding step is unavailable based on your current progress.',
+        code: 'ONBOARDING_MISMATCH',
+      });
+    }
+
+    await this.prisma.organization.update({
+      where: { id: organizationId },
+      data: {
+        onboardingStep: OnboardingStep.COMPLETED,
+      },
+    });
   }
   //#endregion
 }

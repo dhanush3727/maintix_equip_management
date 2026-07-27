@@ -34,6 +34,18 @@ import { ReqMeta } from '../../common/decorators/request-meta.decorator';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  //#region Get all roles
+  @UseGuards(AccessTokenGuard)
+  @Get('roles')
+  async getRoles() {
+    const { data } = await this.userService.getRolesService();
+
+    return {
+      data,
+    };
+  }
+  //#endregion
+
   //#region Get all users
   @UseGuards(AccessTokenGuard)
   @Get()

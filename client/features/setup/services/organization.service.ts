@@ -1,11 +1,15 @@
 import api from "@/services/api/api";
 import { ApiResponse } from "@/types";
 import {
+  DepartmentRequest,
   LocationRequest,
   OrganizationRequest,
+  SendInvitationRequest,
 } from "../types/organization.type";
 import { SETUP_ORGANIZATION_ENDPOINTS } from "../constants/organization.constant";
 import { SETUP_LOCATION_ENDPOINT } from "../constants/location.constant";
+import { SETUP_DEPARTMENT_ENDPOINT } from "../constants/department.constant";
+import { SETUP_SEND_INVITE_ENDPOINT } from "../constants/send-invite.constant";
 
 export const organizationService = {
   // Setup Organization profile
@@ -32,6 +36,30 @@ export const organizationService = {
   async setupLocation(payload: LocationRequest): Promise<ApiResponse<void>> {
     const { data } = await api.post<ApiResponse<void>>(
       SETUP_LOCATION_ENDPOINT.SETUP_LOCATION,
+      payload,
+    );
+
+    return data;
+  },
+
+  // Create department
+  async setupDepartment(
+    payload: DepartmentRequest,
+  ): Promise<ApiResponse<void>> {
+    const { data } = await api.post<ApiResponse<void>>(
+      SETUP_DEPARTMENT_ENDPOINT.SETUP_DEPARTMENT,
+      payload,
+    );
+
+    return data;
+  },
+
+  // Send Invite
+  async setupSendInvitation(
+    payload: SendInvitationRequest,
+  ): Promise<ApiResponse<void>> {
+    const { data } = await api.post<ApiResponse<void>>(
+      SETUP_SEND_INVITE_ENDPOINT.SEND_INVITE,
       payload,
     );
 
