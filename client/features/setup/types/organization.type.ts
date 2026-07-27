@@ -5,5 +5,5 @@ export interface OrganizationRequest {
   companySize: CompanySize;
   country: string;
   city: string;
-  logo: string;
+  logo: File;
 }

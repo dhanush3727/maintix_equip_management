@@ -4,13 +4,6 @@ import { IsString, IsEnum, IsOptional } from 'class-validator';
 
 export class CreateOrganizationDto {
   @ApiProperty({
-    example: 'Acme Corporation',
-    description: 'The name of the organization',
-  })
-  @IsString()
-  name!: string;
-
-  @ApiProperty({
     example: 'TECHNOLOGY',
     description: 'The industry type of the organization',
   })

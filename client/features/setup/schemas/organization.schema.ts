@@ -7,7 +7,9 @@ export const organizationSchema = z.object({
   country: z.string().min(1, "Enter country").trim(),
   city: z.string().min(1, "Enter city").trim(),
   logo: z
-    .instanceof(File)
+    .instanceof(File, {
+      message: "Please upload an organization logo",
+    })
     .refine(
       (file) => ["image/png", "image/jpg", "image/svg+xml"].includes(file.type),
       "Only PNG, JPG, and SVG files are allowed.",

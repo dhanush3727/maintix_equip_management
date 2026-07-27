@@ -93,7 +93,11 @@ export class OrganizationService {
     }
 
     if (org.onboardingStep !== OnboardingStep.ORGANIZATION) {
-      throw new BadRequestException('Complete previos setup step first');
+      throw new BadRequestException({
+        message:
+          'This onboarding step is unavailable based on your current progress.',
+        code: 'ONBOARDING_MISMATCH',
+      });
     }
 
     await this.prisma.$transaction(async (tx) => {

@@ -11,18 +11,33 @@ import {
   Skeleton,
 } from "@/components/ui";
 import { ORGANIZATION_CONTENT } from "../constants/organization.constant";
-import { UploadCloud } from "lucide-react";
-import { useAuth, useMeta } from "@/hooks";
-import { Controller, useForm } from "react-hook-form";
+import { LoaderCircle, UploadCloud } from "lucide-react";
+import { useAuth, useMeta, useOnboarding } from "@/hooks";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import {
   OrganizationFormValues,
   organizationSchema,
 } from "../schemas/organization.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
+import Image from "next/image";
+import { useSetupOrg } from "../hooks/useSetupOrg";
+import { appToast } from "@/lib/toast";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants";
+import { getErrorMessage } from "@/lib";
+import axios from "axios";
+import { ApiErrorResponse } from "@/types";
+import { setupRoutes } from "@/features/auth/constatnts/setup.constants";
 
 export function Organization() {
   const { user, isLoading: isUserLoading } = useAuth();
   const { data, isLoading: isMetaLoading } = useMeta();
+  const { data: onboardingStep } = useOnboarding();
+
+  const organizationMutation = useSetupOrg();
+
+  const router = useRouter();
 
   const industryType = data?.data?.industryType ?? [];
   const companySize = data?.data?.companySize ?? [];
@@ -38,8 +53,40 @@ export function Organization() {
     },
   });
 
+  const logo = useWatch({
+    control: form.control,
+    name: "logo",
+  });
+
+  const preview = useMemo(() => {
+    if (!logo) return;
+
+    return URL.createObjectURL(logo);
+  }, [logo]);
+
   const onSubmit = (data: OrganizationFormValues) => {
-    console.log("form", data);
+    organizationMutation.mutate(data, {
+      onSuccess: (data) => {
+        appToast.success(data.message);
+        router.replace(ROUTES.SETUP_LOCATION);
+        form.reset();
+      },
+
+      onError: (err) => {
+        if (axios.isAxiosError(err)) {
+          const data = err.response?.data as ApiErrorResponse;
+          const onboarding = onboardingStep?.data?.onboardingStep;
+
+          if (data.code === "ONBOARDING_MISMATCH" && onboarding) {
+            appToast.error(getErrorMessage(err));
+            router.replace(setupRoutes[onboarding]);
+            return;
+          }
+
+          appToast.error(getErrorMessage(err));
+        }
+      },
+    });
   };
 
   return (
@@ -81,41 +128,74 @@ export function Organization() {
           </FieldLabel>
 
           <FieldContent>
-            <label
-              htmlFor="logo"
-              className="flex flex-col items-center justify-center gap-3 cursor-pointer rounded-xl border-2 border-dashed border-border px-6 py-10 text-center hover:border-primary hover:bg-muted/50 transition-colors duration-200"
-            >
-              <UploadCloud className="size-10 text-muted-foreground" />
+            {!logo ? (
+              <>
+                <label
+                  htmlFor="logo"
+                  className="flex flex-col items-center justify-center gap-3 cursor-pointer rounded-xl border-2 border-dashed border-border px-6 py-10 text-center hover:border-primary hover:bg-muted/50 transition-colors duration-200"
+                >
+                  <UploadCloud className="size-10 text-muted-foreground" />
 
-              <div>
-                <p className="font-medium">{ORGANIZATION_CONTENT.logo_title}</p>
-                <p className="text-sm text-muted-foreground">
-                  {ORGANIZATION_CONTENT.logo_description}
-                </p>
-              </div>
+                  <div>
+                    <p className="font-medium">
+                      {ORGANIZATION_CONTENT.logo_title}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {ORGANIZATION_CONTENT.logo_description}
+                    </p>
+                  </div>
 
-              <div className="bg-secondary h-10 px-4 rounded-md flex justify-center items-center text-secondary-foreground border border-border hover:bg-muted">
-                {ORGANIZATION_CONTENT.logo_file}
-              </div>
-            </label>
+                  <div className="bg-secondary h-10 px-4 rounded-md flex justify-center items-center text-secondary-foreground border border-border hover:bg-muted">
+                    {ORGANIZATION_CONTENT.logo_file}
+                  </div>
+                </label>
 
-            <Controller
-              control={form.control}
-              name="logo"
-              render={({ field }) => (
-                <Input
-                  id="logo"
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
+                <Controller
+                  control={form.control}
+                  name="logo"
+                  render={({ field }) => (
+                    <Input
+                      id="logo"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
 
-                    field.onChange(file);
-                  }}
+                        field.onChange(file);
+                      }}
+                    />
+                  )}
                 />
-              )}
-            />
+              </>
+            ) : (
+              <div className="rounded-xl border p-5">
+                <div className="flex items-center gap-4 mb-5">
+                  <Image
+                    src={preview!}
+                    alt="Organization Logo"
+                    width={100}
+                    height={100}
+                    className="size-16 rounded-lg border object-cover"
+                  />
+                  <div>
+                    <p>{logo.name}</p>
+                  </div>
+                </div>
+
+                <Button
+                  variant={"destructive"}
+                  size={"sm"}
+                  type="button"
+                  onClick={() => {
+                    form.resetField("logo");
+                  }}
+                  disabled={organizationMutation.isPending}
+                >
+                  Remove
+                </Button>
+              </div>
+            )}
           </FieldContent>
 
           <FieldError errors={[form.formState.errors.logo]} />
@@ -213,7 +293,14 @@ export function Organization() {
           </Field>
         </div>
 
-        <Button type="submit" className={"w-full"}>
+        <Button
+          type="submit"
+          className={"w-full"}
+          disabled={organizationMutation.isPending}
+        >
+          {organizationMutation.isPending && (
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+          )}
           {ORGANIZATION_CONTENT.submit}
         </Button>
       </form>
