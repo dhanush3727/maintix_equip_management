@@ -56,7 +56,7 @@ export function SearchSelect({
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              "w-full justify-between active:scale-none",
+              "w-full justify-between active:scale-none disabled:bg-muted",
               !selectedOption && "text-muted-foreground",
               className,
             )}

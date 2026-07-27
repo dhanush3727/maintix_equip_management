@@ -3,4 +3,5 @@ export const API_ENDPOINTS = {
   ME: "auth/me",
   ONBOARDING: "organization/onboarding",
   META: "meta",
-};
+  ORGANIZATION: "organization",
+} as const;

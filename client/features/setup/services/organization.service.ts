@@ -1,9 +1,14 @@
 import api from "@/services/api/api";
 import { ApiResponse } from "@/types";
-import { OrganizationRequest } from "../types/organization.type";
+import {
+  LocationRequest,
+  OrganizationRequest,
+} from "../types/organization.type";
 import { SETUP_ORGANIZATION_ENDPOINTS } from "../constants/organization.constant";
+import { SETUP_LOCATION_ENDPOINT } from "../constants/location.constant";
 
 export const organizationService = {
+  // Setup Organization profile
   async setupOrganization(
     payload: OrganizationRequest,
   ): Promise<ApiResponse<void>> {
@@ -15,13 +20,19 @@ export const organizationService = {
     formData.append("city", payload.city);
     formData.append("logo", payload.logo);
 
-    for (const [key, value] of formData.entries()) {
-      console.log("key", key, "value", value);
-    }
-
     const { data } = await api.post<ApiResponse<void>>(
       SETUP_ORGANIZATION_ENDPOINTS.SETUP_ORGANIZATION,
       formData,
+    );
+
+    return data;
+  },
+
+  // Create location
+  async setupLocation(payload: LocationRequest): Promise<ApiResponse<void>> {
+    const { data } = await api.post<ApiResponse<void>>(
+      SETUP_LOCATION_ENDPOINT.SETUP_LOCATION,
+      payload,
     );
 
     return data;

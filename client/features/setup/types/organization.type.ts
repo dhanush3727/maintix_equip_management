@@ -1,4 +1,4 @@
-import { CompanySize, IndustryType } from "@/types";
+import { CompanySize, IndustryType, LocationType } from "@/types";
 
 export interface OrganizationRequest {
   industryType: IndustryType;
@@ -6,4 +6,10 @@ export interface OrganizationRequest {
   country: string;
   city: string;
   logo: File;
+}
+
+export interface LocationRequest {
+  name: string;
+  type: LocationType;
+  address: string;
 }

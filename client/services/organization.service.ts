@@ -1,11 +1,21 @@
-import { ApiResponse, Onboarding } from "@/types";
+import { ApiResponse, Onboarding, Organization } from "@/types";
 import api from "./api/api";
 import { API_ENDPOINTS } from "@/constants";
 
 export const organizationService = {
+  // Get onboarding
   async onboarding(): Promise<ApiResponse<Onboarding>> {
     const { data } = await api.get<ApiResponse<Onboarding>>(
       API_ENDPOINTS.ONBOARDING,
+    );
+
+    return data;
+  },
+
+  // Get organization details
+  async getOrganization(): Promise<ApiResponse<Organization>> {
+    const { data } = await api.get<ApiResponse<Organization>>(
+      API_ENDPOINTS.ORGANIZATION,
     );
 
     return data;

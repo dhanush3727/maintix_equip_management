@@ -870,6 +870,8 @@ export class AuthService {
         organization: {
           select: {
             name: true,
+            logoUrl: true,
+            logoPublicId: true,
           },
         },
         roles: {
@@ -905,6 +907,8 @@ export class AuthService {
       email: user.email,
       organizationId: user.organizationId,
       organizationName: user.organization.name,
+      logoUrl: user.organization.logoUrl,
+      logoPublicId: user.organization.logoPublicId,
       isActive: user.isActive,
       isEmailVerified: user.isEmailVerified,
       roles: user.roles.map((role) => ({

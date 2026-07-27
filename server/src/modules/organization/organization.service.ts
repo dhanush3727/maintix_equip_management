@@ -54,6 +54,7 @@ export class OrganizationService {
         city: true,
         country: true,
         isActive: true,
+        logoUrl: true,
       },
     });
 
@@ -281,7 +282,11 @@ export class OrganizationService {
     }
 
     if (organization.onboardingStep !== OnboardingStep.LOCATION) {
-      throw new BadRequestException('Complete previous setup step first');
+      throw new BadRequestException({
+        message:
+          'This onboarding step is unavailable based on your current progress.',
+        code: 'ONBOARDING_MISMATCH',
+      });
     }
 
     // findFirst is used instead of findUnique because we are checking the location name for the same organization, not globally unique.
@@ -489,7 +494,11 @@ export class OrganizationService {
     }
 
     if (organization.onboardingStep !== OnboardingStep.DEPARTMENT) {
-      throw new BadRequestException('Complete previous setup step first');
+      throw new BadRequestException({
+        message:
+          'This onboarding step is unavailable based on your current progress.',
+        code: 'ONBOARDING_MISMATCH',
+      });
     }
 
     try {
@@ -732,7 +741,11 @@ export class OrganizationService {
     if (!org) throw new NotFoundException('Organization not found');
 
     if (org.onboardingStep !== OnboardingStep.USERS) {
-      throw new BadRequestException('Complete previous setup step first');
+      throw new BadRequestException({
+        message:
+          'This onboarding step is unavailable based on your current progress.',
+        code: 'ONBOARDING_MISMATCH',
+      });
     }
 
     if (org)

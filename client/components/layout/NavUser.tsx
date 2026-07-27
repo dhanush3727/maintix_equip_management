@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback, Skeleton } from "../ui";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "../ui";
 import { useAuth } from "@/hooks";
 
 export function NavUser() {
@@ -23,6 +23,7 @@ export function NavUser() {
               size="sm"
               className="group-data-[collapsible=icon]:data-[size=sm]:size-7"
             >
+              <AvatarImage src={user?.logoUrl} alt="Oranization logo" />
               <AvatarFallback>
                 {user?.organizationName.charAt(0).toUpperCase()}
               </AvatarFallback>

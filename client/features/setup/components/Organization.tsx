@@ -11,15 +11,24 @@ import {
   Skeleton,
 } from "@/components/ui";
 import { ORGANIZATION_CONTENT } from "../constants/organization.constant";
-import { LoaderCircle, UploadCloud } from "lucide-react";
-import { useAuth, useMeta, useOnboarding } from "@/hooks";
+import {
+  ArrowRight,
+  Building2,
+  Factory,
+  Globe,
+  LoaderCircle,
+  MapPin,
+  UploadCloud,
+  Users,
+} from "lucide-react";
+import { useAuth, useGetOrg, useMeta, useOnboarding } from "@/hooks";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import {
   OrganizationFormValues,
   organizationSchema,
 } from "../schemas/organization.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useSetupOrg } from "../hooks/useSetupOrg";
 import { appToast } from "@/lib/toast";
@@ -27,20 +36,23 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants";
 import { getErrorMessage } from "@/lib";
 import axios from "axios";
-import { ApiErrorResponse } from "@/types";
+import { ApiErrorResponse, OnboardingSetup } from "@/types";
 import { setupRoutes } from "@/features/auth/constatnts/setup.constants";
 
 export function Organization() {
   const { user, isLoading: isUserLoading } = useAuth();
   const { data, isLoading: isMetaLoading } = useMeta();
   const { data: onboardingStep } = useOnboarding();
-
+  const { data: organization, isLoading: isOrgLoading } = useGetOrg();
   const organizationMutation = useSetupOrg();
 
   const router = useRouter();
 
   const industryType = data?.data?.industryType ?? [];
   const companySize = data?.data?.companySize ?? [];
+  const onboarding = onboardingStep?.data?.onboardingStep;
+  const organizationData = organization?.data;
+  const isDisabled = onboarding !== OnboardingSetup.ORGANIZATION;
 
   const form = useForm<OrganizationFormValues>({
     resolver: zodResolver(organizationSchema),
@@ -52,6 +64,17 @@ export function Organization() {
       logo: undefined,
     },
   });
+
+  useEffect(() => {
+    if (!organizationData) return;
+
+    form.reset({
+      industryType: organizationData.industryType,
+      companySize: organizationData.companySize,
+      country: organizationData.country,
+      city: organizationData.city,
+    });
+  }, [organizationData, form]);
 
   const logo = useWatch({
     control: form.control,
@@ -75,7 +98,6 @@ export function Organization() {
       onError: (err) => {
         if (axios.isAxiosError(err)) {
           const data = err.response?.data as ApiErrorResponse;
-          const onboarding = onboardingStep?.data?.onboardingStep;
 
           if (data.code === "ONBOARDING_MISMATCH" && onboarding) {
             appToast.error(getErrorMessage(err));
@@ -87,6 +109,12 @@ export function Organization() {
         }
       },
     });
+  };
+
+  const onContinue = () => {
+    if (onboarding) {
+      router.replace(setupRoutes[onboarding]);
+    }
   };
 
   return (
@@ -107,34 +135,56 @@ export function Organization() {
         </div>
 
         <Field>
-          <FieldLabel>{ORGANIZATION_CONTENT.organization_name}</FieldLabel>
+          <FieldLabel className="flex items-center gap-2">
+            <Building2 aria-hidden="true" className="size-4" />
+            {ORGANIZATION_CONTENT.organization_name}
+          </FieldLabel>
+
           <FieldContent>
             {isUserLoading ? (
               <Skeleton className="h-10" />
             ) : (
-              <Input
-                id="name"
-                value={user?.organizationName ?? ""}
-                disabled
-                className="disabled:opacity-100"
-              />
+              <Input id="name" value={user?.organizationName ?? ""} disabled />
             )}
           </FieldContent>
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="logo">
+          <FieldLabel htmlFor="logo" className="flex items-center gap-2">
+            <UploadCloud aria-hidden="true" className="size-4" />
             {ORGANIZATION_CONTENT.organization_logo}
           </FieldLabel>
 
           <FieldContent>
-            {!logo ? (
+            {isOrgLoading ? (
+              <div className="flex items-center gap-4">
+                <Skeleton className="size-16 rounded-lg" />
+
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32 rounded-md" />
+                </div>
+              </div>
+            ) : organizationData?.logoUrl ? (
+              <div className="flex items-center gap-4 mb-5">
+                <Image
+                  src={organizationData.logoUrl}
+                  alt="Organization Logo"
+                  width={100}
+                  height={100}
+                  className="size-16 rounded-lg border object-cover"
+                />
+                <p>{ORGANIZATION_CONTENT.uploaded_logo}</p>
+              </div>
+            ) : !logo ? (
               <>
                 <label
                   htmlFor="logo"
                   className="flex flex-col items-center justify-center gap-3 cursor-pointer rounded-xl border-2 border-dashed border-border px-6 py-10 text-center hover:border-primary hover:bg-muted/50 transition-colors duration-200"
                 >
-                  <UploadCloud className="size-10 text-muted-foreground" />
+                  <UploadCloud
+                    aria-hidden="true"
+                    className="size-10 text-muted-foreground"
+                  />
 
                   <div>
                     <p className="font-medium">
@@ -192,7 +242,7 @@ export function Organization() {
                   }}
                   disabled={organizationMutation.isPending}
                 >
-                  Remove
+                  {ORGANIZATION_CONTENT.remove}
                 </Button>
               </div>
             )}
@@ -203,7 +253,11 @@ export function Organization() {
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field>
-            <FieldLabel htmlFor="industry_type">
+            <FieldLabel
+              htmlFor="industry_type"
+              className="flex items-center gap-2"
+            >
+              <Factory aria-hidden="true" className="size-4" />
               {ORGANIZATION_CONTENT.industry_type}
             </FieldLabel>
 
@@ -221,6 +275,7 @@ export function Organization() {
                       onValueChange={field.onChange}
                       placeholder="Industry Type"
                       searchPlaceholder="Search industry type"
+                      disabled={isDisabled}
                     />
                   )}
                 />
@@ -231,7 +286,11 @@ export function Organization() {
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="company_size">
+            <FieldLabel
+              htmlFor="company_size"
+              className="flex items-center gap-2"
+            >
+              <Users aria-hidden="true" className="size-4" />
               {ORGANIZATION_CONTENT.company_size}
             </FieldLabel>
 
@@ -249,6 +308,7 @@ export function Organization() {
                       onValueChange={field.onChange}
                       placeholder="Organization Size"
                       searchPlaceholder="Search organization size"
+                      disabled={isDisabled}
                     />
                   )}
                 />
@@ -261,48 +321,74 @@ export function Organization() {
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field>
-            <FieldLabel htmlFor="country">
+            <FieldLabel htmlFor="country" className="flex items-center gap-2">
+              <Globe aria-hidden="true" className="size-4" />
               {ORGANIZATION_CONTENT.country}
             </FieldLabel>
 
             <FieldContent>
-              <Input
-                type="text"
-                id="country"
-                placeholder="Enter your country"
-                {...form.register("country")}
-              />
+              {isOrgLoading ? (
+                <Skeleton className="h-10" />
+              ) : (
+                <Input
+                  type="text"
+                  id="country"
+                  placeholder="Enter your country"
+                  {...form.register("country")}
+                  disabled={isDisabled}
+                />
+              )}
             </FieldContent>
 
             <FieldError errors={[form.formState.errors.country]} />
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="city">{ORGANIZATION_CONTENT.city}</FieldLabel>
+            <FieldLabel htmlFor="city" className="flex items-center gap-2">
+              <MapPin aria-hidden="true" className="size-4" />
+              {ORGANIZATION_CONTENT.city}
+            </FieldLabel>
 
             <FieldContent>
-              <Input
-                type="text"
-                id="city"
-                placeholder="Enter your city"
-                {...form.register("city")}
-              />
+              {isOrgLoading ? (
+                <Skeleton className="h-10" />
+              ) : (
+                <Input
+                  type="text"
+                  id="city"
+                  placeholder="Enter your city"
+                  {...form.register("city")}
+                  disabled={isDisabled}
+                />
+              )}
             </FieldContent>
 
             <FieldError errors={[form.formState.errors.city]} />
           </Field>
         </div>
 
-        <Button
-          type="submit"
-          className={"w-full"}
-          disabled={organizationMutation.isPending}
-        >
-          {organizationMutation.isPending && (
-            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
-          )}
-          {ORGANIZATION_CONTENT.submit}
-        </Button>
+        {isDisabled ? (
+          <div className="flex justify-end">
+            <Button type="button" variant={"ghost"} onClick={onContinue}>
+              {ORGANIZATION_CONTENT.continue}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
+          </div>
+        ) : (
+          <Button
+            type="submit"
+            className={"w-full"}
+            disabled={organizationMutation.isPending}
+          >
+            {organizationMutation.isPending && (
+              <LoaderCircle
+                aria-hidden="true"
+                className="size-4 animate-spin"
+              />
+            )}
+            {ORGANIZATION_CONTENT.submit}
+          </Button>
+        )}
       </form>
     </div>
   );

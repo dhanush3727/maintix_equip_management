@@ -11,8 +11,11 @@ export const ORGANIZATION_CONTENT = {
   logo_title: "Upload your organization logo",
   logo_description: "PNG, JPG or SVG",
   logo_file: "Choose File",
+  uploaded_logo: "Uploaded logo",
+  remove: "Remove",
+  continue: "Continue",
 } as const;
 
 export const SETUP_ORGANIZATION_ENDPOINTS = {
   SETUP_ORGANIZATION: "organization",
-};
+} as const;
