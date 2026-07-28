@@ -855,6 +855,51 @@ export class AuthService {
   }
   //#endregion
 
+  //#region get invitation
+  async verifyInvitationService(token: string) {
+    if (!token) throw new BadRequestException('Invalid invitation');
+
+    const hashedToken = hashVerificationToken(token);
+
+    const invitation = await this.prisma.invitation.findUnique({
+      where: { token: hashedToken },
+      select: {
+        email: true,
+        organization: {
+          select: {
+            name: true,
+          },
+        },
+
+        role: {
+          select: {
+            name: true,
+          },
+        },
+
+        department: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!invitation) throw new NotFoundException('Invitation not found');
+
+    const formattedInvitation = {
+      email: invitation.email,
+      organizationName: invitation.organization.name,
+      roleName: invitation.role.name,
+      departmentName: invitation.department?.name,
+    };
+
+    return {
+      data: formattedInvitation,
+    };
+  }
+  //#endregion
+
   //#region Get current user details
   async getCurrentUserService(userId: number) {
     // Fetch the user

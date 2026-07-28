@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -284,7 +285,18 @@ export class AuthController {
     await this.authService.acceptInvitationService(dto);
 
     return {
-      message: 'Invitation accepted and user created',
+      message: 'Invitation accepted and account created',
+    };
+  }
+  //#endregion
+
+  //#region Get invitation
+  @Get('verify-invite')
+  async verifyInvitation(@Query('token') token: string) {
+    const { data } = await this.authService.verifyInvitationService(token);
+
+    return {
+      data,
     };
   }
   //#endregion

@@ -813,7 +813,7 @@ export class OrganizationService {
       });
     });
 
-    const invitationLink = `${this.clientUrl}/api/auth/accept-invite?token=${token}`;
+    const invitationLink = `${this.clientUrl}verify-invite?token=${token}`;
 
     const formattedExpiry = expiresAt.toLocaleString();
 
