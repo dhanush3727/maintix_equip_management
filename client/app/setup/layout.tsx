@@ -1,4 +1,5 @@
 import { AuthInitializer } from "../(workspace)/AuthInitializer";
+import { OnBoardingGuard } from "../OnboardingGuard";
 import { Header } from "./Header";
 
 export default function SetupLayout({
@@ -8,9 +9,11 @@ export default function SetupLayout({
 }>) {
   return (
     <main>
-      <AuthInitializer />
-      <Header />
-      {children}
+      <OnBoardingGuard mode="setup">
+        <AuthInitializer />
+        <Header />
+        {children}
+      </OnBoardingGuard>
     </main>
   );
 }

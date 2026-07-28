@@ -12,6 +12,8 @@ export const AUTH_ENDPOINTS = {
   RESET_PASSWORD: "auth/reset-password",
   SESSIONS: "auth/sessions",
   SESSION: (jti: string) => `auth/sessions/${jti}`,
+  ACCEPT_INVITE: "auth/accept-invite",
+  VERIFY_INVITE: "auth/verify-invite",
   ME: "auth/me",
 } as const;
 

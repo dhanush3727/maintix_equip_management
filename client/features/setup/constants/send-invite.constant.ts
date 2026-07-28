@@ -12,13 +12,11 @@ export const INVITE_USERS_CONTENT = {
   ROLE: "Role",
   DEPARTMENT: "Department",
 
-  SKIP_TITLE: "Invite Your Team Later",
-  SKIP_DESCRIPTION:
-    "No problem! You can continue setting up your workspace without inviting team members right now. Additional users can be invited at any time from the Users page once your setup is complete.",
+  NO_INVITATIONS: "No invitations have been sent yet.",
 
   INVITE_BUTTON: "Send Invitations",
   CONTINUE_BUTTON: "Complete Setup",
-  SKIP_BUTTON: "Skip for Now",
+  SKIP_BUTTON: "Skip Invite User",
   ADD_USER_BUTTON: "Add Another User",
 } as const;
 

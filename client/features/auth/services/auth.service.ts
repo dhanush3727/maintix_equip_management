@@ -1,5 +1,6 @@
 import authApi from "@/services/api/authApi";
 import {
+  AcceptInvitationRequest,
   ForgotPasswordRequest,
   LoginData,
   LoginRequest,
@@ -8,6 +9,7 @@ import {
   ResetPasswordRequest,
   SendEmailRequest,
   VerifyEmailRequest,
+  VerifyInvitationData,
 } from "../types/auth.type";
 import { AUTH_ENDPOINTS } from "../constatnts/auth.constants";
 import { ApiResponse } from "@/types";
@@ -83,6 +85,29 @@ export const authService = {
   async logout(): Promise<ApiResponse<void>> {
     const { data } = await authApi.post<ApiResponse<void>>(
       AUTH_ENDPOINTS.LOGOUT,
+    );
+
+    return data;
+  },
+
+  // Verify invitation
+  async verifyInvitation(
+    token: string,
+  ): Promise<ApiResponse<VerifyInvitationData>> {
+    const { data } = await authApi.get<ApiResponse<VerifyInvitationData>>(
+      `${AUTH_ENDPOINTS.VERIFY_INVITE}?token=${token}`,
+    );
+
+    return data;
+  },
+
+  // Accept invitation
+  async acceptInvitation(
+    payload: AcceptInvitationRequest,
+  ): Promise<ApiResponse<void>> {
+    const { data } = await authApi.post<ApiResponse<void>>(
+      AUTH_ENDPOINTS.ACCEPT_INVITE,
+      payload,
     );
 
     return data;

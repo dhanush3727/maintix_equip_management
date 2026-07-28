@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { AuthInitializer } from "./AuthInitializer";
+import { OnBoardingGuard } from "../OnboardingGuard";
 
 export default function WorkspaceLayout({
   children,
@@ -7,9 +8,11 @@ export default function WorkspaceLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AppShell>
-      <AuthInitializer />
-      {children}
-    </AppShell>
+    <OnBoardingGuard mode="dashboard">
+      <AppShell>
+        <AuthInitializer />
+        {children}
+      </AppShell>
+    </OnBoardingGuard>
   );
 }

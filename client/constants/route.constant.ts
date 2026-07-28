@@ -21,6 +21,7 @@ export const ROUTES = {
   SETUP_LOCATION: "/setup/location",
   SETUP_DEPARTMENT: "/setup/department",
   SETUP_INVITE_USER: "/setup/invite-user",
+  ACCEPT_INVITE: "/accept-invite",
 } as const;
 
 export const PROTECTED_ROUTES = [

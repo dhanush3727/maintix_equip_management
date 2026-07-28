@@ -64,3 +64,18 @@ export interface ResetPasswordRequest {
   token: string;
   password: string;
 }
+
+// Verify invitation data
+export interface VerifyInvitationData {
+  email: string;
+  organizationName: string;
+  roleName: string;
+  departmentName: string;
+}
+
+// Accept invitation
+export interface AcceptInvitationRequest {
+  token: string;
+  name: string;
+  password: string;
+}

@@ -29,7 +29,6 @@ import {
   Mail,
   Send,
   ShieldCheck,
-  SkipForward,
 } from "lucide-react";
 import { ROUTES } from "@/constants";
 import { useGetInvitations } from "../hooks/useGetInvitations";
@@ -195,54 +194,44 @@ export function SendInvite() {
           <h3 className="font-bold">Invited Users</h3>
 
           <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-            {isGetInvitations
-              ? Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div>
-                      <Skeleton className="rounded-full size-6" />
-                    </div>
+            {isGetInvitations ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div>
+                    <Skeleton className="rounded-full size-6" />
+                  </div>
 
-                    <div className="space-y-1">
-                      <Skeleton className="h-4 w-40" />
-                      <Skeleton className="h-4 w-25" />
-                    </div>
+                  <div className="space-y-1">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-4 w-25" />
                   </div>
-                ))
-              : invitations.map((invitation) => (
-                  <div
-                    key={invitation.email}
-                    className="flex items-center gap-3"
-                  >
-                    <div className="w-6 h-6 bg-success-light flex items-center justify-center rounded-full">
-                      <Check
-                        aria-hidden="true"
-                        className="size-3 text-success"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-sm">{invitation.email}</p>
-                      <p className="text-muted-foreground text-xs">
-                        {invitation.role}
-                      </p>
-                    </div>
+                </div>
+              ))
+            ) : invitations.length === 0 ? (
+              <div className="col-span-full flex items-center justify-center">
+                <p className="text-muted-foreground text-sm">
+                  {INVITE_USERS_CONTENT.NO_INVITATIONS}
+                </p>
+              </div>
+            ) : (
+              invitations.map((invitation) => (
+                <div key={invitation.email} className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-success-light flex items-center justify-center rounded-full">
+                    <Check aria-hidden="true" className="size-3 text-success" />
                   </div>
-                ))}
+                  <div>
+                    <p className="text-sm">{invitation.email}</p>
+                    <p className="text-muted-foreground text-xs">
+                      {invitation.role}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
-        <div className="flex justify-between">
-          <Button
-            variant={"ghost"}
-            size={"sm"}
-            onClick={() => router.replace(ROUTES.DASHBOARD)}
-            disabled={
-              inviteMutation.isPending || completeSetupMutation.isPending
-            }
-          >
-            {INVITE_USERS_CONTENT.SKIP_BUTTON}
-            <SkipForward aria-hidden="true" className="size-4" />
-          </Button>
-
+        <div className="flex justify-end">
           <Button
             variant={"ghost"}
             size={"sm"}
@@ -251,7 +240,9 @@ export function SendInvite() {
               inviteMutation.isPending || completeSetupMutation.isPending
             }
           >
-            {INVITE_USERS_CONTENT.CONTINUE_BUTTON}
+            {invitations.length === 0
+              ? INVITE_USERS_CONTENT.SKIP_BUTTON
+              : INVITE_USERS_CONTENT.CONTINUE_BUTTON}
             {completeSetupMutation.isPending ? (
               <LoaderCircle
                 aria-hidden="true"
