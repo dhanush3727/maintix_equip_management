@@ -39,7 +39,14 @@ export class UserService {
       },
     });
 
-    return { data: roles };
+    const formattedRoles = roles.map((role) => ({
+      value: role.id,
+      label: role.name,
+    }));
+
+    return {
+      data: formattedRoles,
+    };
   }
   //#endregion
 

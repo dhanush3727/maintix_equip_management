@@ -125,7 +125,7 @@ export function Department() {
               <Input
                 type="text"
                 id="name"
-                placeholder="Department name"
+                placeholder="Ex: Information Technology"
                 autoComplete="off"
                 {...form.register("name")}
                 disabled={isDisabled}
@@ -156,7 +156,7 @@ export function Department() {
                       options={departmentType}
                       value={field.value}
                       onValueChange={field.onChange}
-                      placeholder="Department type"
+                      placeholder="Ex: Mechanical"
                       searchPlaceholder="Search deparment type"
                       disabled={isDisabled}
                     />
@@ -178,7 +178,7 @@ export function Department() {
               <Input
                 type="text"
                 id="code"
-                placeholder="Department code"
+                placeholder="Ex: IT"
                 autoComplete="off"
                 {...form.register("code")}
                 disabled={isDisabled}
@@ -193,14 +193,15 @@ export function Department() {
             className={"w-full"}
             disabled={departmentMutation.isPending}
           >
-            {departmentMutation.isPending && (
+            {DEPARTMENT_CONTENT.CREATE_BUTTON}
+            {departmentMutation.isPending ? (
               <LoaderCircle
                 aria-hidden="true"
                 className="size-4 animate-spin"
               />
+            ) : (
+              <ArrowRight aria-hidden="true" className="size-4" />
             )}
-            {DEPARTMENT_CONTENT.CREATE_BUTTON}
-            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </form>
       )}

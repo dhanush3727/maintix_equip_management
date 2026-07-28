@@ -31,15 +31,21 @@ import {
 } from '../../common/utils/query-builder.util';
 import { LocationQueryDto } from './dto/location-query.dto';
 import { DepartmentQueryDto } from './dto/department-query.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OrganizationService {
+  private readonly clientUrl: string | undefined;
+
   constructor(
     private prisma: PrismaService,
     private auditSerivce: AuditService,
     private mailService: MailService,
     private cloudinary: CloudinaryService,
-  ) {}
+    private readonly config: ConfigService,
+  ) {
+    this.clientUrl = this.config.get<string>('client.url');
+  }
 
   //#region Get organization details
   async getOrganizationService(organizationId: number) {
@@ -807,7 +813,7 @@ export class OrganizationService {
       });
     });
 
-    const invitationLink = `http://localhost:5000/api/auth/accept-invite?token=${token}`;
+    const invitationLink = `${this.clientUrl}/api/auth/accept-invite?token=${token}`;
 
     const formattedExpiry = expiresAt.toLocaleString();
 
@@ -827,9 +833,9 @@ export class OrganizationService {
       <h4>Important:</h4>
       <p>This invitation will expire on ${formattedExpiry}</p>
       <p>If you did not expect this invitation, you can safely ignore this email</p>
-      <p>Thanks</p>
-      <p>Maintix Team</p>
-      `,
+      <p>Thanks <br/>
+      Maintix Team
+      </p>`,
     });
 
     // Audit logs
@@ -908,6 +914,41 @@ export class OrganizationService {
         onboardingStep: OnboardingStep.COMPLETED,
       },
     });
+  }
+  //#endregion
+
+  //#region Get invitations
+  async getInvitationsService(organizationId: number) {
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: { id: true },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    const invitations = await this.prisma.invitation.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        email: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    const formattedInvitations = invitations.map((invitation) => ({
+      email: invitation.email,
+      role: invitation.role.name,
+    }));
+
+    return {
+      data: formattedInvitations,
+    };
   }
   //#endregion
 }

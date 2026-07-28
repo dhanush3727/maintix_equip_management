@@ -30,3 +30,8 @@ export interface SendInvitationRequest {
   roleId: number;
   departmentId: number;
 }
+
+export interface InvitationData {
+  email: string;
+  role: string;
+}

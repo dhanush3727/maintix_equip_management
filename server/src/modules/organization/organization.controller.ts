@@ -442,4 +442,19 @@ export class OrganizationController {
     };
   }
   //#endregion
+
+  //#region Get Invitations
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('invitations')
+  async getInvitations(@Req() req: AuthenticateRequest) {
+    const { organizationId } = req.user;
+
+    const { data } =
+      await this.organizationService.getInvitationsService(organizationId);
+
+    return {
+      data,
+    };
+  }
+  //#endregion
 }

@@ -127,7 +127,7 @@ export function Location() {
               <Input
                 type="text"
                 id="name"
-                placeholder="Location name"
+                placeholder="Ex: Main Warehouse"
                 autoComplete="off"
                 {...form.register("name")}
                 disabled={isDisabled}
@@ -158,7 +158,7 @@ export function Location() {
                       options={locationType}
                       value={field.value}
                       onValueChange={field.onChange}
-                      placeholder="Location Type"
+                      placeholder="Ex: Warehouse"
                       searchPlaceholder="Search location type"
                       disabled={isDisabled}
                     />
@@ -180,7 +180,7 @@ export function Location() {
               <Input
                 type="text"
                 id="address"
-                placeholder="Location address"
+                placeholder="Ex: 123 Industrial Park Rd, Chennai"
                 autoComplete="street-address"
                 {...form.register("address")}
                 disabled={isDisabled}
@@ -195,14 +195,15 @@ export function Location() {
             className={"w-full"}
             disabled={locationMutation.isPending}
           >
-            {locationMutation.isPending && (
+            {LOCATION_CONTENT.create}
+            {locationMutation.isPending ? (
               <LoaderCircle
                 aria-hidden="true"
                 className="size-4 animate-spin"
               />
+            ) : (
+              <ArrowRight aria-hidden="true" className="size-4" />
             )}
-            {LOCATION_CONTENT.create}
-            <ArrowRight aria-hidden="true" className="size-4" />
           </Button>
         </form>
       )}

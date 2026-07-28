@@ -18,6 +18,7 @@ import {
   Globe,
   LoaderCircle,
   MapPin,
+  Send,
   UploadCloud,
   Users,
 } from "lucide-react";
@@ -273,7 +274,7 @@ export function Organization() {
                       options={industryType}
                       value={field.value}
                       onValueChange={field.onChange}
-                      placeholder="Industry Type"
+                      placeholder="Ex: Chemical"
                       searchPlaceholder="Search industry type"
                       disabled={isDisabled}
                     />
@@ -306,7 +307,7 @@ export function Organization() {
                       options={companySize}
                       value={field.value}
                       onValueChange={field.onChange}
-                      placeholder="Organization Size"
+                      placeholder="Ex: Small"
                       searchPlaceholder="Search organization size"
                       disabled={isDisabled}
                     />
@@ -333,7 +334,7 @@ export function Organization() {
                 <Input
                   type="text"
                   id="country"
-                  placeholder="Enter your country"
+                  placeholder="Ex: France"
                   autoComplete="country"
                   {...form.register("country")}
                   disabled={isDisabled}
@@ -357,7 +358,7 @@ export function Organization() {
                 <Input
                   type="text"
                   id="city"
-                  placeholder="Enter your city"
+                  placeholder="Ex: Paris"
                   autoComplete="address-level2"
                   {...form.register("city")}
                   disabled={isDisabled}
@@ -382,11 +383,13 @@ export function Organization() {
             className={"w-full"}
             disabled={organizationMutation.isPending}
           >
-            {organizationMutation.isPending && (
+            {organizationMutation.isPending ? (
               <LoaderCircle
                 aria-hidden="true"
                 className="size-4 animate-spin"
               />
+            ) : (
+              <Send aria-hidden="true" className="size-4" />
             )}
             {ORGANIZATION_CONTENT.submit}
           </Button>

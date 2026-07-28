@@ -2,7 +2,7 @@ import { ROUTES } from "@/constants";
 import { isAuthRoutes, isProtectedRoutes } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   // Get the refresh token from cookies
   const token = req.cookies.get("refreshToken")?.value;
 

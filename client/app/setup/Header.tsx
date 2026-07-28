@@ -5,6 +5,7 @@ import { HEADER_CONTENT } from "./constant";
 import { useOnboarding } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import { OnboardingSetup } from "@/types";
 
 export function Header() {
   const { data, isLoading } = useOnboarding();
@@ -29,14 +30,16 @@ export function Header() {
           </div>
         ) : (
           <div className="relative flex w-full justify-between">
-            <div className="absolute left-[5%] right-[5%] top-5 h-0.5 bg-border sm:top-10" />
+            <div className="absolute left-[5%] right-[4%] top-5 h-0.5 bg-border sm:top-10" />
 
             {HEADER_CONTENT.steps.map((step, index) => {
               const currentIndex = HEADER_CONTENT.steps.findIndex(
                 (item) => item.key === currentStep,
               );
 
-              const completed = currentIndex > index;
+              const completed =
+                currentIndex > index ||
+                currentStep === OnboardingSetup.COMPLETED;
               const active = currentIndex === index;
 
               return (

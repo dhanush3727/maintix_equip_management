@@ -16,4 +16,8 @@ export const QUERY_KEYS = {
   role: {
     dropdown: ["role-dropdown"],
   },
+
+  invitations: {
+    get_invitations: ["get-invitations"],
+  },
 } as const;

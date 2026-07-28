@@ -2,15 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { organizationService } from "../services/organization.service";
 import { QUERY_KEYS } from "@/constants";
 
-export const useSetupInvite = () => {
+export const useCompleteSetup = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: organizationService.setupSendInvitation,
+    mutationFn: organizationService.completeSetup,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.invitations.get_invitations,
+        queryKey: QUERY_KEYS.organization.onboarding,
       });
     },
   });

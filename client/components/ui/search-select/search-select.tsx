@@ -33,7 +33,7 @@ export function SearchSelect({
     return options.find((option) => option.value === value);
   }, [value, options]);
 
-  const handleSelect = (selectedValue: string) => {
+  const handleSelect = (selectedValue: string | number) => {
     onValueChange(selectedValue);
     setOpen(false);
     setSearch("");

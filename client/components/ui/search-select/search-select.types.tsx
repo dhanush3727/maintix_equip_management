@@ -1,12 +1,12 @@
 export interface SearchSelectOption {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export interface SearchSelectProps {
   options: SearchSelectOption[];
-  value?: string;
-  onValueChange: (value: string) => void;
+  value?: string | number;
+  onValueChange: (value: string | number) => void;
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;

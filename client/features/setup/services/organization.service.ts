@@ -2,6 +2,7 @@ import api from "@/services/api/api";
 import { ApiResponse } from "@/types";
 import {
   DepartmentRequest,
+  InvitationData,
   LocationRequest,
   OrganizationRequest,
   SendInvitationRequest,
@@ -9,7 +10,10 @@ import {
 import { SETUP_ORGANIZATION_ENDPOINTS } from "../constants/organization.constant";
 import { SETUP_LOCATION_ENDPOINT } from "../constants/location.constant";
 import { SETUP_DEPARTMENT_ENDPOINT } from "../constants/department.constant";
-import { SETUP_SEND_INVITE_ENDPOINT } from "../constants/send-invite.constant";
+import {
+  COMPLETE_SETUP_ENPOINT,
+  SETUP_SEND_INVITE_ENDPOINT,
+} from "../constants/send-invite.constant";
 
 export const organizationService = {
   // Setup Organization profile
@@ -65,4 +69,20 @@ export const organizationService = {
 
     return data;
   },
+
+  // Complete setup
+  async completeSetup(): Promise<ApiResponse<void>> {
+    const { data } = await api.patch<ApiResponse<void>>(
+      COMPLETE_SETUP_ENPOINT.COMPLETE_SETUP,
+    );
+
+    return data;
+  },
+
+  // Get invitations
+  async getInvitations(): Promise<ApiResponse<InvitationData[]>>{
+    const {data} = await api.get<ApiResponse<InvitationData[]>>(SETUP_SEND_INVITE_ENDPOINT.GET_INVITATIONS);
+
+    return data;
+  }
 };

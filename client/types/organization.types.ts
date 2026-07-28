@@ -31,6 +31,6 @@ export interface OrganizationDD {
 }
 
 export interface RoleDD {
-  id: number;
-  name: string;
+  value: number;
+  label: string;
 }
