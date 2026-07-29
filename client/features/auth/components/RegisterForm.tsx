@@ -8,13 +8,17 @@ import {
   FieldLabel,
   Input,
 } from "@/components/ui";
-import { AUTH_CONTENT, REGISTER_CONTENT } from "../constatnts/auth.constants";
+import {
+  AUTH_CONTENT,
+  PASSWORD_RULES,
+  REGISTER_CONTENT,
+} from "../constatnts/auth.constants";
 import { PasswordInput } from "./PasswordInput";
 import Link from "next/link";
 import { ROUTES } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useRegister } from "../hooks/useRegister";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { RegiserFormValues, registerSchema } from "../schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { appToast } from "@/lib/toast";
@@ -22,16 +26,24 @@ import { getErrorMessage } from "@/lib/error-message";
 import { cn, getDeviceInfo } from "@/lib/utils";
 import {
   Building2,
+  CircleCheck,
+  CircleX,
   LoaderCircle,
   LockKeyhole,
   Mail,
   User,
   UserPlus,
 } from "lucide-react";
+import { useState } from "react";
+import { CheckType, PasswordRequirement } from "../types/auth.type";
+
+
 
 export function RegisterForm() {
   const router = useRouter();
   const registerMutation = useRegister();
+
+  const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<RegiserFormValues>({
     resolver: zodResolver(registerSchema),
@@ -43,6 +55,37 @@ export function RegisterForm() {
       deviceInfo: getDeviceInfo(),
     },
   });
+
+  const password = useWatch({
+    control: form.control,
+    name: "password",
+  });
+
+  const check: CheckType = {
+    minLength: password.length >= PASSWORD_RULES.minLength,
+    uppercase: PASSWORD_RULES.uppercase.test(password),
+    number: PASSWORD_RULES.number.test(password),
+    symbol: PASSWORD_RULES.symbol.test(password),
+  };
+
+  const passwordRequirements: PasswordRequirement[] = [
+    {
+      label: "Password must be atleast 8 character",
+      valid: check.minLength,
+    },
+    {
+      label: "Password must contain one uppercase",
+      valid: check.uppercase,
+    },
+    {
+      label: "Password must contain one number",
+      valid: check.number,
+    },
+    {
+      label: "Password must contain one symbol",
+      valid: check.symbol,
+    },
+  ];
 
   const onSubmit = (values: RegiserFormValues) => {
     registerMutation.mutate(values, {
@@ -147,17 +190,41 @@ export function RegisterForm() {
             {AUTH_CONTENT.PASSWORD}
           </FieldLabel>
 
-          <FieldContent>
+          <FieldContent className="relative">
             <PasswordInput
               id="password"
               autoComplete="new-password"
               placeholder="Enter your password"
               className="h-12"
               {...form.register("password")}
+              onFocus={() => setOpen(true)}
+              onBlur={() => setOpen(false)}
+              onMouseEnter={() => setOpen(true)}
+              onMouseLeave={() => setOpen(false)}
             />
-
-            <FieldError errors={[form.formState.errors.password]} />
+            {open && (
+              <div className="absolute bg-card top-15 left-5 p-3 rounded-md z-100 text-xs text-danger grid gap-2 shadow-lg">
+                {passwordRequirements.map((requirement) => (
+                  <p
+                    key={requirement.label}
+                    className={cn(
+                      "flex gap-1 items-center",
+                      requirement.valid && "text-success",
+                    )}
+                  >
+                    {requirement.valid ? (
+                      <CircleCheck aria-hidden="true" className="size-3" />
+                    ) : (
+                      <CircleX aria-hidden="true" className="size-3" />
+                    )}
+                    {requirement.label}
+                  </p>
+                ))}
+              </div>
+            )}
           </FieldContent>
+
+          <FieldError errors={[form.formState.errors.password]} />
         </Field>
 
         <Button

@@ -79,3 +79,16 @@ export interface AcceptInvitationRequest {
   name: string;
   password: string;
 }
+
+// For password check
+export type CheckType = {
+  minLength: boolean;
+  uppercase: boolean;
+  number: boolean;
+  symbol: boolean;
+};
+
+export type PasswordRequirement = {
+  label: string;
+  valid: boolean;
+};

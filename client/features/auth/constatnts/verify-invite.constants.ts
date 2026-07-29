@@ -47,4 +47,9 @@ export const VERIFY_INVITATION_CONTENT = {
   SUCCESS_TITLE: "Welcome to the Team!",
   SUCCESS_DESCRIPTION:
     "Your account has been created successfully and you've joined your organization. You can now sign in and start using Maintix.",
-};
+
+  // Missing Token
+  MISSING_TOKEN_TITLE: "Invitation Link Not Found",
+  MISSING_TOKEN_DESCRIPTION:
+    "The invitation link is missing or incomplete. Please use the invitation link provided in your email or request a new invitation from your organization administrator if needed.",
+} as const;

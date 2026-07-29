@@ -31,21 +31,13 @@ import { useResetPassword } from "../hooks/useResetPassword";
 import { ROUTES } from "@/constants";
 import { getErrorMessage } from "@/lib/error-message";
 import { cn } from "@/lib/utils";
-import { ResetPasswordRequest } from "../types/auth.type";
+import {
+  CheckType,
+  PasswordRequirement,
+  ResetPasswordRequest,
+} from "../types/auth.type";
 import { appToast } from "@/lib/toast";
 import { useEffect, useState } from "react";
-
-export type CheckType = {
-  minLength: boolean;
-  uppercase: boolean;
-  number: boolean;
-  symbol: boolean;
-};
-
-export type PasswordRequirement = {
-  label: string;
-  valid: boolean;
-};
 
 export function ResetPassword() {
   const resetPasswordMutation = useResetPassword();
