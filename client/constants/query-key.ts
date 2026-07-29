@@ -21,4 +21,8 @@ export const QUERY_KEYS = {
     get_invitations: ["get-invitations"],
     verify_invitation: ["verify-invitation"],
   },
+
+  dashboard: {
+    get_dashboard: ["get-dashboard"],
+  },
 } as const;

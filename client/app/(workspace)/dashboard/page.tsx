@@ -1,3 +1,9 @@
-export default function Dashboard() {
-  return <div>Dashboard</div>;
+export const metadata = {
+  title: "Dashboard | Maintix",
+};
+
+import { Dashboard } from "@/features/dashboard";
+
+export default function DashboardPage() {
+  return <Dashboard />;
 }
