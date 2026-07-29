@@ -62,7 +62,7 @@ export function AppHeader() {
   };
 
   return (
-    <div className="bg-background shadow-xs sticky top-0">
+    <div className="bg-background shadow-xs sticky top-0 z-100">
       <div className="flex py-2 px-4 justify-between items-center">
         <div>
           <SidebarTrigger />

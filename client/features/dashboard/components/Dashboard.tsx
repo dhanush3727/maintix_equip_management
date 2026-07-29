@@ -1,89 +1,60 @@
 "use client";
 
-import { useAuth } from "@/hooks";
 import { useGetDashboard } from "../hooks/useGetDashboard";
-import { getToday } from "../utils/dashboard.util";
-import { DASHBOARD_CONTENT } from "../constants/dashboard.constant";
-import { Separator, Skeleton } from "@/components/ui";
+import {
+  DEFAULT_BREAKDOWN_TREND,
+  DEFAULT_EQUIPMENT_STATUS,
+  DEFAULT_PM_TASK_COMPLETION,
+  DEFAULT_SUMMARY,
+} from "../constants/dashboard.constant";
+import { Separator } from "@/components/ui";
+import { Header } from "./Header";
+import { SummaryCounts } from "./SummayCounts";
+import { EquipmentStatusChart } from "./EquipmentStatusChart";
+import { BreakdownTrendChart } from "./BreakdownTrendChart";
+import { PmCompletionChart } from "./PmCompletionChart";
 
 export function Dashboard() {
   const { data: dashboard, isLoading: isDashboard } = useGetDashboard();
-  const { user, isLoading: isUser } = useAuth();
-  const { day, month_date, year } = getToday();
 
-  const summary = dashboard?.data?.summary;
+  const summary = dashboard?.data?.summary ?? DEFAULT_SUMMARY;
+  const equipmentStatus =
+    dashboard?.data?.equipmentStatus ?? DEFAULT_EQUIPMENT_STATUS;
 
-  const headerCount = [
-    {
-      title:
-        summary?.todayDue === 0
-          ? DASHBOARD_CONTENT.HEADER_NO_TASK_LABEL
-          : DASHBOARD_CONTENT.HEADER_TASK_LABEL,
-      count: summary?.todayDue,
-    },
+  const breakdownTrend =
+    dashboard?.data?.breakdownTrend ?? DEFAULT_BREAKDOWN_TREND;
 
-    {
-      title:
-        summary?.overdue === 0
-          ? DASHBOARD_CONTENT.HEADER_NO_OVERDUE_LABEL
-          : DASHBOARD_CONTENT.HEADER_OVERDUE_LABEL,
-      count: summary?.overdue,
-    },
-
-    {
-      title:
-        summary?.openBreakdown === 0
-          ? DASHBOARD_CONTENT.HEADER_NO_BREAKDOWN_LABEL
-          : DASHBOARD_CONTENT.HEADER_BREAKDOWN_LABEL,
-      count: summary?.openBreakdown,
-    },
-  ];
-
-  const summaryCount = [
-    {
-      title: 
-    }
-  ]
+  const pmTaskCompletion =
+    dashboard?.data?.pmTaskCompletion ?? DEFAULT_PM_TASK_COMPLETION;
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="space-y-1">
-          <div className="text-sm text-muted-foreground/50 flex gap-3">
-            <p>{day.toUpperCase()}</p>
-            <p>{month_date.toUpperCase()},</p>
-            <p>{year}</p>
-          </div>
+      <Header summary={summary} isDashboard={isDashboard} />
 
-          <div className="flex gap-1 text-2xl font-semibold">
-            <h1>{DASHBOARD_CONTENT.GREETINGS},</h1>
-            {isUser ? (
-              <Skeleton className="h-6 w-40 rounded-me" />
-            ) : (
-              <h1>{user?.name}</h1>
-            )}
-          </div>
-
-          <div className="flex gap-1 text-xs text-muted-foreground sm:text-sm">
-            {isDashboard ? (
-              <>
-                <Skeleton className="h-5 w-24 rounded-sm" />
-                <Skeleton className="h-5 w-20 rounded-sm" />
-                <Skeleton className="h-5 w-32 rounded-sm" />
-              </>
-            ) : (
-              headerCount.map((item) => (
-                <p key={item.title}>
-                  {item.count === 0
-                    ? item.title
-                    : `${item.count} ${item.title}`}
-                </p>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
       <Separator className={"border"} />
+
+      <SummaryCounts summary={summary} isDashboard={isDashboard} />
+
+      <Separator className={"border"} />
+
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <EquipmentStatusChart
+          equipmentStatus={equipmentStatus}
+          isDashboard={isDashboard}
+        />
+
+        <BreakdownTrendChart
+          breakdown={breakdownTrend}
+          isDashboard={isDashboard}
+        />
+      </div>
+
+      <div>
+        <PmCompletionChart
+          pmTasks={pmTaskCompletion}
+          isDashboard={isDashboard}
+        />
+      </div>
     </div>
   );
 }
