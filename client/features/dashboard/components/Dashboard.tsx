@@ -2,6 +2,7 @@
 
 import { useGetDashboard } from "../hooks/useGetDashboard";
 import {
+  DEFAULT_BREAKDOWN_PRIORITY,
   DEFAULT_BREAKDOWN_TREND,
   DEFAULT_EQUIPMENT_STATUS,
   DEFAULT_PM_TASK_COMPLETION,
@@ -13,6 +14,7 @@ import { SummaryCounts } from "./SummayCounts";
 import { EquipmentStatusChart } from "./EquipmentStatusChart";
 import { BreakdownTrendChart } from "./BreakdownTrendChart";
 import { PmCompletionChart } from "./PmCompletionChart";
+import { BreakdownPriorityChart } from "./BreakdownPriorityChart";
 
 export function Dashboard() {
   const { data: dashboard, isLoading: isDashboard } = useGetDashboard();
@@ -26,6 +28,9 @@ export function Dashboard() {
 
   const pmTaskCompletion =
     dashboard?.data?.pmTaskCompletion ?? DEFAULT_PM_TASK_COMPLETION;
+
+  const breakdownPriority =
+    dashboard?.data?.breakdownPriority ?? DEFAULT_BREAKDOWN_PRIORITY;
 
   return (
     <div className="space-y-6">
@@ -49,9 +54,14 @@ export function Dashboard() {
         />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-6 lg:flex-row">
         <PmCompletionChart
           pmTasks={pmTaskCompletion}
+          isDashboard={isDashboard}
+        />
+
+        <BreakdownPriorityChart
+          breakdowns={breakdownPriority}
           isDashboard={isDashboard}
         />
       </div>

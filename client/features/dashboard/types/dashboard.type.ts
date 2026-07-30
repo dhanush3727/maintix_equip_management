@@ -26,7 +26,7 @@ export interface PmTaskCompletion {
 }
 
 export interface BreakdownPriority {
-  priority: string;
+  priority: BreakdownSeverity;
   count: number;
 }
 

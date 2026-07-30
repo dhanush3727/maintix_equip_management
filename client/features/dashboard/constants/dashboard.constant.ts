@@ -1,3 +1,4 @@
+import { BreakdownSeverity } from "@/types";
 import {
   BreakdownPriority,
   BreakdownTrend,
@@ -69,6 +70,13 @@ export const EQUIPMENT_STATUS_CHART_COLORS = {
   DECOMMISSIONED: "var(--chart-5)",
 } as const;
 
+export const BREAKDOWN_PRIORITY_CHART_COLORS = {
+  LOW: "var(--chart-3)",
+  MEDIUM: "var(--chart-4)",
+  HIGH: "var(--chart-1)",
+  CRITICAL: "var(--chart-5)",
+} as const;
+
 export const DEFAULT_SUMMARY: Summary = {
   totalEquipment: 0,
   todayDue: 0,
@@ -88,13 +96,4 @@ export const DEFAULT_BREAKDOWN_TREND: BreakdownTrend[] = [];
 
 export const DEFAULT_PM_TASK_COMPLETION: PmTaskCompletion[] = [];
 
-export const DEFAULT_BREAKDOWN_PRIORITY: BreakdownPriority[] = [
-  {
-    priority: "HIGH",
-    count: 2,
-  },
-  {
-    priority: "LOW",
-    count: 4,
-  },
-];
+export const DEFAULT_BREAKDOWN_PRIORITY: BreakdownPriority[] = [];
