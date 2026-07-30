@@ -6,6 +6,7 @@ import {
   DEFAULT_BREAKDOWN_TREND,
   DEFAULT_EQUIPMENT_STATUS,
   DEFAULT_PM_TASK_COMPLETION,
+  DEFAULT_RECENT_BREAKDOWN,
   DEFAULT_SUMMARY,
   DEFAULT_TODAY_TASK,
 } from "../constants/dashboard.constant";
@@ -17,6 +18,7 @@ import { BreakdownTrendChart } from "./BreakdownTrendChart";
 import { PmCompletionChart } from "./PmCompletionChart";
 import { BreakdownPriorityChart } from "./BreakdownPriorityChart";
 import { TodayTasksList } from "./TodayTasksList";
+import { RecentBreakdownList } from "./RecentBreakdownList";
 
 export function Dashboard() {
   const { data: dashboard, isLoading: isDashboard } = useGetDashboard();
@@ -36,6 +38,9 @@ export function Dashboard() {
 
   const todayTasks = dashboard?.data?.todayTasks ?? DEFAULT_TODAY_TASK;
 
+  const recentBreakdown =
+    dashboard?.data?.recentBreakdowns ?? DEFAULT_RECENT_BREAKDOWN;
+
   return (
     <div className="space-y-6">
       <Header summary={summary} isDashboard={isDashboard} />
@@ -48,7 +53,11 @@ export function Dashboard() {
 
       <div className="flex flex-col gap-6 lg:flex-row">
         <TodayTasksList pmTasks={todayTasks} isDashboard={isDashboard} />
-        <div className="flex-1"></div>
+
+        <RecentBreakdownList
+          breakdowns={recentBreakdown}
+          isDashboard={isDashboard}
+        />
       </div>
 
       <div className="flex flex-col gap-6 lg:flex-row">

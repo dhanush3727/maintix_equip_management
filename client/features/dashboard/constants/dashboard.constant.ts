@@ -1,8 +1,10 @@
+import { BreakdownSeverity, BreakdownStatus } from "@/types";
 import {
   BreakdownPriority,
   BreakdownTrend,
   EquipmentStatus,
   PmTaskCompletion,
+  RecentBreakdowns,
   Summary,
   TodayTasks,
 } from "../types/dashboard.type";
@@ -68,7 +70,11 @@ export const DASHBOARD_CONTENT = {
 
   BREAKDOWN_PRIORITY_TITLE: "Breakdown Priority",
 
-  TODAY_TASK_TITLE: "Today task",
+  TODAY_TASK_TITLE: "TODAY TASK",
+  TODAY_TASK_BUTTON: "All Task",
+
+  RECENT_BREAKDOWN_TITLE: "RECENT BREAKDOWN",
+  RECENT_BREAKDOWN_BUTTON: "All Breakdowns",
 
   NO_DATA: "No data available",
 } as const;
@@ -110,3 +116,5 @@ export const DEFAULT_PM_TASK_COMPLETION: PmTaskCompletion[] = [];
 export const DEFAULT_BREAKDOWN_PRIORITY: BreakdownPriority[] = [];
 
 export const DEFAULT_TODAY_TASK: TodayTasks[] = [];
+
+export const DEFAULT_RECENT_BREAKDOWN: RecentBreakdowns[] = [];

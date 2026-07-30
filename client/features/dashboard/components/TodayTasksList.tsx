@@ -5,6 +5,7 @@ import {
   AvatarFallback,
   Badge,
   Button,
+  Loading,
   Separator,
   Tooltip,
   TooltipContent,
@@ -29,8 +30,8 @@ export function TodayTasksList({ pmTasks, isDashboard }: TodayTasksListProps) {
 
   return (
     <div className="flex-1 space-y-2">
-      <div className="flex justify-between">
-        <p className="text-base font-semibold text-muted-foreground">
+      <div className="flex justify-between items-center">
+        <p className="text-sm font-semibold text-muted-foreground/50">
           {DASHBOARD_CONTENT.TODAY_TASK_TITLE}
         </p>
 
@@ -39,12 +40,16 @@ export function TodayTasksList({ pmTasks, isDashboard }: TodayTasksListProps) {
           className={"text-primary"}
           onClick={() => router.push(ROUTES.PREVENTIVE_MAINTENANCE)}
         >
-          All tasks
+          {DASHBOARD_CONTENT.TODAY_TASK_BUTTON}
           <ArrowRight className="size-4" />
         </Button>
       </div>
 
-      {hasData ? (
+      {isDashboard ? (
+        <div className="flex justify-center">
+          <Loading />
+        </div>
+      ) : hasData ? (
         <div className="space-y-4">
           {pmTasks.slice(0, 3).map((task) => (
             <div key={task.id}>

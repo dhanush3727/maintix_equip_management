@@ -32,6 +32,7 @@ import { getErrorMessage } from "@/lib/error-message";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks";
+import { clearToken } from "@/lib";
 
 export function AppHeader() {
   const logoutMutation = useLogout();
@@ -47,6 +48,7 @@ export function AppHeader() {
       onSuccess: (data) => {
         appToast.success(data.message);
         clearUser();
+        clearToken();
         queryClient.removeQueries();
         router.replace(ROUTES.LOGIN);
       },
@@ -62,7 +64,7 @@ export function AppHeader() {
   };
 
   return (
-    <div className="bg-background shadow-xs sticky top-0 z-100">
+    <div className="bg-background shadow-xs sticky top-0 z-10">
       <div className="flex py-2 px-4 justify-between items-center">
         <div>
           <SidebarTrigger />
