@@ -49,7 +49,9 @@ export function EquipmentStatusChart({
 
   return (
     <div className="h-80 shadow-sm rounded-md bg-background flex flex-col lg:flex-1 justify-center items-center">
-      <p className="text-base font-semibold pt-2">Equipment Status</p>
+      <p className="text-base font-semibold pt-2">
+        {DASHBOARD_CONTENT.EQUIPMENT_STATUS_TITLE}
+      </p>
       {isDashboard ? (
         <Loading />
       ) : hasData ? (
@@ -75,7 +77,7 @@ export function EquipmentStatusChart({
         </ResponsiveContainer>
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-          No data available
+          {DASHBOARD_CONTENT.NO_DATA}
         </div>
       )}
     </div>

@@ -32,7 +32,7 @@ export interface BreakdownPriority {
 
 export interface TodayTasks {
   id: number;
-  title: number;
+  title: string;
   equipmentId: number;
   equipment: string;
   assignedTo: number;

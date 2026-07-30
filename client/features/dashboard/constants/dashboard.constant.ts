@@ -1,10 +1,10 @@
-import { BreakdownSeverity } from "@/types";
 import {
   BreakdownPriority,
   BreakdownTrend,
   EquipmentStatus,
   PmTaskCompletion,
   Summary,
+  TodayTasks,
 } from "../types/dashboard.type";
 
 export const DASHBOARD_ENDPOINT = {
@@ -55,11 +55,22 @@ export const DASHBOARD_CONTENT = {
   SUMMARY_OVERDUE_LABEL: "OVERDUE",
   SUMMARY_BREAKDOWN_LABEL: "OPEN BREAKDOWN",
 
+  EQUIPMENT_STATUS_TITLE: "Equipment Status",
   EQUIPMENT_STATUS_ACTIVE: "Active",
   EQUIPMENT_STATUS_INACTIVE: "In Active",
   EQUIPMENT_STATUS_MAINTENANCE: "Under Maintenance",
   EQUIPMENT_STATUS_BREAKDOWN: "Breakdown",
   EQUIPMENT_STATUS_DECOMMISSIONED: "Decommissioned",
+
+  BREAKDOWN_TREND_TITLE: "Breakdown Trend",
+
+  PM_TASK_COMPLETION_TITLE: "PM Task Completion",
+
+  BREAKDOWN_PRIORITY_TITLE: "Breakdown Priority",
+
+  TODAY_TASK_TITLE: "Today task",
+
+  NO_DATA: "No data available",
 } as const;
 
 export const EQUIPMENT_STATUS_CHART_COLORS = {
@@ -97,3 +108,5 @@ export const DEFAULT_BREAKDOWN_TREND: BreakdownTrend[] = [];
 export const DEFAULT_PM_TASK_COMPLETION: PmTaskCompletion[] = [];
 
 export const DEFAULT_BREAKDOWN_PRIORITY: BreakdownPriority[] = [];
+
+export const DEFAULT_TODAY_TASK: TodayTasks[] = [];

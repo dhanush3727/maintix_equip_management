@@ -1,6 +1,9 @@
 import { Loading } from "@/components/ui";
 import { BreakdownPriority } from "../types/dashboard.type";
-import { BREAKDOWN_PRIORITY_CHART_COLORS } from "../constants/dashboard.constant";
+import {
+  BREAKDOWN_PRIORITY_CHART_COLORS,
+  DASHBOARD_CONTENT,
+} from "../constants/dashboard.constant";
 import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 export interface BreakdownPriorityProps {
@@ -20,7 +23,9 @@ export function BreakdownPriorityChart({
   const hasData = chartData.some((item) => item.count > 0);
   return (
     <div className="h-80 shadow-sm rounded-md bg-background flex flex-col lg:flex-1 justify-center items-center">
-      <p className="text-base font-semibold pt-2">Breakdown Priority</p>
+      <p className="text-base font-semibold pt-2">
+        {DASHBOARD_CONTENT.BREAKDOWN_PRIORITY_TITLE}
+      </p>
       {isDashboard ? (
         <Loading />
       ) : hasData ? (
@@ -44,7 +49,7 @@ export function BreakdownPriorityChart({
         </ResponsiveContainer>
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-          No data available
+          {DASHBOARD_CONTENT.NO_DATA}
         </div>
       )}
     </div>

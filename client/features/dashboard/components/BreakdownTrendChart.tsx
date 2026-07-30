@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { DASHBOARD_CONTENT } from "../constants/dashboard.constant";
 
 export interface BreakdownTrendProps {
   breakdown: BreakdownTrend[];
@@ -31,7 +32,9 @@ export function BreakdownTrendChart({
 
   return (
     <div className="h-80 shadow-sm rounded-md bg-background flex flex-col lg:flex-1 justify-center items-center">
-      <p className="text-base font-semibold pt-2">Breakdown Trend</p>
+      <p className="text-base font-semibold pt-2">
+        {DASHBOARD_CONTENT.BREAKDOWN_TREND_TITLE}
+      </p>
       {isDashboard ? (
         <Loading />
       ) : hasData ? (
@@ -65,7 +68,7 @@ export function BreakdownTrendChart({
         </ResponsiveContainer>
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-          No data available
+          {DASHBOARD_CONTENT.NO_DATA}
         </div>
       )}
     </div>
