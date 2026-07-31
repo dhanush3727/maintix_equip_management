@@ -25,4 +25,8 @@ export const QUERY_KEYS = {
   dashboard: {
     get_dashboard: ["get-dashboard"],
   },
+
+  equipment_type: {
+    get_list: ["get-equipment-type"],
+  },
 } as const;

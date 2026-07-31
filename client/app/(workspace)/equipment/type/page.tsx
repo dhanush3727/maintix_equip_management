@@ -1,3 +1,9 @@
-export default function EquipmentType() {
-  return <>Equipment Type</>;
+export const metadata = {
+  title: "Equipment Type | Maintix",
+};
+
+import { EquipmentType } from "@/features/equipment";
+
+export default function EquipmentTypePage() {
+  return <EquipmentType />;
 }

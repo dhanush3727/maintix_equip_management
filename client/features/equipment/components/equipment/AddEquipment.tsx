@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui";
-import { EQUIPMENT_CONTENT } from "../constants/equipment.constant";
+import { EQUIPMENT_CONTENT } from "../../constants/equipment.constant";
 
 export function AddEquipment() {
   return (

@@ -110,7 +110,6 @@ export class EquipmentService {
           code: true,
           description: true,
           isActive: true,
-          organizationId: true,
         },
       }),
 
