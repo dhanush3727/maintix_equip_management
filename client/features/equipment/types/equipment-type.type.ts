@@ -1,5 +1,3 @@
-import { Pagination } from "@/types";
-
 export interface AddEquipmentTypeRequest {
   name: string;
   code?: string;

@@ -20,3 +20,4 @@ export * from "./sonner/sonner";
 export * from "./progress/progress";
 export * from "./search-select/search-select";
 export * from "./loading/loading";
+export * from "./select/select";

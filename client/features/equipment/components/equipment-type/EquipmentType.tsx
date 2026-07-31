@@ -1,103 +1,103 @@
 "use client";
 
-import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Skeleton,
-} from "@/components/ui";
-import { Pencil } from "lucide-react";
+import { Button, Dialog, DialogContent, DialogTrigger } from "@/components/ui";
 import { useGetEquipmentTypes } from "../../hooks/equipment-type/useGetEquipmentTypes";
 import { EQUIPMENT_TYPE_CONTENT } from "../../constants/equipment-type.constant";
+import { EquipmentTypeList } from "./EquipmentTypeList";
+import { EmptyState } from "./EmptyState";
+import { ErrorState } from "./ErrorState";
+import { SkeletonList } from "./SkeletonList";
+import { useState } from "react";
+import { useDebounce } from "@/hooks";
+import { EquipmentTypeParams } from "../../types/equipment-type.type";
+import { FilterItems } from "./FilterItems";
+import { Plus } from "lucide-react";
+import { AddEquipmentType } from "./AddEquipmentType";
 
 export function EquipmentType() {
-  const { data, isLoading, isError } = useGetEquipmentTypes({
-    page: 1,
-    limit: 20,
+  const [search, setSearch] = useState<string>("");
+  const [sortBy, setSortyBy] = useState<EquipmentTypeParams["sortBy"] | "">("");
+  const [order, setOrder] = useState<EquipmentTypeParams["order"]>("desc");
+  const [addTypeOpen, setAddTypeOpen] = useState<boolean>(false);
+
+  const debouncedSearch = useDebounce(search, 500);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useGetEquipmentTypes({
+    search: debouncedSearch,
+    sortBy: sortBy || undefined,
+    order,
   });
 
-  const equipmentTypes = data?.data ?? [];
+  const equipmentTypes = data?.pages.flatMap((page) => page.data ?? []) ?? [];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-      {isLoading ? (
-        Array.from({ length: 20 }).map((_, i) => (
-          <Card key={i} className="flex h-full flex-col">
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 space-y-2">
-                  <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-3 w-20" />
-                </div>
+    <div className="space-y-6">
+      <FilterItems
+        search={search}
+        setSearch={setSearch}
+        sortBy={sortBy}
+        setSortyBy={setSortyBy}
+        order={order}
+        setOrder={setOrder}
+      />
 
-                <Skeleton className="size-8 shrink-0 rounded-md" />
-              </div>
-
-              <div className="pt-2">
-                <Skeleton className="h-5 w-14 rounded-full" />
-              </div>
-            </CardHeader>
-
-            {/* Description */}
-            <CardContent className="flex-1">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-[90%]" />
-                <Skeleton className="h-4 w-[70%]" />
-              </div>
-            </CardContent>
-          </Card>
-        ))
-      ) : isError ? (
-        <div>
-          <h1>{EQUIPMENT_TYPE_CONTENT.NO_DATA}</h1>
-        </div>
-      ) : (
-        equipmentTypes.map((item) => (
-          <Card
-            key={item.id}
-            className="flex h-full flex-col transition-shadow hover:shadow-md"
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 space-y-1">
-                  <CardTitle className="truncate text-base font-semibold">
-                    {item.name}
-                  </CardTitle>
-
-                  <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {item.code}
-                  </p>
-                </div>
-
-                <Button
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="sm:hidden">
+          <Dialog open={addTypeOpen} onOpenChange={setAddTypeOpen}>
+            <DialogTrigger
+              render={
+                <button
                   type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
-                  aria-label="Edit Motor equipment type"
+                  className="flex w-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-8 text-muted-foreground transition-colors hover:bg-muted/50"
                 >
-                  <Pencil aria-hidden="true" className="size-4" />
-                </Button>
-              </div>
+                  <Plus className="size-10" aria-hidden="true" />
 
-              <div className="pt-2">
-                <Badge variant={item.isActive ? "success" : "destructive"}>
-                  {item.isActive ? "Active" : "Inactive"}
-                </Badge>
-              </div>
-            </CardHeader>
+                  <span className="mt-2 text-sm font-medium">
+                    {EQUIPMENT_TYPE_CONTENT.TITLE}
+                  </span>
+                </button>
+              }
+            />
 
-            <CardContent className="flex-1">
-              <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
-                {item.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))
+            <DialogContent>
+              <AddEquipmentType onClose={() => setAddTypeOpen(false)} />
+            </DialogContent>
+          </Dialog>
+        </div>
+        {isLoading ? (
+          Array.from({ length: 8 }).map((_, i) => <SkeletonList key={i} />)
+        ) : isError ? (
+          <ErrorState />
+        ) : equipmentTypes.length === 0 ? (
+          <EmptyState />
+        ) : (
+          equipmentTypes.map((item) => (
+            <EquipmentTypeList key={item.id} item={item} />
+          ))
+        )}
+      </div>
+
+      {hasNextPage && (
+        <div className="flex justify-center">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="min-w-32"
+          >
+            {isFetchingNextPage
+              ? EQUIPMENT_TYPE_CONTENT.BUTTON.LOADING_MORE
+              : EQUIPMENT_TYPE_CONTENT.BUTTON.LOAD_MORE}
+          </Button>
+        </div>
       )}
     </div>
   );

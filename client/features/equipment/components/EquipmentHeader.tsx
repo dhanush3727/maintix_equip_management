@@ -37,7 +37,7 @@ export function EquipmentHeader() {
     openDialog === EQUIPMENT_DIALOG.EQUIPMENT_TYPE;
 
   return (
-    <div className="p-2 mb-3 bg-background border border-border/60 shadow-sm rounded-md flex justify-center sm:justify-between">
+    <div className="p-2 mb-3 bg-background border border-border/60 shadow-sm rounded-md flex justify-start sm:justify-between">
       <div className="flex gap-3">
         {EQUIPMENT_NAVIGATION.map((item) => {
           const isActive = pathname === item.url;

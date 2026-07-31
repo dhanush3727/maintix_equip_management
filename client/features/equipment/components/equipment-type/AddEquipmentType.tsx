@@ -84,6 +84,7 @@ export function AddEquipmentType({ onClose }: AddEquipmentTypeProp) {
             <Input
               id="name"
               type="text"
+              autoComplete="off"
               placeholder={EQUIPMENT_TYPE_CONTENT.FIELD.NAME_PLACEHOLDER}
               {...form.register("name")}
             />
@@ -102,6 +103,7 @@ export function AddEquipmentType({ onClose }: AddEquipmentTypeProp) {
             <Input
               id="code"
               type="text"
+              autoComplete="off"
               placeholder={EQUIPMENT_TYPE_CONTENT.FIELD.CODE_PLACEHOLDER}
               {...form.register("code")}
             />
