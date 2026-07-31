@@ -24,6 +24,10 @@ export function NavItem({ items }: NavItemProp) {
   const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
 
+  const isActive = (url: string): boolean => {
+    return pathname === url || pathname.startsWith(`${url}/`);
+  };
+
   return (
     <SidebarMenu>
       {items.map((item) => {
@@ -43,7 +47,7 @@ export function NavItem({ items }: NavItemProp) {
                 />
               }
               className="m-2 group-data-[collapsible=icon]:m-0"
-              isActive={pathname === item.url}
+              isActive={isActive(item.url)}
               tooltip={item.title}
             >
               <Icon />

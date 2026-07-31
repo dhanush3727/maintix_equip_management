@@ -2,19 +2,25 @@ export const ROUTES = {
   HOME: "/",
   DASHBOARD: "/dashboard",
   LOGIN: "/login",
+
   ORGANIZATION: "/organization",
   LOCATION: "/organization/location",
   DEPARTMENT: "/organization/department",
   INVITE_USER: "/organization/invite-user",
+
   REGISTER: "/register",
   EMAIL_VERIFICATION: "/email-verification",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+
+  EQUIPMENT: {
+    LIST: "/equipment",
+    TYPE: "/equipment/type",
+  },
+
   ACCOUNT: "/account",
   BREAKDOWN: "/breakdown",
   CHECKLIST: "/checklist",
-  EQUIPMENT_LIST: "/equipment-list",
-  EQUIPMENT_TYPE: "/equipment-type",
   PREVENTIVE_MAINTENANCE: "/preventive-maintenance",
   CHECK_EMAIL: "/check-email",
   CHECK_VERIFY_EMAIL: "/check-verify-email",

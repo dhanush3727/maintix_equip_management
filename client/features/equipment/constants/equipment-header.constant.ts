@@ -4,4 +4,4 @@ export const EQUIPMENT_HEADER_CONTENT = {
 
   ADD_EQUIPMENT: "Add Equipment",
   ADD_EQUIIPMENT_TYPE: "Add Equipment Type",
-};
+} as const;

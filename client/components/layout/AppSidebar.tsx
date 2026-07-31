@@ -30,7 +30,7 @@ export const navItems = [
   {
     title: "Equipment",
     icon: Cog,
-    url: ROUTES.EQUIPMENT_LIST,
+    url: ROUTES.EQUIPMENT.LIST,
   },
   {
     title: "Checklist",
