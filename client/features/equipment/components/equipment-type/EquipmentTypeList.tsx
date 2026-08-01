@@ -7,15 +7,22 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
 } from "@/components/ui";
 import { Pencil } from "lucide-react";
 import { EquipmentTypeData } from "../../types/equipment-type.type";
+import { EditEquipmentType } from "./EditEquipmentType";
+import { useState } from "react";
 
 export interface EquipmentTypeListProps {
   item: EquipmentTypeData;
 }
 
 export function EquipmentTypeList({ item }: EquipmentTypeListProps) {
+  const [editTypeOpen, setEditTypeOpen] = useState<boolean>(false);
+
   return (
     <>
       <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
@@ -31,15 +38,28 @@ export function EquipmentTypeList({ item }: EquipmentTypeListProps) {
               </p>
             </div>
 
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
-              aria-label="Edit Motor equipment type"
-            >
-              <Pencil aria-hidden="true" className="size-4" />
-            </Button>
+            <Dialog open={editTypeOpen} onOpenChange={setEditTypeOpen}>
+              <DialogTrigger
+                render={
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
+                    aria-label="Edit Motor equipment type"
+                  >
+                    <Pencil aria-hidden="true" className="size-4" />
+                  </Button>
+                }
+              />
+
+              <DialogContent>
+                <EditEquipmentType
+                  id={item.id}
+                  onClose={() => setEditTypeOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
 
           <div className="pt-2">

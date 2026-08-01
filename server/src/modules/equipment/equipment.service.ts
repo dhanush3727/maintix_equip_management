@@ -144,7 +144,13 @@ export class EquipmentService {
 
     const equipmentType = await this.prisma.equipmentType.findFirst({
       where: { id, organizationId },
-      select: { id: true, name: true, code: true, description: true },
+      select: {
+        id: true,
+        name: true,
+        code: true,
+        description: true,
+        isActive: true,
+      },
     });
 
     if (!equipmentType) {

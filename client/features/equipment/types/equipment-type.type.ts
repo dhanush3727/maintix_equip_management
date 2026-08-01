@@ -19,3 +19,15 @@ export interface EquipmentTypeParams {
   sortBy?: "name" | "code";
   order?: "asc" | "desc";
 }
+
+export interface EquipmentTypeDropdownData {
+  id: number;
+  name: string;
+  code: string;
+}
+
+export interface EditEquipmentTypeRequest {
+  name?: string;
+  code?: string;
+  description?: string;
+}

@@ -1,11 +1,21 @@
 export const EQUIPMENT_TYPE_ENDPOINTS = {
   CREATE: "equipment/equipment-type",
   GET_LIST: "equipment/equipment-type",
+  GET_DROPDOWN: "equipment/equipment-type/dropdown",
+  GET_BY_ID: (id: number) => `equipment/equipment-type/${id}`,
+  UPDATE: (id: number) => `equipment/equipment-type/${id}`,
+  ACTIVATE: (id: number) => `equipment/equipment-type/${id}/activate`,
+  DEACTIVATE: (id: number) => `equipment/equipment-type/${id}/deactivate`,
 };
 
 export const EQUIPMENT_TYPE_CONTENT = {
   TITLE: "Add Equipment Type",
   DESCRIPTION: "Create a new equipment type for your organization.",
+
+  UPDATE: {
+    TITLE: "Update Equipment Type",
+    DESCRIPITON: "Update the equipment type details and save your changes.",
+  },
 
   FILTERS: {
     SEARCH: "Search Equipment type...",
@@ -39,6 +49,12 @@ export const EQUIPMENT_TYPE_CONTENT = {
     CANCEL: "Cancel",
     LOAD_MORE: "Click to load more",
     LOADING_MORE: "Loading More...",
+    UPDATE: "Update",
+  },
+
+  TOGGLE: {
+    ACTIVE: "Active",
+    INACTIVE: "Inactive",
   },
 
   NO_DATA: {

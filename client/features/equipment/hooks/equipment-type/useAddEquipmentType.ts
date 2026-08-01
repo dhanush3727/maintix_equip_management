@@ -12,6 +12,10 @@ export const useAddEquipmentType = () => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.equipment_type.get_list,
       });
+
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.equipment_type.get_dropdown,
+      });
     },
   });
 };

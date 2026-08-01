@@ -25,7 +25,7 @@ import { useForm } from "react-hook-form";
 import {
   addEquipmentTypeSchema,
   AddEquipmentTypeValues,
-} from "../../schemas/add-equipment-type.schema";
+} from "../../schemas/equipment-type/add-equipment-type.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddEquipmentType } from "../../hooks/equipment-type/useAddEquipmentType";
 import { appToast, getErrorMessage } from "@/lib";
