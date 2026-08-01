@@ -35,13 +35,13 @@ export const EQUIPMENT_TYPE_CONTENT = {
 
   FIELD: {
     NAME_LABEL: "Type Name",
-    NAME_PLACEHOLDER: "e.g., Pump",
+    NAME_PLACEHOLDER: "Ex: Pump",
 
     CODE_LABEL: "Code",
-    CODE_PLACEHOLDER: "e.g., PUMP",
+    CODE_PLACEHOLDER: "Ex: PUMP",
 
     DESCRIPTION_LABEL: "Description",
-    DESCRIPTION_PLACEHOLDER: "e.g., Equipment used for fluid transfer",
+    DESCRIPTION_PLACEHOLDER: "Ex: Equipment used for fluid transfer",
   },
 
   BUTTON: {

@@ -1,13 +1,13 @@
 "use client";
 
-import { Button, Dialog, DialogContent, DialogTrigger } from "@/components/ui";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
 import { useGetEquipmentTypes } from "../../hooks/equipment-type/useGetEquipmentTypes";
 import { EQUIPMENT_TYPE_CONTENT } from "../../constants/equipment-type.constant";
 import { EquipmentTypeList } from "./EquipmentTypeList";
 import { EmptyState } from "./EmptyState";
 import { ErrorState } from "./ErrorState";
 import { SkeletonList } from "./SkeletonList";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@/hooks";
 import { EquipmentTypeParams } from "../../types/equipment-type.type";
 import { FilterItems } from "./FilterItems";
@@ -36,6 +36,39 @@ export function EquipmentType() {
   });
 
   const equipmentTypes = data?.pages.flatMap((page) => page.data ?? []) ?? [];
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const element = loadMoreRef.current;
+
+    if (!element || !hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        console.log("entries", entries);
+
+        console.log("entry", entry);
+
+        if (entry.isIntersecting) {
+          fetchNextPage();
+        }
+      },
+
+      // Start loading slightly before the user actually reaches the bottom.
+      {
+        rootMargin: "200px",
+      },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="space-y-6">
@@ -78,25 +111,17 @@ export function EquipmentType() {
         ) : equipmentTypes.length === 0 ? (
           <EmptyState />
         ) : (
-          equipmentTypes.map((item) => (
-            <EquipmentTypeList key={item.id} item={item} />
+          equipmentTypes.map((item, index) => (
+            <EquipmentTypeList key={index} item={item} />
           ))
         )}
       </div>
 
       {hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="min-w-32"
-          >
-            {isFetchingNextPage
-              ? EQUIPMENT_TYPE_CONTENT.BUTTON.LOADING_MORE
-              : EQUIPMENT_TYPE_CONTENT.BUTTON.LOAD_MORE}
-          </Button>
+        <div ref={loadMoreRef} className="flex h-10 justify-center">
+          <span>
+            {isFetchingNextPage && EQUIPMENT_TYPE_CONTENT.BUTTON.LOADING_MORE}
+          </span>
         </div>
       )}
     </div>
