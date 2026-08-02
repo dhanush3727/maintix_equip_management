@@ -40,7 +40,6 @@ export class CreateEquipmentDto {
   @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   serialNumber?: string;
 
   @ApiProperty({ example: 0 })
@@ -77,13 +76,11 @@ export class CreateEquipmentDto {
   @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   manufacturer?: string;
 
   @ApiPropertyOptional({ example: 'Model' })
   @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   model?: string;
 }

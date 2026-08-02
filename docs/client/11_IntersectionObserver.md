@@ -121,3 +121,5 @@ Old observer should be removed
     ↓
 disconnect()
 ```
+9. Summary:
+Watch the element at the bottom of my list, and when it gets within 200px of the viewport, fetch the next page—but only if another page exists and I am not already fetching one.

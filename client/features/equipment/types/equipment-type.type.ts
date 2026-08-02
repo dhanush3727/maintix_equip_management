@@ -21,9 +21,8 @@ export interface EquipmentTypeParams {
 }
 
 export interface EquipmentTypeDropdownData {
-  id: number;
-  name: string;
-  code: string;
+  value: number;
+  label: string;
 }
 
 export interface EditEquipmentTypeRequest {

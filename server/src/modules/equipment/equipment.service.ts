@@ -134,7 +134,12 @@ export class EquipmentService {
       select: { id: true, name: true, code: true },
     });
 
-    return equipmentTypes;
+    const formattedEquipmentTypes = equipmentTypes.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+
+    return formattedEquipmentTypes;
   }
   //#endregion
 
