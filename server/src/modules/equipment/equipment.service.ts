@@ -522,8 +522,23 @@ export class EquipmentService {
 
     const pagination = buildPaginationMeta(page, limit, total);
 
+    const formattedEquipments = equipments.map((item) => ({
+      id: item.id,
+      name: item.name,
+      code: item.code,
+      serialNumber: item.serialNumber,
+      status: item.status,
+      installedDate: item.installedDate,
+      warrantyExpiry: item.warrantyExpiry,
+      manufacturer: item.manufacturer,
+      model: item.model,
+      equipmentType: item.equipmentType.name,
+      location: item.location?.name,
+      department: item.department?.name,
+    }));
+
     return {
-      data: equipments,
+      data: formattedEquipments,
       pagination,
     };
   }

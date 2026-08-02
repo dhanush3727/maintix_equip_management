@@ -1,5 +1,6 @@
 export const EQUIPMENT_ENDPOINT = {
   CREATE: "equipment",
+  LIST: "equipment",
 };
 
 export const EQUIPMENT_CONTENT = {
@@ -50,9 +51,50 @@ export const EQUIPMENT_CONTENT = {
     MODEL_PLACEHOLDER: "e.g., SINAMICS G120",
   },
 
+  TABLE: {
+    EQUIPMENT_NAME: "Name",
+    EQUIPMENT_CODE: "Code",
+    EQUIPMENT_TYPE: "Equipment Type",
+    LOCATION_NAME: "Location",
+    DEPARTMENT_NAME: "Department",
+    STATUS_NAME: "Status",
+    ACTION: "Action",
+  },
+
   BUTTON: {
     SUBMIT: "Submit",
     CANCEL: "Cancel",
     UPDATE: "Update",
   },
 } as const;
+
+export const EQUIPMENT_TABLE_COLUMNS = [
+  {
+    key: "name",
+    label: EQUIPMENT_CONTENT.TABLE.EQUIPMENT_NAME,
+  },
+  {
+    key: "code",
+    label: EQUIPMENT_CONTENT.TABLE.EQUIPMENT_CODE,
+  },
+  {
+    key: "equipmentType",
+    label: EQUIPMENT_CONTENT.TABLE.EQUIPMENT_TYPE,
+  },
+  {
+    key: "location",
+    label: EQUIPMENT_CONTENT.TABLE.LOCATION_NAME,
+  },
+  {
+    key: "department",
+    label: EQUIPMENT_CONTENT.TABLE.DEPARTMENT_NAME,
+  },
+  {
+    key: "status",
+    label: EQUIPMENT_CONTENT.TABLE.STATUS_NAME,
+  },
+  {
+    key: "actions",
+    label: EQUIPMENT_CONTENT.TABLE.ACTION,
+  },
+] as const;

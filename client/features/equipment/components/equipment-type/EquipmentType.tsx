@@ -82,6 +82,7 @@ export function EquipmentType() {
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {/* Add Equipment field for mobile view */}
         <div className="sm:hidden">
           <Dialog open={addTypeOpen} onOpenChange={setAddTypeOpen}>
             <DialogTrigger
@@ -104,6 +105,7 @@ export function EquipmentType() {
             </DialogContent>
           </Dialog>
         </div>
+
         {isLoading ? (
           Array.from({ length: 8 }).map((_, i) => <SkeletonList key={i} />)
         ) : isError ? (

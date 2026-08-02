@@ -22,3 +22,4 @@ export * from "./search-select/search-select";
 export * from "./loading/loading";
 export * from "./select/select";
 export * from "./switch/switch";
+export * from "./table/table";

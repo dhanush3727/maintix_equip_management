@@ -98,7 +98,7 @@ export function EquipmentHeader() {
           />
 
           <DialogContent className={"w-[90vw] max-w-6xl"}>
-            <AddEquipment />
+            <AddEquipment onClose={() => setOpenDialog(null)} />
           </DialogContent>
         </Dialog>
       )}

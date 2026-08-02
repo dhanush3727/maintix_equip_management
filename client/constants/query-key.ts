@@ -31,4 +31,8 @@ export const QUERY_KEYS = {
     get_dropdown: ["get-equipment-type-dropdown"],
     get_by_id: ["get-equipment-type-by-id"],
   },
+
+  equipment: {
+    get_list: ["get-equipment"],
+  },
 } as const;

@@ -40,7 +40,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddEquipment } from "../../hooks/equipment/useAddEquipment";
 import { appToast, getErrorMessage } from "@/lib";
 
-export function AddEquipment() {
+interface AddEquipmentProps {
+  onClose: () => void;
+}
+
+export function AddEquipment({ onClose }: AddEquipmentProps) {
   const { data: equipmentType, isLoading: isEquipType } = useEquipmentTypeDD();
   const { data: organization, isLoading: isOrganization } = useOrganizationDD();
   const addEquipmentMutation = useAddEquipment();
@@ -58,18 +62,27 @@ export function AddEquipment() {
       locationId: 0,
       departmentId: 0,
       serialNumber: "",
-      installedDate: undefined,
-      warrantyExpiry: undefined,
+      installedDate: "",
+      warrantyExpiry: "",
       manufacturer: "",
       model: "",
     },
   });
 
-  const onSubmit = (paylod: EquipmentValues) => {
-    addEquipmentMutation.mutate(paylod, {
+  const onSubmit = () => {
+    const values = form.getValues();
+
+    const payload: EquipmentValues = {
+      ...values,
+      installedDate: values.installedDate || undefined,
+      warrantyExpiry: values.warrantyExpiry || undefined,
+    };
+
+    addEquipmentMutation.mutate(payload, {
       onSuccess: (data) => {
         appToast.success(data.message);
         form.reset();
+        onClose();
       },
 
       onError: (err) => {
