@@ -899,8 +899,8 @@ export class EquipmentService {
         model: true,
         equipmentType: {
           select: {
+            id: true,
             name: true,
-            code: true,
           },
         },
         location: {
@@ -920,7 +920,31 @@ export class EquipmentService {
 
     if (!equipment) throw new NotFoundException('Equipment not found');
 
-    return equipment;
+    const formattedEquipment = {
+      id: equipment.id,
+      name: equipment.name,
+      code: equipment.code,
+      serialNumber: equipment.serialNumber,
+      status: equipment.status,
+      installedDate: equipment.installedDate,
+      warrantyExpiry: equipment.warrantyExpiry,
+      manufacturer: equipment.manufacturer,
+      model: equipment.model,
+      equipmentType: {
+        value: equipment.equipmentType.id,
+        label: equipment.equipmentType.name,
+      },
+      location: {
+        value: equipment.location?.id,
+        label: equipment.location?.name,
+      },
+      department: {
+        value: equipment.department?.id,
+        label: equipment.department?.name,
+      },
+    };
+
+    return formattedEquipment;
   }
   //#endregion
 

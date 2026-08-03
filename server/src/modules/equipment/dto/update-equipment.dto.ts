@@ -3,7 +3,6 @@ import { Transform, Type } from 'class-transformer';
 import {
   IsDate,
   IsInt,
-  IsNotEmpty,
   IsOptional,
   IsPositive,
   IsString,
@@ -13,7 +12,6 @@ export class UpdateEquipmentDto {
   @ApiPropertyOptional({ example: 'Pump' })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
@@ -28,7 +26,6 @@ export class UpdateEquipmentDto {
   @ApiPropertyOptional({ example: 'EQ-1001' })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
@@ -42,27 +39,23 @@ export class UpdateEquipmentDto {
   @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   serialNumber?: string;
 
   @ApiPropertyOptional({ example: 0 })
   @IsInt()
   @IsOptional()
-  @IsNotEmpty()
   @IsPositive()
   equipmentTypeId?: number;
 
   @ApiPropertyOptional({ example: 0 })
   @IsInt()
   @IsOptional()
-  @IsNotEmpty()
   @IsPositive()
   locationId?: number;
 
   @ApiPropertyOptional({ example: 0 })
   @IsInt()
   @IsOptional()
-  @IsNotEmpty()
   @IsPositive()
   departmentId?: number;
 
@@ -82,13 +75,11 @@ export class UpdateEquipmentDto {
   @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   manufacturer?: string;
 
   @ApiPropertyOptional({ example: 'Model' })
   @Transform(({ value }: { value: string }) => value.trim().replace(/\s+/g, ''))
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   model?: string;
 }

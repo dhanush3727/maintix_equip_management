@@ -24,7 +24,15 @@ export function EquipmentHeader() {
 
   const [openDialog, setOpenDialog] = useState<EquipmentDialog>(null);
 
-  const isAdmin = user?.roles.some((role) => role.id === ROLE_IDS.ADMIN);
+  const canAccess = user?.roles.some(
+    (role) => role.id === ROLE_IDS.ADMIN || role.id === ROLE_IDS.MANAGER,
+  );
+
+  const visibleNavigation = EQUIPMENT_NAVIGATION.filter((item) => {
+    const isEquipType = item.url === ROUTES.EQUIPMENT.TYPE;
+
+    return !isEquipType || canAccess;
+  });
 
   const isEquipment = pathname === ROUTES.EQUIPMENT.LIST;
   const isEquipmentType = pathname === ROUTES.EQUIPMENT.TYPE;
@@ -39,7 +47,7 @@ export function EquipmentHeader() {
   return (
     <div className="p-2 mb-3 bg-background border border-border/60 shadow-sm rounded-md flex justify-start sm:justify-between">
       <div className="flex gap-3">
-        {EQUIPMENT_NAVIGATION.map((item) => {
+        {visibleNavigation.map((item) => {
           const isActive = pathname === item.url;
 
           return (
@@ -59,7 +67,7 @@ export function EquipmentHeader() {
         })}
       </div>
 
-      {isEquipmentType && isAdmin && (
+      {isEquipmentType && canAccess && (
         <Dialog
           open={isEquipmentTypeDialogOpen}
           onOpenChange={(open) =>

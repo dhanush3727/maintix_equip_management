@@ -47,10 +47,10 @@ export function AppHeader() {
     logoutMutation.mutate(undefined, {
       onSuccess: (data) => {
         appToast.success(data.message);
+        router.replace(ROUTES.LOGIN);
         clearUser();
         clearToken();
         queryClient.removeQueries();
-        router.replace(ROUTES.LOGIN);
       },
 
       onError: (err) => {

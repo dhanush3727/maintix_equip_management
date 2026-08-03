@@ -1,6 +1,10 @@
 export const EQUIPMENT_ENDPOINT = {
   CREATE: "equipment",
   LIST: "equipment",
+  GET_BY_ID: (id: number) => `equipment/${id}`,
+  UPDATE: (id: number) => `equipment/${id}`,
+  ACTIVATE: (id: number) => `equipment/${id}/activate`,
+  DEACTIVATE: (id: number) => `equipment/${id}/deactivate`,
 };
 
 export const EQUIPMENT_CONTENT = {
@@ -49,6 +53,8 @@ export const EQUIPMENT_CONTENT = {
 
     MODEL_LABEL: "Model",
     MODEL_PLACEHOLDER: "e.g., SINAMICS G120",
+
+    STATUS_LABEL: "Status",
   },
 
   TABLE: {
@@ -94,6 +100,11 @@ export const EQUIPMENT_CONTENT = {
     CANCEL: "Cancel",
     UPDATE: "Update",
     LOADING_MORE: "Loading More...",
+  },
+
+  TOGGLE: {
+    ACTIVE: "Active",
+    INACTIVE: "Inactive",
   },
 
   NO_DATA: {

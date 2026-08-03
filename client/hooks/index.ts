@@ -6,3 +6,4 @@ export * from "./useGetOrg";
 export * from "./useRoleDD";
 export * from "./useOrganizationDD";
 export * from "./useDebounce";
+export * from "./useMediaQuery";

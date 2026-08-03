@@ -7,72 +7,57 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  Dialog,
-  DialogContent,
-  DialogTrigger,
 } from "@/components/ui";
 import { Pencil } from "lucide-react";
 import { EquipmentTypeData } from "../../types/equipment-type.type";
-import { EditEquipmentType } from "./EditEquipmentType";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export interface EquipmentTypeListProps {
   item: EquipmentTypeData;
+  onEdit: (id: number) => void;
 }
 
-export function EquipmentTypeList({ item }: EquipmentTypeListProps) {
-  const [editTypeOpen, setEditTypeOpen] = useState<boolean>(false);
-
+export function EquipmentTypeList({ item, onEdit }: EquipmentTypeListProps) {
   return (
-    <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 space-y-1">
-            <CardTitle className="truncate text-base font-semibold">
-              {item.name}
-            </CardTitle>
+    <>
+      <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0 space-y-1">
+              <CardTitle className="truncate text-base font-semibold">
+                {item.name}
+              </CardTitle>
 
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {item.code}
-            </p>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {item.code}
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
+              onClick={() => onEdit(item.id)}
+              aria-label={`Edit ${item.name}`}
+            >
+              <Pencil aria-hidden="true" className="size-4" />
+            </Button>
           </div>
 
-          <Dialog open={editTypeOpen} onOpenChange={setEditTypeOpen}>
-            <DialogTrigger
-              render={
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
-                  aria-label="Edit Motor equipment type"
-                >
-                  <Pencil aria-hidden="true" className="size-4" />
-                </Button>
-              }
-            />
+          <div className="pt-2">
+            <Badge variant={item.isActive ? "success" : "destructive"}>
+              {item.isActive ? "Active" : "Inactive"}
+            </Badge>
+          </div>
+        </CardHeader>
 
-            <DialogContent>
-              <EditEquipmentType
-                id={item.id}
-                onClose={() => setEditTypeOpen(false)}
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        <div className="pt-2">
-          <Badge variant={item.isActive ? "success" : "destructive"}>
-            {item.isActive ? "Active" : "Inactive"}
-          </Badge>
-        </div>
-      </CardHeader>
-
-      <CardContent className="flex-1">
-        <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
-          {item.description}
-        </p>
-      </CardContent>
-    </Card>
+        <CardContent className="flex-1">
+          <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
+            {item.description}
+          </p>
+        </CardContent>
+      </Card>
+    </>
   );
 }

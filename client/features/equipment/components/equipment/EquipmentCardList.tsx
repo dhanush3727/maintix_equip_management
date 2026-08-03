@@ -5,9 +5,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  Dialog,
-  DialogContent,
-  DialogTrigger,
 } from "@/components/ui";
 import { EquipmentData } from "../../types/equipment.type";
 import { Building2, MapPin, Pencil, Wrench } from "lucide-react";
@@ -16,9 +13,10 @@ import { EQUIPMENT_CONTENT } from "../../constants/equipment.constant";
 
 interface EquipmentCardListProps {
   item: EquipmentData;
+  onEdit: (id: number) => void;
 }
 
-export function EquipmentCardList({ item }: EquipmentCardListProps) {
+export function EquipmentCardList({ item, onEdit }: EquipmentCardListProps) {
   return (
     <Card className="group flex h-full flex-col overflow-hidden border-border/60 bg-card shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader className="space-y-0 pb-3">
@@ -35,23 +33,16 @@ export function EquipmentCardList({ item }: EquipmentCardListProps) {
           </div>
 
           <div className="flex shrink-0 flex-col items-end gap-2">
-            <Dialog>
-              <DialogTrigger
-                render={
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="size-8 text-muted-foreground opacity-70 transition-all hover:bg-info-light hover:text-info group-hover:opacity-100"
-                    aria-label={`Edit ${item.name}`}
-                  >
-                    <Pencil aria-hidden="true" className="size-4" />
-                  </Button>
-                }
-              />
-
-              <DialogContent>{/* EditEquipment */}</DialogContent>
-            </Dialog>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-8 text-muted-foreground opacity-70 transition-all hover:bg-info-light hover:text-info group-hover:opacity-100"
+              onClick={() => onEdit(item.id)}
+              aria-label={`Edit ${item.name}`}
+            >
+              <Pencil aria-hidden="true" className="size-4" />
+            </Button>
 
             <Badge
               variant={

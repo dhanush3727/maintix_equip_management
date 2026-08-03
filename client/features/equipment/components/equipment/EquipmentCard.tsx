@@ -16,6 +16,7 @@ interface EquipmentCardProps {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: () => void;
+  onEdit: (id: number) => void;
 }
 
 export function EquipmentCard({
@@ -25,6 +26,7 @@ export function EquipmentCard({
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
+  onEdit,
 }: EquipmentCardProps) {
   const [addOpen, setAddOpen] = useState(false);
 
@@ -88,7 +90,7 @@ export function EquipmentCard({
         <CardEmptyState />
       ) : (
         equipmentList.map((item) => (
-          <EquipmentCardList key={item.id} item={item} />
+          <EquipmentCardList key={item.id} item={item} onEdit={onEdit} />
         ))
       )}
 

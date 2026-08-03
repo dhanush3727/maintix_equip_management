@@ -34,5 +34,6 @@ export const QUERY_KEYS = {
 
   equipment: {
     get_list: ["get-equipment"],
+    by_id: ["equipment-by-id"],
   },
 } as const;

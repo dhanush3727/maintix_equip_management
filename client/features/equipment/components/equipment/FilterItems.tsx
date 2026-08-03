@@ -40,6 +40,8 @@ interface FilterItemsProps {
   isMeta: boolean;
 
   isEquipType: boolean;
+
+  onFilterChange: () => void;
 }
 
 export function FilterItems({
@@ -64,6 +66,7 @@ export function FilterItems({
   isOrganization,
   isMeta,
   isEquipType,
+  onFilterChange,
 }: FilterItemsProps) {
   const isClear = search || status || department || location || type;
 
@@ -81,7 +84,10 @@ export function FilterItems({
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       <Input
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          onFilterChange();
+        }}
         placeholder={EQUIPMENT_CONTENT.FILTERS.SEARCH}
       />
 
@@ -91,7 +97,10 @@ export function FilterItems({
         <SearchSelect
           options={equipTypeDD}
           value={type}
-          onValueChange={(val) => setType(Number(val))}
+          onValueChange={(val) => {
+            setType(Number(val));
+            onFilterChange();
+          }}
           placeholder={EQUIPMENT_CONTENT.FILTERS.TYPE}
           searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_TYPE}
         />
@@ -103,7 +112,10 @@ export function FilterItems({
         <SearchSelect
           options={locationDD}
           value={location}
-          onValueChange={(val) => setLocation(Number(val))}
+          onValueChange={(val) => {
+            setLocation(Number(val));
+            onFilterChange();
+          }}
           placeholder={EQUIPMENT_CONTENT.FILTERS.LOCATION}
           searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_LOCATION}
         />
@@ -115,7 +127,10 @@ export function FilterItems({
         <SearchSelect
           options={departmentDD}
           value={department}
-          onValueChange={(val) => setDepartment(Number(val))}
+          onValueChange={(val) => {
+            setDepartment(Number(val));
+            onFilterChange();
+          }}
           placeholder={EQUIPMENT_CONTENT.FILTERS.DEPARTMENT}
           searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_DEPARTMENT}
         />
@@ -129,6 +144,7 @@ export function FilterItems({
           value={status}
           onValueChange={(val) => {
             setStatus(val as EquipmentParams["status"]);
+            onFilterChange();
           }}
           placeholder={EQUIPMENT_CONTENT.FILTERS.STATUS}
           searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_STATUS}

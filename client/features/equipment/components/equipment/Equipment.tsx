@@ -7,20 +7,28 @@ import { useState } from "react";
 import { TABLE_LIMIT } from "@/constants";
 import { EquipmentParams } from "../../types/equipment.type";
 import { FilterItems } from "./FilterItems";
-import { useDebounce, useMeta, useOrganizationDD } from "@/hooks";
+import {
+  useDebounce,
+  useMediaQuery,
+  useMeta,
+  useOrganizationDD,
+} from "@/hooks";
 import { useEquipmentTypeDD } from "../../hooks/equipment-type/useEquipmentTypeDD";
 import { EquipmentCard } from "./EquipmentCard";
 import { useEquipmentInfiniteList } from "../../hooks/equipment/useEquipmentInfiniteList";
-
-export interface DropdownOptions {
-  value: string | number;
-  label: string;
-}
+import { Dialog, DialogContent } from "@/components/ui";
+import { EditEquipment } from "./EditEquipment";
+import { getOptionLabel } from "../../utils/equipment.utils";
 
 export function Equipment() {
   const { data: organization, isLoading: isOrganization } = useOrganizationDD();
   const { data: meta, isLoading: isMeta } = useMeta();
   const { data: equipType, isLoading: isEquipType } = useEquipmentTypeDD();
+
+  // This is help to call the api hook
+  // if the width match with lg size then it run the equipment list hook
+  // if false then run the infinte query hook
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const statusDD = meta?.data?.euqipmentStatus ?? [];
   const locationDD = organization?.data?.location ?? [];
@@ -38,20 +46,13 @@ export function Equipment() {
 
   const debouncedSearch = useDebounce(search, 500);
 
-  // The location, type, department return {value: 1, label: "Mechanical"}
-  // but for equipment param we want only string value not number so we get label instead of value
-  const getOptionLabel = (
-    options: DropdownOptions[],
-    value: number | undefined,
-  ): string => {
-    const label = options.find((option) => value === option.value)?.label || "";
-
-    return label;
-  };
-
   const locationName = getOptionLabel(locationDD, location);
   const departmentName = getOptionLabel(deparmentDD, department);
   const typeName = getOptionLabel(equipTypeDD, type);
+
+  const resetPage = () => {
+    setPage((prev) => (prev === 1 ? prev : 1));
+  };
 
   // Hook for desktop
   const {
@@ -68,6 +69,9 @@ export function Equipment() {
     location: locationName,
     department: departmentName,
     type: typeName,
+
+    // Fetch only desktop width
+    enabled: isDesktop === true,
   });
 
   const equipmentList = equipment?.data ?? [];
@@ -89,10 +93,16 @@ export function Equipment() {
     location: locationName,
     department: departmentName,
     type: typeName,
+
+    // Fetch only specific width
+    enabled: isDesktop === false,
   });
 
   const cardEquipmentList =
     cardEquipment?.pages.flatMap((page) => page.data ?? []) ?? [];
+
+  // Edit equipment
+  const [editEquipId, setEditEquipId] = useState<number | null>(null);
 
   return (
     <div className="space-y-6">
@@ -118,6 +128,7 @@ export function Equipment() {
         isEquipType={isEquipType}
         isOrganization={isOrganization}
         isMeta={isMeta}
+        onFilterChange={resetPage}
       />
 
       <div className="lg:hidden">
@@ -128,6 +139,7 @@ export function Equipment() {
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           fetchNextPage={fetchNextPage}
+          onEdit={setEditEquipId}
         />
       </div>
 
@@ -136,11 +148,35 @@ export function Equipment() {
           equipmentList={equipmentList}
           isLoading={isEquipment}
           isError={isEquipmentErr}
+          onEdit={setEditEquipId}
         />
         {!isEquipment && !isEquipmentErr && pagination && (
           <DataPagination pagination={pagination} onPageChange={setPage} />
         )}
       </div>
+
+      <Dialog
+        open={editEquipId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditEquipId(null);
+          }
+        }}
+      >
+        <DialogContent className={"w-[90vw] max-w-6xl"}>
+          {editEquipId !== null && (
+            <EditEquipment
+              id={editEquipId}
+              onClose={() => setEditEquipId(null)}
+              equipTypeDD={equipTypeDD}
+              locationDD={locationDD}
+              departmentDD={deparmentDD}
+              isOrganization={isOrganization}
+              isEquipType={isEquipType}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
