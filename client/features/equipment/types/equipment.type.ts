@@ -18,12 +18,7 @@ export interface EquipmentData {
   id: number;
   name: string;
   code: string;
-  serialNumber: string | null;
   status: EquipmentStatus;
-  installedDate: Date | null;
-  warrantyExpiry: Date | null;
-  manufacturer: string | null;
-  model: string | null;
   equipmentType: string;
   location: string;
   department: string;

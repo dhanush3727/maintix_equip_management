@@ -48,10 +48,6 @@ export function EquipmentType() {
       (entries) => {
         const [entry] = entries;
 
-        console.log("entries", entries);
-
-        console.log("entry", entry);
-
         if (entry.isIntersecting) {
           fetchNextPage();
         }

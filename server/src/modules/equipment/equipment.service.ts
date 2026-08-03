@@ -475,7 +475,7 @@ export class EquipmentService {
       search,
       order,
       filters,
-      searchFields: ['name', 'serialNumber', 'code', 'manufacturer', 'model'],
+      searchFields: ['name', 'code'],
       sortBy,
     });
 
@@ -490,12 +490,7 @@ export class EquipmentService {
           equipmentTypeId: true,
           name: true,
           code: true,
-          serialNumber: true,
           status: true,
-          installedDate: true,
-          warrantyExpiry: true,
-          manufacturer: true,
-          model: true,
           equipmentType: {
             select: {
               name: true,
@@ -526,12 +521,7 @@ export class EquipmentService {
       id: item.id,
       name: item.name,
       code: item.code,
-      serialNumber: item.serialNumber,
       status: item.status,
-      installedDate: item.installedDate,
-      warrantyExpiry: item.warrantyExpiry,
-      manufacturer: item.manufacturer,
-      model: item.model,
       equipmentType: item.equipmentType.name,
       location: item.location?.name,
       department: item.department?.name,

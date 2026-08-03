@@ -93,6 +93,7 @@ export const EQUIPMENT_CONTENT = {
     SUBMIT: "Submit",
     CANCEL: "Cancel",
     UPDATE: "Update",
+    LOADING_MORE: "Loading More...",
   },
 
   NO_DATA: {

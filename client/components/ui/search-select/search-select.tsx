@@ -61,7 +61,10 @@ export function SearchSelect({
               className,
             )}
           >
-            {selectedOption?.label ?? placeholder}
+            <span className="min-w-0 flex-1 truncate text-left">
+              {selectedOption?.label ?? placeholder}
+            </span>
+
             {open ? (
               <ChevronUp className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             ) : (

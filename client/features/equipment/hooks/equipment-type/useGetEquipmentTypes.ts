@@ -1,10 +1,7 @@
-import { QUERY_KEYS } from "@/constants";
+import { CARD_LIMIT, QUERY_KEYS } from "@/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { EquipmentTypeParams } from "../../types/equipment-type.type";
 import { equipmentTypeService } from "../../services/equipment-type.service";
-
-// Number of records requested on each API call.
-const LIMIT = 20;
 
 export const useGetEquipmentTypes = (
   // Search/sort parameters are passed from the component.
@@ -35,7 +32,7 @@ export const useGetEquipmentTypes = (
         page: pageParam,
 
         // Every request gets 10 records.
-        limit: LIMIT,
+        limit: CARD_LIMIT,
       }),
 
     // The first API request will use page = 1.

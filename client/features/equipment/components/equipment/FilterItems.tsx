@@ -1,18 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { EquipmentParams } from "../../types/equipment.type";
-import {
-  Button,
-  Input,
-  SearchSelect,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui";
-import { useMeta, useOrganizationDD } from "@/hooks";
+import { Button, Input, SearchSelect, Skeleton } from "@/components/ui";
 import { EQUIPMENT_CONTENT } from "../../constants/equipment.constant";
-import { ArrowDownUp } from "lucide-react";
+import { X } from "lucide-react";
+import { DropdownOptions } from "./Equipment";
 
 interface FilterItemsProps {
   search: string;
@@ -24,25 +15,39 @@ interface FilterItemsProps {
   order: EquipmentParams["order"];
   setOrder: Dispatch<SetStateAction<EquipmentParams["order"]>>;
 
-  status: string;
-  setStatus: Dispatch<SetStateAction<string | number>>;
+  status: EquipmentParams["status"] | "";
+  setStatus: Dispatch<SetStateAction<EquipmentParams["status"] | "">>;
 
-  department: string;
-  setDepartment: Dispatch<SetStateAction<string>>;
+  department: number | undefined;
+  setDepartment: Dispatch<SetStateAction<number | undefined>>;
 
-  location: string;
-  setLocation: Dispatch<SetStateAction<string>>;
+  location: number | undefined;
+  setLocation: Dispatch<SetStateAction<number | undefined>>;
 
-  type: string;
-  setType: Dispatch<SetStateAction<string>>;
+  type: number | undefined;
+  setType: Dispatch<SetStateAction<number | undefined>>;
+
+  statusDD: DropdownOptions[];
+
+  locationDD: DropdownOptions[];
+
+  departmentDD: DropdownOptions[];
+
+  equipTypeDD: DropdownOptions[];
+
+  isOrganization: boolean;
+
+  isMeta: boolean;
+
+  isEquipType: boolean;
 }
 
 export function FilterItems({
   search,
   setSearch,
-  sortBy,
+  // sortBy,
   setSortyBy,
-  order,
+  // order,
   setOrder,
   status,
   setStatus,
@@ -52,37 +57,92 @@ export function FilterItems({
   setDepartment,
   type,
   setType,
+  statusDD,
+  locationDD,
+  departmentDD,
+  equipTypeDD,
+  isOrganization,
+  isMeta,
+  isEquipType,
 }: FilterItemsProps) {
-  const { data: organization, isLoading: isOranization } = useOrganizationDD();
-  const { data: meta, isLoading: isMeta } = useMeta();
+  const isClear = search || status || department || location || type;
 
-  const statusDD = meta?.data?.euqipmentStatus ?? [];
-  const locationDD = organization?.data?.location ?? [];
-  const deparmentDD = organization?.data?.department ?? [];
+  const handleClearFilter = () => {
+    setSearch("");
+    setSortyBy("");
+    setOrder("desc");
+    setStatus("");
+    setLocation(undefined);
+    setDepartment(undefined);
+    setType(undefined);
+  };
 
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       <Input
         value={search}
         onChange={(event) => setSearch(event.target.value)}
         placeholder={EQUIPMENT_CONTENT.FILTERS.SEARCH}
-        className="w-full sm:flex-1"
       />
 
-      <SearchSelect
-        options={statusDD}
-        value={status}
-        onValueChange={setStatus}
-      />
+      {isEquipType ? (
+        <Skeleton className="h-10 w-full" />
+      ) : (
+        <SearchSelect
+          options={equipTypeDD}
+          value={type}
+          onValueChange={(val) => setType(Number(val))}
+          placeholder={EQUIPMENT_CONTENT.FILTERS.TYPE}
+          searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_TYPE}
+        />
+      )}
 
-      <Select
+      {isOrganization ? (
+        <Skeleton className="h-10 w-full" />
+      ) : (
+        <SearchSelect
+          options={locationDD}
+          value={location}
+          onValueChange={(val) => setLocation(Number(val))}
+          placeholder={EQUIPMENT_CONTENT.FILTERS.LOCATION}
+          searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_LOCATION}
+        />
+      )}
+
+      {isOrganization ? (
+        <Skeleton className="h-10 w-full" />
+      ) : (
+        <SearchSelect
+          options={departmentDD}
+          value={department}
+          onValueChange={(val) => setDepartment(Number(val))}
+          placeholder={EQUIPMENT_CONTENT.FILTERS.DEPARTMENT}
+          searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_DEPARTMENT}
+        />
+      )}
+
+      {isMeta ? (
+        <Skeleton className="h-10 w-full" />
+      ) : (
+        <SearchSelect
+          options={statusDD}
+          value={status}
+          onValueChange={(val) => {
+            setStatus(val as EquipmentParams["status"]);
+          }}
+          placeholder={EQUIPMENT_CONTENT.FILTERS.STATUS}
+          searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_STATUS}
+        />
+      )}
+
+      {/* <Select
         value={sortBy}
         onValueChange={(value) =>
           setSortyBy(value === "name" || value === "code" ? value : "")
         }
       >
         <SelectTrigger
-          className={"w-full sm:w-40 bg-card rounded-md"}
+          className={"w-full sm:w-30 bg-card rounded-md"}
           size="lg"
         >
           <SelectValue placeholder={EQUIPMENT_CONTENT.FILTERS.SORTBY} />
@@ -105,7 +165,21 @@ export function FilterItems({
       >
         {order === "asc" ? "Asc" : "Desc"}
         <ArrowDownUp className="size-4" aria-hidden="true" />
-      </Button>
+      </Button> */}
+
+      {/* For clear filter */}
+      {isClear && (
+        <Button
+          type="button"
+          variant="ghost"
+          className="w-fit justify-self-end shrink-0 gap-2 text-muted-foreground hover:bg-muted hover:text-foreground justify-end"
+          aria-label="Clear filters"
+          onClick={handleClearFilter}
+        >
+          <X className="size-4" />
+          Clear
+        </Button>
+      )}
     </div>
   );
 }
