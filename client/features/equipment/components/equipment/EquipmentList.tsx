@@ -1,5 +1,6 @@
 import {
   Badge,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -11,52 +12,87 @@ import { EquipmentData } from "../../types/equipment.type";
 import { EQUIPMENT_TABLE_COLUMNS } from "../../constants/equipment.constant";
 import { SquarePen } from "lucide-react";
 import { EquipmentStatus } from "@/types";
+import { SkeletonList } from "./SkeletonList";
+import { ErrorState } from "./ErrorState";
+import { EmptyState } from "./EmptyState";
 
 interface EquipmentListProps {
   equipmentList: EquipmentData[];
+  isLoading: boolean;
+  isError: boolean;
 }
 
-export function EquipmentList({ equipmentList }: EquipmentListProps) {
+export function EquipmentList({
+  equipmentList,
+  isLoading,
+  isError,
+}: EquipmentListProps) {
   return (
     <Table className="border-separate border-spacing-y-2">
       <TableHeader>
-        <TableRow>
+        <TableRow className="hover:bg-transparent">
           {EQUIPMENT_TABLE_COLUMNS.map((column) => (
-            <TableHead key={column.key}>{column.label}</TableHead>
+            <TableHead
+              key={column.key}
+              className="h-10 px-4 text-xs font-medium uppercase tracking-wide text-muted-foreground"
+            >
+              {column.label}
+            </TableHead>
           ))}
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        {equipmentList.map((item) => (
-          <TableRow key={item.id}>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.code}</TableCell>
-            <TableCell>{item.equipmentType}</TableCell>
-            <TableCell>{item.location}</TableCell>
-            <TableCell>{item.department}</TableCell>
-            <TableCell>
-              <Badge
-                variant={
-                  item.status === EquipmentStatus.INACTIVE
-                    ? "destructive"
-                    : item.status === EquipmentStatus.UNDER_MAINTENANCE
-                      ? "info"
-                      : item.status === EquipmentStatus.BREAKDOWN
-                        ? "warning"
-                        : item.status === EquipmentStatus.DECOMMISSIONED
-                          ? "default"
-                          : "success"
-                }
-              >
-                {item.status}
-              </Badge>
-            </TableCell>
-            <TableCell className="cursor-pointer">
-              <SquarePen className="size-4" />
-            </TableCell>
-          </TableRow>
-        ))}
+        {isLoading ? (
+          Array.from({ length: 5 }, (_, i) => <SkeletonList key={i} />)
+        ) : isError ? (
+          <ErrorState />
+        ) : equipmentList.length === 0 ? (
+          <EmptyState />
+        ) : (
+          equipmentList.map((item) => (
+            <TableRow
+              key={item.id}
+              className="group border-none bg-card shadow-sm transition-colors hover:bg-muted/50"
+            >
+              <TableCell className="rounded-l-lg px-4 py-4 font-medium">
+                {item.name}
+              </TableCell>
+              <TableCell className="px-4 py-4 text-muted-foreground">
+                {item.code}
+              </TableCell>
+              <TableCell className="px-4 py-4">{item.equipmentType}</TableCell>
+              <TableCell className="px-4 py-4">{item.location}</TableCell>
+              <TableCell className="px-4 py-4">{item.department}</TableCell>
+              <TableCell className="px-4 py-4">
+                <Badge
+                  variant={
+                    item.status === EquipmentStatus.INACTIVE
+                      ? "destructive"
+                      : item.status === EquipmentStatus.UNDER_MAINTENANCE
+                        ? "info"
+                        : item.status === EquipmentStatus.BREAKDOWN
+                          ? "warning"
+                          : item.status === EquipmentStatus.DECOMMISSIONED
+                            ? "default"
+                            : "success"
+                  }
+                >
+                  {item.status}
+                </Badge>
+              </TableCell>
+              <TableCell className="rounded-r-lg px-4 py-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 opacity-70 transition-opacity group-hover:opacity-100"
+                >
+                  <SquarePen className="size-4" />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </Table>
   );

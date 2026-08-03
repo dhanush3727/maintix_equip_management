@@ -61,10 +61,49 @@ export const EQUIPMENT_CONTENT = {
     ACTION: "Action",
   },
 
+  FILTERS: {
+    SEARCH: "Search Equipment...",
+    SORTBY: "Sort by",
+    ORDER: "Order",
+
+    STATUS: "Select Status",
+    SEARCH_STATUS: "Search status",
+
+    LOCATION: "Select location",
+    SEARCH_LOCATION: "Search location",
+
+    DEPARTMENT: "Select department",
+    SEARCH_DEPARTMENT: "Search department",
+
+    TYPE: "Select type",
+    SEARCH_TYPE: "Search type",
+  },
+
+  SORTBY: {
+    NAME_VALUE: "name",
+    CODE_VALUE: "code",
+  },
+
+  ORDER: {
+    ASC_VALUE: "asc",
+    DESC_VALUE: "desc",
+  },
+
   BUTTON: {
     SUBMIT: "Submit",
     CANCEL: "Cancel",
     UPDATE: "Update",
+  },
+
+  NO_DATA: {
+    TITLE: "No equipments found",
+    DESCRIPTION: "Create an equipment to get started",
+  },
+
+  ERROR: {
+    TITLE: "Unable to load equipments",
+    DESCRIPTION:
+      "Soemthing went wrong while loading equipments. Please try again.",
   },
 } as const;
 

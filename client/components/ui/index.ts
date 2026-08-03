@@ -23,3 +23,4 @@ export * from "./loading/loading";
 export * from "./select/select";
 export * from "./switch/switch";
 export * from "./table/table";
+export * from "./pagination/pagination";
