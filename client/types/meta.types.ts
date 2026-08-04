@@ -98,7 +98,7 @@ interface OnboardingSetupType {
   value: OnboardingSetup;
 }
 
-interface ChecklistItems {
+export interface ChecklistItems {
   label: string;
   value: ChecklistItemType;
 }

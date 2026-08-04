@@ -47,7 +47,7 @@ export const CHECKLIST_CONTENT = {
     TYPE_PLACEHOLDER: "Select item type",
 
     EXPECTED_VALUE_LABEL: "Expected Value",
-    EXPECTED_VALUE_PLACEHOLDER: "Enter expected value",
+    EXPECTED_VALUE_EMPTY: "Add option first",
 
     MIN_VALUE_LABEL: "Minimum Value",
     MIN_VALUE_PLACEHOLDER: "e.g., 20",
@@ -57,6 +57,7 @@ export const CHECKLIST_CONTENT = {
 
     OPTIONS_LABEL: "Options",
     OPTIONS_PLACEHOLDER: "Add an option",
+    OPTIONS_ADD: "Add",
 
     REQUIRED_LABEL: "Required",
     REQUIRED_PLACEHOLDER: "Mark this item as required",
@@ -72,6 +73,23 @@ export const CHECKLIST_CONTENT = {
     CREATE: "Create",
     CANCEL: "Cancel",
     UPDATE: "Update",
+    LOAD_MORE: "Loading More...",
+  },
+
+  NO_DATA: {
+    TITLE: "No checklist found",
+    DESCRIPTION: "Create an equipment type to get started",
+  },
+
+  ERROR: {
+    TITLE: "Unable to load checklists",
+    DESCRIPTION:
+      "Soemthing went wrong while loading equipment types. Please try again.",
+  },
+
+  ACCESS: {
+    TITLE: "You cannot access this page",
+    BUTTON: "Go to Dashboard",
   },
 };
 
