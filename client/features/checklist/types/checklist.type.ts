@@ -8,7 +8,6 @@ export interface CreateChecklistItems {
   minValue?: number;
   maxValue?: number;
   options?: string[];
-  isRequired?: boolean;
 }
 
 export interface ChecklistItems {
@@ -20,7 +19,6 @@ export interface ChecklistItems {
   minValue: number | null;
   maxValue: number | null;
   options: string[] | null;
-  isRequired: boolean | null;
   isActive: boolean;
 }
 

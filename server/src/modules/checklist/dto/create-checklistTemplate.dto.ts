@@ -32,7 +32,6 @@ export class CreateChecklistTemplateDto {
   @ApiPropertyOptional({ example: 'Checklist template description' })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   description?: string;
 
   @ApiProperty()

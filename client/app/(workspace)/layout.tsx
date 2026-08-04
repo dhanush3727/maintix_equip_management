@@ -12,7 +12,8 @@ export default function WorkspaceLayout({
     <OnBoardingGuard mode="dashboard">
       <AppShell>
         <AuthInitializer />
-        <RouteGuard>{children}</RouteGuard>
+        {/* <RouteGuard></RouteGuard> */}
+        {children}
       </AppShell>
     </OnBoardingGuard>
   );

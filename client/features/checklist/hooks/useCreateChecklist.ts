@@ -8,13 +8,13 @@ export const useCreateChecklist = () => {
   return useMutation({
     mutationFn: checklistService.createChecklist,
 
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.checklist.list,
       });
 
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.checklist.dropdown,
+        queryKey: [...QUERY_KEYS.checklist.dropdown, variables.equipmentTypeId],
       });
     },
   });
