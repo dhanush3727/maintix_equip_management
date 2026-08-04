@@ -198,30 +198,14 @@ export class ChecklistService {
         orderBy: orderBy ?? { createdAt: 'desc' },
         select: {
           id: true,
-          organizationId: true,
           parentId: true,
           version: true,
           name: true,
           description: true,
           isActive: true,
-          equipmentTypeId: true,
           equipmentType: {
             select: {
               name: true,
-            },
-          },
-          items: {
-            select: {
-              id: true,
-              name: true,
-              order: true,
-              type: true,
-              expectedValue: true,
-              minValue: true,
-              maxValue: true,
-              options: true,
-              isRequired: true,
-              isActive: true,
             },
           },
         },
@@ -235,14 +219,11 @@ export class ChecklistService {
     const formattedChecklists = checklistTemplates.map((list) => ({
       id: list.id,
       name: list.name,
-      organizationId: list.organizationId,
-      equipmentTypeId: list.equipmentTypeId,
       equipmentType: list.equipmentType.name,
       parentId: list.parentId,
       version: list.version,
       description: list.description,
       isActive: list.isActive,
-      checklistItems: list.items,
     }));
 
     return {
@@ -266,9 +247,9 @@ export class ChecklistService {
         description: true,
         isActive: true,
         version: true,
-        equipmentTypeId: true,
         equipmentType: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -296,9 +277,10 @@ export class ChecklistService {
     const formattedChecklist = {
       id: checklistTemplate.id,
       name: checklistTemplate.name,
-      organizationId: checklistTemplate.organizationId,
-      equipmentTypeId: checklistTemplate.equipmentTypeId,
-      equipmentType: checklistTemplate.equipmentType.name,
+      equipmentType: {
+        value: checklistTemplate.equipmentType.id,
+        label: checklistTemplate.equipmentType.name,
+      },
       parentId: checklistTemplate.parentId,
       version: checklistTemplate.version,
       description: checklistTemplate.description,
@@ -412,6 +394,27 @@ export class ChecklistService {
       data: formattedChecklists,
       pagination,
     };
+  }
+  //#endregion
+
+  // #region Get checklist template dd by type
+  async getChecklistTemplateDropdown(id: number, req: RequestUser) {
+    const { organizationId } = req;
+
+    const templates = await this.prisma.checklistTemplate.findMany({
+      where: { organizationId, equipmentTypeId: id },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const formattedTemplates = templates.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+
+    return formattedTemplates;
   }
   //#endregion
 

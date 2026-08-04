@@ -1,3 +1,5 @@
-export default function Checklist() {
-  return <div>Checklist</div>;
+import { Checklist } from "@/features/checklist";
+
+export default function ChecklistPage() {
+  return <Checklist />;
 }

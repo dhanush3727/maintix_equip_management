@@ -17,9 +17,12 @@ import {
   Cog,
   LayoutDashboard,
   TriangleAlert,
+  Users,
   Wrench,
 } from "lucide-react";
 import { ROUTES } from "@/constants";
+import { useAuth } from "@/hooks";
+import { ROLE_IDS } from "@/constants/role.constant";
 
 export const navItems = [
   {
@@ -47,9 +50,29 @@ export const navItems = [
     icon: TriangleAlert,
     url: ROUTES.BREAKDOWN,
   },
+  {
+    title: "Users",
+    icon: Users,
+    url: ROUTES.USERS,
+  },
 ];
 
 export function AppSidebar() {
+  const { user } = useAuth();
+
+  const canAccess = user?.roles.some(
+    (role) => role.id === ROLE_IDS.ADMIN || role.id === ROLE_IDS.MANAGER,
+  );
+
+  const isAdmin = user?.roles.some((role) => role.id === ROLE_IDS.ADMIN);
+
+  const visibleNavigation = navItems.filter((item) => {
+    const isChecklist = item.url === ROUTES.CHECKLIST;
+    const isUsers = item.url === ROUTES.USERS;
+
+    return (!isChecklist || canAccess) && (!isUsers || isAdmin);
+  });
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -67,7 +90,7 @@ export function AppSidebar() {
       <SidebarSeparator />
 
       <SidebarContent className="py-3">
-        <NavItem items={navItems} />
+        <NavItem items={visibleNavigation} />
       </SidebarContent>
 
       <SidebarFooter>

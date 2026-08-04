@@ -36,4 +36,10 @@ export const QUERY_KEYS = {
     get_list: ["get-equipment"],
     by_id: ["equipment-by-id"],
   },
+
+  checklist: {
+    list: ["checklist-list"],
+    id: ["checklist-by-id"],
+    dropdown: ["checklist-dropdown"],
+  },
 } as const;

@@ -67,4 +67,9 @@ export const EQUIPMENT_TYPE_CONTENT = {
     DESCRIPTION:
       "Soemthing went wrong while loading equipment types. Please try again.",
   },
+
+  ACCESS: {
+    TITLE: "You cannot access this page",
+    BUTTON: "Go to Equipment list",
+  },
 };

@@ -108,6 +108,24 @@ export class ChecklistController {
   }
   //#endregion
 
+  //#region Get checklist template dd by type
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('checklist-template/equipment-type/:typeId/dropdown')
+  async getChecklistTemplateDropdown(
+    @Param('typeId', ParseIntPipe) typeId: number,
+    @Req() req: AuthenticateRequest,
+  ) {
+    const checklists = await this.checklist.getChecklistTemplateDropdown(
+      typeId,
+      req.user,
+    );
+
+    return {
+      data: checklists,
+    };
+  }
+  //#endregion
+
   //#region Update checklist template version
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN, RoleType.MANAGER)

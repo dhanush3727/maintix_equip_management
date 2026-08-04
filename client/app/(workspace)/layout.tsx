@@ -1,6 +1,7 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { AuthInitializer } from "./AuthInitializer";
 import { OnBoardingGuard } from "../OnboardingGuard";
+import { RouteGuard } from "./RouteGuard";
 
 export default function WorkspaceLayout({
   children,
@@ -11,7 +12,7 @@ export default function WorkspaceLayout({
     <OnBoardingGuard mode="dashboard">
       <AppShell>
         <AuthInitializer />
-        {children}
+        <RouteGuard>{children}</RouteGuard>
       </AppShell>
     </OnBoardingGuard>
   );

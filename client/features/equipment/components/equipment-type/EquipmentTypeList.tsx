@@ -10,7 +10,6 @@ import {
 } from "@/components/ui";
 import { Pencil } from "lucide-react";
 import { EquipmentTypeData } from "../../types/equipment-type.type";
-import { Dispatch, SetStateAction } from "react";
 
 export interface EquipmentTypeListProps {
   item: EquipmentTypeData;
