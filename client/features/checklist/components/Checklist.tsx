@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Dialog, DialogContent, DialogTrigger } from "@/components/ui";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
 import { CHECKLIST_CONTENT } from "../constants/checklist.constant";
 import { Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -10,13 +10,21 @@ import { ChecklistList } from "./ChecklistList";
 import { SkeletonList } from "./SkeletonList";
 import { ErrorState } from "./ErrorState";
 import { EmptyState } from "./EmptyState";
-import { useAuth } from "@/hooks";
-import { ROLE_IDS } from "@/constants/role.constant";
-import { ROUTES } from "@/constants";
-import { useRouter } from "next/navigation";
+import { useDebounce } from "@/hooks";
+import { FilterItem } from "./FilterItem";
+import { useEquipmentTypeDD } from "@/features/equipment/hooks/equipment-type/useEquipmentTypeDD";
+import { getOptionLabel } from "@/lib";
+import { UpdateChecklist } from "./UpdateChecklist";
 
 export function Checklist() {
-  const router = useRouter();
+  const { data: equipType, isLoading: isEquipType } = useEquipmentTypeDD();
+  const equipTypeDD = equipType?.data ?? [];
+
+  const [search, setSearch] = useState<string>("");
+  const [type, setType] = useState<number | undefined>(undefined);
+  const debouncedSearch = useDebounce(search, 500);
+  const typeName = getOptionLabel(equipTypeDD, type);
+
   const {
     data: checklistData,
     isLoading,
@@ -24,17 +32,13 @@ export function Checklist() {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useGetChecklists();
-  const { user } = useAuth();
+  } = useGetChecklists({
+    search: debouncedSearch,
+    type: typeName,
+  });
 
   const checklists =
     checklistData?.pages.flatMap((page) => page.data ?? []) ?? [];
-
-  const canAccess = user?.roles.some(
-    (role) => role.id === ROLE_IDS.ADMIN || role.id === ROLE_IDS.MANAGER,
-  );
-
-  const [createOpen, setCreateOpen] = useState<boolean>(false);
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -62,71 +66,96 @@ export function Checklist() {
     };
   }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
+  const [createOpen, setCreateOpen] = useState<boolean>(false);
+  const [updateOpen, setUpdateOpen] = useState<number | null>(null);
+
   return (
     <>
-      {!canAccess ? (
-        <div className="flex flex-col gap-3 justify-center items-center min-h-50">
-          <h1 className="text-muted-foreground text-xl">
-            {CHECKLIST_CONTENT.ACCESS.TITLE}
+      <div className="space-y-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {CHECKLIST_CONTENT.HEADER.TITLE}
           </h1>
-          <Button size={"sm"} onClick={() => router.replace(ROUTES.DASHBOARD)}>
-            {CHECKLIST_CONTENT.ACCESS.BUTTON}
-          </Button>
+          <p className="text-sm text-muted-foreground">
+            {CHECKLIST_CONTENT.HEADER.DESCRIPTION}
+          </p>
         </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              {CHECKLIST_CONTENT.HEADER.TITLE}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {CHECKLIST_CONTENT.HEADER.DESCRIPTION}
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-            {/* Add checklist */}
-            <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-              <DialogTrigger
-                render={
-                  <button
-                    type="button"
-                    className="flex w-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-10 text-muted-foreground transition-colors hover:bg-muted/50"
-                  >
-                    <Plus className="size-10" aria-hidden="true" />
+        <FilterItem
+          search={search}
+          setSearch={setSearch}
+          type={type}
+          setType={setType}
+          equipTypeDD={equipTypeDD}
+          isEquipType={isEquipType}
+        />
 
-                    <span>{CHECKLIST_CONTENT.CREATE.TITLE}</span>
-                  </button>
-                }
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          {/* Add checklist */}
+          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+            <DialogTrigger
+              render={
+                <button
+                  type="button"
+                  className="flex w-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-10 text-muted-foreground transition-colors hover:bg-muted/50"
+                >
+                  <Plus className="size-10" aria-hidden="true" />
+
+                  <span>{CHECKLIST_CONTENT.CREATE.TITLE}</span>
+                </button>
+              }
+            />
+
+            <DialogContent className={"w-[90vw] max-w-6xl"}>
+              <CreateChecklist
+                onClose={() => setCreateOpen(false)}
+                equipTypeDD={equipTypeDD}
+                isEquipType={isEquipType}
               />
+            </DialogContent>
+          </Dialog>
 
-              <DialogContent className={"w-[90vw] max-w-6xl"}>
-                <CreateChecklist onClose={() => setCreateOpen(false)} />
-              </DialogContent>
-            </Dialog>
-
-            {isLoading ? (
-              Array.from({ length: 7 }, (_, i) => <SkeletonList key={i} />)
-            ) : isError ? (
-              <ErrorState />
-            ) : checklists.length === 0 ? (
-              <EmptyState />
-            ) : (
-              checklists.map((item) => (
-                <ChecklistList key={item.id} item={item} onEdit={() => {}} />
-              ))
-            )}
-          </div>
-
-          {hasNextPage && (
-            <div ref={loadMoreRef} className="flex h-10 justify-center">
-              <span>
-                {isFetchingNextPage && CHECKLIST_CONTENT.BUTTON.LOAD_MORE}
-              </span>
-            </div>
+          {isLoading ? (
+            Array.from({ length: 7 }, (_, i) => <SkeletonList key={i} />)
+          ) : isError ? (
+            <ErrorState />
+          ) : checklists.length === 0 ? (
+            <EmptyState />
+          ) : (
+            checklists.map((item) => (
+              <ChecklistList key={item.id} item={item} onEdit={setUpdateOpen} />
+            ))
           )}
         </div>
-      )}
+
+        {hasNextPage && (
+          <div ref={loadMoreRef} className="flex h-10 justify-center">
+            <span>
+              {isFetchingNextPage && CHECKLIST_CONTENT.BUTTON.LOAD_MORE}
+            </span>
+          </div>
+        )}
+
+        <Dialog
+          open={updateOpen !== null}
+          onOpenChange={(open) => {
+            if (!open) {
+              setUpdateOpen(null);
+            }
+          }}
+        >
+          <DialogContent className={"w-[90vw] max-w-6xl"}>
+            {updateOpen !== null && (
+              <UpdateChecklist
+                id={updateOpen}
+                equipTypeDD={equipTypeDD}
+                isEquipType={isEquipType}
+                onClose={() => setUpdateOpen(null)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
     </>
   );
 }

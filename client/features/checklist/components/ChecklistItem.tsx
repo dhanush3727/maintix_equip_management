@@ -24,6 +24,8 @@ interface ChecklistItemProps {
   index: number;
   canRemove: boolean;
   onRemoveItem: (index: number) => void;
+  isChecklist?: boolean;
+  disabled?: boolean;
 }
 
 export function ChecklistItem({
@@ -33,6 +35,8 @@ export function ChecklistItem({
   index,
   canRemove,
   onRemoveItem,
+  isChecklist = false,
+  disabled = false,
 }: ChecklistItemProps) {
   const itemType = useWatch({
     control: form.control,
@@ -42,7 +46,7 @@ export function ChecklistItem({
   return (
     <div className="grid gap-3 sm:grid-cols-2 border border-border p-5 rounded-md">
       <div className="col-span-full flex justify-end">
-        {canRemove && (
+        {canRemove && !disabled && (
           <Button
             type="button"
             size="icon"
@@ -62,13 +66,18 @@ export function ChecklistItem({
         </FieldLabel>
 
         <FieldContent>
-          <Input
-            id={`item-name-${index}`}
-            type="text"
-            autoComplete="off"
-            placeholder={CHECKLIST_CONTENT.ITEM_FIELD.NAME_PLACEHOLDER}
-            {...form.register(`items.${index}.name`)}
-          />
+          {isChecklist ? (
+            <Skeleton className="h-10" />
+          ) : (
+            <Input
+              id={`item-name-${index}`}
+              type="text"
+              autoComplete="off"
+              disabled={disabled}
+              placeholder={CHECKLIST_CONTENT.ITEM_FIELD.NAME_PLACEHOLDER}
+              {...form.register(`items.${index}.name`)}
+            />
+          )}
         </FieldContent>
 
         <FieldError errors={[form.formState.errors.items?.[index]?.name]} />
@@ -81,7 +90,7 @@ export function ChecklistItem({
         </FieldLabel>
 
         <FieldContent>
-          {isMeta ? (
+          {isMeta || isChecklist ? (
             <Skeleton className="h-10" />
           ) : (
             <Controller
@@ -92,6 +101,7 @@ export function ChecklistItem({
                   options={checklistItemType}
                   value={field.value}
                   onValueChange={field.onChange}
+                  disabled={disabled}
                   placeholder={CHECKLIST_CONTENT.ITEM_FIELD.TYPE_PLACEHOLDER}
                 />
               )}
@@ -103,15 +113,30 @@ export function ChecklistItem({
       </Field>
 
       {itemType === ChecklistItemType.NUMBER && (
-        <NumberType form={form} index={index} />
+        <NumberType
+          form={form}
+          index={index}
+          isChecklist={isChecklist}
+          disabled={disabled}
+        />
       )}
 
       {itemType === ChecklistItemType.BOOLEAN && (
-        <BooleanType form={form} index={index} />
+        <BooleanType
+          form={form}
+          index={index}
+          isChecklist={isChecklist}
+          disabled={disabled}
+        />
       )}
 
       {itemType === ChecklistItemType.SELECT && (
-        <SelectType form={form} index={index} />
+        <SelectType
+          form={form}
+          index={index}
+          isChecklist={isChecklist}
+          disabled={disabled}
+        />
       )}
     </div>
   );

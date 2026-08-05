@@ -3,7 +3,7 @@ import { EquipmentParams } from "../../types/equipment.type";
 import { Button, Input, SearchSelect, Skeleton } from "@/components/ui";
 import { EQUIPMENT_CONTENT } from "../../constants/equipment.constant";
 import { X } from "lucide-react";
-import { DropdownOptions } from "./Equipment";
+import { DropdownOptions } from "../../utils/equipment.utils";
 
 interface FilterItemsProps {
   search: string;

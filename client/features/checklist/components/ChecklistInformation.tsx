@@ -18,12 +18,16 @@ interface ChecklistInformationProps {
   form: UseFormReturn<ChecklistValues>;
   isEquipType: boolean;
   equipTypeDD: EquipmentTypeDropdownData[];
+  isChecklist?: boolean;
+  disabled?: boolean;
 }
 
 export function ChecklistInformation({
   form,
   isEquipType,
   equipTypeDD,
+  isChecklist = false,
+  disabled = false,
 }: ChecklistInformationProps) {
   return (
     <>
@@ -43,13 +47,20 @@ export function ChecklistInformation({
           </FieldLabel>
 
           <FieldContent>
-            <Input
-              type="text"
-              id="name"
-              autoComplete="off"
-              placeholder={CHECKLIST_CONTENT.INFORMATION_FIELD.NAME_PLACEHOLDER}
-              {...form.register("name")}
-            />
+            {isChecklist ? (
+              <Skeleton className="h-10" />
+            ) : (
+              <Input
+                type="text"
+                id="name"
+                autoComplete="off"
+                disabled={disabled}
+                placeholder={
+                  CHECKLIST_CONTENT.INFORMATION_FIELD.NAME_PLACEHOLDER
+                }
+                {...form.register("name")}
+              />
+            )}
           </FieldContent>
 
           <FieldError errors={[form.formState.errors.name]} />
@@ -62,7 +73,7 @@ export function ChecklistInformation({
           </FieldLabel>
 
           <FieldContent>
-            {isEquipType ? (
+            {isEquipType || isChecklist ? (
               <Skeleton className="h-10" />
             ) : (
               <Controller
@@ -73,6 +84,7 @@ export function ChecklistInformation({
                     options={equipTypeDD}
                     value={field.value}
                     onValueChange={field.onChange}
+                    disabled={disabled}
                     placeholder={
                       CHECKLIST_CONTENT.INFORMATION_FIELD.TYPE_PLACEHOLDER
                     }
@@ -95,13 +107,18 @@ export function ChecklistInformation({
           </FieldLabel>
 
           <FieldContent>
-            <Textarea
-              id="description"
-              placeholder={
-                CHECKLIST_CONTENT.INFORMATION_FIELD.DESCRIPTION_PLACEHOLDER
-              }
-              {...form.register("description")}
-            />
+            {isChecklist ? (
+              <Skeleton className="h-10" />
+            ) : (
+              <Textarea
+                id="description"
+                disabled={disabled}
+                placeholder={
+                  CHECKLIST_CONTENT.INFORMATION_FIELD.DESCRIPTION_PLACEHOLDER
+                }
+                {...form.register("description")}
+              />
+            )}
           </FieldContent>
 
           <FieldError errors={[form.formState.errors.description]} />

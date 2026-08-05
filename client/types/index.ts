@@ -9,6 +9,7 @@ export type {
 } from "./organization.types";
 export type { Pagination } from "./pagination.type";
 export type { QueryParams } from "./query.types";
+export type { DropdownOptions } from "./dropdownOption.type";
 
 export * from "./enum/metadata.enum";
 

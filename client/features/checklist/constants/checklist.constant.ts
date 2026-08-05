@@ -20,6 +20,12 @@ export const CHECKLIST_CONTENT = {
       "Create a checklist to define the tasks and inspection steps required for maintenance activities.",
   },
 
+  FILTER: {
+    SEARCH: "Search checklist",
+    TYPE: "Select equipment type",
+    TYPE_SEARCH: "Search type",
+  },
+
   INFORMATION_FIELD: {
     TITLE: "Checklist Information",
 

@@ -30,16 +30,21 @@ export function ChecklistList({ item, onEdit }: ChecklistListProps) {
               </p>
             </div>
 
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
-              onClick={() => onEdit(item.id)}
-              aria-label={`Edit ${item.name}`}
-            >
-              <Pencil aria-hidden="true" className="size-4" />
-            </Button>
+            <div className="flex items-center justify-end gap-2">
+              <span className="rounded-md border border-border bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
+                V{item.version}
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-8 shrink-0 bg-info-light text-info hover:bg-info-light/80"
+                onClick={() => onEdit(item.id)}
+                aria-label={`Edit ${item.name}`}
+              >
+                <Pencil aria-hidden="true" className="size-4" />
+              </Button>
+            </div>
           </div>
 
           <div className="pt-2">

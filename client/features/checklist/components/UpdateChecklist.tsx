@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Button,
   DialogClose,
@@ -10,33 +8,40 @@ import {
   FieldGroup,
 } from "@/components/ui";
 import { CHECKLIST_CONTENT } from "../constants/checklist.constant";
+import { useGetChecklistById } from "../hooks/useGetChecklistById";
+import { EquipmentTypeDropdownData } from "@/features/equipment/types/equipment-type.type";
+import { useUpdateChecklist } from "../hooks/useUpdateChecklist";
+import { ListChecks, LoaderCircle, Plus, Send } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { checklistSchema, ChecklistValues } from "../schema/checklist.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateChecklist } from "../hooks/useCreateChecklist";
+import { ChecklistItemType } from "@/types";
 import { appToast, getErrorMessage } from "@/lib";
-import { ListChecks, LoaderCircle, Plus } from "lucide-react";
-import { useMeta } from "@/hooks";
+import { useEffect } from "react";
 import { ChecklistInformation } from "./ChecklistInformation";
 import { ChecklistItem } from "./ChecklistItem";
-import { ChecklistItemType } from "@/types";
-import { EquipmentTypeDropdownData } from "@/features/equipment/types/equipment-type.type";
+import { useMeta } from "@/hooks";
 
-interface CreateChecklistProps {
+interface UpdateChecklistProps {
+  id: number;
   onClose: () => void;
   equipTypeDD: EquipmentTypeDropdownData[];
   isEquipType: boolean;
 }
 
-export function CreateChecklist({
+export function UpdateChecklist({
+  id,
   onClose,
-  equipTypeDD,
   isEquipType,
-}: CreateChecklistProps) {
+  equipTypeDD,
+}: UpdateChecklistProps) {
   const { data: meta, isLoading: isMeta } = useMeta();
-  const createChecklist = useCreateChecklist();
-
   const checklistItemType = meta?.data?.checklistItemType ?? [];
+
+  const { data: checklistData, isLoading: isChecklist } =
+    useGetChecklistById(id);
+  const updateChecklist = useUpdateChecklist();
+  const checklist = checklistData?.data;
 
   const form = useForm<ChecklistValues>({
     resolver: zodResolver(checklistSchema),
@@ -67,6 +72,25 @@ export function CreateChecklist({
     name: "items",
   });
 
+  useEffect(() => {
+    if (!checklist) return;
+
+    form.reset({
+      name: checklist.name,
+      equipmentTypeId: checklist.equipmentType.value,
+      description: checklist.description,
+      items: checklist.checklistItems.map((item) => ({
+        name: item.name,
+        order: item.order,
+        type: item.type,
+        expectedValue: item.expectedValue ?? undefined,
+        minValue: item.minValue ?? undefined,
+        maxValue: item.maxValue ?? undefined,
+        options: item.options ?? undefined,
+      })),
+    });
+  }, [checklist, form]);
+
   const onAddItem = () => {
     appendItem({
       name: "",
@@ -91,17 +115,21 @@ export function CreateChecklist({
   };
 
   const onSubmit = (payload: ChecklistValues) => {
-    createChecklist.mutate(payload, {
-      onSuccess: (data) => {
-        appToast.success(data.message);
-        form.reset();
-        onClose();
-      },
+    if (!checklist) return;
 
-      onError: (err) => {
-        appToast.error(getErrorMessage(err));
+    updateChecklist.mutate(
+      { id: checklist.id, payload },
+      {
+        onSuccess: (data) => {
+          appToast.success(data.message);
+          onClose();
+        },
+
+        onError: (err) => {
+          appToast.error(getErrorMessage(err));
+        },
       },
-    });
+    );
   };
 
   return (
@@ -111,18 +139,20 @@ export function CreateChecklist({
       onSubmit={form.handleSubmit(onSubmit)}
     >
       <DialogHeader className="shrink-0">
-        <DialogTitle>{CHECKLIST_CONTENT.CREATE.TITLE}</DialogTitle>
+        <DialogTitle>{CHECKLIST_CONTENT.UPDATE.TITLE}</DialogTitle>
         <DialogDescription>
-          {CHECKLIST_CONTENT.CREATE.DESCRIPTION}
+          {CHECKLIST_CONTENT.UPDATE.DESCRIPTION}
         </DialogDescription>
       </DialogHeader>
 
+      {/* Basic information */}
       <FieldGroup className="flex-1 overflow-y-auto p-5">
-        {/* Basic information */}
         <ChecklistInformation
           form={form}
           isEquipType={isEquipType}
           equipTypeDD={equipTypeDD}
+          isChecklist={isChecklist}
+          disabled={checklist ? !checklist.isActive : false}
         />
 
         <div className="flex gap-3 items-center">
@@ -133,14 +163,16 @@ export function CreateChecklist({
             </h1>
           </div>
 
-          <Button
-            type="button"
-            size={"icon"}
-            className={"h-6 w-6 rounded-sm"}
-            onClick={onAddItem}
-          >
-            <Plus className="size-4" />
-          </Button>
+          {checklist && checklist.isActive && (
+            <Button
+              type="button"
+              size={"icon"}
+              className={"h-6 w-6 rounded-sm"}
+              onClick={onAddItem}
+            >
+              <Plus className="size-4" />
+            </Button>
+          )}
         </div>
 
         {/* Checklist items */}
@@ -153,23 +185,30 @@ export function CreateChecklist({
             index={index}
             canRemove={itemFields.length > 1}
             onRemoveItem={handleRemoveItem}
+            isChecklist={isChecklist}
+            disabled={checklist ? !checklist.isActive : false}
           />
         ))}
       </FieldGroup>
 
       <DialogFooter>
-        <DialogClose className={"mr-3"} disabled={createChecklist.isPending}>
+        <DialogClose className={"mr-3"} disabled={updateChecklist.isPending}>
           {CHECKLIST_CONTENT.BUTTON.CANCEL}
         </DialogClose>
 
-        <Button type="submit" disabled={createChecklist.isPending}>
-          {createChecklist.isPending ? (
-            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
-          ) : (
-            <Plus aria-hidden="true" className="size-4" />
-          )}
-          {CHECKLIST_CONTENT.BUTTON.CREATE}
-        </Button>
+        {checklist && checklist.isActive && (
+          <Button type="submit" disabled={updateChecklist.isPending}>
+            {updateChecklist.isPending ? (
+              <LoaderCircle
+                aria-hidden="true"
+                className="size-4 animate-spin"
+              />
+            ) : (
+              <Send aria-hidden="true" className="size-4" />
+            )}
+            {CHECKLIST_CONTENT.BUTTON.UPDATE}
+          </Button>
+        )}
       </DialogFooter>
     </form>
   );
