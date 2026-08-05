@@ -534,6 +534,27 @@ export class EquipmentService {
   }
   //#endregion
 
+  //#region Get equipments dropdown
+  async getEquipmentDropdown(req: RequestUser) {
+    const { organizationId } = req;
+
+    const equipments = await this.prisma.equipment.findMany({
+      where: { organizationId },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const formattedEquipments = equipments.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+
+    return formattedEquipments;
+  }
+  //#endregion
+
   //#region Get equipments by type
   async getEquipmentsByTypeId(typeId: number, req: RequestUser) {
     const { organizationId } = req;

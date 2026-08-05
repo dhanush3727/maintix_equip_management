@@ -206,6 +206,18 @@ export class EquipmentController {
   }
   //#endregion
 
+  //#region Get equipment drodown
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('/dropdown')
+  async getEquipmentsDropdown(@Req() req: AuthenticateRequest) {
+    const data = await this.equipmentService.getEquipmentDropdown(req.user);
+
+    return {
+      data,
+    };
+  }
+  //#endregion
+
   //#region Get equipments by type
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
   @Get('type/:typeId')

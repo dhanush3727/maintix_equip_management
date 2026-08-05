@@ -34,9 +34,9 @@ export const checklistService = {
   },
 
   // Get checklist dropdown
-  async getChecklistDropdown(id: number): Promise<ApiResponse<DropDown[]>> {
+  async getChecklistDropdown(typeId: number): Promise<ApiResponse<DropDown[]>> {
     const { data } = await api.get<ApiResponse<DropDown[]>>(
-      CHECKLIST_ENDPOINTS.DROPDOWN(id),
+      CHECKLIST_ENDPOINTS.DROPDOWN(typeId),
     );
 
     return data;

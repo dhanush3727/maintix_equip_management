@@ -14,7 +14,10 @@ export const useCreateChecklist = () => {
       });
 
       queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEYS.checklist.dropdown, variables.equipmentTypeId],
+        queryKey: [
+          ...QUERY_KEYS.checklist.dropdown_by_type,
+          variables.equipmentTypeId,
+        ],
       });
     },
   });

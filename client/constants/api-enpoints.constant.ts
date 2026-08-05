@@ -7,5 +7,8 @@ export const API_ENDPOINTS = {
   ORGANIZATION_DROPDOWN: "organization/dropdown",
   ROLE_DROPDOWN: "users/roles",
   EQUIPMENT_TYPE_DROPDOWN: "equipment/equipment-type/dropdown",
-  EQUIPMENT_DROPDOWN: (id: number) => `equipment/type/${id}`,
+  EQUIPMENT_DROPDOWN: "equipment/dropdown",
+  EQUIPMENT_DROPDOWN_BY_ID: (id: number) => `equipment/type/${id}`,
+  USER_DROPDOWN: "users/dropdown",
+  CHECKLIST_DROPDOWN: "checklist/dropdown",
 } as const;

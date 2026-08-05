@@ -5,6 +5,8 @@ export const SCHEDULE_ENDPOINTS = {
   UPDATE: (id: number) => `pmschedules/${id}`,
   ACTIVATE: (id: number) => `pmschedules/${id}/activate`,
   DEACTIVATE: (id: number) => `pmschedules/${id}/deactivate`,
+  CHECKLIST_DROPDOWN: (typeId: number) =>
+    `checklist/checklist-template/equipment-type/${typeId}/dropdown`,
 };
 
 export const SCHEDULE_CONTENT = {
@@ -27,6 +29,11 @@ export const SCHEDULE_CONTENT = {
   },
 
   FIELDS: {
+    EQUIPMENT_TYPE: {
+      LABEL: "Equipment Type",
+      PLACEHOLDER: "Select equipment type",
+    },
+
     EQUIPMENT: {
       LABEL: "Equipment",
       PLACEHOLDER: "Select equipment",

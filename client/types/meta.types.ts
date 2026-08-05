@@ -18,82 +18,82 @@ import {
   TaskStatus,
 } from "./enum/metadata.enum";
 
-interface Roles {
+export interface Roles {
   label: string;
   value: RoleType;
 }
 
-interface Industries {
+export interface Industries {
   label: string;
   value: IndustryType;
 }
 
-interface CompanySizeType {
+export interface CompanySizeType {
   label: string;
   value: CompanySize;
 }
 
-interface Locations {
+export interface Locations {
   label: string;
   value: LocationType;
 }
 
-interface Departments {
+export interface Departments {
   label: string;
   value: DepartmentType;
 }
 
-interface InvitationStatusType {
+export interface InvitationStatusType {
   label: string;
   value: InvitationStatus;
 }
 
-interface EquipmentStatusType {
+export interface EquipmentStatusType {
   label: string;
   value: EquipmentStatus;
 }
 
-interface Frequency {
+export interface Frequency {
   label: string;
   value: FrequencyType;
 }
 
-interface TaskStatusType {
+export interface TaskStatusType {
   label: string;
   value: TaskStatus;
 }
 
-interface TaskPriorityType {
+export interface TaskPriorityType {
   label: string;
   value: TaskPriority;
 }
 
-interface ItemStatusType {
+export interface ItemStatusType {
   label: string;
   value: ItemStatus;
 }
 
-interface BreakdownSeverityType {
+export interface BreakdownSeverityType {
   label: string;
   value: BreakdownSeverity;
 }
 
-interface BreakdownStatusType {
+export interface BreakdownStatusType {
   label: string;
   value: BreakdownStatus;
 }
 
-interface Notifications {
+export interface Notifications {
   label: string;
   value: NotificationType;
 }
 
-interface Reference {
+export interface Reference {
   label: string;
   value: ReferenceType;
 }
 
-interface OnboardingSetupType {
+export interface OnboardingSetupType {
   label: string;
   value: OnboardingSetup;
 }

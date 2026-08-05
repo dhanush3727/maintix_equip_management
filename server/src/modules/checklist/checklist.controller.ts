@@ -69,6 +69,18 @@ export class ChecklistController {
   }
   //#endregion
 
+  //#region Get checklist dropdown
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('/dropdown')
+  async getChecklistDropdown(@Req() req: AuthenticateRequest) {
+    const data = await this.checklist.getChecklistDropdown(req.user);
+
+    return {
+      data,
+    };
+  }
+  //#endregion
+
   //#region Get Checklist template by id
   @UseGuards(AccessTokenGuard, OrganizationActiveGuard, RolesGuard)
   @Roles(RoleType.ADMIN, RoleType.MANAGER)

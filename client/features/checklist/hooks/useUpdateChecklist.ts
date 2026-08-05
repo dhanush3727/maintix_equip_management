@@ -26,7 +26,7 @@ export const useUpdateChecklist = () => {
 
       queryClient.invalidateQueries({
         queryKey: [
-          ...QUERY_KEYS.checklist.dropdown,
+          ...QUERY_KEYS.checklist.dropdown_by_type,
           variables.payload.equipmentTypeId,
         ],
       });

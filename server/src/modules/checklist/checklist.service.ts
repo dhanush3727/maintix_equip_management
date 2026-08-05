@@ -233,6 +233,27 @@ export class ChecklistService {
   }
   //#endregion
 
+  //#region Get Checklist dropdown
+  async getChecklistDropdown(req: RequestUser) {
+    const { organizationId } = req;
+
+    const checklists = await this.prisma.checklistTemplate.findMany({
+      where: { organizationId },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const formattedChecklists = checklists.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+
+    return formattedChecklists;
+  }
+  //#endregion
+
   //#region Get checklist template by id
   async getChecklistTemplateById(id: number, req: RequestUser) {
     const { organizationId } = req;

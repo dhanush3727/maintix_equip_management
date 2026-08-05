@@ -60,6 +60,18 @@ export class UserController {
   }
   //#endregion
 
+  //#region
+  @UseGuards(AccessTokenGuard, OrganizationActiveGuard)
+  @Get('/dropdown')
+  async getUserDropdown(@Req() req: AuthenticateRequest) {
+    const data = await this.userService.getUserDropdown(req.user);
+
+    return {
+      data,
+    };
+  }
+  //#endregion
+
   //#region Get user by id
   @UseGuards(AccessTokenGuard)
   @Get(':id')

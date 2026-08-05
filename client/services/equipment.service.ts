@@ -12,10 +12,21 @@ export const equipmentService = {
     return data;
   },
 
-  // Get equipment dropdown by type
-  async getEquipmentDrodown(typeId: number): Promise<ApiResponse<DropDown[]>> {
+  // Get equipment dropdown
+  async getEquipmentDropdown(): Promise<ApiResponse<DropDown[]>> {
     const { data } = await api.get<ApiResponse<DropDown[]>>(
-      API_ENDPOINTS.EQUIPMENT_DROPDOWN(typeId),
+      API_ENDPOINTS.EQUIPMENT_DROPDOWN,
+    );
+
+    return data;
+  },
+
+  // Get equipment dropdown by type
+  async getEquipmentDrodownByType(
+    typeId: number,
+  ): Promise<ApiResponse<DropDown[]>> {
+    const { data } = await api.get<ApiResponse<DropDown[]>>(
+      API_ENDPOINTS.EQUIPMENT_DROPDOWN_BY_ID(typeId),
     );
 
     return data;

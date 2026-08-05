@@ -61,7 +61,7 @@ export function MaintenanceHeader() {
             }
           />
 
-          <DialogContent>
+          <DialogContent className={"w-[90vw] max-w-6xl"}>
             <CreateSchedule onClose={() => setOpenSchedule(false)} />
           </DialogContent>
         </Dialog>

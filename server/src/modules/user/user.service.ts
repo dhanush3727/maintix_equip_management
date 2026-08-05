@@ -22,6 +22,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { AuditService } from '../../common/audit/audit.service';
 import { AuditAction, AuditModule } from '../../common/audit/audit.types';
 import { MetaType, RequestUser } from '../../common/types/auth.types';
+import { ROLE_IDS } from '../../common/constants/roles.constants';
 
 @Injectable()
 export class UserService {
@@ -716,6 +717,36 @@ export class UserService {
         ipAddress: meta?.ipAddress,
       });
     });
+  }
+  //#endregion
+
+  //#region Get technician user
+  async getUserDropdown(req: RequestUser) {
+    const { organizationId } = req;
+
+    const users = await this.prisma.user.findMany({
+      where: {
+        organizationId,
+        isActive: true,
+        isEmailVerified: true,
+        roles: {
+          some: {
+            roleId: ROLE_IDS.TECHNICIAN,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const formattedUser = users.map((user) => ({
+      value: user.id,
+      label: user.name,
+    }));
+
+    return formattedUser;
   }
   //#endregion
 }

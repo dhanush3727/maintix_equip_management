@@ -40,6 +40,7 @@ export function AppHeader() {
   const queryClient = useQueryClient();
 
   const { user, clearUser, isLoading } = useAuth();
+  const roleName = user?.roles[0].name;
 
   const [isLogout, setIsLogout] = useState<boolean>(false);
 
@@ -108,7 +109,15 @@ export function AppHeader() {
                   <Skeleton className="h-8 w-full" />
                 ) : (
                   <>
-                    <span className="text-base font-medium">{user?.name}</span>
+                    <div className="flex flex-col">
+                      <span className="text-base font-medium">
+                        {user?.name}
+                      </span>
+
+                      <span className="text-xs text-muted-foreground">
+                        {roleName}
+                      </span>
+                    </div>
                     <User size={25} />
                   </>
                 )}
