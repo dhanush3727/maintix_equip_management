@@ -23,6 +23,13 @@ export const useUpdateEquipment = () => {
       queryClient.invalidateQueries({
         queryKey: [...QUERY_KEYS.equipment.by_id, variables.id],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [
+          ...QUERY_KEYS.equipment.dropdown,
+          variables.payload.equipmentTypeId,
+        ],
+      });
     },
   });
 };

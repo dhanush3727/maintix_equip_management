@@ -37,8 +37,6 @@ import {
 import { useState } from "react";
 import { CheckType, PasswordRequirement } from "../types/auth.type";
 
-
-
 export function RegisterForm() {
   const router = useRouter();
   const registerMutation = useRegister();

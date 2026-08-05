@@ -26,7 +26,7 @@ export function NavItem({ items }: NavItemProp) {
 
   const isActive = (url: string): boolean => {
     return pathname === url || pathname.startsWith(`${url}/`);
-  };
+  };``
 
   return (
     <SidebarMenu>

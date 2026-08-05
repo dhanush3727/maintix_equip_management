@@ -535,120 +535,23 @@ export class EquipmentService {
   //#endregion
 
   //#region Get equipments by type
-  async getEquipmentsByTypeId(
-    typeId: number,
-    req: RequestUser,
-    query: EquipmentQueryDto,
-  ) {
+  async getEquipmentsByTypeId(typeId: number, req: RequestUser) {
     const { organizationId } = req;
 
-    const equipType = await this.prisma.equipmentType.findFirst({
-      where: { id: typeId, organizationId },
-      select: { id: true, isActive: true },
+    const equipments = await this.prisma.equipment.findMany({
+      where: { organizationId, equipmentTypeId: typeId },
+      select: {
+        id: true,
+        name: true,
+      },
     });
 
-    if (!equipType) throw new NotFoundException('Equipment type not found');
+    const formattedEquipments = equipments.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
 
-    if (!equipType.isActive) {
-      throw new BadRequestException('Equipment type is deactivate');
-    }
-
-    const {
-      page = 1,
-      limit = 10,
-      search,
-      sortBy,
-      order,
-      status,
-      department,
-      location,
-      type,
-    } = query;
-
-    const { skip, take } = getPagination(page, limit);
-
-    const filters: Prisma.EquipmentWhereInput = {
-      organizationId,
-      equipmentTypeId: typeId,
-    };
-
-    if (status) {
-      filters.status = status;
-    }
-
-    if (location) {
-      filters.location = {
-        name: location,
-      };
-    }
-
-    if (department) {
-      filters.department = {
-        name: department,
-      };
-    }
-
-    if (type) {
-      filters.equipmentType = {
-        name: type,
-      };
-    }
-
-    const { where, orderBy } = buildQueryOptions({
-      search,
-      order,
-      filters,
-      searchFields: ['name', 'serialNumber', 'code', 'manufacturer', 'model'],
-      sortBy,
-    });
-
-    const [equipments, total] = await Promise.all([
-      this.prisma.equipment.findMany({
-        where,
-        skip,
-        take,
-        orderBy: orderBy ?? { createdAt: 'desc' },
-        select: {
-          id: true,
-          equipmentTypeId: true,
-          name: true,
-          code: true,
-          serialNumber: true,
-          status: true,
-          installedDate: true,
-          warrantyExpiry: true,
-          manufacturer: true,
-          model: true,
-          equipmentType: {
-            select: {
-              name: true,
-              code: true,
-            },
-          },
-          location: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          department: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      }),
-
-      this.prisma.equipment.count({ where }),
-    ]);
-
-    const pagination = buildPaginationMeta(page, limit, total);
-
-    return {
-      data: equipments,
-      pagination,
-    };
+    return formattedEquipments;
   }
   //#endregion
 

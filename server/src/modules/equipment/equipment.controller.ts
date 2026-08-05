@@ -212,18 +212,14 @@ export class EquipmentController {
   async getEquipmentsByTypeId(
     @Param('typeId', ParseIntPipe) typeId: number,
     @Req() req: AuthenticateRequest,
-    @Query() query: EquipmentQueryDto,
   ) {
-    const { data, pagination } =
-      await this.equipmentService.getEquipmentsByTypeId(
-        typeId,
-        req.user,
-        query,
-      );
+    const data = await this.equipmentService.getEquipmentsByTypeId(
+      typeId,
+      req.user,
+    );
 
     return {
       data,
-      pagination,
     };
   }
   //#endregion

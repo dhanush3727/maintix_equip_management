@@ -247,12 +247,8 @@ export class PmschedulesService {
 
     const formattedPMSchedules = pmschedules.map((list) => ({
       id: list.id,
-      organizationId: list.id,
-      equipmentId: list.equipmentId,
       equipmentName: list.equipment.name,
-      templateId: list.templateId,
       template: list.template.name,
-      assignedToId: list.assignedTo,
       assignedTo: list.assignee.name,
       frequencyType: list.frequencyType,
       interval: list.interval,
@@ -279,27 +275,26 @@ export class PmschedulesService {
       },
       select: {
         id: true,
-        organizationId: true,
-        equipmentId: true,
-        templateId: true,
         frequencyType: true,
         interval: true,
         startDate: true,
         nextDueDate: true,
-        assignedTo: true,
         isActive: true,
         equipment: {
           select: {
+            id: true,
             name: true,
           },
         },
         template: {
           select: {
+            id: true,
             name: true,
           },
         },
         assignee: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -310,13 +305,18 @@ export class PmschedulesService {
 
     const formattedPMSchedule = {
       id: pmschedule.id,
-      organizationId: pmschedule.id,
-      equipmentId: pmschedule.equipmentId,
-      equipmentName: pmschedule.equipment.name,
-      templateId: pmschedule.templateId,
-      template: pmschedule.template.name,
-      assignedToId: pmschedule.assignedTo,
-      assignedTo: pmschedule.assignee.name,
+      equipment: {
+        value: pmschedule.equipment.id,
+        label: pmschedule.equipment.name,
+      },
+      template: {
+        value: pmschedule.template.id,
+        label: pmschedule.template.name,
+      },
+      assignedTo: {
+        value: pmschedule.assignee.id,
+        label: pmschedule.assignee.name,
+      },
       frequencyType: pmschedule.frequencyType,
       interval: pmschedule.interval,
       startDate: pmschedule.startDate,

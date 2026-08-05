@@ -18,10 +18,15 @@ export const ROUTES = {
     TYPE: "/equipment/type",
   },
 
+  PREVENTIVE_MAINTENANCE: {
+    SCHEDULE: "/preventive-maintenance/schedule",
+    TASK: "/preventive-maintenance/task",
+  },
+
   ACCOUNT: "/account",
   BREAKDOWN: "/breakdown",
   CHECKLIST: "/checklist",
-  PREVENTIVE_MAINTENANCE: "/preventive-maintenance",
+
   CHECK_EMAIL: "/check-email",
   CHECK_VERIFY_EMAIL: "/check-verify-email",
   SETUP_ORGANIZATION: "/setup/organization",

@@ -8,9 +8,13 @@ export const useAddEquipment = () => {
   return useMutation({
     mutationFn: equipmentService.createEquipment,
 
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.equipment.get_list,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [...QUERY_KEYS.equipment.dropdown, variables.equipmentTypeId],
       });
     },
   });

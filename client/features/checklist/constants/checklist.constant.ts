@@ -84,13 +84,13 @@ export const CHECKLIST_CONTENT = {
 
   NO_DATA: {
     TITLE: "No checklist found",
-    DESCRIPTION: "Create an equipment type to get started",
+    DESCRIPTION: "Create a checklist to get started",
   },
 
   ERROR: {
     TITLE: "Unable to load checklists",
     DESCRIPTION:
-      "Soemthing went wrong while loading equipment types. Please try again.",
+      "Soemthing went wrong while loading checklist. Please try again.",
   },
 
   ACCESS: {

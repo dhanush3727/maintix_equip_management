@@ -43,7 +43,7 @@ export const navItems = [
   {
     title: "Preventive Maintenance",
     icon: Wrench,
-    url: ROUTES.PREVENTIVE_MAINTENANCE,
+    url: ROUTES.PREVENTIVE_MAINTENANCE.SCHEDULE,
   },
   {
     title: "Breakdown",

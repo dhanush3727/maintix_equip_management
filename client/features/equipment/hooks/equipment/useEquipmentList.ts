@@ -14,7 +14,7 @@ export const useEquipmentList = ({
   return useQuery({
     queryKey: [...QUERY_KEYS.equipment.get_list, params],
     queryFn: () => equipmentService.getEquipmentList(params),
-    placeholderData: keepPreviousData,
-    enabled,
+    placeholderData: keepPreviousData, // This will keep the previous data while fetching new data, preventing flickering in the UI.
+    enabled, // This allows you to conditionally enable or disable the query based on the `enabled` parameter. If `enabled` is false, the query will not run.
   });
 };
