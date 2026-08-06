@@ -238,7 +238,7 @@ export class ChecklistService {
     const { organizationId } = req;
 
     const checklists = await this.prisma.checklistTemplate.findMany({
-      where: { organizationId },
+      where: { organizationId, isActive: true },
       select: {
         id: true,
         name: true,
@@ -423,7 +423,7 @@ export class ChecklistService {
     const { organizationId } = req;
 
     const templates = await this.prisma.checklistTemplate.findMany({
-      where: { organizationId, equipmentTypeId: id },
+      where: { organizationId, equipmentTypeId: id, isActive: true },
       select: {
         id: true,
         name: true,

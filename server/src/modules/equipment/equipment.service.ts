@@ -539,7 +539,7 @@ export class EquipmentService {
     const { organizationId } = req;
 
     const equipments = await this.prisma.equipment.findMany({
-      where: { organizationId },
+      where: { organizationId, status: EquipmentStatus.ACTIVE },
       select: {
         id: true,
         name: true,
@@ -560,7 +560,11 @@ export class EquipmentService {
     const { organizationId } = req;
 
     const equipments = await this.prisma.equipment.findMany({
-      where: { organizationId, equipmentTypeId: typeId },
+      where: {
+        organizationId,
+        equipmentTypeId: typeId,
+        status: EquipmentStatus.ACTIVE,
+      },
       select: {
         id: true,
         name: true,

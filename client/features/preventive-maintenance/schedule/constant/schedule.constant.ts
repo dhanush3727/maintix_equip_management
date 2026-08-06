@@ -66,10 +66,11 @@ export const SCHEDULE_CONTENT = {
   },
 
   FILTER: {
-    SEARCH: "Search schedules",
+    TEMPLATE: "All Checklists",
     EQUIPMENT: "All Equipment",
     FREQUENCY_TYPE: "All Frequencies",
-    ASSIGNED_TO: "All Technicians",
+    FROM_DATE_LABEL: "From Date",
+    TO_DATE_LABEL: "To Date",
   },
 
   NO_DATA: {
