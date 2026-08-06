@@ -76,7 +76,7 @@ export function EquipmentHeader() {
         >
           <DialogTrigger
             render={
-              <Button className={"hidden sm:flex"}>
+              <Button className={"hidden lg:flex"}>
                 <Plus aria-hidden="true" className="size-4" />
                 {EQUIPMENT_HEADER_CONTENT.ADD_EQUIIPMENT_TYPE}
               </Button>
@@ -98,7 +98,7 @@ export function EquipmentHeader() {
         >
           <DialogTrigger
             render={
-              <Button className={"hidden sm:flex"}>
+              <Button className={"hidden lg:flex"}>
                 <Plus aria-hidden="true" className="size-4" />
                 {EQUIPMENT_HEADER_CONTENT.ADD_EQUIPMENT}
               </Button>

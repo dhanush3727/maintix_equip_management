@@ -28,7 +28,7 @@ export function Equipment() {
   // This is help to call the api hook
   // if the width match with lg size then it run the equipment list hook
   // if false then run the infinte query hook
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
 
   const statusDD = meta?.data?.euqipmentStatus ?? [];
   const locationDD = organization?.data?.location ?? [];
@@ -131,7 +131,7 @@ export function Equipment() {
         onFilterChange={resetPage}
       />
 
-      <div className="lg:hidden">
+      <div className="xl:hidden">
         <EquipmentCard
           equipmentList={cardEquipmentList}
           isLoading={isCardEquipment}
@@ -143,7 +143,7 @@ export function Equipment() {
         />
       </div>
 
-      <div className="hidden lg:block">
+      <div className="hidden xl:block">
         <EquipmentList
           equipmentList={equipmentList}
           isLoading={isEquipment}

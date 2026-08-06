@@ -1,4 +1,12 @@
-import { Button, Input, SearchSelect, Skeleton } from "@/components/ui";
+import {
+  Button,
+  Field,
+  FieldLabel,
+  Input,
+  SearchSelect,
+  Skeleton,
+  FieldContent,
+} from "@/components/ui";
 import { DropDown, Frequency } from "@/types";
 import { ScheduleParamsValues } from "./Schedule";
 import { Dispatch, SetStateAction } from "react";
@@ -18,8 +26,6 @@ interface FilterItemsProps {
 
   params: ScheduleParamsValues;
   setParams: Dispatch<SetStateAction<ScheduleParamsValues>>;
-
-  onFilterChange: () => void;
 }
 
 export function FilterItems({
@@ -31,7 +37,6 @@ export function FilterItems({
   isMeta,
   params,
   setParams,
-  onFilterChange,
 }: FilterItemsProps) {
   const isClear = Object.keys(params).length > 0;
 
@@ -40,16 +45,17 @@ export function FilterItems({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
+    <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       {isEquipment ? (
         <Skeleton className="h-10" />
       ) : (
         <SearchSelect
           options={equipments}
-          value={params?.equipment}
+          value={params.equipment}
           onValueChange={(value) => {
             setParams((prev) => ({
               ...prev,
+              page: 1,
 
               // SearchSelect callback is typed as `string | number`.
               // Even if this dropdown currently returns a number,
@@ -57,7 +63,6 @@ export function FilterItems({
               // Convert it explicitly to ensure `equipment` is always a number.
               equipment: Number(value),
             }));
-            onFilterChange();
           }}
           placeholder={SCHEDULE_CONTENT.FILTER.EQUIPMENT}
         />
@@ -68,13 +73,13 @@ export function FilterItems({
       ) : (
         <SearchSelect
           options={checklists}
-          value={params?.template}
+          value={params.template}
           onValueChange={(value) => {
             setParams((prev) => ({
               ...prev,
+              page: 1,
               template: Number(value),
             }));
-            onFilterChange();
           }}
           placeholder={SCHEDULE_CONTENT.FILTER.TEMPLATE}
         />
@@ -85,41 +90,66 @@ export function FilterItems({
       ) : (
         <SearchSelect
           options={frequencyType}
-          value={params?.frequencyType}
+          value={params.frequencyType}
           onValueChange={(value) => {
             setParams((prev) => ({
               ...prev,
+              page: 1,
               frequencyType: value as ScheduleParams["frequencyType"],
             }));
-            onFilterChange();
           }}
           placeholder={SCHEDULE_CONTENT.FILTER.FREQUENCY_TYPE}
         />
       )}
 
-      <Input
-        type="date"
-        value={params?.from}
-        onChange={(e) => {
-          setParams((prev) => ({
-            ...prev,
-            from: e.target.value,
-          }));
-          onFilterChange();
-        }}
-      />
+      <Field className="relative">
+        <FieldLabel
+          htmlFor="from-date"
+          className="absolute -top-2 left-3 px-1 text-xs text-muted-foreground"
+        >
+          {SCHEDULE_CONTENT.FILTER.FROM_DATE_LABEL}
+        </FieldLabel>
 
-      <Input
-        type="date"
-        value={params?.to}
-        onChange={(e) => {
-          setParams((prev) => ({
-            ...prev,
-            to: e.target.value,
-          }));
-          onFilterChange();
-        }}
-      />
+        <FieldContent>
+          <Input
+            id="from-date"
+            type="date"
+            value={params.from ?? ""}
+            onChange={(e) => {
+              setParams((prev) => ({
+                ...prev,
+                page: 1,
+                from: e.target.value,
+              }));
+            }}
+            placeholder="Date"
+          />
+        </FieldContent>
+      </Field>
+
+      <Field className="relative">
+        <FieldLabel
+          htmlFor="to-date"
+          className="absolute -top-2 left-3 px-1 text-xs text-muted-foreground"
+        >
+          {SCHEDULE_CONTENT.FILTER.TO_DATE_LABEL}
+        </FieldLabel>
+
+        <FieldContent>
+          <Input
+            id="to-date"
+            type="date"
+            value={params.to ?? ""}
+            onChange={(e) => {
+              setParams((prev) => ({
+                ...prev,
+                page: 1,
+                to: e.target.value,
+              }));
+            }}
+          />
+        </FieldContent>
+      </Field>
 
       {isClear && (
         <Button

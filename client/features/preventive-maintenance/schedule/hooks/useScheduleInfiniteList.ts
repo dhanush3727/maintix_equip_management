@@ -12,7 +12,7 @@ export const useScheduleInfiniteList = ({
   ...params
 }: ScheduleInfiniteList) => {
   return useInfiniteQuery({
-    queryKey: [...QUERY_KEYS.schedule.list, params],
+    queryKey: [...QUERY_KEYS.schedule.list, "card", params],
 
     queryFn: ({ pageParam }) =>
       scheduleService.getSchedules({

@@ -81,7 +81,7 @@ export function FilterItems({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       <Input
         value={search}
         onChange={(e) => {
@@ -137,7 +137,7 @@ export function FilterItems({
       )}
 
       {isMeta ? (
-        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-full sm:col-span-full lg:col-span-1" />
       ) : (
         <SearchSelect
           options={statusDD}
@@ -148,6 +148,7 @@ export function FilterItems({
           }}
           placeholder={EQUIPMENT_CONTENT.FILTERS.STATUS}
           searchPlaceholder={EQUIPMENT_CONTENT.FILTERS.SEARCH_STATUS}
+          className="sm:col-span-full lg:col-span-1"
         />
       )}
 
@@ -188,7 +189,7 @@ export function FilterItems({
         <Button
           type="button"
           variant="ghost"
-          className="w-fit justify-self-end shrink-0 gap-2 text-muted-foreground hover:bg-muted hover:text-foreground justify-end"
+          className="w-fit justify-self-end shrink-0 gap-2 text-muted-foreground hover:bg-muted hover:text-foreground justify-end sm:col-span-full lg:col-span-1"
           aria-label="Clear filters"
           onClick={handleClearFilter}
         >

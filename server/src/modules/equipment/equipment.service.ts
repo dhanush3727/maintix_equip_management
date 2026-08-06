@@ -539,7 +539,12 @@ export class EquipmentService {
     const { organizationId } = req;
 
     const equipments = await this.prisma.equipment.findMany({
-      where: { organizationId, status: EquipmentStatus.ACTIVE },
+      where: {
+        organizationId,
+        status: {
+          not: EquipmentStatus.INACTIVE,
+        },
+      },
       select: {
         id: true,
         name: true,

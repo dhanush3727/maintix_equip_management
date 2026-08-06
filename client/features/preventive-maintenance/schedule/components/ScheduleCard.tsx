@@ -1,16 +1,16 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
-import { EquipmentData } from "../../types/equipment.type";
-import { EquipmentCardList } from "./EquipmentCardList";
-import { Plus } from "lucide-react";
-import { EQUIPMENT_CONTENT } from "../../constants/equipment.constant";
-import { AddEquipment } from "./AddEquipment";
 import { useEffect, useRef, useState } from "react";
-import { CardSkeleton } from "./CardSkeleton";
+import { ScheduleData } from "../types/schedule.type";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
+import { Plus } from "lucide-react";
+import { SCHEDULE_CONTENT } from "../constant/schedule.constant";
+import { CreateSchedule } from "./CreateSchedule";
+import { CardSkeletionList } from "./CardSkeletonList";
 import { CardErrorState } from "./CardErrorState";
 import { CardEmptyState } from "./CardEmptyState";
+import { ScheduleCardList } from "./ScheduleCardList";
 
-interface EquipmentCardProps {
-  equipmentList: EquipmentData[];
+interface ScheduleCardProps {
+  scheduleList: ScheduleData[];
   isLoading: boolean;
   isError: boolean;
   hasNextPage: boolean;
@@ -19,15 +19,15 @@ interface EquipmentCardProps {
   onEdit: (id: number) => void;
 }
 
-export function EquipmentCard({
-  equipmentList,
-  isLoading,
+export function ScheduleCard({
+  scheduleList,
   isError,
+  isLoading,
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
   onEdit,
-}: EquipmentCardProps) {
+}: ScheduleCardProps) {
   const [addOpen, setAddOpen] = useState<boolean>(false);
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -58,47 +58,47 @@ export function EquipmentCard({
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {/* Add Equipment field for mobile view */}
-      <div className="lg:hidden">
+      <div className="sm:hidden">
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger
             render={
               <button
                 type="button"
-                className="flex w-full h-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-8 text-muted-foreground transition-colors hover:bg-muted/50"
+                className="flex w-full h-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-10 text-muted-foreground transition-colors hover:bg-muted/50"
               >
                 <Plus className="size-10" aria-hidden="true" />
 
                 <span className="mt-2 text-sm font-medium">
-                  {EQUIPMENT_CONTENT.CREATE.TITLE}
+                  {SCHEDULE_CONTENT.CREATE.TITLE}
                 </span>
               </button>
             }
           />
 
           <DialogContent>
-            <AddEquipment onClose={() => setAddOpen(false)} />
+            <CreateSchedule onClose={() => setAddOpen(false)} />
           </DialogContent>
         </Dialog>
       </div>
 
       {isLoading ? (
-        Array.from({ length: 6 }, (_, i) => <CardSkeleton key={i} />)
+        Array.from({ length: 6 }, (_, i) => <CardSkeletionList key={i} />)
       ) : isError ? (
         <CardErrorState />
-      ) : equipmentList.length === 0 ? (
+      ) : scheduleList.length === 0 ? (
         <CardEmptyState />
       ) : (
-        equipmentList.map((item) => (
-          <EquipmentCardList key={item.id} item={item} onEdit={onEdit} />
+        scheduleList.map((item) => (
+          <ScheduleCardList key={item.id} item={item} onEdit={onEdit} />
         ))
       )}
 
       {hasNextPage && (
         <div ref={loadMoreRef} className="col-span-full text-center">
           <span>
-            {isFetchingNextPage && EQUIPMENT_CONTENT.BUTTON.LOADING_MORE}
+            {isFetchingNextPage && SCHEDULE_CONTENT.BUTTONS.LOADING_MORE}
           </span>
         </div>
       )}

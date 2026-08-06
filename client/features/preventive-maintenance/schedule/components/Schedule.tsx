@@ -11,6 +11,10 @@ import { useState } from "react";
 import { ScheduleParams } from "../types/schedule.type";
 import { getOptionLabel } from "@/lib";
 import { useScheduleList } from "../hooks/useScheduleList";
+import { ScheduleTable } from "./ScheduleTable";
+import { DataPagination } from "@/components/common";
+import { useScheduleInfiniteList } from "../hooks/useScheduleInfiniteList";
+import { ScheduleCard } from "./ScheduleCard";
 
 export interface ScheduleParamsValues {
   page?: number;
@@ -39,19 +43,40 @@ export function Schedule() {
     template: getOptionLabel(checklists, params.template),
   };
 
-  const resetPage = () => {
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
+
+  const handlePage = (page: number) => {
     setParams((prev) => ({
       ...prev,
-      page: prev.page === 1 ? prev.page : 1,
+      page,
     }));
   };
 
-  // Get equipment lists
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const { data: scheduleData, isLoading: isSchedule } = useScheduleList({
+  const {
+    data: scheduleTableData,
+    isLoading: isScheduleTable,
+    isError: isScheduleTableError,
+  } = useScheduleList({
     ...scheduleParams,
     enabled: isDesktop === true,
   });
+  const scheduleTableList = scheduleTableData?.data ?? [];
+  const pagination = scheduleTableData?.pagination;
+
+  // Get scheduel lists for mobile
+  const {
+    data: scheduleCardData,
+    isLoading: isScheduleCard,
+    isError: isScheduleCardError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useScheduleInfiniteList({
+    ...scheduleParams,
+    enabled: isDesktop === false,
+  });
+  const scheduleCardList =
+    scheduleCardData?.pages.flatMap((page) => page.data ?? []) ?? [];
 
   return (
     <div className="space-y-6">
@@ -64,8 +89,32 @@ export function Schedule() {
         isMeta={isMeta}
         params={params}
         setParams={setParams}
-        onFilterChange={resetPage}
       />
+
+      <div className="hidden xl:block">
+        <ScheduleTable
+          scheduleList={scheduleTableList}
+          isLoading={isScheduleTable}
+          isError={isScheduleTableError}
+          onEdit={() => {}}
+        />
+
+        {!isScheduleTable && !isScheduleTableError && pagination && (
+          <DataPagination pagination={pagination} onPageChange={handlePage} />
+        )}
+      </div>
+
+      <div className="xl:hidden">
+        <ScheduleCard
+          scheduleList={scheduleCardList}
+          isLoading={isScheduleCard}
+          isError={isScheduleCardError}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          fetchNextPage={fetchNextPage}
+          onEdit={() => {}}
+        />
+      </div>
     </div>
   );
 }

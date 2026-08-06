@@ -73,6 +73,18 @@ export const SCHEDULE_CONTENT = {
     TO_DATE_LABEL: "To Date",
   },
 
+  TABLE: {
+    EQUIPMENT: "Equipment",
+    CHECKLIST: "Checklist",
+    ASSIGNED_TO: "Assigned To",
+    FREQUENCY: "Frequency",
+    INTERVAL: "Interval",
+    START_DATE: "Start date",
+    NEXT_DUE: "Next due",
+    STATUS: "Status",
+    ACTION: "Action",
+  },
+
   NO_DATA: {
     TITLE: "No schedules found",
     DESCRIPTION: "There are no maintenance schedules to display.",
@@ -84,3 +96,42 @@ export const SCHEDULE_CONTENT = {
       "Soemthing went wrong while loading Schedules. Please try again.",
   },
 };
+
+export const SCHEDULE_TABLE_COLUMN = [
+  {
+    key: "equipment",
+    label: SCHEDULE_CONTENT.TABLE.EQUIPMENT,
+  },
+  {
+    key: "checklist",
+    label: SCHEDULE_CONTENT.TABLE.CHECKLIST,
+  },
+  {
+    key: "assignedTo",
+    label: SCHEDULE_CONTENT.TABLE.ASSIGNED_TO,
+  },
+  {
+    key: "frequency",
+    label: SCHEDULE_CONTENT.TABLE.FREQUENCY,
+  },
+  // {
+  //   key: "interval",
+  //   label: SCHEDULE_CONTENT.TABLE.INTERVAL,
+  // },
+  {
+    key: "startDate",
+    label: SCHEDULE_CONTENT.TABLE.START_DATE,
+  },
+  {
+    key: "nextDue",
+    label: SCHEDULE_CONTENT.TABLE.NEXT_DUE,
+  },
+  {
+    key: "status",
+    label: SCHEDULE_CONTENT.TABLE.STATUS,
+  },
+  {
+    key: "action",
+    label: SCHEDULE_CONTENT.TABLE.ACTION,
+  },
+];

@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict XwC4SEJ0CPeRb30uz294hPAm1unfoSOIvhIagJRlEkxvYHBYwyxnpxLXGOTbufR
+\restrict bhyH0gYn7t4D7SSCYxadXcoeJ1NR4tOKOKPRWSGpSvKKDY5TlKmxwAdmpOkkh9i
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -2820,6 +2820,18 @@ COPY maintix."AuditLog" (id, "organizationId", "userId", action, module, "record
 1393	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-05 16:18:32.496
 1394	3	3	CREATE_PMSCHEDULE	PM	17	::1	2026-08-05 16:42:51.759
 1395	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-05 17:11:06.139
+1396	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-06 03:53:26.28
+1397	3	3	UPDATE_CHECKLIST	CHECKLIST	66	::1	2026-08-06 04:11:31.484
+1398	3	3	CREATE_PMSCHEDULE	PM	18	::1	2026-08-06 04:38:34.608
+1399	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-06 05:20:35.533
+1400	3	3	CREATE_EQUIPMENT_TYPE	EQUIPMENT	36	::1	2026-08-06 06:29:19.43
+1401	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-06 07:29:36.531
+1402	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-06 09:19:16.023
+1403	3	3	CREATE_PMSCHEDULE	PM	19	::1	2026-08-06 09:24:14.471
+1404	3	3	LOGOUT_CURRENT_SESSION	AUTH	3	::1	2026-08-06 10:14:56.794
+1405	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-06 10:15:07.345
+1406	3	3	LOGIN_SUCCESS	AUTH	3	::1	2026-08-06 11:46:22.511
+1407	3	3	CREATE_PMSCHEDULE	PM	20	::1	2026-08-06 11:47:26.675
 \.
 
 
@@ -2883,6 +2895,7 @@ COPY maintix."ChecklistItem" (id, "templateId", name, "order", "expectedValue", 
 141	65	Temperature	3	\N	2026-08-04 17:16:48.123	t	t	30	20	NUMBER	\N
 142	65	Check motor	4	true	2026-08-04 17:16:48.123	t	t	\N	\N	BOOLEAN	\N
 143	66	Check	1	\N	2026-08-04 17:23:13.881	t	t	\N	\N	TEXT	\N
+144	67	Check	1	\N	2026-08-06 04:11:31.45	t	t	\N	\N	TEXT	\N
 \.
 
 
@@ -2901,7 +2914,8 @@ COPY maintix."ChecklistTemplate" (id, "organizationId", "equipmentTypeId", name,
 63	3	10	Test 3	ssfsfdsf	2026-08-04 17:00:22.365	2026-08-04 17:00:22.381	t	1	63
 64	3	11	Test 5		2026-08-04 17:00:56.184	2026-08-04 17:00:56.199	t	1	64
 65	3	11	New Test		2026-08-04 17:16:48.123	2026-08-04 17:16:48.137	t	1	65
-66	3	14	Pump	ffsdfhhfuhfsheufsufnsdkfnlnfsjdfisgufsefbseekgrisegigaheihghgngosrhouowh hehugirsgurtbrge	2026-08-04 17:23:13.881	2026-08-04 17:23:13.896	t	1	66
+66	3	14	Pump	ffsdfhhfuhfsheufsufnsdkfnlnfsjdfisgufsefbseekgrisegigaheihghgngosrhouowh hehugirsgurtbrge	2026-08-04 17:23:13.881	2026-08-06 04:11:31.369	f	1	66
+67	3	14	Pump V2	ffsdfhhfuhfsheufsufnsdkfnlnfsjdfisgufsefbseekgrisegigaheihghgngosrhouowh hehugirsgurtbrge	2026-08-06 04:11:31.45	2026-08-06 04:11:31.45	t	2	66
 \.
 
 
@@ -2992,6 +3006,7 @@ COPY maintix."EquipmentType" (id, "organizationId", name, code, description, "is
 30	3	Test 9	TEST 9	KBNLFIFG	t	2026-08-01 16:35:12.677	2026-08-01 16:35:12.677
 31	3	Test 10	TEST 10	xxnfggug	f	2026-08-01 16:35:35.747	2026-08-02 11:36:03.732
 32	10	Pump	PUMP	pump type	t	2026-08-04 11:11:08.779	2026-08-04 11:11:08.779
+36	3	Test 11	TEST 11	bvsgsfsf	t	2026-08-06 06:29:19.4	2026-08-06 06:29:19.4
 \.
 
 
@@ -3031,6 +3046,347 @@ COPY maintix."Notification" (id, "organizationId", "userId", type, title, messag
 11	3	10	BREAKDOWN_ASSIGNED	Breakdown Assigned	You have been assigned a breakdown for Screw	7	BREAKDOWN	f	2026-07-03 10:51:52.678	\N
 13	3	10	BREAKDOWN_ASSIGNED	Breakdown Assigned	You have been assigned a breakdown for Screw	9	BREAKDOWN	f	2026-07-03 10:52:08.358	\N
 14	3	10	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Screw".	17	SCHEDULE	f	2026-08-05 16:42:51.766	\N
+15	3	10	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Industrial air compressor".	18	SCHEDULE	f	2026-08-06 04:38:34.681	\N
+16	3	10	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Conveyor belt".	19	SCHEDULE	f	2026-08-06 09:24:14.507	\N
+17	3	10	SCHEDULE_ASSIGNED	PM Schedule Assigned	You have been assigned a PM schedule for "Hydraulic press".	20	SCHEDULE	f	2026-08-06 11:47:26.684	\N
+18	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	25	TASK	f	2026-08-06 11:51:10.35	\N
+19	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	26	TASK	f	2026-08-06 11:51:10.357	\N
+20	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	27	TASK	f	2026-08-06 11:51:10.361	\N
+21	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	28	TASK	f	2026-08-06 11:51:10.366	\N
+22	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	29	TASK	f	2026-08-06 11:51:10.371	\N
+23	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	30	TASK	f	2026-08-06 11:51:10.375	\N
+24	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	31	TASK	f	2026-08-06 11:51:10.379	\N
+25	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	32	TASK	f	2026-08-06 11:51:10.383	\N
+26	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	33	TASK	f	2026-08-06 11:51:10.386	\N
+27	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	34	TASK	f	2026-08-06 11:51:10.39	\N
+28	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	35	TASK	f	2026-08-06 11:51:10.395	\N
+29	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	36	TASK	f	2026-08-06 11:51:10.398	\N
+30	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	37	TASK	f	2026-08-06 11:51:10.401	\N
+31	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	38	TASK	f	2026-08-06 11:51:10.405	\N
+32	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	39	TASK	f	2026-08-06 11:51:10.407	\N
+33	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	40	TASK	f	2026-08-06 11:51:10.411	\N
+34	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	41	TASK	f	2026-08-06 11:51:10.414	\N
+35	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	42	TASK	f	2026-08-06 11:51:10.418	\N
+36	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	43	TASK	f	2026-08-06 11:51:10.425	\N
+37	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	44	TASK	f	2026-08-06 11:51:10.434	\N
+38	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	45	TASK	f	2026-08-06 11:51:10.443	\N
+39	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	46	TASK	f	2026-08-06 11:51:10.456	\N
+40	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	47	TASK	f	2026-08-06 11:51:10.459	\N
+41	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	48	TASK	f	2026-08-06 11:51:10.462	\N
+42	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	49	TASK	f	2026-08-06 11:51:10.465	\N
+43	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	50	TASK	f	2026-08-06 11:51:10.469	\N
+44	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	51	TASK	f	2026-08-06 11:51:10.473	\N
+45	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	52	TASK	f	2026-08-06 11:51:10.477	\N
+46	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	53	TASK	f	2026-08-06 11:51:10.48	\N
+47	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	54	TASK	f	2026-08-06 11:51:10.483	\N
+48	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	55	TASK	f	2026-08-06 11:51:10.487	\N
+49	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	56	TASK	f	2026-08-06 11:51:10.491	\N
+50	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	57	TASK	f	2026-08-06 11:51:10.494	\N
+51	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	58	TASK	f	2026-08-06 11:51:10.497	\N
+52	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	59	TASK	f	2026-08-06 11:51:10.5	\N
+53	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	60	TASK	f	2026-08-06 11:51:10.503	\N
+54	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	61	TASK	f	2026-08-06 11:51:10.506	\N
+55	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	62	TASK	f	2026-08-06 11:51:10.51	\N
+56	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	63	TASK	f	2026-08-06 11:51:10.514	\N
+57	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	64	TASK	f	2026-08-06 11:51:10.517	\N
+58	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	65	TASK	f	2026-08-06 11:51:10.519	\N
+59	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	66	TASK	f	2026-08-06 11:51:10.529	\N
+60	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	67	TASK	f	2026-08-06 11:51:10.532	\N
+61	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	68	TASK	f	2026-08-06 11:51:10.535	\N
+62	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	69	TASK	f	2026-08-06 11:51:10.538	\N
+63	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	70	TASK	f	2026-08-06 11:51:10.54	\N
+64	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	71	TASK	f	2026-08-06 11:51:10.543	\N
+65	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	72	TASK	f	2026-08-06 11:51:10.546	\N
+66	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	73	TASK	f	2026-08-06 11:51:10.548	\N
+67	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	74	TASK	f	2026-08-06 11:51:10.552	\N
+68	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	75	TASK	f	2026-08-06 11:51:10.556	\N
+69	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	76	TASK	f	2026-08-06 11:51:10.56	\N
+70	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	77	TASK	f	2026-08-06 11:51:10.563	\N
+71	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	78	TASK	f	2026-08-06 11:51:10.565	\N
+72	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	79	TASK	f	2026-08-06 11:51:10.567	\N
+73	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	80	TASK	f	2026-08-06 11:51:10.57	\N
+74	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	81	TASK	f	2026-08-06 11:51:10.573	\N
+75	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	82	TASK	f	2026-08-06 11:51:10.576	\N
+76	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	83	TASK	f	2026-08-06 11:51:10.578	\N
+77	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	84	TASK	f	2026-08-06 11:51:10.58	\N
+78	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	85	TASK	f	2026-08-06 11:51:10.583	\N
+79	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	86	TASK	f	2026-08-06 11:51:10.586	\N
+80	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	87	TASK	f	2026-08-06 11:51:10.589	\N
+81	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	88	TASK	f	2026-08-06 11:51:10.591	\N
+82	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	89	TASK	f	2026-08-06 11:51:10.595	\N
+83	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	90	TASK	f	2026-08-06 11:51:10.598	\N
+84	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	91	TASK	f	2026-08-06 11:51:10.602	\N
+85	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	92	TASK	f	2026-08-06 11:51:10.605	\N
+86	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	93	TASK	f	2026-08-06 11:51:10.608	\N
+87	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	94	TASK	f	2026-08-06 11:51:10.611	\N
+88	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	95	TASK	f	2026-08-06 11:51:10.615	\N
+89	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	96	TASK	f	2026-08-06 11:51:10.619	\N
+90	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	97	TASK	f	2026-08-06 11:51:10.622	\N
+91	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	98	TASK	f	2026-08-06 11:51:10.626	\N
+92	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	99	TASK	f	2026-08-06 11:51:10.628	\N
+93	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	100	TASK	f	2026-08-06 11:51:10.63	\N
+94	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	101	TASK	f	2026-08-06 11:51:10.633	\N
+95	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	102	TASK	f	2026-08-06 11:51:10.636	\N
+96	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	103	TASK	f	2026-08-06 11:51:10.638	\N
+97	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	104	TASK	f	2026-08-06 11:51:10.64	\N
+98	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	105	TASK	f	2026-08-06 11:51:10.644	\N
+99	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	106	TASK	f	2026-08-06 11:51:10.647	\N
+100	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	107	TASK	f	2026-08-06 11:51:10.651	\N
+101	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	108	TASK	f	2026-08-06 11:51:10.653	\N
+102	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	109	TASK	f	2026-08-06 11:51:10.657	\N
+103	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	110	TASK	f	2026-08-06 11:51:10.66	\N
+104	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	111	TASK	f	2026-08-06 11:51:10.663	\N
+105	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	112	TASK	f	2026-08-06 11:51:10.666	\N
+106	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	113	TASK	f	2026-08-06 11:51:10.668	\N
+107	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	114	TASK	f	2026-08-06 11:51:10.671	\N
+108	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	115	TASK	f	2026-08-06 11:51:10.673	\N
+109	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	116	TASK	f	2026-08-06 11:51:10.676	\N
+110	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	117	TASK	f	2026-08-06 11:51:10.678	\N
+111	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	118	TASK	f	2026-08-06 11:51:10.681	\N
+112	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	119	TASK	f	2026-08-06 11:51:10.684	\N
+113	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	120	TASK	f	2026-08-06 11:51:10.687	\N
+114	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	121	TASK	f	2026-08-06 11:51:10.689	\N
+115	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	122	TASK	f	2026-08-06 11:51:10.691	\N
+116	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	123	TASK	f	2026-08-06 11:51:10.694	\N
+117	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	124	TASK	f	2026-08-06 11:51:10.696	\N
+118	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	125	TASK	f	2026-08-06 11:51:10.699	\N
+119	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	126	TASK	f	2026-08-06 11:51:10.704	\N
+120	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	127	TASK	f	2026-08-06 11:51:10.707	\N
+121	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	128	TASK	f	2026-08-06 11:51:10.709	\N
+122	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	129	TASK	f	2026-08-06 11:51:10.713	\N
+123	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	130	TASK	f	2026-08-06 11:51:10.717	\N
+124	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	131	TASK	f	2026-08-06 11:51:10.719	\N
+125	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	132	TASK	f	2026-08-06 11:51:10.723	\N
+126	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	133	TASK	f	2026-08-06 11:51:10.725	\N
+127	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	134	TASK	f	2026-08-06 11:51:10.727	\N
+128	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	135	TASK	f	2026-08-06 11:51:10.729	\N
+129	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	136	TASK	f	2026-08-06 11:51:10.732	\N
+130	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	137	TASK	f	2026-08-06 11:51:10.734	\N
+131	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	138	TASK	f	2026-08-06 11:51:10.737	\N
+132	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	139	TASK	f	2026-08-06 11:51:10.74	\N
+133	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	140	TASK	f	2026-08-06 11:51:10.743	\N
+134	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	141	TASK	f	2026-08-06 11:51:10.746	\N
+135	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	142	TASK	f	2026-08-06 11:51:10.749	\N
+136	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	143	TASK	f	2026-08-06 11:51:10.751	\N
+137	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	144	TASK	f	2026-08-06 11:51:10.754	\N
+138	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	145	TASK	f	2026-08-06 11:51:10.757	\N
+139	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	146	TASK	f	2026-08-06 11:51:10.76	\N
+140	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	147	TASK	f	2026-08-06 11:51:10.762	\N
+141	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	148	TASK	f	2026-08-06 11:51:10.764	\N
+142	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	149	TASK	f	2026-08-06 11:51:10.766	\N
+143	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	150	TASK	f	2026-08-06 11:51:10.768	\N
+144	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	151	TASK	f	2026-08-06 11:51:10.771	\N
+145	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	152	TASK	f	2026-08-06 11:51:10.775	\N
+146	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	153	TASK	f	2026-08-06 11:51:10.777	\N
+147	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	154	TASK	f	2026-08-06 11:51:10.779	\N
+148	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	155	TASK	f	2026-08-06 11:51:10.782	\N
+149	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	156	TASK	f	2026-08-06 11:51:10.785	\N
+150	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	157	TASK	f	2026-08-06 11:51:10.787	\N
+151	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	158	TASK	f	2026-08-06 11:51:10.789	\N
+152	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	159	TASK	f	2026-08-06 11:51:10.792	\N
+153	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	160	TASK	f	2026-08-06 11:51:10.794	\N
+154	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	161	TASK	f	2026-08-06 11:51:10.797	\N
+155	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	162	TASK	f	2026-08-06 11:51:10.8	\N
+156	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	163	TASK	f	2026-08-06 11:51:10.803	\N
+157	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	164	TASK	f	2026-08-06 11:51:10.805	\N
+158	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	165	TASK	f	2026-08-06 11:51:10.808	\N
+159	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	166	TASK	f	2026-08-06 11:51:10.81	\N
+160	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	167	TASK	f	2026-08-06 11:51:10.812	\N
+161	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	168	TASK	f	2026-08-06 11:51:10.814	\N
+162	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	169	TASK	f	2026-08-06 11:51:10.817	\N
+163	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	170	TASK	f	2026-08-06 11:51:10.819	\N
+164	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	171	TASK	f	2026-08-06 11:51:10.821	\N
+165	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	172	TASK	f	2026-08-06 11:51:10.824	\N
+166	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	173	TASK	f	2026-08-06 11:51:10.826	\N
+167	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	174	TASK	f	2026-08-06 11:51:10.829	\N
+168	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	175	TASK	f	2026-08-06 11:51:10.831	\N
+169	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	176	TASK	f	2026-08-06 11:51:10.833	\N
+170	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	177	TASK	f	2026-08-06 11:51:10.836	\N
+171	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	178	TASK	f	2026-08-06 11:51:10.838	\N
+172	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	179	TASK	f	2026-08-06 11:51:10.84	\N
+173	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	180	TASK	f	2026-08-06 11:51:10.842	\N
+174	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	181	TASK	f	2026-08-06 11:51:10.844	\N
+175	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	182	TASK	f	2026-08-06 11:51:10.847	\N
+176	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	183	TASK	f	2026-08-06 11:51:10.849	\N
+177	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	184	TASK	f	2026-08-06 11:51:10.853	\N
+178	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	185	TASK	f	2026-08-06 11:51:10.855	\N
+179	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	186	TASK	f	2026-08-06 11:51:10.857	\N
+180	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	187	TASK	f	2026-08-06 11:51:10.859	\N
+181	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	188	TASK	f	2026-08-06 11:51:10.862	\N
+182	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	189	TASK	f	2026-08-06 11:51:10.865	\N
+183	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	190	TASK	f	2026-08-06 11:51:10.867	\N
+184	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	191	TASK	f	2026-08-06 11:51:10.87	\N
+185	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	192	TASK	f	2026-08-06 11:51:10.873	\N
+186	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	193	TASK	f	2026-08-06 11:51:10.876	\N
+187	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	194	TASK	f	2026-08-06 11:51:10.879	\N
+188	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	195	TASK	f	2026-08-06 11:51:10.882	\N
+189	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	196	TASK	f	2026-08-06 11:51:10.885	\N
+190	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	197	TASK	f	2026-08-06 11:51:10.887	\N
+191	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	198	TASK	f	2026-08-06 11:51:10.89	\N
+192	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	199	TASK	f	2026-08-06 11:51:10.892	\N
+193	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	200	TASK	f	2026-08-06 11:51:10.895	\N
+194	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	201	TASK	f	2026-08-06 11:51:10.897	\N
+195	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	202	TASK	f	2026-08-06 11:51:10.9	\N
+196	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	203	TASK	f	2026-08-06 11:51:10.902	\N
+197	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	204	TASK	f	2026-08-06 11:51:10.904	\N
+198	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	205	TASK	f	2026-08-06 11:51:10.907	\N
+199	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	206	TASK	f	2026-08-06 11:51:10.91	\N
+200	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	207	TASK	f	2026-08-06 11:51:10.913	\N
+201	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	208	TASK	f	2026-08-06 11:51:10.916	\N
+202	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	209	TASK	f	2026-08-06 11:51:10.918	\N
+203	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	210	TASK	f	2026-08-06 11:51:10.921	\N
+204	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	211	TASK	f	2026-08-06 11:51:10.923	\N
+205	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	212	TASK	f	2026-08-06 11:51:10.925	\N
+206	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	213	TASK	f	2026-08-06 11:51:10.928	\N
+207	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	214	TASK	f	2026-08-06 11:51:10.93	\N
+208	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	215	TASK	f	2026-08-06 11:51:10.932	\N
+209	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	216	TASK	f	2026-08-06 11:51:10.934	\N
+210	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	217	TASK	f	2026-08-06 11:51:10.936	\N
+211	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	218	TASK	f	2026-08-06 11:51:10.939	\N
+212	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	219	TASK	f	2026-08-06 11:51:10.942	\N
+213	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	220	TASK	f	2026-08-06 11:51:10.944	\N
+214	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	221	TASK	f	2026-08-06 11:51:10.947	\N
+215	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	222	TASK	f	2026-08-06 11:51:10.95	\N
+216	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	223	TASK	f	2026-08-06 11:51:10.953	\N
+217	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	224	TASK	f	2026-08-06 11:51:10.955	\N
+218	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	225	TASK	f	2026-08-06 11:51:10.957	\N
+219	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	226	TASK	f	2026-08-06 11:51:10.96	\N
+220	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	227	TASK	f	2026-08-06 11:51:10.964	\N
+221	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	228	TASK	f	2026-08-06 11:51:10.967	\N
+222	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	229	TASK	f	2026-08-06 11:51:10.969	\N
+223	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	230	TASK	f	2026-08-06 11:51:10.972	\N
+224	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	231	TASK	f	2026-08-06 11:51:10.975	\N
+225	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	232	TASK	f	2026-08-06 11:51:10.977	\N
+226	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	233	TASK	f	2026-08-06 11:51:10.979	\N
+227	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	234	TASK	f	2026-08-06 11:51:10.982	\N
+228	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	235	TASK	f	2026-08-06 11:51:10.984	\N
+229	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	236	TASK	f	2026-08-06 11:51:10.986	\N
+230	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	237	TASK	f	2026-08-06 11:51:10.988	\N
+231	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	238	TASK	f	2026-08-06 11:51:10.99	\N
+232	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	239	TASK	f	2026-08-06 11:51:10.993	\N
+233	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	240	TASK	f	2026-08-06 11:51:10.995	\N
+234	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	241	TASK	f	2026-08-06 11:51:10.997	\N
+235	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	242	TASK	f	2026-08-06 11:51:10.999	\N
+236	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	243	TASK	f	2026-08-06 11:51:11.002	\N
+237	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	244	TASK	f	2026-08-06 11:51:11.004	\N
+238	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	245	TASK	f	2026-08-06 11:51:11.006	\N
+239	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	246	TASK	f	2026-08-06 11:51:11.009	\N
+240	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	247	TASK	f	2026-08-06 11:51:11.012	\N
+241	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	248	TASK	f	2026-08-06 11:51:11.014	\N
+242	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	249	TASK	f	2026-08-06 11:51:11.017	\N
+243	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	250	TASK	f	2026-08-06 11:51:11.02	\N
+244	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	251	TASK	f	2026-08-06 11:51:11.026	\N
+245	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	252	TASK	f	2026-08-06 11:51:11.028	\N
+246	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	253	TASK	f	2026-08-06 11:51:11.03	\N
+247	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	254	TASK	f	2026-08-06 11:51:11.035	\N
+248	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	255	TASK	f	2026-08-06 11:51:11.038	\N
+249	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	256	TASK	f	2026-08-06 11:51:11.04	\N
+250	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	257	TASK	f	2026-08-06 11:51:11.045	\N
+251	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	258	TASK	f	2026-08-06 11:51:11.051	\N
+252	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	259	TASK	f	2026-08-06 11:51:11.054	\N
+253	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	260	TASK	f	2026-08-06 11:51:11.057	\N
+254	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	261	TASK	f	2026-08-06 11:51:11.059	\N
+255	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	262	TASK	f	2026-08-06 11:51:11.061	\N
+256	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	263	TASK	f	2026-08-06 11:51:11.062	\N
+257	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	264	TASK	f	2026-08-06 11:51:11.068	\N
+258	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	265	TASK	f	2026-08-06 11:51:11.071	\N
+259	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	266	TASK	f	2026-08-06 11:51:11.073	\N
+260	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	267	TASK	f	2026-08-06 11:51:11.075	\N
+261	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	268	TASK	f	2026-08-06 11:51:11.077	\N
+262	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	269	TASK	f	2026-08-06 11:51:11.079	\N
+263	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	270	TASK	f	2026-08-06 11:51:11.082	\N
+264	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	271	TASK	f	2026-08-06 11:51:11.084	\N
+265	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	272	TASK	f	2026-08-06 11:51:11.087	\N
+266	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	273	TASK	f	2026-08-06 11:51:11.089	\N
+267	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	274	TASK	f	2026-08-06 11:51:11.091	\N
+268	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	275	TASK	f	2026-08-06 11:51:11.094	\N
+269	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	276	TASK	f	2026-08-06 11:51:11.098	\N
+270	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	277	TASK	f	2026-08-06 11:51:11.1	\N
+271	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	278	TASK	f	2026-08-06 11:51:11.103	\N
+272	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	279	TASK	f	2026-08-06 11:51:11.105	\N
+273	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	280	TASK	f	2026-08-06 11:51:11.108	\N
+274	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	281	TASK	f	2026-08-06 11:51:11.11	\N
+275	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	282	TASK	f	2026-08-06 11:51:11.112	\N
+276	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	283	TASK	f	2026-08-06 11:51:11.114	\N
+277	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	284	TASK	f	2026-08-06 11:51:11.116	\N
+278	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	285	TASK	f	2026-08-06 11:51:11.118	\N
+279	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	286	TASK	f	2026-08-06 11:51:11.12	\N
+280	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	287	TASK	f	2026-08-06 11:51:11.123	\N
+281	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	288	TASK	f	2026-08-06 11:51:11.125	\N
+282	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	289	TASK	f	2026-08-06 11:51:11.127	\N
+283	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	290	TASK	f	2026-08-06 11:51:11.129	\N
+284	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	291	TASK	f	2026-08-06 11:51:11.13	\N
+285	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	292	TASK	f	2026-08-06 11:51:11.133	\N
+286	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	293	TASK	f	2026-08-06 11:51:11.135	\N
+287	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	294	TASK	f	2026-08-06 11:51:11.137	\N
+288	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	295	TASK	f	2026-08-06 11:51:11.139	\N
+289	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	296	TASK	f	2026-08-06 11:51:11.141	\N
+290	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	297	TASK	f	2026-08-06 11:51:11.144	\N
+291	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	298	TASK	f	2026-08-06 11:51:11.146	\N
+292	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	299	TASK	f	2026-08-06 11:51:11.148	\N
+293	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	300	TASK	f	2026-08-06 11:51:11.152	\N
+294	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	301	TASK	f	2026-08-06 11:51:11.155	\N
+295	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	302	TASK	f	2026-08-06 11:51:11.157	\N
+296	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	303	TASK	f	2026-08-06 11:51:11.159	\N
+297	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	304	TASK	f	2026-08-06 11:51:11.161	\N
+298	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	305	TASK	f	2026-08-06 11:51:11.162	\N
+299	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	306	TASK	f	2026-08-06 11:51:11.165	\N
+300	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	307	TASK	f	2026-08-06 11:51:11.167	\N
+301	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	308	TASK	f	2026-08-06 11:51:11.17	\N
+302	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	309	TASK	f	2026-08-06 11:51:11.173	\N
+303	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	310	TASK	f	2026-08-06 11:51:11.175	\N
+304	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	311	TASK	f	2026-08-06 11:51:11.177	\N
+305	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	312	TASK	f	2026-08-06 11:51:11.179	\N
+306	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	313	TASK	f	2026-08-06 11:51:11.181	\N
+307	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	314	TASK	f	2026-08-06 11:51:11.183	\N
+308	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	315	TASK	f	2026-08-06 11:51:11.185	\N
+309	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	316	TASK	f	2026-08-06 11:51:11.187	\N
+310	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	317	TASK	f	2026-08-06 11:51:11.189	\N
+311	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	318	TASK	f	2026-08-06 11:51:11.191	\N
+312	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	319	TASK	f	2026-08-06 11:51:11.193	\N
+313	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	320	TASK	f	2026-08-06 11:51:11.195	\N
+314	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	321	TASK	f	2026-08-06 11:51:11.198	\N
+315	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	322	TASK	f	2026-08-06 11:51:11.201	\N
+316	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	323	TASK	f	2026-08-06 11:51:11.204	\N
+317	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	324	TASK	f	2026-08-06 11:51:11.206	\N
+318	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	325	TASK	f	2026-08-06 11:51:11.208	\N
+319	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	326	TASK	f	2026-08-06 11:51:11.21	\N
+320	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	327	TASK	f	2026-08-06 11:51:11.212	\N
+321	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	328	TASK	f	2026-08-06 11:51:11.214	\N
+322	3	10	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	329	TASK	f	2026-08-06 11:51:11.216	\N
+323	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	330	TASK	f	2026-08-06 11:51:11.218	\N
+324	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	331	TASK	f	2026-08-06 11:51:11.221	\N
+325	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	332	TASK	f	2026-08-06 11:51:11.223	\N
+326	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	333	TASK	f	2026-08-06 11:51:11.225	\N
+327	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	334	TASK	f	2026-08-06 11:51:11.228	\N
+328	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	335	TASK	f	2026-08-06 11:51:11.232	\N
+329	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	336	TASK	f	2026-08-06 11:51:11.234	\N
+330	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	337	TASK	f	2026-08-06 11:51:11.236	\N
+331	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	338	TASK	f	2026-08-06 11:51:11.239	\N
+332	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	339	TASK	f	2026-08-06 11:51:11.241	\N
+333	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	340	TASK	f	2026-08-06 11:51:11.244	\N
+334	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	341	TASK	f	2026-08-06 11:51:11.246	\N
+335	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	342	TASK	f	2026-08-06 11:51:11.249	\N
+336	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	343	TASK	f	2026-08-06 11:51:11.251	\N
+337	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	344	TASK	f	2026-08-06 11:51:11.254	\N
+338	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	345	TASK	f	2026-08-06 11:51:11.256	\N
+339	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	346	TASK	f	2026-08-06 11:51:11.258	\N
+340	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	347	TASK	f	2026-08-06 11:51:11.262	\N
+341	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	348	TASK	f	2026-08-06 11:51:11.264	\N
+342	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	349	TASK	f	2026-08-06 11:51:11.267	\N
+343	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	350	TASK	f	2026-08-06 11:51:11.27	\N
+344	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	351	TASK	f	2026-08-06 11:51:11.273	\N
+345	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	352	TASK	f	2026-08-06 11:51:11.275	\N
+346	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	353	TASK	f	2026-08-06 11:51:11.281	\N
+347	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	354	TASK	f	2026-08-06 11:51:11.284	\N
+348	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	355	TASK	f	2026-08-06 11:51:11.287	\N
+349	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	356	TASK	f	2026-08-06 11:51:11.289	\N
+350	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	357	TASK	f	2026-08-06 11:51:11.292	\N
+351	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	358	TASK	f	2026-08-06 11:51:11.294	\N
+352	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	359	TASK	f	2026-08-06 11:51:11.296	\N
+353	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	360	TASK	f	2026-08-06 11:51:11.298	\N
+354	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	361	TASK	f	2026-08-06 11:51:11.301	\N
+355	3	14	TASK_ASSIGNED	PM Task Assigned	A PM task has been assigned to you for "Pump".	362	TASK	f	2026-08-06 11:51:11.303	\N
 \.
 
 
@@ -3057,17 +3413,20 @@ COPY maintix."Organization" (id, name, slug, "industryType", "companySize", coun
 --
 
 COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "frequencyType", "interval", "startDate", "nextDueDate", "assignedTo", "isActive", "createdAt", "updatedAt", "lastGeneratedAt") FROM stdin;
-7	3	7	56	DAILY	1	2026-06-26 00:00:00	2026-06-27 00:00:00	10	t	2026-06-26 15:32:19.874	2026-06-26 15:40:00.151	2026-06-26 15:40:00.149
-8	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	14	t	2026-07-03 10:44:38.051	2026-07-03 10:44:38.051	\N
-9	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	10	t	2026-07-03 10:44:45.789	2026-07-03 10:44:45.789	\N
-10	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	14	t	2026-07-03 10:44:52.211	2026-07-03 10:44:52.211	\N
-11	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	10	t	2026-07-03 10:44:56.218	2026-07-03 10:44:56.218	\N
-12	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	10	t	2026-07-03 10:46:53.834	2026-07-03 10:46:53.834	\N
-13	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	10	t	2026-07-03 10:50:02.513	2026-07-03 10:50:02.513	\N
-14	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	14	t	2026-07-03 10:50:21.212	2026-07-03 10:50:21.212	\N
-15	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	10	t	2026-07-03 10:50:27.551	2026-07-03 10:50:27.551	\N
-16	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-07-05 00:00:00	14	t	2026-07-03 10:50:32.376	2026-07-03 10:50:32.376	\N
 17	3	10	56	DAILY	1	2026-08-06 00:00:00	2026-08-07 00:00:00	10	t	2026-08-05 16:42:51.731	2026-08-05 16:42:51.731	\N
+18	3	24	67	WEEKLY	2	2026-08-13 00:00:00	2026-08-27 00:00:00	10	t	2026-08-06 04:38:34.425	2026-08-06 04:38:34.425	\N
+19	3	15	61	MONTHLY	1	2026-09-06 00:00:00	2026-10-06 00:00:00	10	t	2026-08-06 09:24:14.393	2026-08-06 09:24:14.393	\N
+20	3	16	59	DAILY	1	2026-08-07 00:00:00	2026-08-08 00:00:00	10	t	2026-08-06 11:47:26.644	2026-08-06 11:47:26.644	\N
+7	3	7	56	DAILY	1	2026-06-26 00:00:00	2026-08-07 00:00:00	10	t	2026-06-26 15:32:19.874	2026-08-06 11:51:10.522	2026-08-06 11:51:10.52
+8	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	14	t	2026-07-03 10:44:38.051	2026-08-06 11:51:10.626	2026-08-06 11:51:10.626
+9	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	10	t	2026-07-03 10:44:45.789	2026-08-06 11:51:10.72	2026-08-06 11:51:10.72
+10	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	14	t	2026-07-03 10:44:52.211	2026-08-06 11:51:10.805	2026-08-06 11:51:10.805
+11	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	10	t	2026-07-03 10:44:56.218	2026-08-06 11:51:10.888	2026-08-06 11:51:10.888
+12	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	10	t	2026-07-03 10:46:53.834	2026-08-06 11:51:10.973	2026-08-06 11:51:10.973
+13	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	10	t	2026-07-03 10:50:02.513	2026-08-06 11:51:11.063	2026-08-06 11:51:11.063
+14	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	14	t	2026-07-03 10:50:21.212	2026-08-06 11:51:11.142	2026-08-06 11:51:11.142
+15	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	10	t	2026-07-03 10:50:27.551	2026-08-06 11:51:11.217	2026-08-06 11:51:11.216
+16	3	7	56	DAILY	1	2026-07-04 00:00:00	2026-08-07 00:00:00	14	t	2026-07-03 10:50:32.376	2026-08-06 11:51:11.303	2026-08-06 11:51:11.303
 \.
 
 
@@ -3077,6 +3436,344 @@ COPY maintix."PMSchedule" (id, "organizationId", "equipmentId", "templateId", "f
 
 COPY maintix."PMTask" (id, "organizationId", "scheduleId", "equipmentId", "templateId", "assignedTo", "dueDate", "completedAt", status, priority, remarks, "createdAt", "updatedAt", title) FROM stdin;
 24	3	7	7	56	10	2026-06-26 00:00:00	2026-06-27 12:59:27.69	COMPLETED	MEDIUM	\N	2026-06-26 15:40:00.124	2026-06-27 12:59:27.698	Workstation Safety Inspection
+25	3	7	7	56	10	2026-06-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.314	2026-08-06 11:51:10.314	Workstation Safety Inspection
+26	3	7	7	56	10	2026-06-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.354	2026-08-06 11:51:10.354	Workstation Safety Inspection
+27	3	7	7	56	10	2026-06-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.359	2026-08-06 11:51:10.359	Workstation Safety Inspection
+28	3	7	7	56	10	2026-06-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.363	2026-08-06 11:51:10.363	Workstation Safety Inspection
+29	3	7	7	56	10	2026-07-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.368	2026-08-06 11:51:10.368	Workstation Safety Inspection
+30	3	7	7	56	10	2026-07-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.373	2026-08-06 11:51:10.373	Workstation Safety Inspection
+31	3	7	7	56	10	2026-07-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.377	2026-08-06 11:51:10.377	Workstation Safety Inspection
+32	3	7	7	56	10	2026-07-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.38	2026-08-06 11:51:10.38	Workstation Safety Inspection
+33	3	7	7	56	10	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.384	2026-08-06 11:51:10.384	Workstation Safety Inspection
+34	3	7	7	56	10	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.388	2026-08-06 11:51:10.388	Workstation Safety Inspection
+35	3	7	7	56	10	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.391	2026-08-06 11:51:10.391	Workstation Safety Inspection
+36	3	7	7	56	10	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.396	2026-08-06 11:51:10.396	Workstation Safety Inspection
+37	3	7	7	56	10	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.399	2026-08-06 11:51:10.399	Workstation Safety Inspection
+38	3	7	7	56	10	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.403	2026-08-06 11:51:10.403	Workstation Safety Inspection
+39	3	7	7	56	10	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.406	2026-08-06 11:51:10.406	Workstation Safety Inspection
+40	3	7	7	56	10	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.409	2026-08-06 11:51:10.409	Workstation Safety Inspection
+41	3	7	7	56	10	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.412	2026-08-06 11:51:10.412	Workstation Safety Inspection
+42	3	7	7	56	10	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.415	2026-08-06 11:51:10.415	Workstation Safety Inspection
+43	3	7	7	56	10	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.421	2026-08-06 11:51:10.421	Workstation Safety Inspection
+44	3	7	7	56	10	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.429	2026-08-06 11:51:10.429	Workstation Safety Inspection
+45	3	7	7	56	10	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.438	2026-08-06 11:51:10.438	Workstation Safety Inspection
+46	3	7	7	56	10	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.451	2026-08-06 11:51:10.451	Workstation Safety Inspection
+47	3	7	7	56	10	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.457	2026-08-06 11:51:10.457	Workstation Safety Inspection
+48	3	7	7	56	10	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.46	2026-08-06 11:51:10.46	Workstation Safety Inspection
+49	3	7	7	56	10	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.463	2026-08-06 11:51:10.463	Workstation Safety Inspection
+50	3	7	7	56	10	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.467	2026-08-06 11:51:10.467	Workstation Safety Inspection
+51	3	7	7	56	10	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.47	2026-08-06 11:51:10.47	Workstation Safety Inspection
+52	3	7	7	56	10	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.475	2026-08-06 11:51:10.475	Workstation Safety Inspection
+53	3	7	7	56	10	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.479	2026-08-06 11:51:10.479	Workstation Safety Inspection
+54	3	7	7	56	10	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.482	2026-08-06 11:51:10.482	Workstation Safety Inspection
+55	3	7	7	56	10	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.485	2026-08-06 11:51:10.485	Workstation Safety Inspection
+56	3	7	7	56	10	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.489	2026-08-06 11:51:10.489	Workstation Safety Inspection
+57	3	7	7	56	10	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.492	2026-08-06 11:51:10.492	Workstation Safety Inspection
+58	3	7	7	56	10	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.495	2026-08-06 11:51:10.495	Workstation Safety Inspection
+59	3	7	7	56	10	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.498	2026-08-06 11:51:10.498	Workstation Safety Inspection
+60	3	7	7	56	10	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.501	2026-08-06 11:51:10.501	Workstation Safety Inspection
+61	3	7	7	56	10	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.504	2026-08-06 11:51:10.504	Workstation Safety Inspection
+62	3	7	7	56	10	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.508	2026-08-06 11:51:10.508	Workstation Safety Inspection
+63	3	7	7	56	10	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.512	2026-08-06 11:51:10.512	Workstation Safety Inspection
+64	3	7	7	56	10	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.515	2026-08-06 11:51:10.515	Workstation Safety Inspection
+65	3	7	7	56	10	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.518	2026-08-06 11:51:10.518	Workstation Safety Inspection
+66	3	8	7	56	14	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.526	2026-08-06 11:51:10.526	Workstation Safety Inspection
+67	3	8	7	56	14	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.53	2026-08-06 11:51:10.53	Workstation Safety Inspection
+68	3	8	7	56	14	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.533	2026-08-06 11:51:10.533	Workstation Safety Inspection
+69	3	8	7	56	14	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.536	2026-08-06 11:51:10.536	Workstation Safety Inspection
+70	3	8	7	56	14	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.539	2026-08-06 11:51:10.539	Workstation Safety Inspection
+71	3	8	7	56	14	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.541	2026-08-06 11:51:10.541	Workstation Safety Inspection
+72	3	8	7	56	14	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.545	2026-08-06 11:51:10.545	Workstation Safety Inspection
+73	3	8	7	56	14	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.547	2026-08-06 11:51:10.547	Workstation Safety Inspection
+74	3	8	7	56	14	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.55	2026-08-06 11:51:10.55	Workstation Safety Inspection
+75	3	8	7	56	14	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.554	2026-08-06 11:51:10.554	Workstation Safety Inspection
+76	3	8	7	56	14	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.558	2026-08-06 11:51:10.558	Workstation Safety Inspection
+77	3	8	7	56	14	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.561	2026-08-06 11:51:10.561	Workstation Safety Inspection
+78	3	8	7	56	14	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.564	2026-08-06 11:51:10.564	Workstation Safety Inspection
+79	3	8	7	56	14	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.566	2026-08-06 11:51:10.566	Workstation Safety Inspection
+80	3	8	7	56	14	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.568	2026-08-06 11:51:10.568	Workstation Safety Inspection
+81	3	8	7	56	14	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.572	2026-08-06 11:51:10.572	Workstation Safety Inspection
+82	3	8	7	56	14	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.574	2026-08-06 11:51:10.574	Workstation Safety Inspection
+83	3	8	7	56	14	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.577	2026-08-06 11:51:10.577	Workstation Safety Inspection
+84	3	8	7	56	14	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.579	2026-08-06 11:51:10.579	Workstation Safety Inspection
+85	3	8	7	56	14	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.581	2026-08-06 11:51:10.581	Workstation Safety Inspection
+86	3	8	7	56	14	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.584	2026-08-06 11:51:10.584	Workstation Safety Inspection
+87	3	8	7	56	14	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.587	2026-08-06 11:51:10.587	Workstation Safety Inspection
+88	3	8	7	56	14	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.59	2026-08-06 11:51:10.59	Workstation Safety Inspection
+89	3	8	7	56	14	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.592	2026-08-06 11:51:10.592	Workstation Safety Inspection
+90	3	8	7	56	14	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.596	2026-08-06 11:51:10.596	Workstation Safety Inspection
+91	3	8	7	56	14	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.599	2026-08-06 11:51:10.599	Workstation Safety Inspection
+92	3	8	7	56	14	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.603	2026-08-06 11:51:10.603	Workstation Safety Inspection
+93	3	8	7	56	14	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.607	2026-08-06 11:51:10.607	Workstation Safety Inspection
+94	3	8	7	56	14	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.61	2026-08-06 11:51:10.61	Workstation Safety Inspection
+95	3	8	7	56	14	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.613	2026-08-06 11:51:10.613	Workstation Safety Inspection
+96	3	8	7	56	14	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.616	2026-08-06 11:51:10.616	Workstation Safety Inspection
+97	3	8	7	56	14	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.621	2026-08-06 11:51:10.621	Workstation Safety Inspection
+98	3	8	7	56	14	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.624	2026-08-06 11:51:10.624	Workstation Safety Inspection
+99	3	9	7	56	10	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.627	2026-08-06 11:51:10.627	Workstation Safety Inspection
+100	3	9	7	56	10	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.629	2026-08-06 11:51:10.629	Workstation Safety Inspection
+101	3	9	7	56	10	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.632	2026-08-06 11:51:10.632	Workstation Safety Inspection
+102	3	9	7	56	10	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.634	2026-08-06 11:51:10.634	Workstation Safety Inspection
+103	3	9	7	56	10	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.637	2026-08-06 11:51:10.637	Workstation Safety Inspection
+104	3	9	7	56	10	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.639	2026-08-06 11:51:10.639	Workstation Safety Inspection
+105	3	9	7	56	10	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.642	2026-08-06 11:51:10.642	Workstation Safety Inspection
+106	3	9	7	56	10	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.645	2026-08-06 11:51:10.645	Workstation Safety Inspection
+107	3	9	7	56	10	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.648	2026-08-06 11:51:10.648	Workstation Safety Inspection
+108	3	9	7	56	10	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.652	2026-08-06 11:51:10.652	Workstation Safety Inspection
+109	3	9	7	56	10	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.656	2026-08-06 11:51:10.656	Workstation Safety Inspection
+110	3	9	7	56	10	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.658	2026-08-06 11:51:10.658	Workstation Safety Inspection
+111	3	9	7	56	10	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.662	2026-08-06 11:51:10.662	Workstation Safety Inspection
+112	3	9	7	56	10	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.664	2026-08-06 11:51:10.664	Workstation Safety Inspection
+113	3	9	7	56	10	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.667	2026-08-06 11:51:10.667	Workstation Safety Inspection
+114	3	9	7	56	10	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.669	2026-08-06 11:51:10.669	Workstation Safety Inspection
+115	3	9	7	56	10	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.672	2026-08-06 11:51:10.672	Workstation Safety Inspection
+116	3	9	7	56	10	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.674	2026-08-06 11:51:10.674	Workstation Safety Inspection
+117	3	9	7	56	10	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.677	2026-08-06 11:51:10.677	Workstation Safety Inspection
+118	3	9	7	56	10	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.679	2026-08-06 11:51:10.679	Workstation Safety Inspection
+119	3	9	7	56	10	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.682	2026-08-06 11:51:10.682	Workstation Safety Inspection
+120	3	9	7	56	10	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.686	2026-08-06 11:51:10.686	Workstation Safety Inspection
+121	3	9	7	56	10	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.688	2026-08-06 11:51:10.688	Workstation Safety Inspection
+122	3	9	7	56	10	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.69	2026-08-06 11:51:10.69	Workstation Safety Inspection
+123	3	9	7	56	10	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.693	2026-08-06 11:51:10.693	Workstation Safety Inspection
+124	3	9	7	56	10	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.695	2026-08-06 11:51:10.695	Workstation Safety Inspection
+125	3	9	7	56	10	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.697	2026-08-06 11:51:10.697	Workstation Safety Inspection
+126	3	9	7	56	10	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.701	2026-08-06 11:51:10.701	Workstation Safety Inspection
+127	3	9	7	56	10	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.706	2026-08-06 11:51:10.706	Workstation Safety Inspection
+128	3	9	7	56	10	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.708	2026-08-06 11:51:10.708	Workstation Safety Inspection
+129	3	9	7	56	10	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.71	2026-08-06 11:51:10.71	Workstation Safety Inspection
+130	3	9	7	56	10	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.715	2026-08-06 11:51:10.715	Workstation Safety Inspection
+131	3	9	7	56	10	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.718	2026-08-06 11:51:10.718	Workstation Safety Inspection
+132	3	10	7	56	14	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.721	2026-08-06 11:51:10.721	Workstation Safety Inspection
+133	3	10	7	56	14	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.723	2026-08-06 11:51:10.723	Workstation Safety Inspection
+134	3	10	7	56	14	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.726	2026-08-06 11:51:10.726	Workstation Safety Inspection
+135	3	10	7	56	14	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.728	2026-08-06 11:51:10.728	Workstation Safety Inspection
+136	3	10	7	56	14	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.73	2026-08-06 11:51:10.73	Workstation Safety Inspection
+137	3	10	7	56	14	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.733	2026-08-06 11:51:10.733	Workstation Safety Inspection
+138	3	10	7	56	14	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.735	2026-08-06 11:51:10.735	Workstation Safety Inspection
+139	3	10	7	56	14	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.739	2026-08-06 11:51:10.739	Workstation Safety Inspection
+140	3	10	7	56	14	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.741	2026-08-06 11:51:10.741	Workstation Safety Inspection
+141	3	10	7	56	14	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.745	2026-08-06 11:51:10.745	Workstation Safety Inspection
+142	3	10	7	56	14	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.747	2026-08-06 11:51:10.747	Workstation Safety Inspection
+143	3	10	7	56	14	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.75	2026-08-06 11:51:10.75	Workstation Safety Inspection
+144	3	10	7	56	14	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.752	2026-08-06 11:51:10.752	Workstation Safety Inspection
+145	3	10	7	56	14	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.756	2026-08-06 11:51:10.756	Workstation Safety Inspection
+146	3	10	7	56	14	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.758	2026-08-06 11:51:10.758	Workstation Safety Inspection
+147	3	10	7	56	14	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.761	2026-08-06 11:51:10.761	Workstation Safety Inspection
+148	3	10	7	56	14	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.763	2026-08-06 11:51:10.763	Workstation Safety Inspection
+149	3	10	7	56	14	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.765	2026-08-06 11:51:10.765	Workstation Safety Inspection
+150	3	10	7	56	14	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.767	2026-08-06 11:51:10.767	Workstation Safety Inspection
+151	3	10	7	56	14	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.769	2026-08-06 11:51:10.769	Workstation Safety Inspection
+152	3	10	7	56	14	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.773	2026-08-06 11:51:10.773	Workstation Safety Inspection
+153	3	10	7	56	14	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.776	2026-08-06 11:51:10.776	Workstation Safety Inspection
+154	3	10	7	56	14	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.778	2026-08-06 11:51:10.778	Workstation Safety Inspection
+155	3	10	7	56	14	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.78	2026-08-06 11:51:10.78	Workstation Safety Inspection
+156	3	10	7	56	14	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.784	2026-08-06 11:51:10.784	Workstation Safety Inspection
+157	3	10	7	56	14	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.786	2026-08-06 11:51:10.786	Workstation Safety Inspection
+158	3	10	7	56	14	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.788	2026-08-06 11:51:10.788	Workstation Safety Inspection
+159	3	10	7	56	14	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.79	2026-08-06 11:51:10.79	Workstation Safety Inspection
+160	3	10	7	56	14	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.793	2026-08-06 11:51:10.793	Workstation Safety Inspection
+161	3	10	7	56	14	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.795	2026-08-06 11:51:10.795	Workstation Safety Inspection
+162	3	10	7	56	14	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.799	2026-08-06 11:51:10.799	Workstation Safety Inspection
+163	3	10	7	56	14	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.801	2026-08-06 11:51:10.801	Workstation Safety Inspection
+164	3	10	7	56	14	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.804	2026-08-06 11:51:10.804	Workstation Safety Inspection
+165	3	11	7	56	10	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.806	2026-08-06 11:51:10.806	Workstation Safety Inspection
+166	3	11	7	56	10	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.808	2026-08-06 11:51:10.808	Workstation Safety Inspection
+167	3	11	7	56	10	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.81	2026-08-06 11:51:10.81	Workstation Safety Inspection
+168	3	11	7	56	10	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.813	2026-08-06 11:51:10.813	Workstation Safety Inspection
+169	3	11	7	56	10	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.815	2026-08-06 11:51:10.815	Workstation Safety Inspection
+170	3	11	7	56	10	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.818	2026-08-06 11:51:10.818	Workstation Safety Inspection
+171	3	11	7	56	10	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.82	2026-08-06 11:51:10.82	Workstation Safety Inspection
+172	3	11	7	56	10	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.822	2026-08-06 11:51:10.822	Workstation Safety Inspection
+173	3	11	7	56	10	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.825	2026-08-06 11:51:10.825	Workstation Safety Inspection
+174	3	11	7	56	10	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.827	2026-08-06 11:51:10.827	Workstation Safety Inspection
+175	3	11	7	56	10	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.83	2026-08-06 11:51:10.83	Workstation Safety Inspection
+176	3	11	7	56	10	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.832	2026-08-06 11:51:10.832	Workstation Safety Inspection
+177	3	11	7	56	10	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.834	2026-08-06 11:51:10.834	Workstation Safety Inspection
+178	3	11	7	56	10	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.837	2026-08-06 11:51:10.837	Workstation Safety Inspection
+179	3	11	7	56	10	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.839	2026-08-06 11:51:10.839	Workstation Safety Inspection
+180	3	11	7	56	10	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.841	2026-08-06 11:51:10.841	Workstation Safety Inspection
+181	3	11	7	56	10	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.843	2026-08-06 11:51:10.843	Workstation Safety Inspection
+182	3	11	7	56	10	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.845	2026-08-06 11:51:10.845	Workstation Safety Inspection
+183	3	11	7	56	10	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.848	2026-08-06 11:51:10.848	Workstation Safety Inspection
+184	3	11	7	56	10	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.851	2026-08-06 11:51:10.851	Workstation Safety Inspection
+185	3	11	7	56	10	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.854	2026-08-06 11:51:10.854	Workstation Safety Inspection
+186	3	11	7	56	10	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.856	2026-08-06 11:51:10.856	Workstation Safety Inspection
+187	3	11	7	56	10	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.858	2026-08-06 11:51:10.858	Workstation Safety Inspection
+188	3	11	7	56	10	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.861	2026-08-06 11:51:10.861	Workstation Safety Inspection
+189	3	11	7	56	10	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.863	2026-08-06 11:51:10.863	Workstation Safety Inspection
+190	3	11	7	56	10	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.866	2026-08-06 11:51:10.866	Workstation Safety Inspection
+191	3	11	7	56	10	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.869	2026-08-06 11:51:10.869	Workstation Safety Inspection
+192	3	11	7	56	10	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.871	2026-08-06 11:51:10.871	Workstation Safety Inspection
+193	3	11	7	56	10	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.874	2026-08-06 11:51:10.874	Workstation Safety Inspection
+194	3	11	7	56	10	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.877	2026-08-06 11:51:10.877	Workstation Safety Inspection
+195	3	11	7	56	10	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.88	2026-08-06 11:51:10.88	Workstation Safety Inspection
+196	3	11	7	56	10	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.883	2026-08-06 11:51:10.883	Workstation Safety Inspection
+197	3	11	7	56	10	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.886	2026-08-06 11:51:10.886	Workstation Safety Inspection
+198	3	12	7	56	10	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.889	2026-08-06 11:51:10.889	Workstation Safety Inspection
+199	3	12	7	56	10	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.891	2026-08-06 11:51:10.891	Workstation Safety Inspection
+200	3	12	7	56	10	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.893	2026-08-06 11:51:10.893	Workstation Safety Inspection
+201	3	12	7	56	10	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.896	2026-08-06 11:51:10.896	Workstation Safety Inspection
+202	3	12	7	56	10	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.899	2026-08-06 11:51:10.899	Workstation Safety Inspection
+203	3	12	7	56	10	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.901	2026-08-06 11:51:10.901	Workstation Safety Inspection
+204	3	12	7	56	10	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.903	2026-08-06 11:51:10.903	Workstation Safety Inspection
+205	3	12	7	56	10	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.905	2026-08-06 11:51:10.905	Workstation Safety Inspection
+206	3	12	7	56	10	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.908	2026-08-06 11:51:10.908	Workstation Safety Inspection
+207	3	12	7	56	10	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.912	2026-08-06 11:51:10.912	Workstation Safety Inspection
+208	3	12	7	56	10	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.915	2026-08-06 11:51:10.915	Workstation Safety Inspection
+209	3	12	7	56	10	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.917	2026-08-06 11:51:10.917	Workstation Safety Inspection
+210	3	12	7	56	10	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.919	2026-08-06 11:51:10.919	Workstation Safety Inspection
+211	3	12	7	56	10	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.922	2026-08-06 11:51:10.922	Workstation Safety Inspection
+212	3	12	7	56	10	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.924	2026-08-06 11:51:10.924	Workstation Safety Inspection
+213	3	12	7	56	10	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.926	2026-08-06 11:51:10.926	Workstation Safety Inspection
+214	3	12	7	56	10	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.929	2026-08-06 11:51:10.929	Workstation Safety Inspection
+215	3	12	7	56	10	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.931	2026-08-06 11:51:10.931	Workstation Safety Inspection
+216	3	12	7	56	10	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.933	2026-08-06 11:51:10.933	Workstation Safety Inspection
+217	3	12	7	56	10	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.935	2026-08-06 11:51:10.935	Workstation Safety Inspection
+218	3	12	7	56	10	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.937	2026-08-06 11:51:10.937	Workstation Safety Inspection
+219	3	12	7	56	10	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.941	2026-08-06 11:51:10.941	Workstation Safety Inspection
+220	3	12	7	56	10	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.943	2026-08-06 11:51:10.943	Workstation Safety Inspection
+221	3	12	7	56	10	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.945	2026-08-06 11:51:10.945	Workstation Safety Inspection
+222	3	12	7	56	10	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.948	2026-08-06 11:51:10.948	Workstation Safety Inspection
+223	3	12	7	56	10	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.951	2026-08-06 11:51:10.951	Workstation Safety Inspection
+224	3	12	7	56	10	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.954	2026-08-06 11:51:10.954	Workstation Safety Inspection
+225	3	12	7	56	10	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.956	2026-08-06 11:51:10.956	Workstation Safety Inspection
+226	3	12	7	56	10	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.959	2026-08-06 11:51:10.959	Workstation Safety Inspection
+227	3	12	7	56	10	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.962	2026-08-06 11:51:10.962	Workstation Safety Inspection
+228	3	12	7	56	10	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.965	2026-08-06 11:51:10.965	Workstation Safety Inspection
+229	3	12	7	56	10	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.968	2026-08-06 11:51:10.968	Workstation Safety Inspection
+230	3	12	7	56	10	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.97	2026-08-06 11:51:10.97	Workstation Safety Inspection
+231	3	13	7	56	10	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.974	2026-08-06 11:51:10.974	Workstation Safety Inspection
+232	3	13	7	56	10	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.976	2026-08-06 11:51:10.976	Workstation Safety Inspection
+233	3	13	7	56	10	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.978	2026-08-06 11:51:10.978	Workstation Safety Inspection
+234	3	13	7	56	10	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.98	2026-08-06 11:51:10.98	Workstation Safety Inspection
+235	3	13	7	56	10	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.983	2026-08-06 11:51:10.983	Workstation Safety Inspection
+236	3	13	7	56	10	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.985	2026-08-06 11:51:10.985	Workstation Safety Inspection
+237	3	13	7	56	10	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.987	2026-08-06 11:51:10.987	Workstation Safety Inspection
+238	3	13	7	56	10	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.989	2026-08-06 11:51:10.989	Workstation Safety Inspection
+239	3	13	7	56	10	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.991	2026-08-06 11:51:10.991	Workstation Safety Inspection
+240	3	13	7	56	10	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.994	2026-08-06 11:51:10.994	Workstation Safety Inspection
+241	3	13	7	56	10	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.996	2026-08-06 11:51:10.996	Workstation Safety Inspection
+242	3	13	7	56	10	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:10.998	2026-08-06 11:51:10.998	Workstation Safety Inspection
+243	3	13	7	56	10	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11	2026-08-06 11:51:11	Workstation Safety Inspection
+244	3	13	7	56	10	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.002	2026-08-06 11:51:11.002	Workstation Safety Inspection
+245	3	13	7	56	10	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.005	2026-08-06 11:51:11.005	Workstation Safety Inspection
+246	3	13	7	56	10	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.007	2026-08-06 11:51:11.007	Workstation Safety Inspection
+247	3	13	7	56	10	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.01	2026-08-06 11:51:11.01	Workstation Safety Inspection
+248	3	13	7	56	10	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.013	2026-08-06 11:51:11.013	Workstation Safety Inspection
+249	3	13	7	56	10	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.015	2026-08-06 11:51:11.015	Workstation Safety Inspection
+250	3	13	7	56	10	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.018	2026-08-06 11:51:11.018	Workstation Safety Inspection
+251	3	13	7	56	10	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.024	2026-08-06 11:51:11.024	Workstation Safety Inspection
+252	3	13	7	56	10	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.027	2026-08-06 11:51:11.027	Workstation Safety Inspection
+253	3	13	7	56	10	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.029	2026-08-06 11:51:11.029	Workstation Safety Inspection
+254	3	13	7	56	10	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.034	2026-08-06 11:51:11.034	Workstation Safety Inspection
+255	3	13	7	56	10	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.036	2026-08-06 11:51:11.036	Workstation Safety Inspection
+256	3	13	7	56	10	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.039	2026-08-06 11:51:11.039	Workstation Safety Inspection
+257	3	13	7	56	10	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.042	2026-08-06 11:51:11.042	Workstation Safety Inspection
+258	3	13	7	56	10	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.048	2026-08-06 11:51:11.048	Workstation Safety Inspection
+259	3	13	7	56	10	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.052	2026-08-06 11:51:11.052	Workstation Safety Inspection
+260	3	13	7	56	10	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.055	2026-08-06 11:51:11.055	Workstation Safety Inspection
+261	3	13	7	56	10	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.058	2026-08-06 11:51:11.058	Workstation Safety Inspection
+262	3	13	7	56	10	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.06	2026-08-06 11:51:11.06	Workstation Safety Inspection
+263	3	13	7	56	10	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.061	2026-08-06 11:51:11.061	Workstation Safety Inspection
+264	3	14	7	56	14	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.066	2026-08-06 11:51:11.066	Workstation Safety Inspection
+265	3	14	7	56	14	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.069	2026-08-06 11:51:11.069	Workstation Safety Inspection
+266	3	14	7	56	14	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.072	2026-08-06 11:51:11.072	Workstation Safety Inspection
+267	3	14	7	56	14	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.074	2026-08-06 11:51:11.074	Workstation Safety Inspection
+268	3	14	7	56	14	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.076	2026-08-06 11:51:11.076	Workstation Safety Inspection
+269	3	14	7	56	14	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.078	2026-08-06 11:51:11.078	Workstation Safety Inspection
+270	3	14	7	56	14	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.08	2026-08-06 11:51:11.08	Workstation Safety Inspection
+271	3	14	7	56	14	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.083	2026-08-06 11:51:11.083	Workstation Safety Inspection
+272	3	14	7	56	14	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.085	2026-08-06 11:51:11.085	Workstation Safety Inspection
+273	3	14	7	56	14	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.088	2026-08-06 11:51:11.088	Workstation Safety Inspection
+274	3	14	7	56	14	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.09	2026-08-06 11:51:11.09	Workstation Safety Inspection
+275	3	14	7	56	14	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.092	2026-08-06 11:51:11.092	Workstation Safety Inspection
+276	3	14	7	56	14	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.095	2026-08-06 11:51:11.095	Workstation Safety Inspection
+277	3	14	7	56	14	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.099	2026-08-06 11:51:11.099	Workstation Safety Inspection
+278	3	14	7	56	14	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.101	2026-08-06 11:51:11.101	Workstation Safety Inspection
+279	3	14	7	56	14	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.104	2026-08-06 11:51:11.104	Workstation Safety Inspection
+280	3	14	7	56	14	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.106	2026-08-06 11:51:11.106	Workstation Safety Inspection
+281	3	14	7	56	14	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.109	2026-08-06 11:51:11.109	Workstation Safety Inspection
+282	3	14	7	56	14	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.111	2026-08-06 11:51:11.111	Workstation Safety Inspection
+283	3	14	7	56	14	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.113	2026-08-06 11:51:11.113	Workstation Safety Inspection
+284	3	14	7	56	14	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.115	2026-08-06 11:51:11.115	Workstation Safety Inspection
+285	3	14	7	56	14	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.117	2026-08-06 11:51:11.117	Workstation Safety Inspection
+286	3	14	7	56	14	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.119	2026-08-06 11:51:11.119	Workstation Safety Inspection
+287	3	14	7	56	14	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.121	2026-08-06 11:51:11.121	Workstation Safety Inspection
+288	3	14	7	56	14	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.123	2026-08-06 11:51:11.123	Workstation Safety Inspection
+289	3	14	7	56	14	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.126	2026-08-06 11:51:11.126	Workstation Safety Inspection
+290	3	14	7	56	14	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.128	2026-08-06 11:51:11.128	Workstation Safety Inspection
+291	3	14	7	56	14	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.129	2026-08-06 11:51:11.129	Workstation Safety Inspection
+292	3	14	7	56	14	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.132	2026-08-06 11:51:11.132	Workstation Safety Inspection
+293	3	14	7	56	14	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.134	2026-08-06 11:51:11.134	Workstation Safety Inspection
+294	3	14	7	56	14	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.136	2026-08-06 11:51:11.136	Workstation Safety Inspection
+295	3	14	7	56	14	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.138	2026-08-06 11:51:11.138	Workstation Safety Inspection
+296	3	14	7	56	14	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.14	2026-08-06 11:51:11.14	Workstation Safety Inspection
+297	3	15	7	56	10	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.143	2026-08-06 11:51:11.143	Workstation Safety Inspection
+298	3	15	7	56	10	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.145	2026-08-06 11:51:11.145	Workstation Safety Inspection
+299	3	15	7	56	10	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.147	2026-08-06 11:51:11.147	Workstation Safety Inspection
+300	3	15	7	56	10	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.15	2026-08-06 11:51:11.15	Workstation Safety Inspection
+301	3	15	7	56	10	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.153	2026-08-06 11:51:11.153	Workstation Safety Inspection
+302	3	15	7	56	10	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.156	2026-08-06 11:51:11.156	Workstation Safety Inspection
+303	3	15	7	56	10	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.158	2026-08-06 11:51:11.158	Workstation Safety Inspection
+304	3	15	7	56	10	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.16	2026-08-06 11:51:11.16	Workstation Safety Inspection
+305	3	15	7	56	10	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.161	2026-08-06 11:51:11.161	Workstation Safety Inspection
+306	3	15	7	56	10	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.163	2026-08-06 11:51:11.163	Workstation Safety Inspection
+307	3	15	7	56	10	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.166	2026-08-06 11:51:11.166	Workstation Safety Inspection
+308	3	15	7	56	10	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.169	2026-08-06 11:51:11.169	Workstation Safety Inspection
+309	3	15	7	56	10	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.171	2026-08-06 11:51:11.171	Workstation Safety Inspection
+310	3	15	7	56	10	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.174	2026-08-06 11:51:11.174	Workstation Safety Inspection
+311	3	15	7	56	10	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.176	2026-08-06 11:51:11.176	Workstation Safety Inspection
+312	3	15	7	56	10	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.178	2026-08-06 11:51:11.178	Workstation Safety Inspection
+313	3	15	7	56	10	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.18	2026-08-06 11:51:11.18	Workstation Safety Inspection
+314	3	15	7	56	10	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.182	2026-08-06 11:51:11.182	Workstation Safety Inspection
+315	3	15	7	56	10	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.184	2026-08-06 11:51:11.184	Workstation Safety Inspection
+316	3	15	7	56	10	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.186	2026-08-06 11:51:11.186	Workstation Safety Inspection
+317	3	15	7	56	10	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.188	2026-08-06 11:51:11.188	Workstation Safety Inspection
+318	3	15	7	56	10	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.19	2026-08-06 11:51:11.19	Workstation Safety Inspection
+319	3	15	7	56	10	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.192	2026-08-06 11:51:11.192	Workstation Safety Inspection
+320	3	15	7	56	10	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.194	2026-08-06 11:51:11.194	Workstation Safety Inspection
+321	3	15	7	56	10	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.196	2026-08-06 11:51:11.196	Workstation Safety Inspection
+322	3	15	7	56	10	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.199	2026-08-06 11:51:11.199	Workstation Safety Inspection
+323	3	15	7	56	10	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.201	2026-08-06 11:51:11.201	Workstation Safety Inspection
+324	3	15	7	56	10	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.205	2026-08-06 11:51:11.205	Workstation Safety Inspection
+325	3	15	7	56	10	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.207	2026-08-06 11:51:11.207	Workstation Safety Inspection
+326	3	15	7	56	10	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.209	2026-08-06 11:51:11.209	Workstation Safety Inspection
+327	3	15	7	56	10	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.211	2026-08-06 11:51:11.211	Workstation Safety Inspection
+328	3	15	7	56	10	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.213	2026-08-06 11:51:11.213	Workstation Safety Inspection
+329	3	15	7	56	10	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.215	2026-08-06 11:51:11.215	Workstation Safety Inspection
+330	3	16	7	56	14	2026-07-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.217	2026-08-06 11:51:11.217	Workstation Safety Inspection
+331	3	16	7	56	14	2026-07-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.219	2026-08-06 11:51:11.219	Workstation Safety Inspection
+332	3	16	7	56	14	2026-07-07 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.221	2026-08-06 11:51:11.221	Workstation Safety Inspection
+333	3	16	7	56	14	2026-07-08 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.224	2026-08-06 11:51:11.224	Workstation Safety Inspection
+334	3	16	7	56	14	2026-07-09 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.227	2026-08-06 11:51:11.227	Workstation Safety Inspection
+335	3	16	7	56	14	2026-07-10 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.23	2026-08-06 11:51:11.23	Workstation Safety Inspection
+336	3	16	7	56	14	2026-07-11 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.233	2026-08-06 11:51:11.233	Workstation Safety Inspection
+337	3	16	7	56	14	2026-07-12 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.235	2026-08-06 11:51:11.235	Workstation Safety Inspection
+338	3	16	7	56	14	2026-07-13 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.237	2026-08-06 11:51:11.237	Workstation Safety Inspection
+339	3	16	7	56	14	2026-07-14 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.24	2026-08-06 11:51:11.24	Workstation Safety Inspection
+340	3	16	7	56	14	2026-07-15 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.242	2026-08-06 11:51:11.242	Workstation Safety Inspection
+341	3	16	7	56	14	2026-07-16 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.245	2026-08-06 11:51:11.245	Workstation Safety Inspection
+342	3	16	7	56	14	2026-07-17 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.247	2026-08-06 11:51:11.247	Workstation Safety Inspection
+343	3	16	7	56	14	2026-07-18 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.25	2026-08-06 11:51:11.25	Workstation Safety Inspection
+344	3	16	7	56	14	2026-07-19 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.252	2026-08-06 11:51:11.252	Workstation Safety Inspection
+345	3	16	7	56	14	2026-07-20 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.255	2026-08-06 11:51:11.255	Workstation Safety Inspection
+346	3	16	7	56	14	2026-07-21 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.257	2026-08-06 11:51:11.257	Workstation Safety Inspection
+347	3	16	7	56	14	2026-07-22 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.26	2026-08-06 11:51:11.26	Workstation Safety Inspection
+348	3	16	7	56	14	2026-07-23 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.263	2026-08-06 11:51:11.263	Workstation Safety Inspection
+349	3	16	7	56	14	2026-07-24 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.265	2026-08-06 11:51:11.265	Workstation Safety Inspection
+350	3	16	7	56	14	2026-07-25 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.268	2026-08-06 11:51:11.268	Workstation Safety Inspection
+351	3	16	7	56	14	2026-07-26 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.271	2026-08-06 11:51:11.271	Workstation Safety Inspection
+352	3	16	7	56	14	2026-07-27 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.274	2026-08-06 11:51:11.274	Workstation Safety Inspection
+353	3	16	7	56	14	2026-07-28 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.277	2026-08-06 11:51:11.277	Workstation Safety Inspection
+354	3	16	7	56	14	2026-07-29 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.282	2026-08-06 11:51:11.282	Workstation Safety Inspection
+355	3	16	7	56	14	2026-07-30 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.285	2026-08-06 11:51:11.285	Workstation Safety Inspection
+356	3	16	7	56	14	2026-07-31 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.288	2026-08-06 11:51:11.288	Workstation Safety Inspection
+357	3	16	7	56	14	2026-08-01 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.29	2026-08-06 11:51:11.29	Workstation Safety Inspection
+358	3	16	7	56	14	2026-08-02 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.293	2026-08-06 11:51:11.293	Workstation Safety Inspection
+359	3	16	7	56	14	2026-08-03 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.295	2026-08-06 11:51:11.295	Workstation Safety Inspection
+360	3	16	7	56	14	2026-08-04 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.297	2026-08-06 11:51:11.297	Workstation Safety Inspection
+361	3	16	7	56	14	2026-08-05 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.299	2026-08-06 11:51:11.299	Workstation Safety Inspection
+362	3	16	7	56	14	2026-08-06 00:00:00	\N	PENDING	MEDIUM	\N	2026-08-06 11:51:11.301	2026-08-06 11:51:11.301	Workstation Safety Inspection
 \.
 
 
@@ -3114,6 +3811,2034 @@ COPY maintix."TaskChecklistItem" (id, "taskId", name, "order", "expectedValue", 
 122	24	Indicator status	3	NORMAL	CRITICAL	NOT_OK	2026-06-26 15:40:00.124	\N	\N	124	SELECT	2026-06-26 15:45:44.782	["NORMAL", "WARNING", "CRITICAL"]
 123	24	Power supply stable	4	true	true	OK	2026-06-26 15:40:00.124	\N	\N	125	BOOLEAN	2026-06-26 15:46:11.699	null
 124	24	Visible wear or damage	5	false	true	NOT_OK	2026-06-26 15:40:00.124	\N	\N	126	BOOLEAN	2026-06-26 15:46:35.776	null
+126	25	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.314	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.314	null
+127	25	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.314	35	18	123	NUMBER	2026-08-06 11:51:10.314	null
+128	25	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.314	\N	\N	124	SELECT	2026-08-06 11:51:10.314	["NORMAL", "WARNING", "CRITICAL"]
+129	25	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.314	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.314	null
+130	25	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.314	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.314	null
+131	25	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.314	\N	\N	127	TEXT	2026-08-06 11:51:10.314	null
+132	26	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.354	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.354	null
+133	26	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.354	35	18	123	NUMBER	2026-08-06 11:51:10.354	null
+134	26	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.354	\N	\N	124	SELECT	2026-08-06 11:51:10.354	["NORMAL", "WARNING", "CRITICAL"]
+135	26	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.354	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.354	null
+136	26	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.354	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.354	null
+137	26	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.354	\N	\N	127	TEXT	2026-08-06 11:51:10.354	null
+138	27	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.359	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.359	null
+139	27	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.359	35	18	123	NUMBER	2026-08-06 11:51:10.359	null
+140	27	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.359	\N	\N	124	SELECT	2026-08-06 11:51:10.359	["NORMAL", "WARNING", "CRITICAL"]
+141	27	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.359	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.359	null
+142	27	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.359	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.359	null
+143	27	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.359	\N	\N	127	TEXT	2026-08-06 11:51:10.359	null
+144	28	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.363	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.363	null
+145	28	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.363	35	18	123	NUMBER	2026-08-06 11:51:10.363	null
+146	28	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.363	\N	\N	124	SELECT	2026-08-06 11:51:10.363	["NORMAL", "WARNING", "CRITICAL"]
+147	28	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.363	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.363	null
+148	28	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.363	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.363	null
+149	28	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.363	\N	\N	127	TEXT	2026-08-06 11:51:10.363	null
+150	29	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.368	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.368	null
+151	29	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.368	35	18	123	NUMBER	2026-08-06 11:51:10.368	null
+152	29	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.368	\N	\N	124	SELECT	2026-08-06 11:51:10.368	["NORMAL", "WARNING", "CRITICAL"]
+153	29	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.368	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.368	null
+154	29	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.368	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.368	null
+155	29	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.368	\N	\N	127	TEXT	2026-08-06 11:51:10.368	null
+156	30	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.373	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.373	null
+157	30	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.373	35	18	123	NUMBER	2026-08-06 11:51:10.373	null
+158	30	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.373	\N	\N	124	SELECT	2026-08-06 11:51:10.373	["NORMAL", "WARNING", "CRITICAL"]
+159	30	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.373	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.373	null
+160	30	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.373	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.373	null
+161	30	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.373	\N	\N	127	TEXT	2026-08-06 11:51:10.373	null
+162	31	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.377	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.377	null
+163	31	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.377	35	18	123	NUMBER	2026-08-06 11:51:10.377	null
+164	31	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.377	\N	\N	124	SELECT	2026-08-06 11:51:10.377	["NORMAL", "WARNING", "CRITICAL"]
+165	31	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.377	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.377	null
+166	31	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.377	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.377	null
+167	31	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.377	\N	\N	127	TEXT	2026-08-06 11:51:10.377	null
+168	32	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.38	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.38	null
+169	32	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.38	35	18	123	NUMBER	2026-08-06 11:51:10.38	null
+170	32	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.38	\N	\N	124	SELECT	2026-08-06 11:51:10.38	["NORMAL", "WARNING", "CRITICAL"]
+171	32	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.38	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.38	null
+172	32	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.38	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.38	null
+173	32	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.38	\N	\N	127	TEXT	2026-08-06 11:51:10.38	null
+174	33	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.384	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.384	null
+175	33	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.384	35	18	123	NUMBER	2026-08-06 11:51:10.384	null
+176	33	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.384	\N	\N	124	SELECT	2026-08-06 11:51:10.384	["NORMAL", "WARNING", "CRITICAL"]
+177	33	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.384	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.384	null
+178	33	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.384	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.384	null
+179	33	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.384	\N	\N	127	TEXT	2026-08-06 11:51:10.384	null
+180	34	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.388	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.388	null
+181	34	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.388	35	18	123	NUMBER	2026-08-06 11:51:10.388	null
+182	34	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.388	\N	\N	124	SELECT	2026-08-06 11:51:10.388	["NORMAL", "WARNING", "CRITICAL"]
+183	34	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.388	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.388	null
+184	34	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.388	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.388	null
+185	34	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.388	\N	\N	127	TEXT	2026-08-06 11:51:10.388	null
+186	35	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.391	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.391	null
+187	35	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.391	35	18	123	NUMBER	2026-08-06 11:51:10.391	null
+188	35	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.391	\N	\N	124	SELECT	2026-08-06 11:51:10.391	["NORMAL", "WARNING", "CRITICAL"]
+189	35	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.391	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.391	null
+190	35	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.391	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.391	null
+191	35	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.391	\N	\N	127	TEXT	2026-08-06 11:51:10.391	null
+192	36	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.396	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.396	null
+193	36	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.396	35	18	123	NUMBER	2026-08-06 11:51:10.396	null
+194	36	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.396	\N	\N	124	SELECT	2026-08-06 11:51:10.396	["NORMAL", "WARNING", "CRITICAL"]
+195	36	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.396	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.396	null
+196	36	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.396	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.396	null
+197	36	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.396	\N	\N	127	TEXT	2026-08-06 11:51:10.396	null
+198	37	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.399	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.399	null
+199	37	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.399	35	18	123	NUMBER	2026-08-06 11:51:10.399	null
+200	37	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.399	\N	\N	124	SELECT	2026-08-06 11:51:10.399	["NORMAL", "WARNING", "CRITICAL"]
+201	37	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.399	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.399	null
+202	37	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.399	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.399	null
+203	37	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.399	\N	\N	127	TEXT	2026-08-06 11:51:10.399	null
+204	38	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.403	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.403	null
+205	38	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.403	35	18	123	NUMBER	2026-08-06 11:51:10.403	null
+206	38	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.403	\N	\N	124	SELECT	2026-08-06 11:51:10.403	["NORMAL", "WARNING", "CRITICAL"]
+207	38	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.403	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.403	null
+208	38	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.403	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.403	null
+209	38	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.403	\N	\N	127	TEXT	2026-08-06 11:51:10.403	null
+210	39	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.406	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.406	null
+211	39	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.406	35	18	123	NUMBER	2026-08-06 11:51:10.406	null
+212	39	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.406	\N	\N	124	SELECT	2026-08-06 11:51:10.406	["NORMAL", "WARNING", "CRITICAL"]
+213	39	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.406	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.406	null
+214	39	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.406	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.406	null
+215	39	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.406	\N	\N	127	TEXT	2026-08-06 11:51:10.406	null
+216	40	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.409	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.409	null
+217	40	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.409	35	18	123	NUMBER	2026-08-06 11:51:10.409	null
+218	40	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.409	\N	\N	124	SELECT	2026-08-06 11:51:10.409	["NORMAL", "WARNING", "CRITICAL"]
+219	40	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.409	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.409	null
+220	40	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.409	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.409	null
+221	40	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.409	\N	\N	127	TEXT	2026-08-06 11:51:10.409	null
+222	41	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.412	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.412	null
+223	41	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.412	35	18	123	NUMBER	2026-08-06 11:51:10.412	null
+224	41	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.412	\N	\N	124	SELECT	2026-08-06 11:51:10.412	["NORMAL", "WARNING", "CRITICAL"]
+225	41	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.412	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.412	null
+226	41	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.412	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.412	null
+227	41	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.412	\N	\N	127	TEXT	2026-08-06 11:51:10.412	null
+228	42	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.415	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.415	null
+229	42	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.415	35	18	123	NUMBER	2026-08-06 11:51:10.415	null
+230	42	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.415	\N	\N	124	SELECT	2026-08-06 11:51:10.415	["NORMAL", "WARNING", "CRITICAL"]
+231	42	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.415	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.415	null
+232	42	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.415	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.415	null
+233	42	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.415	\N	\N	127	TEXT	2026-08-06 11:51:10.415	null
+234	43	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.421	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.421	null
+235	43	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.421	35	18	123	NUMBER	2026-08-06 11:51:10.421	null
+236	43	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.421	\N	\N	124	SELECT	2026-08-06 11:51:10.421	["NORMAL", "WARNING", "CRITICAL"]
+237	43	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.421	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.421	null
+238	43	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.421	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.421	null
+239	43	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.421	\N	\N	127	TEXT	2026-08-06 11:51:10.421	null
+240	44	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.429	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.429	null
+241	44	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.429	35	18	123	NUMBER	2026-08-06 11:51:10.429	null
+242	44	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.429	\N	\N	124	SELECT	2026-08-06 11:51:10.429	["NORMAL", "WARNING", "CRITICAL"]
+243	44	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.429	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.429	null
+244	44	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.429	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.429	null
+245	44	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.429	\N	\N	127	TEXT	2026-08-06 11:51:10.429	null
+246	45	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.438	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.438	null
+247	45	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.438	35	18	123	NUMBER	2026-08-06 11:51:10.438	null
+248	45	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.438	\N	\N	124	SELECT	2026-08-06 11:51:10.438	["NORMAL", "WARNING", "CRITICAL"]
+249	45	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.438	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.438	null
+250	45	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.438	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.438	null
+251	45	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.438	\N	\N	127	TEXT	2026-08-06 11:51:10.438	null
+252	46	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.451	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.451	null
+253	46	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.451	35	18	123	NUMBER	2026-08-06 11:51:10.451	null
+254	46	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.451	\N	\N	124	SELECT	2026-08-06 11:51:10.451	["NORMAL", "WARNING", "CRITICAL"]
+255	46	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.451	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.451	null
+256	46	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.451	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.451	null
+257	46	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.451	\N	\N	127	TEXT	2026-08-06 11:51:10.451	null
+258	47	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.457	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.457	null
+259	47	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.457	35	18	123	NUMBER	2026-08-06 11:51:10.457	null
+260	47	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.457	\N	\N	124	SELECT	2026-08-06 11:51:10.457	["NORMAL", "WARNING", "CRITICAL"]
+261	47	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.457	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.457	null
+262	47	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.457	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.457	null
+263	47	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.457	\N	\N	127	TEXT	2026-08-06 11:51:10.457	null
+264	48	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.46	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.46	null
+265	48	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.46	35	18	123	NUMBER	2026-08-06 11:51:10.46	null
+266	48	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.46	\N	\N	124	SELECT	2026-08-06 11:51:10.46	["NORMAL", "WARNING", "CRITICAL"]
+267	48	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.46	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.46	null
+268	48	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.46	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.46	null
+269	48	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.46	\N	\N	127	TEXT	2026-08-06 11:51:10.46	null
+270	49	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.463	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.463	null
+271	49	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.463	35	18	123	NUMBER	2026-08-06 11:51:10.463	null
+272	49	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.463	\N	\N	124	SELECT	2026-08-06 11:51:10.463	["NORMAL", "WARNING", "CRITICAL"]
+273	49	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.463	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.463	null
+274	49	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.463	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.463	null
+275	49	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.463	\N	\N	127	TEXT	2026-08-06 11:51:10.463	null
+276	50	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.467	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.467	null
+277	50	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.467	35	18	123	NUMBER	2026-08-06 11:51:10.467	null
+278	50	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.467	\N	\N	124	SELECT	2026-08-06 11:51:10.467	["NORMAL", "WARNING", "CRITICAL"]
+279	50	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.467	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.467	null
+280	50	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.467	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.467	null
+281	50	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.467	\N	\N	127	TEXT	2026-08-06 11:51:10.467	null
+282	51	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.47	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.47	null
+283	51	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.47	35	18	123	NUMBER	2026-08-06 11:51:10.47	null
+284	51	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.47	\N	\N	124	SELECT	2026-08-06 11:51:10.47	["NORMAL", "WARNING", "CRITICAL"]
+285	51	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.47	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.47	null
+286	51	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.47	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.47	null
+287	51	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.47	\N	\N	127	TEXT	2026-08-06 11:51:10.47	null
+288	52	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.475	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.475	null
+289	52	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.475	35	18	123	NUMBER	2026-08-06 11:51:10.475	null
+290	52	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.475	\N	\N	124	SELECT	2026-08-06 11:51:10.475	["NORMAL", "WARNING", "CRITICAL"]
+291	52	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.475	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.475	null
+292	52	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.475	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.475	null
+293	52	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.475	\N	\N	127	TEXT	2026-08-06 11:51:10.475	null
+294	53	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.479	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.479	null
+295	53	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.479	35	18	123	NUMBER	2026-08-06 11:51:10.479	null
+296	53	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.479	\N	\N	124	SELECT	2026-08-06 11:51:10.479	["NORMAL", "WARNING", "CRITICAL"]
+297	53	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.479	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.479	null
+298	53	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.479	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.479	null
+299	53	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.479	\N	\N	127	TEXT	2026-08-06 11:51:10.479	null
+300	54	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.482	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.482	null
+301	54	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.482	35	18	123	NUMBER	2026-08-06 11:51:10.482	null
+302	54	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.482	\N	\N	124	SELECT	2026-08-06 11:51:10.482	["NORMAL", "WARNING", "CRITICAL"]
+303	54	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.482	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.482	null
+304	54	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.482	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.482	null
+305	54	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.482	\N	\N	127	TEXT	2026-08-06 11:51:10.482	null
+306	55	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.485	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.485	null
+307	55	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.485	35	18	123	NUMBER	2026-08-06 11:51:10.485	null
+308	55	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.485	\N	\N	124	SELECT	2026-08-06 11:51:10.485	["NORMAL", "WARNING", "CRITICAL"]
+309	55	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.485	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.485	null
+310	55	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.485	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.485	null
+311	55	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.485	\N	\N	127	TEXT	2026-08-06 11:51:10.485	null
+312	56	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.489	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.489	null
+313	56	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.489	35	18	123	NUMBER	2026-08-06 11:51:10.489	null
+314	56	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.489	\N	\N	124	SELECT	2026-08-06 11:51:10.489	["NORMAL", "WARNING", "CRITICAL"]
+315	56	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.489	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.489	null
+316	56	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.489	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.489	null
+317	56	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.489	\N	\N	127	TEXT	2026-08-06 11:51:10.489	null
+318	57	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.492	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.492	null
+319	57	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.492	35	18	123	NUMBER	2026-08-06 11:51:10.492	null
+320	57	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.492	\N	\N	124	SELECT	2026-08-06 11:51:10.492	["NORMAL", "WARNING", "CRITICAL"]
+321	57	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.492	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.492	null
+322	57	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.492	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.492	null
+323	57	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.492	\N	\N	127	TEXT	2026-08-06 11:51:10.492	null
+324	58	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.495	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.495	null
+325	58	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.495	35	18	123	NUMBER	2026-08-06 11:51:10.495	null
+326	58	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.495	\N	\N	124	SELECT	2026-08-06 11:51:10.495	["NORMAL", "WARNING", "CRITICAL"]
+327	58	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.495	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.495	null
+328	58	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.495	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.495	null
+329	58	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.495	\N	\N	127	TEXT	2026-08-06 11:51:10.495	null
+330	59	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.498	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.498	null
+331	59	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.498	35	18	123	NUMBER	2026-08-06 11:51:10.498	null
+332	59	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.498	\N	\N	124	SELECT	2026-08-06 11:51:10.498	["NORMAL", "WARNING", "CRITICAL"]
+333	59	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.498	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.498	null
+334	59	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.498	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.498	null
+335	59	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.498	\N	\N	127	TEXT	2026-08-06 11:51:10.498	null
+336	60	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.501	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.501	null
+337	60	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.501	35	18	123	NUMBER	2026-08-06 11:51:10.501	null
+338	60	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.501	\N	\N	124	SELECT	2026-08-06 11:51:10.501	["NORMAL", "WARNING", "CRITICAL"]
+339	60	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.501	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.501	null
+340	60	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.501	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.501	null
+341	60	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.501	\N	\N	127	TEXT	2026-08-06 11:51:10.501	null
+342	61	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.504	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.504	null
+343	61	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.504	35	18	123	NUMBER	2026-08-06 11:51:10.504	null
+344	61	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.504	\N	\N	124	SELECT	2026-08-06 11:51:10.504	["NORMAL", "WARNING", "CRITICAL"]
+345	61	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.504	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.504	null
+346	61	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.504	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.504	null
+347	61	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.504	\N	\N	127	TEXT	2026-08-06 11:51:10.504	null
+348	62	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.508	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.508	null
+349	62	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.508	35	18	123	NUMBER	2026-08-06 11:51:10.508	null
+350	62	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.508	\N	\N	124	SELECT	2026-08-06 11:51:10.508	["NORMAL", "WARNING", "CRITICAL"]
+351	62	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.508	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.508	null
+352	62	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.508	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.508	null
+353	62	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.508	\N	\N	127	TEXT	2026-08-06 11:51:10.508	null
+354	63	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.512	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.512	null
+355	63	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.512	35	18	123	NUMBER	2026-08-06 11:51:10.512	null
+356	63	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.512	\N	\N	124	SELECT	2026-08-06 11:51:10.512	["NORMAL", "WARNING", "CRITICAL"]
+357	63	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.512	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.512	null
+358	63	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.512	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.512	null
+359	63	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.512	\N	\N	127	TEXT	2026-08-06 11:51:10.512	null
+360	64	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.515	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.515	null
+361	64	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.515	35	18	123	NUMBER	2026-08-06 11:51:10.515	null
+362	64	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.515	\N	\N	124	SELECT	2026-08-06 11:51:10.515	["NORMAL", "WARNING", "CRITICAL"]
+363	64	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.515	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.515	null
+364	64	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.515	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.515	null
+365	64	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.515	\N	\N	127	TEXT	2026-08-06 11:51:10.515	null
+366	65	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.518	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.518	null
+367	65	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.518	35	18	123	NUMBER	2026-08-06 11:51:10.518	null
+368	65	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.518	\N	\N	124	SELECT	2026-08-06 11:51:10.518	["NORMAL", "WARNING", "CRITICAL"]
+369	65	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.518	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.518	null
+370	65	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.518	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.518	null
+371	65	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.518	\N	\N	127	TEXT	2026-08-06 11:51:10.518	null
+372	66	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.526	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.526	null
+373	66	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.526	35	18	123	NUMBER	2026-08-06 11:51:10.526	null
+374	66	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.526	\N	\N	124	SELECT	2026-08-06 11:51:10.526	["NORMAL", "WARNING", "CRITICAL"]
+375	66	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.526	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.526	null
+376	66	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.526	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.526	null
+377	66	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.526	\N	\N	127	TEXT	2026-08-06 11:51:10.526	null
+378	67	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.53	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.53	null
+379	67	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.53	35	18	123	NUMBER	2026-08-06 11:51:10.53	null
+380	67	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.53	\N	\N	124	SELECT	2026-08-06 11:51:10.53	["NORMAL", "WARNING", "CRITICAL"]
+381	67	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.53	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.53	null
+382	67	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.53	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.53	null
+383	67	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.53	\N	\N	127	TEXT	2026-08-06 11:51:10.53	null
+384	68	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.533	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.533	null
+385	68	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.533	35	18	123	NUMBER	2026-08-06 11:51:10.533	null
+386	68	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.533	\N	\N	124	SELECT	2026-08-06 11:51:10.533	["NORMAL", "WARNING", "CRITICAL"]
+387	68	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.533	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.533	null
+388	68	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.533	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.533	null
+389	68	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.533	\N	\N	127	TEXT	2026-08-06 11:51:10.533	null
+390	69	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.536	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.536	null
+391	69	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.536	35	18	123	NUMBER	2026-08-06 11:51:10.536	null
+392	69	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.536	\N	\N	124	SELECT	2026-08-06 11:51:10.536	["NORMAL", "WARNING", "CRITICAL"]
+393	69	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.536	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.536	null
+394	69	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.536	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.536	null
+395	69	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.536	\N	\N	127	TEXT	2026-08-06 11:51:10.536	null
+396	70	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.539	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.539	null
+397	70	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.539	35	18	123	NUMBER	2026-08-06 11:51:10.539	null
+398	70	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.539	\N	\N	124	SELECT	2026-08-06 11:51:10.539	["NORMAL", "WARNING", "CRITICAL"]
+399	70	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.539	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.539	null
+400	70	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.539	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.539	null
+401	70	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.539	\N	\N	127	TEXT	2026-08-06 11:51:10.539	null
+402	71	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.541	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.541	null
+403	71	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.541	35	18	123	NUMBER	2026-08-06 11:51:10.541	null
+404	71	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.541	\N	\N	124	SELECT	2026-08-06 11:51:10.541	["NORMAL", "WARNING", "CRITICAL"]
+405	71	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.541	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.541	null
+406	71	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.541	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.541	null
+407	71	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.541	\N	\N	127	TEXT	2026-08-06 11:51:10.541	null
+408	72	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.545	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.545	null
+409	72	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.545	35	18	123	NUMBER	2026-08-06 11:51:10.545	null
+410	72	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.545	\N	\N	124	SELECT	2026-08-06 11:51:10.545	["NORMAL", "WARNING", "CRITICAL"]
+411	72	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.545	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.545	null
+412	72	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.545	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.545	null
+413	72	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.545	\N	\N	127	TEXT	2026-08-06 11:51:10.545	null
+414	73	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.547	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.547	null
+415	73	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.547	35	18	123	NUMBER	2026-08-06 11:51:10.547	null
+416	73	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.547	\N	\N	124	SELECT	2026-08-06 11:51:10.547	["NORMAL", "WARNING", "CRITICAL"]
+417	73	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.547	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.547	null
+418	73	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.547	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.547	null
+419	73	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.547	\N	\N	127	TEXT	2026-08-06 11:51:10.547	null
+420	74	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.55	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.55	null
+421	74	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.55	35	18	123	NUMBER	2026-08-06 11:51:10.55	null
+422	74	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.55	\N	\N	124	SELECT	2026-08-06 11:51:10.55	["NORMAL", "WARNING", "CRITICAL"]
+423	74	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.55	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.55	null
+424	74	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.55	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.55	null
+425	74	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.55	\N	\N	127	TEXT	2026-08-06 11:51:10.55	null
+426	75	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.554	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.554	null
+427	75	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.554	35	18	123	NUMBER	2026-08-06 11:51:10.554	null
+428	75	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.554	\N	\N	124	SELECT	2026-08-06 11:51:10.554	["NORMAL", "WARNING", "CRITICAL"]
+429	75	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.554	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.554	null
+430	75	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.554	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.554	null
+431	75	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.554	\N	\N	127	TEXT	2026-08-06 11:51:10.554	null
+432	76	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.558	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.558	null
+433	76	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.558	35	18	123	NUMBER	2026-08-06 11:51:10.558	null
+434	76	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.558	\N	\N	124	SELECT	2026-08-06 11:51:10.558	["NORMAL", "WARNING", "CRITICAL"]
+435	76	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.558	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.558	null
+436	76	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.558	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.558	null
+437	76	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.558	\N	\N	127	TEXT	2026-08-06 11:51:10.558	null
+438	77	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.561	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.561	null
+439	77	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.561	35	18	123	NUMBER	2026-08-06 11:51:10.561	null
+440	77	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.561	\N	\N	124	SELECT	2026-08-06 11:51:10.561	["NORMAL", "WARNING", "CRITICAL"]
+441	77	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.561	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.561	null
+442	77	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.561	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.561	null
+443	77	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.561	\N	\N	127	TEXT	2026-08-06 11:51:10.561	null
+444	78	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.564	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.564	null
+445	78	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.564	35	18	123	NUMBER	2026-08-06 11:51:10.564	null
+446	78	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.564	\N	\N	124	SELECT	2026-08-06 11:51:10.564	["NORMAL", "WARNING", "CRITICAL"]
+447	78	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.564	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.564	null
+448	78	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.564	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.564	null
+449	78	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.564	\N	\N	127	TEXT	2026-08-06 11:51:10.564	null
+450	79	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.566	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.566	null
+451	79	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.566	35	18	123	NUMBER	2026-08-06 11:51:10.566	null
+452	79	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.566	\N	\N	124	SELECT	2026-08-06 11:51:10.566	["NORMAL", "WARNING", "CRITICAL"]
+453	79	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.566	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.566	null
+454	79	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.566	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.566	null
+455	79	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.566	\N	\N	127	TEXT	2026-08-06 11:51:10.566	null
+456	80	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.568	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.568	null
+457	80	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.568	35	18	123	NUMBER	2026-08-06 11:51:10.568	null
+458	80	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.568	\N	\N	124	SELECT	2026-08-06 11:51:10.568	["NORMAL", "WARNING", "CRITICAL"]
+459	80	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.568	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.568	null
+460	80	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.568	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.568	null
+461	80	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.568	\N	\N	127	TEXT	2026-08-06 11:51:10.568	null
+462	81	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.572	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.572	null
+463	81	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.572	35	18	123	NUMBER	2026-08-06 11:51:10.572	null
+464	81	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.572	\N	\N	124	SELECT	2026-08-06 11:51:10.572	["NORMAL", "WARNING", "CRITICAL"]
+465	81	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.572	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.572	null
+466	81	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.572	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.572	null
+467	81	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.572	\N	\N	127	TEXT	2026-08-06 11:51:10.572	null
+468	82	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.574	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.574	null
+469	82	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.574	35	18	123	NUMBER	2026-08-06 11:51:10.574	null
+470	82	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.574	\N	\N	124	SELECT	2026-08-06 11:51:10.574	["NORMAL", "WARNING", "CRITICAL"]
+471	82	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.574	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.574	null
+472	82	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.574	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.574	null
+473	82	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.574	\N	\N	127	TEXT	2026-08-06 11:51:10.574	null
+474	83	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.577	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.577	null
+475	83	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.577	35	18	123	NUMBER	2026-08-06 11:51:10.577	null
+476	83	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.577	\N	\N	124	SELECT	2026-08-06 11:51:10.577	["NORMAL", "WARNING", "CRITICAL"]
+477	83	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.577	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.577	null
+478	83	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.577	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.577	null
+479	83	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.577	\N	\N	127	TEXT	2026-08-06 11:51:10.577	null
+480	84	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.579	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.579	null
+481	84	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.579	35	18	123	NUMBER	2026-08-06 11:51:10.579	null
+482	84	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.579	\N	\N	124	SELECT	2026-08-06 11:51:10.579	["NORMAL", "WARNING", "CRITICAL"]
+483	84	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.579	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.579	null
+484	84	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.579	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.579	null
+485	84	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.579	\N	\N	127	TEXT	2026-08-06 11:51:10.579	null
+486	85	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.581	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.581	null
+487	85	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.581	35	18	123	NUMBER	2026-08-06 11:51:10.581	null
+488	85	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.581	\N	\N	124	SELECT	2026-08-06 11:51:10.581	["NORMAL", "WARNING", "CRITICAL"]
+489	85	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.581	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.581	null
+490	85	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.581	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.581	null
+491	85	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.581	\N	\N	127	TEXT	2026-08-06 11:51:10.581	null
+492	86	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.584	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.584	null
+493	86	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.584	35	18	123	NUMBER	2026-08-06 11:51:10.584	null
+494	86	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.584	\N	\N	124	SELECT	2026-08-06 11:51:10.584	["NORMAL", "WARNING", "CRITICAL"]
+495	86	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.584	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.584	null
+496	86	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.584	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.584	null
+497	86	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.584	\N	\N	127	TEXT	2026-08-06 11:51:10.584	null
+498	87	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.587	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.587	null
+499	87	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.587	35	18	123	NUMBER	2026-08-06 11:51:10.587	null
+500	87	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.587	\N	\N	124	SELECT	2026-08-06 11:51:10.587	["NORMAL", "WARNING", "CRITICAL"]
+501	87	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.587	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.587	null
+502	87	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.587	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.587	null
+503	87	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.587	\N	\N	127	TEXT	2026-08-06 11:51:10.587	null
+504	88	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.59	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.59	null
+505	88	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.59	35	18	123	NUMBER	2026-08-06 11:51:10.59	null
+506	88	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.59	\N	\N	124	SELECT	2026-08-06 11:51:10.59	["NORMAL", "WARNING", "CRITICAL"]
+507	88	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.59	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.59	null
+508	88	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.59	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.59	null
+509	88	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.59	\N	\N	127	TEXT	2026-08-06 11:51:10.59	null
+510	89	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.592	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.592	null
+511	89	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.592	35	18	123	NUMBER	2026-08-06 11:51:10.592	null
+512	89	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.592	\N	\N	124	SELECT	2026-08-06 11:51:10.592	["NORMAL", "WARNING", "CRITICAL"]
+513	89	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.592	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.592	null
+514	89	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.592	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.592	null
+515	89	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.592	\N	\N	127	TEXT	2026-08-06 11:51:10.592	null
+516	90	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.596	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.596	null
+517	90	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.596	35	18	123	NUMBER	2026-08-06 11:51:10.596	null
+518	90	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.596	\N	\N	124	SELECT	2026-08-06 11:51:10.596	["NORMAL", "WARNING", "CRITICAL"]
+519	90	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.596	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.596	null
+520	90	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.596	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.596	null
+521	90	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.596	\N	\N	127	TEXT	2026-08-06 11:51:10.596	null
+522	91	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.599	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.599	null
+523	91	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.599	35	18	123	NUMBER	2026-08-06 11:51:10.599	null
+524	91	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.599	\N	\N	124	SELECT	2026-08-06 11:51:10.599	["NORMAL", "WARNING", "CRITICAL"]
+525	91	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.599	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.599	null
+526	91	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.599	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.599	null
+527	91	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.599	\N	\N	127	TEXT	2026-08-06 11:51:10.599	null
+528	92	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.603	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.603	null
+529	92	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.603	35	18	123	NUMBER	2026-08-06 11:51:10.603	null
+530	92	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.603	\N	\N	124	SELECT	2026-08-06 11:51:10.603	["NORMAL", "WARNING", "CRITICAL"]
+531	92	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.603	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.603	null
+532	92	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.603	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.603	null
+533	92	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.603	\N	\N	127	TEXT	2026-08-06 11:51:10.603	null
+534	93	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.607	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.607	null
+535	93	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.607	35	18	123	NUMBER	2026-08-06 11:51:10.607	null
+536	93	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.607	\N	\N	124	SELECT	2026-08-06 11:51:10.607	["NORMAL", "WARNING", "CRITICAL"]
+537	93	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.607	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.607	null
+538	93	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.607	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.607	null
+539	93	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.607	\N	\N	127	TEXT	2026-08-06 11:51:10.607	null
+540	94	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.61	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.61	null
+541	94	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.61	35	18	123	NUMBER	2026-08-06 11:51:10.61	null
+542	94	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.61	\N	\N	124	SELECT	2026-08-06 11:51:10.61	["NORMAL", "WARNING", "CRITICAL"]
+543	94	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.61	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.61	null
+544	94	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.61	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.61	null
+545	94	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.61	\N	\N	127	TEXT	2026-08-06 11:51:10.61	null
+546	95	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.613	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.613	null
+547	95	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.613	35	18	123	NUMBER	2026-08-06 11:51:10.613	null
+548	95	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.613	\N	\N	124	SELECT	2026-08-06 11:51:10.613	["NORMAL", "WARNING", "CRITICAL"]
+549	95	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.613	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.613	null
+550	95	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.613	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.613	null
+551	95	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.613	\N	\N	127	TEXT	2026-08-06 11:51:10.613	null
+552	96	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.616	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.616	null
+553	96	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.616	35	18	123	NUMBER	2026-08-06 11:51:10.616	null
+554	96	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.616	\N	\N	124	SELECT	2026-08-06 11:51:10.616	["NORMAL", "WARNING", "CRITICAL"]
+555	96	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.616	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.616	null
+556	96	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.616	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.616	null
+557	96	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.616	\N	\N	127	TEXT	2026-08-06 11:51:10.616	null
+558	97	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.621	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.621	null
+559	97	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.621	35	18	123	NUMBER	2026-08-06 11:51:10.621	null
+560	97	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.621	\N	\N	124	SELECT	2026-08-06 11:51:10.621	["NORMAL", "WARNING", "CRITICAL"]
+561	97	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.621	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.621	null
+562	97	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.621	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.621	null
+563	97	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.621	\N	\N	127	TEXT	2026-08-06 11:51:10.621	null
+564	98	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.624	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.624	null
+565	98	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.624	35	18	123	NUMBER	2026-08-06 11:51:10.624	null
+566	98	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.624	\N	\N	124	SELECT	2026-08-06 11:51:10.624	["NORMAL", "WARNING", "CRITICAL"]
+567	98	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.624	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.624	null
+568	98	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.624	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.624	null
+569	98	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.624	\N	\N	127	TEXT	2026-08-06 11:51:10.624	null
+570	99	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.627	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.627	null
+571	99	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.627	35	18	123	NUMBER	2026-08-06 11:51:10.627	null
+572	99	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.627	\N	\N	124	SELECT	2026-08-06 11:51:10.627	["NORMAL", "WARNING", "CRITICAL"]
+573	99	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.627	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.627	null
+574	99	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.627	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.627	null
+575	99	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.627	\N	\N	127	TEXT	2026-08-06 11:51:10.627	null
+576	100	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.629	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.629	null
+577	100	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.629	35	18	123	NUMBER	2026-08-06 11:51:10.629	null
+578	100	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.629	\N	\N	124	SELECT	2026-08-06 11:51:10.629	["NORMAL", "WARNING", "CRITICAL"]
+579	100	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.629	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.629	null
+580	100	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.629	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.629	null
+581	100	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.629	\N	\N	127	TEXT	2026-08-06 11:51:10.629	null
+582	101	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.632	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.632	null
+583	101	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.632	35	18	123	NUMBER	2026-08-06 11:51:10.632	null
+584	101	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.632	\N	\N	124	SELECT	2026-08-06 11:51:10.632	["NORMAL", "WARNING", "CRITICAL"]
+585	101	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.632	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.632	null
+586	101	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.632	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.632	null
+587	101	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.632	\N	\N	127	TEXT	2026-08-06 11:51:10.632	null
+588	102	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.634	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.634	null
+589	102	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.634	35	18	123	NUMBER	2026-08-06 11:51:10.634	null
+590	102	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.634	\N	\N	124	SELECT	2026-08-06 11:51:10.634	["NORMAL", "WARNING", "CRITICAL"]
+591	102	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.634	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.634	null
+592	102	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.634	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.634	null
+593	102	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.634	\N	\N	127	TEXT	2026-08-06 11:51:10.634	null
+594	103	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.637	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.637	null
+595	103	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.637	35	18	123	NUMBER	2026-08-06 11:51:10.637	null
+596	103	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.637	\N	\N	124	SELECT	2026-08-06 11:51:10.637	["NORMAL", "WARNING", "CRITICAL"]
+597	103	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.637	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.637	null
+598	103	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.637	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.637	null
+599	103	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.637	\N	\N	127	TEXT	2026-08-06 11:51:10.637	null
+600	104	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.639	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.639	null
+601	104	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.639	35	18	123	NUMBER	2026-08-06 11:51:10.639	null
+602	104	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.639	\N	\N	124	SELECT	2026-08-06 11:51:10.639	["NORMAL", "WARNING", "CRITICAL"]
+603	104	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.639	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.639	null
+604	104	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.639	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.639	null
+605	104	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.639	\N	\N	127	TEXT	2026-08-06 11:51:10.639	null
+606	105	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.642	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.642	null
+607	105	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.642	35	18	123	NUMBER	2026-08-06 11:51:10.642	null
+608	105	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.642	\N	\N	124	SELECT	2026-08-06 11:51:10.642	["NORMAL", "WARNING", "CRITICAL"]
+609	105	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.642	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.642	null
+610	105	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.642	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.642	null
+611	105	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.642	\N	\N	127	TEXT	2026-08-06 11:51:10.642	null
+612	106	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.645	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.645	null
+613	106	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.645	35	18	123	NUMBER	2026-08-06 11:51:10.645	null
+614	106	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.645	\N	\N	124	SELECT	2026-08-06 11:51:10.645	["NORMAL", "WARNING", "CRITICAL"]
+615	106	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.645	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.645	null
+616	106	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.645	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.645	null
+617	106	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.645	\N	\N	127	TEXT	2026-08-06 11:51:10.645	null
+618	107	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.648	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.648	null
+619	107	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.648	35	18	123	NUMBER	2026-08-06 11:51:10.648	null
+620	107	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.648	\N	\N	124	SELECT	2026-08-06 11:51:10.648	["NORMAL", "WARNING", "CRITICAL"]
+621	107	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.648	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.648	null
+622	107	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.648	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.648	null
+623	107	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.648	\N	\N	127	TEXT	2026-08-06 11:51:10.648	null
+624	108	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.652	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.652	null
+625	108	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.652	35	18	123	NUMBER	2026-08-06 11:51:10.652	null
+626	108	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.652	\N	\N	124	SELECT	2026-08-06 11:51:10.652	["NORMAL", "WARNING", "CRITICAL"]
+627	108	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.652	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.652	null
+628	108	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.652	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.652	null
+629	108	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.652	\N	\N	127	TEXT	2026-08-06 11:51:10.652	null
+630	109	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.656	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.656	null
+631	109	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.656	35	18	123	NUMBER	2026-08-06 11:51:10.656	null
+632	109	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.656	\N	\N	124	SELECT	2026-08-06 11:51:10.656	["NORMAL", "WARNING", "CRITICAL"]
+633	109	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.656	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.656	null
+634	109	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.656	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.656	null
+635	109	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.656	\N	\N	127	TEXT	2026-08-06 11:51:10.656	null
+636	110	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.658	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.658	null
+637	110	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.658	35	18	123	NUMBER	2026-08-06 11:51:10.658	null
+638	110	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.658	\N	\N	124	SELECT	2026-08-06 11:51:10.658	["NORMAL", "WARNING", "CRITICAL"]
+639	110	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.658	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.658	null
+640	110	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.658	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.658	null
+641	110	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.658	\N	\N	127	TEXT	2026-08-06 11:51:10.658	null
+642	111	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.662	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.662	null
+643	111	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.662	35	18	123	NUMBER	2026-08-06 11:51:10.662	null
+644	111	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.662	\N	\N	124	SELECT	2026-08-06 11:51:10.662	["NORMAL", "WARNING", "CRITICAL"]
+645	111	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.662	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.662	null
+646	111	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.662	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.662	null
+647	111	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.662	\N	\N	127	TEXT	2026-08-06 11:51:10.662	null
+648	112	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.664	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.664	null
+649	112	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.664	35	18	123	NUMBER	2026-08-06 11:51:10.664	null
+650	112	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.664	\N	\N	124	SELECT	2026-08-06 11:51:10.664	["NORMAL", "WARNING", "CRITICAL"]
+651	112	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.664	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.664	null
+652	112	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.664	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.664	null
+653	112	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.664	\N	\N	127	TEXT	2026-08-06 11:51:10.664	null
+654	113	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.667	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.667	null
+655	113	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.667	35	18	123	NUMBER	2026-08-06 11:51:10.667	null
+656	113	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.667	\N	\N	124	SELECT	2026-08-06 11:51:10.667	["NORMAL", "WARNING", "CRITICAL"]
+657	113	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.667	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.667	null
+658	113	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.667	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.667	null
+659	113	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.667	\N	\N	127	TEXT	2026-08-06 11:51:10.667	null
+660	114	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.669	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.669	null
+661	114	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.669	35	18	123	NUMBER	2026-08-06 11:51:10.669	null
+662	114	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.669	\N	\N	124	SELECT	2026-08-06 11:51:10.669	["NORMAL", "WARNING", "CRITICAL"]
+663	114	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.669	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.669	null
+664	114	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.669	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.669	null
+665	114	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.669	\N	\N	127	TEXT	2026-08-06 11:51:10.669	null
+666	115	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.672	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.672	null
+667	115	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.672	35	18	123	NUMBER	2026-08-06 11:51:10.672	null
+668	115	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.672	\N	\N	124	SELECT	2026-08-06 11:51:10.672	["NORMAL", "WARNING", "CRITICAL"]
+669	115	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.672	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.672	null
+670	115	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.672	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.672	null
+671	115	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.672	\N	\N	127	TEXT	2026-08-06 11:51:10.672	null
+672	116	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.674	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.674	null
+673	116	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.674	35	18	123	NUMBER	2026-08-06 11:51:10.674	null
+674	116	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.674	\N	\N	124	SELECT	2026-08-06 11:51:10.674	["NORMAL", "WARNING", "CRITICAL"]
+675	116	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.674	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.674	null
+676	116	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.674	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.674	null
+677	116	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.674	\N	\N	127	TEXT	2026-08-06 11:51:10.674	null
+678	117	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.677	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.677	null
+679	117	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.677	35	18	123	NUMBER	2026-08-06 11:51:10.677	null
+680	117	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.677	\N	\N	124	SELECT	2026-08-06 11:51:10.677	["NORMAL", "WARNING", "CRITICAL"]
+681	117	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.677	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.677	null
+682	117	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.677	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.677	null
+683	117	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.677	\N	\N	127	TEXT	2026-08-06 11:51:10.677	null
+684	118	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.679	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.679	null
+685	118	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.679	35	18	123	NUMBER	2026-08-06 11:51:10.679	null
+686	118	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.679	\N	\N	124	SELECT	2026-08-06 11:51:10.679	["NORMAL", "WARNING", "CRITICAL"]
+687	118	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.679	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.679	null
+688	118	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.679	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.679	null
+689	118	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.679	\N	\N	127	TEXT	2026-08-06 11:51:10.679	null
+690	119	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.682	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.682	null
+691	119	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.682	35	18	123	NUMBER	2026-08-06 11:51:10.682	null
+692	119	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.682	\N	\N	124	SELECT	2026-08-06 11:51:10.682	["NORMAL", "WARNING", "CRITICAL"]
+693	119	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.682	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.682	null
+694	119	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.682	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.682	null
+695	119	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.682	\N	\N	127	TEXT	2026-08-06 11:51:10.682	null
+696	120	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.686	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.686	null
+697	120	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.686	35	18	123	NUMBER	2026-08-06 11:51:10.686	null
+698	120	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.686	\N	\N	124	SELECT	2026-08-06 11:51:10.686	["NORMAL", "WARNING", "CRITICAL"]
+699	120	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.686	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.686	null
+700	120	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.686	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.686	null
+701	120	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.686	\N	\N	127	TEXT	2026-08-06 11:51:10.686	null
+702	121	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.688	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.688	null
+703	121	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.688	35	18	123	NUMBER	2026-08-06 11:51:10.688	null
+704	121	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.688	\N	\N	124	SELECT	2026-08-06 11:51:10.688	["NORMAL", "WARNING", "CRITICAL"]
+705	121	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.688	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.688	null
+706	121	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.688	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.688	null
+707	121	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.688	\N	\N	127	TEXT	2026-08-06 11:51:10.688	null
+708	122	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.69	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.69	null
+709	122	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.69	35	18	123	NUMBER	2026-08-06 11:51:10.69	null
+710	122	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.69	\N	\N	124	SELECT	2026-08-06 11:51:10.69	["NORMAL", "WARNING", "CRITICAL"]
+711	122	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.69	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.69	null
+712	122	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.69	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.69	null
+713	122	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.69	\N	\N	127	TEXT	2026-08-06 11:51:10.69	null
+714	123	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.693	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.693	null
+715	123	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.693	35	18	123	NUMBER	2026-08-06 11:51:10.693	null
+716	123	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.693	\N	\N	124	SELECT	2026-08-06 11:51:10.693	["NORMAL", "WARNING", "CRITICAL"]
+717	123	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.693	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.693	null
+718	123	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.693	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.693	null
+719	123	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.693	\N	\N	127	TEXT	2026-08-06 11:51:10.693	null
+720	124	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.695	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.695	null
+721	124	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.695	35	18	123	NUMBER	2026-08-06 11:51:10.695	null
+722	124	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.695	\N	\N	124	SELECT	2026-08-06 11:51:10.695	["NORMAL", "WARNING", "CRITICAL"]
+723	124	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.695	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.695	null
+724	124	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.695	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.695	null
+725	124	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.695	\N	\N	127	TEXT	2026-08-06 11:51:10.695	null
+726	125	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.697	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.697	null
+727	125	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.697	35	18	123	NUMBER	2026-08-06 11:51:10.697	null
+728	125	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.697	\N	\N	124	SELECT	2026-08-06 11:51:10.697	["NORMAL", "WARNING", "CRITICAL"]
+729	125	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.697	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.697	null
+730	125	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.697	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.697	null
+731	125	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.697	\N	\N	127	TEXT	2026-08-06 11:51:10.697	null
+732	126	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.701	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.701	null
+733	126	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.701	35	18	123	NUMBER	2026-08-06 11:51:10.701	null
+734	126	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.701	\N	\N	124	SELECT	2026-08-06 11:51:10.701	["NORMAL", "WARNING", "CRITICAL"]
+735	126	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.701	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.701	null
+736	126	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.701	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.701	null
+737	126	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.701	\N	\N	127	TEXT	2026-08-06 11:51:10.701	null
+738	127	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.706	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.706	null
+739	127	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.706	35	18	123	NUMBER	2026-08-06 11:51:10.706	null
+740	127	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.706	\N	\N	124	SELECT	2026-08-06 11:51:10.706	["NORMAL", "WARNING", "CRITICAL"]
+741	127	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.706	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.706	null
+742	127	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.706	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.706	null
+743	127	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.706	\N	\N	127	TEXT	2026-08-06 11:51:10.706	null
+744	128	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.708	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.708	null
+745	128	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.708	35	18	123	NUMBER	2026-08-06 11:51:10.708	null
+746	128	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.708	\N	\N	124	SELECT	2026-08-06 11:51:10.708	["NORMAL", "WARNING", "CRITICAL"]
+747	128	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.708	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.708	null
+748	128	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.708	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.708	null
+749	128	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.708	\N	\N	127	TEXT	2026-08-06 11:51:10.708	null
+750	129	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.71	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.71	null
+751	129	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.71	35	18	123	NUMBER	2026-08-06 11:51:10.71	null
+752	129	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.71	\N	\N	124	SELECT	2026-08-06 11:51:10.71	["NORMAL", "WARNING", "CRITICAL"]
+753	129	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.71	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.71	null
+754	129	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.71	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.71	null
+755	129	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.71	\N	\N	127	TEXT	2026-08-06 11:51:10.71	null
+756	130	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.715	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.715	null
+757	130	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.715	35	18	123	NUMBER	2026-08-06 11:51:10.715	null
+758	130	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.715	\N	\N	124	SELECT	2026-08-06 11:51:10.715	["NORMAL", "WARNING", "CRITICAL"]
+759	130	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.715	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.715	null
+760	130	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.715	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.715	null
+761	130	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.715	\N	\N	127	TEXT	2026-08-06 11:51:10.715	null
+762	131	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.718	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.718	null
+763	131	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.718	35	18	123	NUMBER	2026-08-06 11:51:10.718	null
+764	131	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.718	\N	\N	124	SELECT	2026-08-06 11:51:10.718	["NORMAL", "WARNING", "CRITICAL"]
+765	131	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.718	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.718	null
+766	131	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.718	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.718	null
+767	131	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.718	\N	\N	127	TEXT	2026-08-06 11:51:10.718	null
+768	132	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.721	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.721	null
+769	132	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.721	35	18	123	NUMBER	2026-08-06 11:51:10.721	null
+770	132	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.721	\N	\N	124	SELECT	2026-08-06 11:51:10.721	["NORMAL", "WARNING", "CRITICAL"]
+771	132	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.721	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.721	null
+772	132	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.721	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.721	null
+773	132	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.721	\N	\N	127	TEXT	2026-08-06 11:51:10.721	null
+774	133	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.723	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.723	null
+775	133	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.723	35	18	123	NUMBER	2026-08-06 11:51:10.723	null
+776	133	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.723	\N	\N	124	SELECT	2026-08-06 11:51:10.723	["NORMAL", "WARNING", "CRITICAL"]
+777	133	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.723	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.723	null
+778	133	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.723	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.723	null
+779	133	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.723	\N	\N	127	TEXT	2026-08-06 11:51:10.723	null
+780	134	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.726	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.726	null
+781	134	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.726	35	18	123	NUMBER	2026-08-06 11:51:10.726	null
+782	134	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.726	\N	\N	124	SELECT	2026-08-06 11:51:10.726	["NORMAL", "WARNING", "CRITICAL"]
+783	134	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.726	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.726	null
+784	134	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.726	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.726	null
+785	134	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.726	\N	\N	127	TEXT	2026-08-06 11:51:10.726	null
+786	135	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.728	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.728	null
+787	135	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.728	35	18	123	NUMBER	2026-08-06 11:51:10.728	null
+788	135	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.728	\N	\N	124	SELECT	2026-08-06 11:51:10.728	["NORMAL", "WARNING", "CRITICAL"]
+789	135	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.728	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.728	null
+790	135	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.728	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.728	null
+791	135	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.728	\N	\N	127	TEXT	2026-08-06 11:51:10.728	null
+792	136	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.73	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.73	null
+793	136	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.73	35	18	123	NUMBER	2026-08-06 11:51:10.73	null
+794	136	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.73	\N	\N	124	SELECT	2026-08-06 11:51:10.73	["NORMAL", "WARNING", "CRITICAL"]
+795	136	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.73	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.73	null
+796	136	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.73	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.73	null
+797	136	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.73	\N	\N	127	TEXT	2026-08-06 11:51:10.73	null
+798	137	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.733	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.733	null
+799	137	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.733	35	18	123	NUMBER	2026-08-06 11:51:10.733	null
+800	137	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.733	\N	\N	124	SELECT	2026-08-06 11:51:10.733	["NORMAL", "WARNING", "CRITICAL"]
+801	137	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.733	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.733	null
+802	137	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.733	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.733	null
+803	137	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.733	\N	\N	127	TEXT	2026-08-06 11:51:10.733	null
+804	138	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.735	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.735	null
+805	138	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.735	35	18	123	NUMBER	2026-08-06 11:51:10.735	null
+806	138	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.735	\N	\N	124	SELECT	2026-08-06 11:51:10.735	["NORMAL", "WARNING", "CRITICAL"]
+807	138	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.735	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.735	null
+808	138	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.735	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.735	null
+809	138	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.735	\N	\N	127	TEXT	2026-08-06 11:51:10.735	null
+810	139	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.739	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.739	null
+811	139	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.739	35	18	123	NUMBER	2026-08-06 11:51:10.739	null
+812	139	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.739	\N	\N	124	SELECT	2026-08-06 11:51:10.739	["NORMAL", "WARNING", "CRITICAL"]
+813	139	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.739	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.739	null
+814	139	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.739	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.739	null
+815	139	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.739	\N	\N	127	TEXT	2026-08-06 11:51:10.739	null
+816	140	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.741	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.741	null
+817	140	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.741	35	18	123	NUMBER	2026-08-06 11:51:10.741	null
+818	140	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.741	\N	\N	124	SELECT	2026-08-06 11:51:10.741	["NORMAL", "WARNING", "CRITICAL"]
+819	140	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.741	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.741	null
+820	140	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.741	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.741	null
+821	140	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.741	\N	\N	127	TEXT	2026-08-06 11:51:10.741	null
+822	141	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.745	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.745	null
+823	141	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.745	35	18	123	NUMBER	2026-08-06 11:51:10.745	null
+824	141	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.745	\N	\N	124	SELECT	2026-08-06 11:51:10.745	["NORMAL", "WARNING", "CRITICAL"]
+825	141	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.745	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.745	null
+826	141	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.745	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.745	null
+827	141	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.745	\N	\N	127	TEXT	2026-08-06 11:51:10.745	null
+828	142	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.747	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.747	null
+829	142	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.747	35	18	123	NUMBER	2026-08-06 11:51:10.747	null
+830	142	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.747	\N	\N	124	SELECT	2026-08-06 11:51:10.747	["NORMAL", "WARNING", "CRITICAL"]
+831	142	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.747	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.747	null
+832	142	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.747	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.747	null
+833	142	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.747	\N	\N	127	TEXT	2026-08-06 11:51:10.747	null
+834	143	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.75	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.75	null
+835	143	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.75	35	18	123	NUMBER	2026-08-06 11:51:10.75	null
+836	143	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.75	\N	\N	124	SELECT	2026-08-06 11:51:10.75	["NORMAL", "WARNING", "CRITICAL"]
+837	143	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.75	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.75	null
+838	143	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.75	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.75	null
+839	143	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.75	\N	\N	127	TEXT	2026-08-06 11:51:10.75	null
+840	144	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.752	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.752	null
+841	144	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.752	35	18	123	NUMBER	2026-08-06 11:51:10.752	null
+842	144	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.752	\N	\N	124	SELECT	2026-08-06 11:51:10.752	["NORMAL", "WARNING", "CRITICAL"]
+843	144	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.752	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.752	null
+844	144	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.752	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.752	null
+845	144	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.752	\N	\N	127	TEXT	2026-08-06 11:51:10.752	null
+846	145	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.756	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.756	null
+847	145	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.756	35	18	123	NUMBER	2026-08-06 11:51:10.756	null
+848	145	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.756	\N	\N	124	SELECT	2026-08-06 11:51:10.756	["NORMAL", "WARNING", "CRITICAL"]
+849	145	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.756	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.756	null
+850	145	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.756	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.756	null
+851	145	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.756	\N	\N	127	TEXT	2026-08-06 11:51:10.756	null
+852	146	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.758	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.758	null
+853	146	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.758	35	18	123	NUMBER	2026-08-06 11:51:10.758	null
+854	146	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.758	\N	\N	124	SELECT	2026-08-06 11:51:10.758	["NORMAL", "WARNING", "CRITICAL"]
+855	146	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.758	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.758	null
+856	146	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.758	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.758	null
+857	146	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.758	\N	\N	127	TEXT	2026-08-06 11:51:10.758	null
+858	147	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.761	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.761	null
+859	147	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.761	35	18	123	NUMBER	2026-08-06 11:51:10.761	null
+860	147	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.761	\N	\N	124	SELECT	2026-08-06 11:51:10.761	["NORMAL", "WARNING", "CRITICAL"]
+861	147	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.761	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.761	null
+862	147	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.761	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.761	null
+863	147	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.761	\N	\N	127	TEXT	2026-08-06 11:51:10.761	null
+864	148	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.763	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.763	null
+865	148	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.763	35	18	123	NUMBER	2026-08-06 11:51:10.763	null
+866	148	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.763	\N	\N	124	SELECT	2026-08-06 11:51:10.763	["NORMAL", "WARNING", "CRITICAL"]
+867	148	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.763	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.763	null
+868	148	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.763	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.763	null
+869	148	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.763	\N	\N	127	TEXT	2026-08-06 11:51:10.763	null
+870	149	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.765	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.765	null
+871	149	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.765	35	18	123	NUMBER	2026-08-06 11:51:10.765	null
+872	149	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.765	\N	\N	124	SELECT	2026-08-06 11:51:10.765	["NORMAL", "WARNING", "CRITICAL"]
+873	149	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.765	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.765	null
+874	149	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.765	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.765	null
+875	149	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.765	\N	\N	127	TEXT	2026-08-06 11:51:10.765	null
+876	150	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.767	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.767	null
+877	150	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.767	35	18	123	NUMBER	2026-08-06 11:51:10.767	null
+878	150	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.767	\N	\N	124	SELECT	2026-08-06 11:51:10.767	["NORMAL", "WARNING", "CRITICAL"]
+879	150	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.767	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.767	null
+880	150	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.767	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.767	null
+881	150	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.767	\N	\N	127	TEXT	2026-08-06 11:51:10.767	null
+882	151	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.769	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.769	null
+883	151	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.769	35	18	123	NUMBER	2026-08-06 11:51:10.769	null
+884	151	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.769	\N	\N	124	SELECT	2026-08-06 11:51:10.769	["NORMAL", "WARNING", "CRITICAL"]
+885	151	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.769	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.769	null
+886	151	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.769	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.769	null
+887	151	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.769	\N	\N	127	TEXT	2026-08-06 11:51:10.769	null
+888	152	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.773	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.773	null
+889	152	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.773	35	18	123	NUMBER	2026-08-06 11:51:10.773	null
+890	152	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.773	\N	\N	124	SELECT	2026-08-06 11:51:10.773	["NORMAL", "WARNING", "CRITICAL"]
+891	152	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.773	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.773	null
+892	152	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.773	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.773	null
+893	152	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.773	\N	\N	127	TEXT	2026-08-06 11:51:10.773	null
+894	153	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.776	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.776	null
+895	153	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.776	35	18	123	NUMBER	2026-08-06 11:51:10.776	null
+896	153	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.776	\N	\N	124	SELECT	2026-08-06 11:51:10.776	["NORMAL", "WARNING", "CRITICAL"]
+897	153	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.776	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.776	null
+898	153	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.776	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.776	null
+899	153	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.776	\N	\N	127	TEXT	2026-08-06 11:51:10.776	null
+900	154	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.778	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.778	null
+901	154	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.778	35	18	123	NUMBER	2026-08-06 11:51:10.778	null
+902	154	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.778	\N	\N	124	SELECT	2026-08-06 11:51:10.778	["NORMAL", "WARNING", "CRITICAL"]
+903	154	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.778	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.778	null
+904	154	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.778	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.778	null
+905	154	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.778	\N	\N	127	TEXT	2026-08-06 11:51:10.778	null
+906	155	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.78	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.78	null
+907	155	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.78	35	18	123	NUMBER	2026-08-06 11:51:10.78	null
+908	155	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.78	\N	\N	124	SELECT	2026-08-06 11:51:10.78	["NORMAL", "WARNING", "CRITICAL"]
+909	155	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.78	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.78	null
+910	155	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.78	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.78	null
+911	155	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.78	\N	\N	127	TEXT	2026-08-06 11:51:10.78	null
+912	156	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.784	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.784	null
+913	156	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.784	35	18	123	NUMBER	2026-08-06 11:51:10.784	null
+914	156	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.784	\N	\N	124	SELECT	2026-08-06 11:51:10.784	["NORMAL", "WARNING", "CRITICAL"]
+915	156	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.784	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.784	null
+916	156	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.784	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.784	null
+917	156	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.784	\N	\N	127	TEXT	2026-08-06 11:51:10.784	null
+918	157	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.786	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.786	null
+919	157	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.786	35	18	123	NUMBER	2026-08-06 11:51:10.786	null
+920	157	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.786	\N	\N	124	SELECT	2026-08-06 11:51:10.786	["NORMAL", "WARNING", "CRITICAL"]
+921	157	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.786	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.786	null
+922	157	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.786	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.786	null
+923	157	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.786	\N	\N	127	TEXT	2026-08-06 11:51:10.786	null
+924	158	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.788	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.788	null
+925	158	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.788	35	18	123	NUMBER	2026-08-06 11:51:10.788	null
+926	158	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.788	\N	\N	124	SELECT	2026-08-06 11:51:10.788	["NORMAL", "WARNING", "CRITICAL"]
+927	158	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.788	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.788	null
+928	158	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.788	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.788	null
+929	158	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.788	\N	\N	127	TEXT	2026-08-06 11:51:10.788	null
+930	159	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.79	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.79	null
+931	159	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.79	35	18	123	NUMBER	2026-08-06 11:51:10.79	null
+932	159	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.79	\N	\N	124	SELECT	2026-08-06 11:51:10.79	["NORMAL", "WARNING", "CRITICAL"]
+933	159	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.79	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.79	null
+934	159	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.79	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.79	null
+935	159	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.79	\N	\N	127	TEXT	2026-08-06 11:51:10.79	null
+936	160	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.793	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.793	null
+937	160	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.793	35	18	123	NUMBER	2026-08-06 11:51:10.793	null
+938	160	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.793	\N	\N	124	SELECT	2026-08-06 11:51:10.793	["NORMAL", "WARNING", "CRITICAL"]
+939	160	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.793	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.793	null
+940	160	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.793	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.793	null
+941	160	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.793	\N	\N	127	TEXT	2026-08-06 11:51:10.793	null
+942	161	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.795	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.795	null
+943	161	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.795	35	18	123	NUMBER	2026-08-06 11:51:10.795	null
+944	161	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.795	\N	\N	124	SELECT	2026-08-06 11:51:10.795	["NORMAL", "WARNING", "CRITICAL"]
+945	161	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.795	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.795	null
+946	161	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.795	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.795	null
+947	161	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.795	\N	\N	127	TEXT	2026-08-06 11:51:10.795	null
+948	162	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.799	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.799	null
+949	162	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.799	35	18	123	NUMBER	2026-08-06 11:51:10.799	null
+950	162	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.799	\N	\N	124	SELECT	2026-08-06 11:51:10.799	["NORMAL", "WARNING", "CRITICAL"]
+951	162	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.799	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.799	null
+952	162	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.799	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.799	null
+953	162	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.799	\N	\N	127	TEXT	2026-08-06 11:51:10.799	null
+954	163	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.801	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.801	null
+955	163	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.801	35	18	123	NUMBER	2026-08-06 11:51:10.801	null
+956	163	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.801	\N	\N	124	SELECT	2026-08-06 11:51:10.801	["NORMAL", "WARNING", "CRITICAL"]
+957	163	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.801	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.801	null
+958	163	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.801	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.801	null
+959	163	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.801	\N	\N	127	TEXT	2026-08-06 11:51:10.801	null
+960	164	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.804	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.804	null
+961	164	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.804	35	18	123	NUMBER	2026-08-06 11:51:10.804	null
+962	164	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.804	\N	\N	124	SELECT	2026-08-06 11:51:10.804	["NORMAL", "WARNING", "CRITICAL"]
+963	164	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.804	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.804	null
+964	164	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.804	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.804	null
+965	164	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.804	\N	\N	127	TEXT	2026-08-06 11:51:10.804	null
+966	165	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.806	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.806	null
+967	165	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.806	35	18	123	NUMBER	2026-08-06 11:51:10.806	null
+968	165	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.806	\N	\N	124	SELECT	2026-08-06 11:51:10.806	["NORMAL", "WARNING", "CRITICAL"]
+969	165	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.806	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.806	null
+970	165	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.806	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.806	null
+971	165	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.806	\N	\N	127	TEXT	2026-08-06 11:51:10.806	null
+972	166	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.808	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.808	null
+973	166	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.808	35	18	123	NUMBER	2026-08-06 11:51:10.808	null
+974	166	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.808	\N	\N	124	SELECT	2026-08-06 11:51:10.808	["NORMAL", "WARNING", "CRITICAL"]
+975	166	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.808	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.808	null
+976	166	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.808	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.808	null
+977	166	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.808	\N	\N	127	TEXT	2026-08-06 11:51:10.808	null
+978	167	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.81	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.81	null
+979	167	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.81	35	18	123	NUMBER	2026-08-06 11:51:10.81	null
+980	167	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.81	\N	\N	124	SELECT	2026-08-06 11:51:10.81	["NORMAL", "WARNING", "CRITICAL"]
+981	167	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.81	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.81	null
+982	167	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.81	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.81	null
+983	167	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.81	\N	\N	127	TEXT	2026-08-06 11:51:10.81	null
+984	168	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.813	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.813	null
+985	168	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.813	35	18	123	NUMBER	2026-08-06 11:51:10.813	null
+986	168	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.813	\N	\N	124	SELECT	2026-08-06 11:51:10.813	["NORMAL", "WARNING", "CRITICAL"]
+987	168	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.813	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.813	null
+988	168	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.813	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.813	null
+989	168	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.813	\N	\N	127	TEXT	2026-08-06 11:51:10.813	null
+990	169	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.815	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.815	null
+991	169	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.815	35	18	123	NUMBER	2026-08-06 11:51:10.815	null
+992	169	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.815	\N	\N	124	SELECT	2026-08-06 11:51:10.815	["NORMAL", "WARNING", "CRITICAL"]
+993	169	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.815	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.815	null
+994	169	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.815	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.815	null
+995	169	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.815	\N	\N	127	TEXT	2026-08-06 11:51:10.815	null
+996	170	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.818	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.818	null
+997	170	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.818	35	18	123	NUMBER	2026-08-06 11:51:10.818	null
+998	170	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.818	\N	\N	124	SELECT	2026-08-06 11:51:10.818	["NORMAL", "WARNING", "CRITICAL"]
+999	170	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.818	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.818	null
+1000	170	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.818	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.818	null
+1001	170	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.818	\N	\N	127	TEXT	2026-08-06 11:51:10.818	null
+1002	171	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.82	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.82	null
+1003	171	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.82	35	18	123	NUMBER	2026-08-06 11:51:10.82	null
+1004	171	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.82	\N	\N	124	SELECT	2026-08-06 11:51:10.82	["NORMAL", "WARNING", "CRITICAL"]
+1005	171	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.82	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.82	null
+1006	171	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.82	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.82	null
+1007	171	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.82	\N	\N	127	TEXT	2026-08-06 11:51:10.82	null
+1008	172	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.822	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.822	null
+1009	172	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.822	35	18	123	NUMBER	2026-08-06 11:51:10.822	null
+1010	172	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.822	\N	\N	124	SELECT	2026-08-06 11:51:10.822	["NORMAL", "WARNING", "CRITICAL"]
+1011	172	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.822	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.822	null
+1012	172	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.822	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.822	null
+1013	172	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.822	\N	\N	127	TEXT	2026-08-06 11:51:10.822	null
+1014	173	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.825	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.825	null
+1015	173	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.825	35	18	123	NUMBER	2026-08-06 11:51:10.825	null
+1016	173	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.825	\N	\N	124	SELECT	2026-08-06 11:51:10.825	["NORMAL", "WARNING", "CRITICAL"]
+1017	173	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.825	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.825	null
+1018	173	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.825	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.825	null
+1019	173	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.825	\N	\N	127	TEXT	2026-08-06 11:51:10.825	null
+1020	174	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.827	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.827	null
+1021	174	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.827	35	18	123	NUMBER	2026-08-06 11:51:10.827	null
+1022	174	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.827	\N	\N	124	SELECT	2026-08-06 11:51:10.827	["NORMAL", "WARNING", "CRITICAL"]
+1023	174	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.827	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.827	null
+1024	174	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.827	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.827	null
+1025	174	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.827	\N	\N	127	TEXT	2026-08-06 11:51:10.827	null
+1026	175	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.83	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.83	null
+1027	175	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.83	35	18	123	NUMBER	2026-08-06 11:51:10.83	null
+1028	175	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.83	\N	\N	124	SELECT	2026-08-06 11:51:10.83	["NORMAL", "WARNING", "CRITICAL"]
+1029	175	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.83	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.83	null
+1030	175	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.83	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.83	null
+1031	175	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.83	\N	\N	127	TEXT	2026-08-06 11:51:10.83	null
+1032	176	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.832	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.832	null
+1033	176	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.832	35	18	123	NUMBER	2026-08-06 11:51:10.832	null
+1034	176	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.832	\N	\N	124	SELECT	2026-08-06 11:51:10.832	["NORMAL", "WARNING", "CRITICAL"]
+1035	176	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.832	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.832	null
+1036	176	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.832	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.832	null
+1037	176	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.832	\N	\N	127	TEXT	2026-08-06 11:51:10.832	null
+1038	177	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.834	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.834	null
+1039	177	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.834	35	18	123	NUMBER	2026-08-06 11:51:10.834	null
+1040	177	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.834	\N	\N	124	SELECT	2026-08-06 11:51:10.834	["NORMAL", "WARNING", "CRITICAL"]
+1041	177	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.834	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.834	null
+1042	177	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.834	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.834	null
+1043	177	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.834	\N	\N	127	TEXT	2026-08-06 11:51:10.834	null
+1044	178	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.837	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.837	null
+1045	178	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.837	35	18	123	NUMBER	2026-08-06 11:51:10.837	null
+1046	178	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.837	\N	\N	124	SELECT	2026-08-06 11:51:10.837	["NORMAL", "WARNING", "CRITICAL"]
+1047	178	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.837	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.837	null
+1048	178	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.837	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.837	null
+1049	178	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.837	\N	\N	127	TEXT	2026-08-06 11:51:10.837	null
+1050	179	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.839	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.839	null
+1051	179	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.839	35	18	123	NUMBER	2026-08-06 11:51:10.839	null
+1052	179	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.839	\N	\N	124	SELECT	2026-08-06 11:51:10.839	["NORMAL", "WARNING", "CRITICAL"]
+1053	179	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.839	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.839	null
+1054	179	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.839	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.839	null
+1055	179	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.839	\N	\N	127	TEXT	2026-08-06 11:51:10.839	null
+1056	180	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.841	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.841	null
+1057	180	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.841	35	18	123	NUMBER	2026-08-06 11:51:10.841	null
+1058	180	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.841	\N	\N	124	SELECT	2026-08-06 11:51:10.841	["NORMAL", "WARNING", "CRITICAL"]
+1059	180	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.841	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.841	null
+1060	180	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.841	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.841	null
+1061	180	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.841	\N	\N	127	TEXT	2026-08-06 11:51:10.841	null
+1062	181	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.843	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.843	null
+1063	181	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.843	35	18	123	NUMBER	2026-08-06 11:51:10.843	null
+1064	181	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.843	\N	\N	124	SELECT	2026-08-06 11:51:10.843	["NORMAL", "WARNING", "CRITICAL"]
+1065	181	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.843	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.843	null
+1066	181	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.843	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.843	null
+1067	181	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.843	\N	\N	127	TEXT	2026-08-06 11:51:10.843	null
+1068	182	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.845	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.845	null
+1069	182	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.845	35	18	123	NUMBER	2026-08-06 11:51:10.845	null
+1070	182	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.845	\N	\N	124	SELECT	2026-08-06 11:51:10.845	["NORMAL", "WARNING", "CRITICAL"]
+1071	182	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.845	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.845	null
+1072	182	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.845	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.845	null
+1073	182	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.845	\N	\N	127	TEXT	2026-08-06 11:51:10.845	null
+1074	183	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.848	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.848	null
+1075	183	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.848	35	18	123	NUMBER	2026-08-06 11:51:10.848	null
+1076	183	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.848	\N	\N	124	SELECT	2026-08-06 11:51:10.848	["NORMAL", "WARNING", "CRITICAL"]
+1077	183	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.848	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.848	null
+1078	183	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.848	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.848	null
+1079	183	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.848	\N	\N	127	TEXT	2026-08-06 11:51:10.848	null
+1080	184	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.851	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.851	null
+1081	184	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.851	35	18	123	NUMBER	2026-08-06 11:51:10.851	null
+1082	184	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.851	\N	\N	124	SELECT	2026-08-06 11:51:10.851	["NORMAL", "WARNING", "CRITICAL"]
+1083	184	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.851	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.851	null
+1084	184	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.851	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.851	null
+1085	184	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.851	\N	\N	127	TEXT	2026-08-06 11:51:10.851	null
+1086	185	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.854	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.854	null
+1087	185	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.854	35	18	123	NUMBER	2026-08-06 11:51:10.854	null
+1088	185	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.854	\N	\N	124	SELECT	2026-08-06 11:51:10.854	["NORMAL", "WARNING", "CRITICAL"]
+1089	185	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.854	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.854	null
+1090	185	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.854	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.854	null
+1091	185	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.854	\N	\N	127	TEXT	2026-08-06 11:51:10.854	null
+1092	186	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.856	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.856	null
+1093	186	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.856	35	18	123	NUMBER	2026-08-06 11:51:10.856	null
+1094	186	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.856	\N	\N	124	SELECT	2026-08-06 11:51:10.856	["NORMAL", "WARNING", "CRITICAL"]
+1095	186	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.856	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.856	null
+1096	186	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.856	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.856	null
+1097	186	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.856	\N	\N	127	TEXT	2026-08-06 11:51:10.856	null
+1098	187	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.858	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.858	null
+1099	187	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.858	35	18	123	NUMBER	2026-08-06 11:51:10.858	null
+1100	187	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.858	\N	\N	124	SELECT	2026-08-06 11:51:10.858	["NORMAL", "WARNING", "CRITICAL"]
+1101	187	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.858	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.858	null
+1102	187	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.858	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.858	null
+1103	187	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.858	\N	\N	127	TEXT	2026-08-06 11:51:10.858	null
+1104	188	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.861	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.861	null
+1105	188	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.861	35	18	123	NUMBER	2026-08-06 11:51:10.861	null
+1106	188	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.861	\N	\N	124	SELECT	2026-08-06 11:51:10.861	["NORMAL", "WARNING", "CRITICAL"]
+1107	188	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.861	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.861	null
+1108	188	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.861	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.861	null
+1109	188	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.861	\N	\N	127	TEXT	2026-08-06 11:51:10.861	null
+1110	189	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.863	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.863	null
+1111	189	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.863	35	18	123	NUMBER	2026-08-06 11:51:10.863	null
+1112	189	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.863	\N	\N	124	SELECT	2026-08-06 11:51:10.863	["NORMAL", "WARNING", "CRITICAL"]
+1113	189	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.863	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.863	null
+1114	189	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.863	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.863	null
+1115	189	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.863	\N	\N	127	TEXT	2026-08-06 11:51:10.863	null
+1116	190	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.866	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.866	null
+1117	190	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.866	35	18	123	NUMBER	2026-08-06 11:51:10.866	null
+1118	190	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.866	\N	\N	124	SELECT	2026-08-06 11:51:10.866	["NORMAL", "WARNING", "CRITICAL"]
+1119	190	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.866	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.866	null
+1120	190	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.866	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.866	null
+1121	190	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.866	\N	\N	127	TEXT	2026-08-06 11:51:10.866	null
+1122	191	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.869	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.869	null
+1123	191	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.869	35	18	123	NUMBER	2026-08-06 11:51:10.869	null
+1124	191	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.869	\N	\N	124	SELECT	2026-08-06 11:51:10.869	["NORMAL", "WARNING", "CRITICAL"]
+1125	191	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.869	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.869	null
+1126	191	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.869	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.869	null
+1127	191	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.869	\N	\N	127	TEXT	2026-08-06 11:51:10.869	null
+1128	192	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.871	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.871	null
+1129	192	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.871	35	18	123	NUMBER	2026-08-06 11:51:10.871	null
+1130	192	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.871	\N	\N	124	SELECT	2026-08-06 11:51:10.871	["NORMAL", "WARNING", "CRITICAL"]
+1131	192	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.871	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.871	null
+1132	192	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.871	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.871	null
+1133	192	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.871	\N	\N	127	TEXT	2026-08-06 11:51:10.871	null
+1134	193	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.874	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.874	null
+1135	193	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.874	35	18	123	NUMBER	2026-08-06 11:51:10.874	null
+1136	193	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.874	\N	\N	124	SELECT	2026-08-06 11:51:10.874	["NORMAL", "WARNING", "CRITICAL"]
+1137	193	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.874	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.874	null
+1138	193	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.874	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.874	null
+1139	193	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.874	\N	\N	127	TEXT	2026-08-06 11:51:10.874	null
+1140	194	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.877	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.877	null
+1141	194	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.877	35	18	123	NUMBER	2026-08-06 11:51:10.877	null
+1142	194	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.877	\N	\N	124	SELECT	2026-08-06 11:51:10.877	["NORMAL", "WARNING", "CRITICAL"]
+1143	194	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.877	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.877	null
+1144	194	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.877	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.877	null
+1145	194	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.877	\N	\N	127	TEXT	2026-08-06 11:51:10.877	null
+1146	195	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.88	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.88	null
+1147	195	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.88	35	18	123	NUMBER	2026-08-06 11:51:10.88	null
+1148	195	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.88	\N	\N	124	SELECT	2026-08-06 11:51:10.88	["NORMAL", "WARNING", "CRITICAL"]
+1149	195	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.88	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.88	null
+1150	195	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.88	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.88	null
+1151	195	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.88	\N	\N	127	TEXT	2026-08-06 11:51:10.88	null
+1152	196	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.883	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.883	null
+1153	196	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.883	35	18	123	NUMBER	2026-08-06 11:51:10.883	null
+1154	196	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.883	\N	\N	124	SELECT	2026-08-06 11:51:10.883	["NORMAL", "WARNING", "CRITICAL"]
+1155	196	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.883	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.883	null
+1156	196	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.883	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.883	null
+1157	196	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.883	\N	\N	127	TEXT	2026-08-06 11:51:10.883	null
+1158	197	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.886	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.886	null
+1159	197	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.886	35	18	123	NUMBER	2026-08-06 11:51:10.886	null
+1160	197	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.886	\N	\N	124	SELECT	2026-08-06 11:51:10.886	["NORMAL", "WARNING", "CRITICAL"]
+1161	197	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.886	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.886	null
+1162	197	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.886	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.886	null
+1163	197	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.886	\N	\N	127	TEXT	2026-08-06 11:51:10.886	null
+1164	198	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.889	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.889	null
+1165	198	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.889	35	18	123	NUMBER	2026-08-06 11:51:10.889	null
+1166	198	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.889	\N	\N	124	SELECT	2026-08-06 11:51:10.889	["NORMAL", "WARNING", "CRITICAL"]
+1167	198	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.889	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.889	null
+1168	198	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.889	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.889	null
+1169	198	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.889	\N	\N	127	TEXT	2026-08-06 11:51:10.889	null
+1170	199	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.891	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.891	null
+1171	199	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.891	35	18	123	NUMBER	2026-08-06 11:51:10.891	null
+1172	199	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.891	\N	\N	124	SELECT	2026-08-06 11:51:10.891	["NORMAL", "WARNING", "CRITICAL"]
+1173	199	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.891	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.891	null
+1174	199	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.891	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.891	null
+1175	199	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.891	\N	\N	127	TEXT	2026-08-06 11:51:10.891	null
+1176	200	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.893	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.893	null
+1177	200	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.893	35	18	123	NUMBER	2026-08-06 11:51:10.893	null
+1178	200	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.893	\N	\N	124	SELECT	2026-08-06 11:51:10.893	["NORMAL", "WARNING", "CRITICAL"]
+1179	200	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.893	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.893	null
+1180	200	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.893	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.893	null
+1181	200	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.893	\N	\N	127	TEXT	2026-08-06 11:51:10.893	null
+1182	201	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.896	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.896	null
+1183	201	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.896	35	18	123	NUMBER	2026-08-06 11:51:10.896	null
+1184	201	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.896	\N	\N	124	SELECT	2026-08-06 11:51:10.896	["NORMAL", "WARNING", "CRITICAL"]
+1185	201	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.896	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.896	null
+1186	201	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.896	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.896	null
+1187	201	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.896	\N	\N	127	TEXT	2026-08-06 11:51:10.896	null
+1188	202	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.899	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.899	null
+1189	202	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.899	35	18	123	NUMBER	2026-08-06 11:51:10.899	null
+1190	202	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.899	\N	\N	124	SELECT	2026-08-06 11:51:10.899	["NORMAL", "WARNING", "CRITICAL"]
+1191	202	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.899	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.899	null
+1192	202	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.899	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.899	null
+1193	202	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.899	\N	\N	127	TEXT	2026-08-06 11:51:10.899	null
+1194	203	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.901	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.901	null
+1195	203	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.901	35	18	123	NUMBER	2026-08-06 11:51:10.901	null
+1196	203	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.901	\N	\N	124	SELECT	2026-08-06 11:51:10.901	["NORMAL", "WARNING", "CRITICAL"]
+1197	203	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.901	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.901	null
+1198	203	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.901	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.901	null
+1199	203	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.901	\N	\N	127	TEXT	2026-08-06 11:51:10.901	null
+1200	204	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.903	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.903	null
+1201	204	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.903	35	18	123	NUMBER	2026-08-06 11:51:10.903	null
+1202	204	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.903	\N	\N	124	SELECT	2026-08-06 11:51:10.903	["NORMAL", "WARNING", "CRITICAL"]
+1203	204	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.903	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.903	null
+1204	204	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.903	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.903	null
+1205	204	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.903	\N	\N	127	TEXT	2026-08-06 11:51:10.903	null
+1206	205	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.905	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.905	null
+1207	205	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.905	35	18	123	NUMBER	2026-08-06 11:51:10.905	null
+1208	205	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.905	\N	\N	124	SELECT	2026-08-06 11:51:10.905	["NORMAL", "WARNING", "CRITICAL"]
+1209	205	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.905	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.905	null
+1210	205	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.905	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.905	null
+1211	205	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.905	\N	\N	127	TEXT	2026-08-06 11:51:10.905	null
+1212	206	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.908	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.908	null
+1213	206	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.908	35	18	123	NUMBER	2026-08-06 11:51:10.908	null
+1214	206	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.908	\N	\N	124	SELECT	2026-08-06 11:51:10.908	["NORMAL", "WARNING", "CRITICAL"]
+1215	206	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.908	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.908	null
+1216	206	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.908	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.908	null
+1217	206	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.908	\N	\N	127	TEXT	2026-08-06 11:51:10.908	null
+1218	207	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.912	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.912	null
+1219	207	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.912	35	18	123	NUMBER	2026-08-06 11:51:10.912	null
+1220	207	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.912	\N	\N	124	SELECT	2026-08-06 11:51:10.912	["NORMAL", "WARNING", "CRITICAL"]
+1221	207	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.912	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.912	null
+1222	207	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.912	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.912	null
+1223	207	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.912	\N	\N	127	TEXT	2026-08-06 11:51:10.912	null
+1224	208	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.915	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.915	null
+1225	208	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.915	35	18	123	NUMBER	2026-08-06 11:51:10.915	null
+1226	208	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.915	\N	\N	124	SELECT	2026-08-06 11:51:10.915	["NORMAL", "WARNING", "CRITICAL"]
+1227	208	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.915	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.915	null
+1228	208	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.915	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.915	null
+1229	208	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.915	\N	\N	127	TEXT	2026-08-06 11:51:10.915	null
+1230	209	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.917	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.917	null
+1231	209	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.917	35	18	123	NUMBER	2026-08-06 11:51:10.917	null
+1232	209	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.917	\N	\N	124	SELECT	2026-08-06 11:51:10.917	["NORMAL", "WARNING", "CRITICAL"]
+1233	209	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.917	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.917	null
+1234	209	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.917	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.917	null
+1235	209	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.917	\N	\N	127	TEXT	2026-08-06 11:51:10.917	null
+1236	210	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.919	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.919	null
+1237	210	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.919	35	18	123	NUMBER	2026-08-06 11:51:10.919	null
+1238	210	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.919	\N	\N	124	SELECT	2026-08-06 11:51:10.919	["NORMAL", "WARNING", "CRITICAL"]
+1239	210	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.919	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.919	null
+1240	210	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.919	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.919	null
+1241	210	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.919	\N	\N	127	TEXT	2026-08-06 11:51:10.919	null
+1242	211	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.922	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.922	null
+1243	211	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.922	35	18	123	NUMBER	2026-08-06 11:51:10.922	null
+1244	211	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.922	\N	\N	124	SELECT	2026-08-06 11:51:10.922	["NORMAL", "WARNING", "CRITICAL"]
+1245	211	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.922	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.922	null
+1246	211	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.922	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.922	null
+1247	211	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.922	\N	\N	127	TEXT	2026-08-06 11:51:10.922	null
+1248	212	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.924	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.924	null
+1249	212	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.924	35	18	123	NUMBER	2026-08-06 11:51:10.924	null
+1250	212	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.924	\N	\N	124	SELECT	2026-08-06 11:51:10.924	["NORMAL", "WARNING", "CRITICAL"]
+1251	212	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.924	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.924	null
+1252	212	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.924	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.924	null
+1253	212	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.924	\N	\N	127	TEXT	2026-08-06 11:51:10.924	null
+1254	213	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.926	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.926	null
+1255	213	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.926	35	18	123	NUMBER	2026-08-06 11:51:10.926	null
+1256	213	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.926	\N	\N	124	SELECT	2026-08-06 11:51:10.926	["NORMAL", "WARNING", "CRITICAL"]
+1257	213	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.926	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.926	null
+1258	213	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.926	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.926	null
+1259	213	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.926	\N	\N	127	TEXT	2026-08-06 11:51:10.926	null
+1260	214	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.929	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.929	null
+1261	214	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.929	35	18	123	NUMBER	2026-08-06 11:51:10.929	null
+1262	214	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.929	\N	\N	124	SELECT	2026-08-06 11:51:10.929	["NORMAL", "WARNING", "CRITICAL"]
+1263	214	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.929	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.929	null
+1264	214	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.929	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.929	null
+1265	214	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.929	\N	\N	127	TEXT	2026-08-06 11:51:10.929	null
+1266	215	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.931	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.931	null
+1267	215	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.931	35	18	123	NUMBER	2026-08-06 11:51:10.931	null
+1268	215	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.931	\N	\N	124	SELECT	2026-08-06 11:51:10.931	["NORMAL", "WARNING", "CRITICAL"]
+1269	215	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.931	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.931	null
+1270	215	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.931	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.931	null
+1271	215	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.931	\N	\N	127	TEXT	2026-08-06 11:51:10.931	null
+1272	216	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.933	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.933	null
+1273	216	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.933	35	18	123	NUMBER	2026-08-06 11:51:10.933	null
+1274	216	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.933	\N	\N	124	SELECT	2026-08-06 11:51:10.933	["NORMAL", "WARNING", "CRITICAL"]
+1275	216	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.933	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.933	null
+1276	216	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.933	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.933	null
+1277	216	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.933	\N	\N	127	TEXT	2026-08-06 11:51:10.933	null
+1278	217	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.935	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.935	null
+1279	217	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.935	35	18	123	NUMBER	2026-08-06 11:51:10.935	null
+1280	217	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.935	\N	\N	124	SELECT	2026-08-06 11:51:10.935	["NORMAL", "WARNING", "CRITICAL"]
+1281	217	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.935	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.935	null
+1282	217	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.935	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.935	null
+1283	217	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.935	\N	\N	127	TEXT	2026-08-06 11:51:10.935	null
+1284	218	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.937	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.937	null
+1285	218	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.937	35	18	123	NUMBER	2026-08-06 11:51:10.937	null
+1286	218	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.937	\N	\N	124	SELECT	2026-08-06 11:51:10.937	["NORMAL", "WARNING", "CRITICAL"]
+1287	218	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.937	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.937	null
+1288	218	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.937	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.937	null
+1289	218	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.937	\N	\N	127	TEXT	2026-08-06 11:51:10.937	null
+1290	219	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.941	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.941	null
+1291	219	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.941	35	18	123	NUMBER	2026-08-06 11:51:10.941	null
+1292	219	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.941	\N	\N	124	SELECT	2026-08-06 11:51:10.941	["NORMAL", "WARNING", "CRITICAL"]
+1293	219	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.941	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.941	null
+1294	219	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.941	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.941	null
+1295	219	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.941	\N	\N	127	TEXT	2026-08-06 11:51:10.941	null
+1296	220	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.943	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.943	null
+1297	220	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.943	35	18	123	NUMBER	2026-08-06 11:51:10.943	null
+1298	220	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.943	\N	\N	124	SELECT	2026-08-06 11:51:10.943	["NORMAL", "WARNING", "CRITICAL"]
+1299	220	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.943	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.943	null
+1300	220	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.943	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.943	null
+1301	220	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.943	\N	\N	127	TEXT	2026-08-06 11:51:10.943	null
+1302	221	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.945	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.945	null
+1303	221	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.945	35	18	123	NUMBER	2026-08-06 11:51:10.945	null
+1304	221	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.945	\N	\N	124	SELECT	2026-08-06 11:51:10.945	["NORMAL", "WARNING", "CRITICAL"]
+1305	221	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.945	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.945	null
+1306	221	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.945	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.945	null
+1307	221	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.945	\N	\N	127	TEXT	2026-08-06 11:51:10.945	null
+1308	222	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.948	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.948	null
+1309	222	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.948	35	18	123	NUMBER	2026-08-06 11:51:10.948	null
+1310	222	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.948	\N	\N	124	SELECT	2026-08-06 11:51:10.948	["NORMAL", "WARNING", "CRITICAL"]
+1311	222	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.948	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.948	null
+1312	222	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.948	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.948	null
+1313	222	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.948	\N	\N	127	TEXT	2026-08-06 11:51:10.948	null
+1314	223	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.951	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.951	null
+1315	223	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.951	35	18	123	NUMBER	2026-08-06 11:51:10.951	null
+1316	223	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.951	\N	\N	124	SELECT	2026-08-06 11:51:10.951	["NORMAL", "WARNING", "CRITICAL"]
+1317	223	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.951	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.951	null
+1318	223	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.951	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.951	null
+1319	223	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.951	\N	\N	127	TEXT	2026-08-06 11:51:10.951	null
+1320	224	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.954	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.954	null
+1321	224	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.954	35	18	123	NUMBER	2026-08-06 11:51:10.954	null
+1322	224	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.954	\N	\N	124	SELECT	2026-08-06 11:51:10.954	["NORMAL", "WARNING", "CRITICAL"]
+1323	224	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.954	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.954	null
+1324	224	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.954	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.954	null
+1325	224	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.954	\N	\N	127	TEXT	2026-08-06 11:51:10.954	null
+1326	225	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.956	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.956	null
+1327	225	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.956	35	18	123	NUMBER	2026-08-06 11:51:10.956	null
+1328	225	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.956	\N	\N	124	SELECT	2026-08-06 11:51:10.956	["NORMAL", "WARNING", "CRITICAL"]
+1329	225	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.956	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.956	null
+1330	225	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.956	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.956	null
+1331	225	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.956	\N	\N	127	TEXT	2026-08-06 11:51:10.956	null
+1332	226	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.959	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.959	null
+1333	226	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.959	35	18	123	NUMBER	2026-08-06 11:51:10.959	null
+1334	226	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.959	\N	\N	124	SELECT	2026-08-06 11:51:10.959	["NORMAL", "WARNING", "CRITICAL"]
+1335	226	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.959	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.959	null
+1336	226	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.959	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.959	null
+1337	226	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.959	\N	\N	127	TEXT	2026-08-06 11:51:10.959	null
+1338	227	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.962	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.962	null
+1339	227	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.962	35	18	123	NUMBER	2026-08-06 11:51:10.962	null
+1340	227	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.962	\N	\N	124	SELECT	2026-08-06 11:51:10.962	["NORMAL", "WARNING", "CRITICAL"]
+1341	227	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.962	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.962	null
+1342	227	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.962	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.962	null
+1343	227	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.962	\N	\N	127	TEXT	2026-08-06 11:51:10.962	null
+1344	228	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.965	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.965	null
+1345	228	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.965	35	18	123	NUMBER	2026-08-06 11:51:10.965	null
+1346	228	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.965	\N	\N	124	SELECT	2026-08-06 11:51:10.965	["NORMAL", "WARNING", "CRITICAL"]
+1347	228	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.965	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.965	null
+1348	228	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.965	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.965	null
+1349	228	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.965	\N	\N	127	TEXT	2026-08-06 11:51:10.965	null
+1350	229	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.968	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.968	null
+1351	229	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.968	35	18	123	NUMBER	2026-08-06 11:51:10.968	null
+1352	229	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.968	\N	\N	124	SELECT	2026-08-06 11:51:10.968	["NORMAL", "WARNING", "CRITICAL"]
+1353	229	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.968	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.968	null
+1354	229	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.968	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.968	null
+1355	229	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.968	\N	\N	127	TEXT	2026-08-06 11:51:10.968	null
+1356	230	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.97	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.97	null
+1357	230	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.97	35	18	123	NUMBER	2026-08-06 11:51:10.97	null
+1358	230	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.97	\N	\N	124	SELECT	2026-08-06 11:51:10.97	["NORMAL", "WARNING", "CRITICAL"]
+1359	230	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.97	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.97	null
+1360	230	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.97	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.97	null
+1361	230	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.97	\N	\N	127	TEXT	2026-08-06 11:51:10.97	null
+1362	231	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.974	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.974	null
+1363	231	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.974	35	18	123	NUMBER	2026-08-06 11:51:10.974	null
+1364	231	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.974	\N	\N	124	SELECT	2026-08-06 11:51:10.974	["NORMAL", "WARNING", "CRITICAL"]
+1365	231	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.974	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.974	null
+1366	231	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.974	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.974	null
+1367	231	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.974	\N	\N	127	TEXT	2026-08-06 11:51:10.974	null
+1368	232	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.976	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.976	null
+1369	232	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.976	35	18	123	NUMBER	2026-08-06 11:51:10.976	null
+1370	232	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.976	\N	\N	124	SELECT	2026-08-06 11:51:10.976	["NORMAL", "WARNING", "CRITICAL"]
+1371	232	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.976	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.976	null
+1372	232	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.976	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.976	null
+1373	232	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.976	\N	\N	127	TEXT	2026-08-06 11:51:10.976	null
+1374	233	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.978	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.978	null
+1375	233	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.978	35	18	123	NUMBER	2026-08-06 11:51:10.978	null
+1376	233	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.978	\N	\N	124	SELECT	2026-08-06 11:51:10.978	["NORMAL", "WARNING", "CRITICAL"]
+1377	233	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.978	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.978	null
+1378	233	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.978	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.978	null
+1379	233	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.978	\N	\N	127	TEXT	2026-08-06 11:51:10.978	null
+1380	234	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.98	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.98	null
+1381	234	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.98	35	18	123	NUMBER	2026-08-06 11:51:10.98	null
+1382	234	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.98	\N	\N	124	SELECT	2026-08-06 11:51:10.98	["NORMAL", "WARNING", "CRITICAL"]
+1383	234	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.98	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.98	null
+1384	234	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.98	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.98	null
+1385	234	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.98	\N	\N	127	TEXT	2026-08-06 11:51:10.98	null
+1386	235	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.983	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.983	null
+1387	235	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.983	35	18	123	NUMBER	2026-08-06 11:51:10.983	null
+1388	235	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.983	\N	\N	124	SELECT	2026-08-06 11:51:10.983	["NORMAL", "WARNING", "CRITICAL"]
+1389	235	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.983	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.983	null
+1390	235	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.983	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.983	null
+1391	235	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.983	\N	\N	127	TEXT	2026-08-06 11:51:10.983	null
+1392	236	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.985	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.985	null
+1393	236	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.985	35	18	123	NUMBER	2026-08-06 11:51:10.985	null
+1394	236	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.985	\N	\N	124	SELECT	2026-08-06 11:51:10.985	["NORMAL", "WARNING", "CRITICAL"]
+1395	236	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.985	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.985	null
+1396	236	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.985	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.985	null
+1397	236	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.985	\N	\N	127	TEXT	2026-08-06 11:51:10.985	null
+1398	237	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.987	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.987	null
+1399	237	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.987	35	18	123	NUMBER	2026-08-06 11:51:10.987	null
+1400	237	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.987	\N	\N	124	SELECT	2026-08-06 11:51:10.987	["NORMAL", "WARNING", "CRITICAL"]
+1401	237	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.987	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.987	null
+1402	237	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.987	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.987	null
+1403	237	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.987	\N	\N	127	TEXT	2026-08-06 11:51:10.987	null
+1404	238	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.989	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.989	null
+1405	238	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.989	35	18	123	NUMBER	2026-08-06 11:51:10.989	null
+1406	238	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.989	\N	\N	124	SELECT	2026-08-06 11:51:10.989	["NORMAL", "WARNING", "CRITICAL"]
+1407	238	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.989	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.989	null
+1408	238	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.989	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.989	null
+1409	238	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.989	\N	\N	127	TEXT	2026-08-06 11:51:10.989	null
+1410	239	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.991	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.991	null
+1411	239	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.991	35	18	123	NUMBER	2026-08-06 11:51:10.991	null
+1412	239	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.991	\N	\N	124	SELECT	2026-08-06 11:51:10.991	["NORMAL", "WARNING", "CRITICAL"]
+1413	239	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.991	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.991	null
+1414	239	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.991	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.991	null
+1415	239	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.991	\N	\N	127	TEXT	2026-08-06 11:51:10.991	null
+1416	240	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.994	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.994	null
+1417	240	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.994	35	18	123	NUMBER	2026-08-06 11:51:10.994	null
+1418	240	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.994	\N	\N	124	SELECT	2026-08-06 11:51:10.994	["NORMAL", "WARNING", "CRITICAL"]
+1419	240	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.994	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.994	null
+1420	240	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.994	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.994	null
+1421	240	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.994	\N	\N	127	TEXT	2026-08-06 11:51:10.994	null
+1422	241	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.996	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.996	null
+1423	241	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.996	35	18	123	NUMBER	2026-08-06 11:51:10.996	null
+1424	241	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.996	\N	\N	124	SELECT	2026-08-06 11:51:10.996	["NORMAL", "WARNING", "CRITICAL"]
+1425	241	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.996	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.996	null
+1426	241	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.996	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.996	null
+1427	241	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.996	\N	\N	127	TEXT	2026-08-06 11:51:10.996	null
+1428	242	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:10.998	\N	\N	122	BOOLEAN	2026-08-06 11:51:10.998	null
+1429	242	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:10.998	35	18	123	NUMBER	2026-08-06 11:51:10.998	null
+1430	242	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:10.998	\N	\N	124	SELECT	2026-08-06 11:51:10.998	["NORMAL", "WARNING", "CRITICAL"]
+1431	242	Power supply stable	4	true	\N	\N	2026-08-06 11:51:10.998	\N	\N	125	BOOLEAN	2026-08-06 11:51:10.998	null
+1432	242	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:10.998	\N	\N	126	BOOLEAN	2026-08-06 11:51:10.998	null
+1433	242	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:10.998	\N	\N	127	TEXT	2026-08-06 11:51:10.998	null
+1434	243	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11	\N	\N	122	BOOLEAN	2026-08-06 11:51:11	null
+1435	243	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11	35	18	123	NUMBER	2026-08-06 11:51:11	null
+1436	243	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11	\N	\N	124	SELECT	2026-08-06 11:51:11	["NORMAL", "WARNING", "CRITICAL"]
+1437	243	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11	\N	\N	125	BOOLEAN	2026-08-06 11:51:11	null
+1438	243	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11	\N	\N	126	BOOLEAN	2026-08-06 11:51:11	null
+1439	243	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11	\N	\N	127	TEXT	2026-08-06 11:51:11	null
+1440	244	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.002	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.002	null
+1441	244	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.002	35	18	123	NUMBER	2026-08-06 11:51:11.002	null
+1442	244	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.002	\N	\N	124	SELECT	2026-08-06 11:51:11.002	["NORMAL", "WARNING", "CRITICAL"]
+1443	244	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.002	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.002	null
+1444	244	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.002	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.002	null
+1445	244	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.002	\N	\N	127	TEXT	2026-08-06 11:51:11.002	null
+1446	245	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.005	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.005	null
+1447	245	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.005	35	18	123	NUMBER	2026-08-06 11:51:11.005	null
+1448	245	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.005	\N	\N	124	SELECT	2026-08-06 11:51:11.005	["NORMAL", "WARNING", "CRITICAL"]
+1449	245	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.005	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.005	null
+1450	245	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.005	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.005	null
+1451	245	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.005	\N	\N	127	TEXT	2026-08-06 11:51:11.005	null
+1452	246	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.007	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.007	null
+1453	246	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.007	35	18	123	NUMBER	2026-08-06 11:51:11.007	null
+1454	246	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.007	\N	\N	124	SELECT	2026-08-06 11:51:11.007	["NORMAL", "WARNING", "CRITICAL"]
+1455	246	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.007	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.007	null
+1456	246	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.007	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.007	null
+1457	246	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.007	\N	\N	127	TEXT	2026-08-06 11:51:11.007	null
+1458	247	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.01	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.01	null
+1459	247	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.01	35	18	123	NUMBER	2026-08-06 11:51:11.01	null
+1460	247	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.01	\N	\N	124	SELECT	2026-08-06 11:51:11.01	["NORMAL", "WARNING", "CRITICAL"]
+1461	247	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.01	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.01	null
+1462	247	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.01	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.01	null
+1463	247	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.01	\N	\N	127	TEXT	2026-08-06 11:51:11.01	null
+1464	248	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.013	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.013	null
+1465	248	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.013	35	18	123	NUMBER	2026-08-06 11:51:11.013	null
+1466	248	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.013	\N	\N	124	SELECT	2026-08-06 11:51:11.013	["NORMAL", "WARNING", "CRITICAL"]
+1467	248	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.013	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.013	null
+1468	248	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.013	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.013	null
+1469	248	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.013	\N	\N	127	TEXT	2026-08-06 11:51:11.013	null
+1470	249	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.015	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.015	null
+1471	249	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.015	35	18	123	NUMBER	2026-08-06 11:51:11.015	null
+1472	249	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.015	\N	\N	124	SELECT	2026-08-06 11:51:11.015	["NORMAL", "WARNING", "CRITICAL"]
+1473	249	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.015	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.015	null
+1474	249	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.015	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.015	null
+1475	249	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.015	\N	\N	127	TEXT	2026-08-06 11:51:11.015	null
+1476	250	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.018	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.018	null
+1477	250	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.018	35	18	123	NUMBER	2026-08-06 11:51:11.018	null
+1478	250	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.018	\N	\N	124	SELECT	2026-08-06 11:51:11.018	["NORMAL", "WARNING", "CRITICAL"]
+1479	250	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.018	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.018	null
+1480	250	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.018	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.018	null
+1481	250	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.018	\N	\N	127	TEXT	2026-08-06 11:51:11.018	null
+1482	251	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.024	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.024	null
+1483	251	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.024	35	18	123	NUMBER	2026-08-06 11:51:11.024	null
+1484	251	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.024	\N	\N	124	SELECT	2026-08-06 11:51:11.024	["NORMAL", "WARNING", "CRITICAL"]
+1485	251	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.024	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.024	null
+1486	251	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.024	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.024	null
+1487	251	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.024	\N	\N	127	TEXT	2026-08-06 11:51:11.024	null
+1488	252	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.027	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.027	null
+1489	252	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.027	35	18	123	NUMBER	2026-08-06 11:51:11.027	null
+1490	252	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.027	\N	\N	124	SELECT	2026-08-06 11:51:11.027	["NORMAL", "WARNING", "CRITICAL"]
+1491	252	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.027	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.027	null
+1492	252	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.027	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.027	null
+1493	252	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.027	\N	\N	127	TEXT	2026-08-06 11:51:11.027	null
+1494	253	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.029	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.029	null
+1495	253	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.029	35	18	123	NUMBER	2026-08-06 11:51:11.029	null
+1496	253	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.029	\N	\N	124	SELECT	2026-08-06 11:51:11.029	["NORMAL", "WARNING", "CRITICAL"]
+1497	253	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.029	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.029	null
+1498	253	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.029	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.029	null
+1499	253	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.029	\N	\N	127	TEXT	2026-08-06 11:51:11.029	null
+1500	254	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.034	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.034	null
+1501	254	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.034	35	18	123	NUMBER	2026-08-06 11:51:11.034	null
+1502	254	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.034	\N	\N	124	SELECT	2026-08-06 11:51:11.034	["NORMAL", "WARNING", "CRITICAL"]
+1503	254	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.034	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.034	null
+1504	254	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.034	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.034	null
+1505	254	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.034	\N	\N	127	TEXT	2026-08-06 11:51:11.034	null
+1506	255	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.036	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.036	null
+1507	255	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.036	35	18	123	NUMBER	2026-08-06 11:51:11.036	null
+1508	255	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.036	\N	\N	124	SELECT	2026-08-06 11:51:11.036	["NORMAL", "WARNING", "CRITICAL"]
+1509	255	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.036	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.036	null
+1510	255	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.036	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.036	null
+1511	255	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.036	\N	\N	127	TEXT	2026-08-06 11:51:11.036	null
+1512	256	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.039	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.039	null
+1513	256	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.039	35	18	123	NUMBER	2026-08-06 11:51:11.039	null
+1514	256	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.039	\N	\N	124	SELECT	2026-08-06 11:51:11.039	["NORMAL", "WARNING", "CRITICAL"]
+1515	256	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.039	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.039	null
+1516	256	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.039	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.039	null
+1517	256	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.039	\N	\N	127	TEXT	2026-08-06 11:51:11.039	null
+1518	257	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.042	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.042	null
+1519	257	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.042	35	18	123	NUMBER	2026-08-06 11:51:11.042	null
+1520	257	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.042	\N	\N	124	SELECT	2026-08-06 11:51:11.042	["NORMAL", "WARNING", "CRITICAL"]
+1521	257	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.042	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.042	null
+1522	257	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.042	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.042	null
+1523	257	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.042	\N	\N	127	TEXT	2026-08-06 11:51:11.042	null
+1524	258	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.048	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.048	null
+1525	258	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.048	35	18	123	NUMBER	2026-08-06 11:51:11.048	null
+1526	258	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.048	\N	\N	124	SELECT	2026-08-06 11:51:11.048	["NORMAL", "WARNING", "CRITICAL"]
+1527	258	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.048	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.048	null
+1528	258	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.048	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.048	null
+1529	258	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.048	\N	\N	127	TEXT	2026-08-06 11:51:11.048	null
+1530	259	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.052	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.052	null
+1531	259	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.052	35	18	123	NUMBER	2026-08-06 11:51:11.052	null
+1532	259	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.052	\N	\N	124	SELECT	2026-08-06 11:51:11.052	["NORMAL", "WARNING", "CRITICAL"]
+1533	259	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.052	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.052	null
+1534	259	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.052	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.052	null
+1535	259	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.052	\N	\N	127	TEXT	2026-08-06 11:51:11.052	null
+1536	260	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.055	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.055	null
+1537	260	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.055	35	18	123	NUMBER	2026-08-06 11:51:11.055	null
+1538	260	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.055	\N	\N	124	SELECT	2026-08-06 11:51:11.055	["NORMAL", "WARNING", "CRITICAL"]
+1539	260	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.055	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.055	null
+1540	260	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.055	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.055	null
+1541	260	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.055	\N	\N	127	TEXT	2026-08-06 11:51:11.055	null
+1542	261	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.058	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.058	null
+1543	261	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.058	35	18	123	NUMBER	2026-08-06 11:51:11.058	null
+1544	261	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.058	\N	\N	124	SELECT	2026-08-06 11:51:11.058	["NORMAL", "WARNING", "CRITICAL"]
+1545	261	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.058	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.058	null
+1546	261	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.058	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.058	null
+1547	261	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.058	\N	\N	127	TEXT	2026-08-06 11:51:11.058	null
+1548	262	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.06	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.06	null
+1549	262	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.06	35	18	123	NUMBER	2026-08-06 11:51:11.06	null
+1550	262	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.06	\N	\N	124	SELECT	2026-08-06 11:51:11.06	["NORMAL", "WARNING", "CRITICAL"]
+1551	262	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.06	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.06	null
+1552	262	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.06	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.06	null
+1553	262	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.06	\N	\N	127	TEXT	2026-08-06 11:51:11.06	null
+1554	263	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.061	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.061	null
+1555	263	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.061	35	18	123	NUMBER	2026-08-06 11:51:11.061	null
+1556	263	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.061	\N	\N	124	SELECT	2026-08-06 11:51:11.061	["NORMAL", "WARNING", "CRITICAL"]
+1557	263	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.061	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.061	null
+1558	263	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.061	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.061	null
+1559	263	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.061	\N	\N	127	TEXT	2026-08-06 11:51:11.061	null
+1560	264	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.066	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.066	null
+1561	264	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.066	35	18	123	NUMBER	2026-08-06 11:51:11.066	null
+1562	264	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.066	\N	\N	124	SELECT	2026-08-06 11:51:11.066	["NORMAL", "WARNING", "CRITICAL"]
+1563	264	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.066	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.066	null
+1564	264	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.066	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.066	null
+1565	264	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.066	\N	\N	127	TEXT	2026-08-06 11:51:11.066	null
+1566	265	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.069	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.069	null
+1567	265	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.069	35	18	123	NUMBER	2026-08-06 11:51:11.069	null
+1568	265	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.069	\N	\N	124	SELECT	2026-08-06 11:51:11.069	["NORMAL", "WARNING", "CRITICAL"]
+1569	265	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.069	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.069	null
+1570	265	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.069	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.069	null
+1571	265	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.069	\N	\N	127	TEXT	2026-08-06 11:51:11.069	null
+1572	266	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.072	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.072	null
+1573	266	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.072	35	18	123	NUMBER	2026-08-06 11:51:11.072	null
+1574	266	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.072	\N	\N	124	SELECT	2026-08-06 11:51:11.072	["NORMAL", "WARNING", "CRITICAL"]
+1575	266	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.072	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.072	null
+1576	266	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.072	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.072	null
+1577	266	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.072	\N	\N	127	TEXT	2026-08-06 11:51:11.072	null
+1578	267	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.074	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.074	null
+1579	267	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.074	35	18	123	NUMBER	2026-08-06 11:51:11.074	null
+1580	267	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.074	\N	\N	124	SELECT	2026-08-06 11:51:11.074	["NORMAL", "WARNING", "CRITICAL"]
+1581	267	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.074	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.074	null
+1582	267	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.074	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.074	null
+1583	267	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.074	\N	\N	127	TEXT	2026-08-06 11:51:11.074	null
+1584	268	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.076	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.076	null
+1585	268	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.076	35	18	123	NUMBER	2026-08-06 11:51:11.076	null
+1586	268	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.076	\N	\N	124	SELECT	2026-08-06 11:51:11.076	["NORMAL", "WARNING", "CRITICAL"]
+1587	268	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.076	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.076	null
+1588	268	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.076	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.076	null
+1589	268	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.076	\N	\N	127	TEXT	2026-08-06 11:51:11.076	null
+1590	269	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.078	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.078	null
+1591	269	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.078	35	18	123	NUMBER	2026-08-06 11:51:11.078	null
+1592	269	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.078	\N	\N	124	SELECT	2026-08-06 11:51:11.078	["NORMAL", "WARNING", "CRITICAL"]
+1593	269	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.078	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.078	null
+1594	269	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.078	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.078	null
+1595	269	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.078	\N	\N	127	TEXT	2026-08-06 11:51:11.078	null
+1596	270	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.08	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.08	null
+1597	270	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.08	35	18	123	NUMBER	2026-08-06 11:51:11.08	null
+1598	270	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.08	\N	\N	124	SELECT	2026-08-06 11:51:11.08	["NORMAL", "WARNING", "CRITICAL"]
+1599	270	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.08	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.08	null
+1600	270	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.08	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.08	null
+1601	270	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.08	\N	\N	127	TEXT	2026-08-06 11:51:11.08	null
+1602	271	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.083	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.083	null
+1603	271	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.083	35	18	123	NUMBER	2026-08-06 11:51:11.083	null
+1604	271	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.083	\N	\N	124	SELECT	2026-08-06 11:51:11.083	["NORMAL", "WARNING", "CRITICAL"]
+1605	271	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.083	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.083	null
+1606	271	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.083	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.083	null
+1607	271	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.083	\N	\N	127	TEXT	2026-08-06 11:51:11.083	null
+1608	272	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.085	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.085	null
+1609	272	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.085	35	18	123	NUMBER	2026-08-06 11:51:11.085	null
+1610	272	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.085	\N	\N	124	SELECT	2026-08-06 11:51:11.085	["NORMAL", "WARNING", "CRITICAL"]
+1611	272	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.085	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.085	null
+1612	272	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.085	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.085	null
+1613	272	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.085	\N	\N	127	TEXT	2026-08-06 11:51:11.085	null
+1614	273	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.088	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.088	null
+1615	273	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.088	35	18	123	NUMBER	2026-08-06 11:51:11.088	null
+1616	273	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.088	\N	\N	124	SELECT	2026-08-06 11:51:11.088	["NORMAL", "WARNING", "CRITICAL"]
+1617	273	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.088	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.088	null
+1618	273	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.088	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.088	null
+1619	273	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.088	\N	\N	127	TEXT	2026-08-06 11:51:11.088	null
+1620	274	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.09	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.09	null
+1621	274	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.09	35	18	123	NUMBER	2026-08-06 11:51:11.09	null
+1622	274	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.09	\N	\N	124	SELECT	2026-08-06 11:51:11.09	["NORMAL", "WARNING", "CRITICAL"]
+1623	274	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.09	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.09	null
+1624	274	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.09	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.09	null
+1625	274	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.09	\N	\N	127	TEXT	2026-08-06 11:51:11.09	null
+1626	275	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.092	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.092	null
+1627	275	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.092	35	18	123	NUMBER	2026-08-06 11:51:11.092	null
+1628	275	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.092	\N	\N	124	SELECT	2026-08-06 11:51:11.092	["NORMAL", "WARNING", "CRITICAL"]
+1629	275	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.092	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.092	null
+1630	275	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.092	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.092	null
+1631	275	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.092	\N	\N	127	TEXT	2026-08-06 11:51:11.092	null
+1632	276	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.095	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.095	null
+1633	276	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.095	35	18	123	NUMBER	2026-08-06 11:51:11.095	null
+1634	276	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.095	\N	\N	124	SELECT	2026-08-06 11:51:11.095	["NORMAL", "WARNING", "CRITICAL"]
+1635	276	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.095	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.095	null
+1636	276	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.095	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.095	null
+1637	276	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.095	\N	\N	127	TEXT	2026-08-06 11:51:11.095	null
+1638	277	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.099	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.099	null
+1639	277	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.099	35	18	123	NUMBER	2026-08-06 11:51:11.099	null
+1640	277	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.099	\N	\N	124	SELECT	2026-08-06 11:51:11.099	["NORMAL", "WARNING", "CRITICAL"]
+1641	277	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.099	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.099	null
+1642	277	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.099	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.099	null
+1643	277	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.099	\N	\N	127	TEXT	2026-08-06 11:51:11.099	null
+1644	278	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.101	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.101	null
+1645	278	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.101	35	18	123	NUMBER	2026-08-06 11:51:11.101	null
+1646	278	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.101	\N	\N	124	SELECT	2026-08-06 11:51:11.101	["NORMAL", "WARNING", "CRITICAL"]
+1647	278	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.101	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.101	null
+1648	278	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.101	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.101	null
+1649	278	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.101	\N	\N	127	TEXT	2026-08-06 11:51:11.101	null
+1650	279	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.104	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.104	null
+1651	279	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.104	35	18	123	NUMBER	2026-08-06 11:51:11.104	null
+1652	279	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.104	\N	\N	124	SELECT	2026-08-06 11:51:11.104	["NORMAL", "WARNING", "CRITICAL"]
+1653	279	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.104	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.104	null
+1654	279	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.104	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.104	null
+1655	279	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.104	\N	\N	127	TEXT	2026-08-06 11:51:11.104	null
+1656	280	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.106	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.106	null
+1657	280	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.106	35	18	123	NUMBER	2026-08-06 11:51:11.106	null
+1658	280	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.106	\N	\N	124	SELECT	2026-08-06 11:51:11.106	["NORMAL", "WARNING", "CRITICAL"]
+1659	280	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.106	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.106	null
+1660	280	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.106	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.106	null
+1661	280	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.106	\N	\N	127	TEXT	2026-08-06 11:51:11.106	null
+1662	281	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.109	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.109	null
+1663	281	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.109	35	18	123	NUMBER	2026-08-06 11:51:11.109	null
+1664	281	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.109	\N	\N	124	SELECT	2026-08-06 11:51:11.109	["NORMAL", "WARNING", "CRITICAL"]
+1665	281	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.109	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.109	null
+1666	281	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.109	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.109	null
+1667	281	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.109	\N	\N	127	TEXT	2026-08-06 11:51:11.109	null
+1668	282	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.111	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.111	null
+1669	282	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.111	35	18	123	NUMBER	2026-08-06 11:51:11.111	null
+1670	282	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.111	\N	\N	124	SELECT	2026-08-06 11:51:11.111	["NORMAL", "WARNING", "CRITICAL"]
+1671	282	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.111	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.111	null
+1672	282	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.111	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.111	null
+1673	282	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.111	\N	\N	127	TEXT	2026-08-06 11:51:11.111	null
+1674	283	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.113	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.113	null
+1675	283	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.113	35	18	123	NUMBER	2026-08-06 11:51:11.113	null
+1676	283	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.113	\N	\N	124	SELECT	2026-08-06 11:51:11.113	["NORMAL", "WARNING", "CRITICAL"]
+1677	283	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.113	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.113	null
+1678	283	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.113	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.113	null
+1679	283	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.113	\N	\N	127	TEXT	2026-08-06 11:51:11.113	null
+1680	284	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.115	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.115	null
+1681	284	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.115	35	18	123	NUMBER	2026-08-06 11:51:11.115	null
+1682	284	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.115	\N	\N	124	SELECT	2026-08-06 11:51:11.115	["NORMAL", "WARNING", "CRITICAL"]
+1683	284	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.115	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.115	null
+1684	284	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.115	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.115	null
+1685	284	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.115	\N	\N	127	TEXT	2026-08-06 11:51:11.115	null
+1686	285	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.117	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.117	null
+1687	285	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.117	35	18	123	NUMBER	2026-08-06 11:51:11.117	null
+1688	285	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.117	\N	\N	124	SELECT	2026-08-06 11:51:11.117	["NORMAL", "WARNING", "CRITICAL"]
+1689	285	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.117	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.117	null
+1690	285	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.117	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.117	null
+1691	285	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.117	\N	\N	127	TEXT	2026-08-06 11:51:11.117	null
+1692	286	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.119	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.119	null
+1693	286	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.119	35	18	123	NUMBER	2026-08-06 11:51:11.119	null
+1694	286	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.119	\N	\N	124	SELECT	2026-08-06 11:51:11.119	["NORMAL", "WARNING", "CRITICAL"]
+1695	286	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.119	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.119	null
+1696	286	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.119	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.119	null
+1697	286	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.119	\N	\N	127	TEXT	2026-08-06 11:51:11.119	null
+1698	287	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.121	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.121	null
+1699	287	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.121	35	18	123	NUMBER	2026-08-06 11:51:11.121	null
+1700	287	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.121	\N	\N	124	SELECT	2026-08-06 11:51:11.121	["NORMAL", "WARNING", "CRITICAL"]
+1701	287	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.121	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.121	null
+1702	287	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.121	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.121	null
+1703	287	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.121	\N	\N	127	TEXT	2026-08-06 11:51:11.121	null
+1704	288	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.123	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.123	null
+1705	288	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.123	35	18	123	NUMBER	2026-08-06 11:51:11.123	null
+1706	288	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.123	\N	\N	124	SELECT	2026-08-06 11:51:11.123	["NORMAL", "WARNING", "CRITICAL"]
+1707	288	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.123	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.123	null
+1708	288	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.123	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.123	null
+1709	288	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.123	\N	\N	127	TEXT	2026-08-06 11:51:11.123	null
+1710	289	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.126	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.126	null
+1711	289	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.126	35	18	123	NUMBER	2026-08-06 11:51:11.126	null
+1712	289	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.126	\N	\N	124	SELECT	2026-08-06 11:51:11.126	["NORMAL", "WARNING", "CRITICAL"]
+1713	289	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.126	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.126	null
+1714	289	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.126	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.126	null
+1715	289	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.126	\N	\N	127	TEXT	2026-08-06 11:51:11.126	null
+1716	290	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.128	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.128	null
+1717	290	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.128	35	18	123	NUMBER	2026-08-06 11:51:11.128	null
+1718	290	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.128	\N	\N	124	SELECT	2026-08-06 11:51:11.128	["NORMAL", "WARNING", "CRITICAL"]
+1719	290	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.128	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.128	null
+1720	290	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.128	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.128	null
+1721	290	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.128	\N	\N	127	TEXT	2026-08-06 11:51:11.128	null
+1722	291	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.129	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.129	null
+1723	291	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.129	35	18	123	NUMBER	2026-08-06 11:51:11.129	null
+1724	291	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.129	\N	\N	124	SELECT	2026-08-06 11:51:11.129	["NORMAL", "WARNING", "CRITICAL"]
+1725	291	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.129	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.129	null
+1726	291	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.129	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.129	null
+1727	291	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.129	\N	\N	127	TEXT	2026-08-06 11:51:11.129	null
+1728	292	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.132	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.132	null
+1729	292	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.132	35	18	123	NUMBER	2026-08-06 11:51:11.132	null
+1730	292	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.132	\N	\N	124	SELECT	2026-08-06 11:51:11.132	["NORMAL", "WARNING", "CRITICAL"]
+1731	292	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.132	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.132	null
+1732	292	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.132	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.132	null
+1733	292	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.132	\N	\N	127	TEXT	2026-08-06 11:51:11.132	null
+1734	293	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.134	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.134	null
+1735	293	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.134	35	18	123	NUMBER	2026-08-06 11:51:11.134	null
+1736	293	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.134	\N	\N	124	SELECT	2026-08-06 11:51:11.134	["NORMAL", "WARNING", "CRITICAL"]
+1737	293	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.134	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.134	null
+1738	293	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.134	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.134	null
+1739	293	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.134	\N	\N	127	TEXT	2026-08-06 11:51:11.134	null
+1740	294	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.136	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.136	null
+1741	294	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.136	35	18	123	NUMBER	2026-08-06 11:51:11.136	null
+1742	294	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.136	\N	\N	124	SELECT	2026-08-06 11:51:11.136	["NORMAL", "WARNING", "CRITICAL"]
+1743	294	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.136	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.136	null
+1744	294	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.136	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.136	null
+1745	294	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.136	\N	\N	127	TEXT	2026-08-06 11:51:11.136	null
+1746	295	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.138	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.138	null
+1747	295	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.138	35	18	123	NUMBER	2026-08-06 11:51:11.138	null
+1748	295	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.138	\N	\N	124	SELECT	2026-08-06 11:51:11.138	["NORMAL", "WARNING", "CRITICAL"]
+1749	295	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.138	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.138	null
+1750	295	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.138	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.138	null
+1751	295	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.138	\N	\N	127	TEXT	2026-08-06 11:51:11.138	null
+1752	296	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.14	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.14	null
+1753	296	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.14	35	18	123	NUMBER	2026-08-06 11:51:11.14	null
+1754	296	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.14	\N	\N	124	SELECT	2026-08-06 11:51:11.14	["NORMAL", "WARNING", "CRITICAL"]
+1755	296	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.14	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.14	null
+1756	296	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.14	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.14	null
+1757	296	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.14	\N	\N	127	TEXT	2026-08-06 11:51:11.14	null
+1758	297	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.143	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.143	null
+1759	297	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.143	35	18	123	NUMBER	2026-08-06 11:51:11.143	null
+1760	297	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.143	\N	\N	124	SELECT	2026-08-06 11:51:11.143	["NORMAL", "WARNING", "CRITICAL"]
+1761	297	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.143	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.143	null
+1762	297	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.143	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.143	null
+1763	297	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.143	\N	\N	127	TEXT	2026-08-06 11:51:11.143	null
+1764	298	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.145	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.145	null
+1765	298	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.145	35	18	123	NUMBER	2026-08-06 11:51:11.145	null
+1766	298	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.145	\N	\N	124	SELECT	2026-08-06 11:51:11.145	["NORMAL", "WARNING", "CRITICAL"]
+1767	298	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.145	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.145	null
+1768	298	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.145	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.145	null
+1769	298	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.145	\N	\N	127	TEXT	2026-08-06 11:51:11.145	null
+1770	299	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.147	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.147	null
+1771	299	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.147	35	18	123	NUMBER	2026-08-06 11:51:11.147	null
+1772	299	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.147	\N	\N	124	SELECT	2026-08-06 11:51:11.147	["NORMAL", "WARNING", "CRITICAL"]
+1773	299	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.147	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.147	null
+1774	299	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.147	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.147	null
+1775	299	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.147	\N	\N	127	TEXT	2026-08-06 11:51:11.147	null
+1776	300	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.15	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.15	null
+1777	300	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.15	35	18	123	NUMBER	2026-08-06 11:51:11.15	null
+1778	300	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.15	\N	\N	124	SELECT	2026-08-06 11:51:11.15	["NORMAL", "WARNING", "CRITICAL"]
+1779	300	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.15	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.15	null
+1780	300	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.15	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.15	null
+1781	300	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.15	\N	\N	127	TEXT	2026-08-06 11:51:11.15	null
+1782	301	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.153	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.153	null
+1783	301	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.153	35	18	123	NUMBER	2026-08-06 11:51:11.153	null
+1784	301	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.153	\N	\N	124	SELECT	2026-08-06 11:51:11.153	["NORMAL", "WARNING", "CRITICAL"]
+1785	301	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.153	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.153	null
+1786	301	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.153	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.153	null
+1787	301	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.153	\N	\N	127	TEXT	2026-08-06 11:51:11.153	null
+1788	302	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.156	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.156	null
+1789	302	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.156	35	18	123	NUMBER	2026-08-06 11:51:11.156	null
+1790	302	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.156	\N	\N	124	SELECT	2026-08-06 11:51:11.156	["NORMAL", "WARNING", "CRITICAL"]
+1791	302	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.156	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.156	null
+1792	302	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.156	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.156	null
+1793	302	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.156	\N	\N	127	TEXT	2026-08-06 11:51:11.156	null
+1794	303	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.158	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.158	null
+1795	303	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.158	35	18	123	NUMBER	2026-08-06 11:51:11.158	null
+1796	303	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.158	\N	\N	124	SELECT	2026-08-06 11:51:11.158	["NORMAL", "WARNING", "CRITICAL"]
+1797	303	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.158	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.158	null
+1798	303	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.158	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.158	null
+1799	303	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.158	\N	\N	127	TEXT	2026-08-06 11:51:11.158	null
+1800	304	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.16	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.16	null
+1801	304	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.16	35	18	123	NUMBER	2026-08-06 11:51:11.16	null
+1802	304	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.16	\N	\N	124	SELECT	2026-08-06 11:51:11.16	["NORMAL", "WARNING", "CRITICAL"]
+1803	304	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.16	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.16	null
+1804	304	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.16	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.16	null
+1805	304	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.16	\N	\N	127	TEXT	2026-08-06 11:51:11.16	null
+1806	305	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.161	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.161	null
+1807	305	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.161	35	18	123	NUMBER	2026-08-06 11:51:11.161	null
+1808	305	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.161	\N	\N	124	SELECT	2026-08-06 11:51:11.161	["NORMAL", "WARNING", "CRITICAL"]
+1809	305	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.161	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.161	null
+1810	305	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.161	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.161	null
+1811	305	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.161	\N	\N	127	TEXT	2026-08-06 11:51:11.161	null
+1812	306	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.163	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.163	null
+1813	306	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.163	35	18	123	NUMBER	2026-08-06 11:51:11.163	null
+1814	306	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.163	\N	\N	124	SELECT	2026-08-06 11:51:11.163	["NORMAL", "WARNING", "CRITICAL"]
+1815	306	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.163	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.163	null
+1816	306	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.163	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.163	null
+1817	306	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.163	\N	\N	127	TEXT	2026-08-06 11:51:11.163	null
+1818	307	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.166	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.166	null
+1819	307	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.166	35	18	123	NUMBER	2026-08-06 11:51:11.166	null
+1820	307	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.166	\N	\N	124	SELECT	2026-08-06 11:51:11.166	["NORMAL", "WARNING", "CRITICAL"]
+1821	307	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.166	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.166	null
+1822	307	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.166	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.166	null
+1823	307	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.166	\N	\N	127	TEXT	2026-08-06 11:51:11.166	null
+1824	308	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.169	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.169	null
+1825	308	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.169	35	18	123	NUMBER	2026-08-06 11:51:11.169	null
+1826	308	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.169	\N	\N	124	SELECT	2026-08-06 11:51:11.169	["NORMAL", "WARNING", "CRITICAL"]
+1827	308	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.169	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.169	null
+1828	308	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.169	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.169	null
+1829	308	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.169	\N	\N	127	TEXT	2026-08-06 11:51:11.169	null
+1830	309	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.171	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.171	null
+1831	309	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.171	35	18	123	NUMBER	2026-08-06 11:51:11.171	null
+1832	309	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.171	\N	\N	124	SELECT	2026-08-06 11:51:11.171	["NORMAL", "WARNING", "CRITICAL"]
+1833	309	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.171	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.171	null
+1834	309	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.171	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.171	null
+1835	309	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.171	\N	\N	127	TEXT	2026-08-06 11:51:11.171	null
+1836	310	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.174	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.174	null
+1837	310	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.174	35	18	123	NUMBER	2026-08-06 11:51:11.174	null
+1838	310	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.174	\N	\N	124	SELECT	2026-08-06 11:51:11.174	["NORMAL", "WARNING", "CRITICAL"]
+1839	310	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.174	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.174	null
+1840	310	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.174	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.174	null
+1841	310	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.174	\N	\N	127	TEXT	2026-08-06 11:51:11.174	null
+1842	311	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.176	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.176	null
+1843	311	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.176	35	18	123	NUMBER	2026-08-06 11:51:11.176	null
+1844	311	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.176	\N	\N	124	SELECT	2026-08-06 11:51:11.176	["NORMAL", "WARNING", "CRITICAL"]
+1845	311	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.176	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.176	null
+1846	311	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.176	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.176	null
+1847	311	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.176	\N	\N	127	TEXT	2026-08-06 11:51:11.176	null
+1848	312	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.178	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.178	null
+1849	312	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.178	35	18	123	NUMBER	2026-08-06 11:51:11.178	null
+1850	312	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.178	\N	\N	124	SELECT	2026-08-06 11:51:11.178	["NORMAL", "WARNING", "CRITICAL"]
+1851	312	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.178	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.178	null
+1852	312	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.178	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.178	null
+1853	312	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.178	\N	\N	127	TEXT	2026-08-06 11:51:11.178	null
+1854	313	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.18	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.18	null
+1855	313	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.18	35	18	123	NUMBER	2026-08-06 11:51:11.18	null
+1856	313	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.18	\N	\N	124	SELECT	2026-08-06 11:51:11.18	["NORMAL", "WARNING", "CRITICAL"]
+1857	313	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.18	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.18	null
+1858	313	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.18	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.18	null
+1859	313	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.18	\N	\N	127	TEXT	2026-08-06 11:51:11.18	null
+1860	314	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.182	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.182	null
+1861	314	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.182	35	18	123	NUMBER	2026-08-06 11:51:11.182	null
+1862	314	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.182	\N	\N	124	SELECT	2026-08-06 11:51:11.182	["NORMAL", "WARNING", "CRITICAL"]
+1863	314	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.182	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.182	null
+1864	314	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.182	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.182	null
+1865	314	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.182	\N	\N	127	TEXT	2026-08-06 11:51:11.182	null
+1866	315	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.184	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.184	null
+1867	315	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.184	35	18	123	NUMBER	2026-08-06 11:51:11.184	null
+1868	315	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.184	\N	\N	124	SELECT	2026-08-06 11:51:11.184	["NORMAL", "WARNING", "CRITICAL"]
+1869	315	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.184	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.184	null
+1870	315	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.184	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.184	null
+1871	315	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.184	\N	\N	127	TEXT	2026-08-06 11:51:11.184	null
+1872	316	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.186	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.186	null
+1873	316	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.186	35	18	123	NUMBER	2026-08-06 11:51:11.186	null
+1874	316	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.186	\N	\N	124	SELECT	2026-08-06 11:51:11.186	["NORMAL", "WARNING", "CRITICAL"]
+1875	316	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.186	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.186	null
+1876	316	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.186	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.186	null
+1877	316	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.186	\N	\N	127	TEXT	2026-08-06 11:51:11.186	null
+1878	317	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.188	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.188	null
+1879	317	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.188	35	18	123	NUMBER	2026-08-06 11:51:11.188	null
+1880	317	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.188	\N	\N	124	SELECT	2026-08-06 11:51:11.188	["NORMAL", "WARNING", "CRITICAL"]
+1881	317	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.188	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.188	null
+1882	317	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.188	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.188	null
+1883	317	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.188	\N	\N	127	TEXT	2026-08-06 11:51:11.188	null
+1884	318	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.19	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.19	null
+1885	318	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.19	35	18	123	NUMBER	2026-08-06 11:51:11.19	null
+1886	318	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.19	\N	\N	124	SELECT	2026-08-06 11:51:11.19	["NORMAL", "WARNING", "CRITICAL"]
+1887	318	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.19	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.19	null
+1888	318	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.19	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.19	null
+1889	318	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.19	\N	\N	127	TEXT	2026-08-06 11:51:11.19	null
+1890	319	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.192	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.192	null
+1891	319	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.192	35	18	123	NUMBER	2026-08-06 11:51:11.192	null
+1892	319	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.192	\N	\N	124	SELECT	2026-08-06 11:51:11.192	["NORMAL", "WARNING", "CRITICAL"]
+1893	319	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.192	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.192	null
+1894	319	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.192	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.192	null
+1895	319	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.192	\N	\N	127	TEXT	2026-08-06 11:51:11.192	null
+1896	320	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.194	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.194	null
+1897	320	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.194	35	18	123	NUMBER	2026-08-06 11:51:11.194	null
+1898	320	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.194	\N	\N	124	SELECT	2026-08-06 11:51:11.194	["NORMAL", "WARNING", "CRITICAL"]
+1899	320	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.194	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.194	null
+1900	320	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.194	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.194	null
+1901	320	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.194	\N	\N	127	TEXT	2026-08-06 11:51:11.194	null
+1902	321	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.196	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.196	null
+1903	321	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.196	35	18	123	NUMBER	2026-08-06 11:51:11.196	null
+1904	321	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.196	\N	\N	124	SELECT	2026-08-06 11:51:11.196	["NORMAL", "WARNING", "CRITICAL"]
+1905	321	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.196	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.196	null
+1906	321	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.196	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.196	null
+1907	321	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.196	\N	\N	127	TEXT	2026-08-06 11:51:11.196	null
+1908	322	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.199	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.199	null
+1909	322	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.199	35	18	123	NUMBER	2026-08-06 11:51:11.199	null
+1910	322	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.199	\N	\N	124	SELECT	2026-08-06 11:51:11.199	["NORMAL", "WARNING", "CRITICAL"]
+1911	322	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.199	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.199	null
+1912	322	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.199	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.199	null
+1913	322	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.199	\N	\N	127	TEXT	2026-08-06 11:51:11.199	null
+1914	323	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.201	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.201	null
+1915	323	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.201	35	18	123	NUMBER	2026-08-06 11:51:11.201	null
+1916	323	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.201	\N	\N	124	SELECT	2026-08-06 11:51:11.201	["NORMAL", "WARNING", "CRITICAL"]
+1917	323	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.201	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.201	null
+1918	323	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.201	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.201	null
+1919	323	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.201	\N	\N	127	TEXT	2026-08-06 11:51:11.201	null
+1920	324	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.205	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.205	null
+1921	324	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.205	35	18	123	NUMBER	2026-08-06 11:51:11.205	null
+1922	324	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.205	\N	\N	124	SELECT	2026-08-06 11:51:11.205	["NORMAL", "WARNING", "CRITICAL"]
+1923	324	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.205	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.205	null
+1924	324	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.205	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.205	null
+1925	324	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.205	\N	\N	127	TEXT	2026-08-06 11:51:11.205	null
+1926	325	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.207	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.207	null
+1927	325	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.207	35	18	123	NUMBER	2026-08-06 11:51:11.207	null
+1928	325	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.207	\N	\N	124	SELECT	2026-08-06 11:51:11.207	["NORMAL", "WARNING", "CRITICAL"]
+1929	325	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.207	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.207	null
+1930	325	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.207	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.207	null
+1931	325	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.207	\N	\N	127	TEXT	2026-08-06 11:51:11.207	null
+1932	326	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.209	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.209	null
+1933	326	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.209	35	18	123	NUMBER	2026-08-06 11:51:11.209	null
+1934	326	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.209	\N	\N	124	SELECT	2026-08-06 11:51:11.209	["NORMAL", "WARNING", "CRITICAL"]
+1935	326	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.209	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.209	null
+1936	326	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.209	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.209	null
+1937	326	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.209	\N	\N	127	TEXT	2026-08-06 11:51:11.209	null
+1938	327	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.211	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.211	null
+1939	327	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.211	35	18	123	NUMBER	2026-08-06 11:51:11.211	null
+1940	327	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.211	\N	\N	124	SELECT	2026-08-06 11:51:11.211	["NORMAL", "WARNING", "CRITICAL"]
+1941	327	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.211	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.211	null
+1942	327	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.211	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.211	null
+1943	327	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.211	\N	\N	127	TEXT	2026-08-06 11:51:11.211	null
+1944	328	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.213	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.213	null
+1945	328	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.213	35	18	123	NUMBER	2026-08-06 11:51:11.213	null
+1946	328	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.213	\N	\N	124	SELECT	2026-08-06 11:51:11.213	["NORMAL", "WARNING", "CRITICAL"]
+1947	328	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.213	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.213	null
+1948	328	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.213	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.213	null
+1949	328	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.213	\N	\N	127	TEXT	2026-08-06 11:51:11.213	null
+1950	329	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.215	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.215	null
+1951	329	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.215	35	18	123	NUMBER	2026-08-06 11:51:11.215	null
+1952	329	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.215	\N	\N	124	SELECT	2026-08-06 11:51:11.215	["NORMAL", "WARNING", "CRITICAL"]
+1953	329	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.215	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.215	null
+1954	329	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.215	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.215	null
+1955	329	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.215	\N	\N	127	TEXT	2026-08-06 11:51:11.215	null
+1956	330	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.217	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.217	null
+1957	330	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.217	35	18	123	NUMBER	2026-08-06 11:51:11.217	null
+1958	330	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.217	\N	\N	124	SELECT	2026-08-06 11:51:11.217	["NORMAL", "WARNING", "CRITICAL"]
+1959	330	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.217	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.217	null
+1960	330	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.217	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.217	null
+1961	330	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.217	\N	\N	127	TEXT	2026-08-06 11:51:11.217	null
+1962	331	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.219	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.219	null
+1963	331	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.219	35	18	123	NUMBER	2026-08-06 11:51:11.219	null
+1964	331	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.219	\N	\N	124	SELECT	2026-08-06 11:51:11.219	["NORMAL", "WARNING", "CRITICAL"]
+1965	331	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.219	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.219	null
+1966	331	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.219	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.219	null
+1967	331	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.219	\N	\N	127	TEXT	2026-08-06 11:51:11.219	null
+1968	332	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.221	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.221	null
+1969	332	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.221	35	18	123	NUMBER	2026-08-06 11:51:11.221	null
+1970	332	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.221	\N	\N	124	SELECT	2026-08-06 11:51:11.221	["NORMAL", "WARNING", "CRITICAL"]
+1971	332	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.221	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.221	null
+1972	332	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.221	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.221	null
+1973	332	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.221	\N	\N	127	TEXT	2026-08-06 11:51:11.221	null
+1974	333	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.224	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.224	null
+1975	333	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.224	35	18	123	NUMBER	2026-08-06 11:51:11.224	null
+1976	333	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.224	\N	\N	124	SELECT	2026-08-06 11:51:11.224	["NORMAL", "WARNING", "CRITICAL"]
+1977	333	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.224	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.224	null
+1978	333	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.224	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.224	null
+1979	333	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.224	\N	\N	127	TEXT	2026-08-06 11:51:11.224	null
+1980	334	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.227	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.227	null
+1981	334	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.227	35	18	123	NUMBER	2026-08-06 11:51:11.227	null
+1982	334	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.227	\N	\N	124	SELECT	2026-08-06 11:51:11.227	["NORMAL", "WARNING", "CRITICAL"]
+1983	334	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.227	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.227	null
+1984	334	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.227	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.227	null
+1985	334	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.227	\N	\N	127	TEXT	2026-08-06 11:51:11.227	null
+1986	335	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.23	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.23	null
+1987	335	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.23	35	18	123	NUMBER	2026-08-06 11:51:11.23	null
+1988	335	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.23	\N	\N	124	SELECT	2026-08-06 11:51:11.23	["NORMAL", "WARNING", "CRITICAL"]
+1989	335	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.23	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.23	null
+1990	335	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.23	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.23	null
+1991	335	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.23	\N	\N	127	TEXT	2026-08-06 11:51:11.23	null
+1992	336	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.233	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.233	null
+1993	336	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.233	35	18	123	NUMBER	2026-08-06 11:51:11.233	null
+1994	336	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.233	\N	\N	124	SELECT	2026-08-06 11:51:11.233	["NORMAL", "WARNING", "CRITICAL"]
+1995	336	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.233	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.233	null
+1996	336	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.233	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.233	null
+1997	336	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.233	\N	\N	127	TEXT	2026-08-06 11:51:11.233	null
+1998	337	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.235	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.235	null
+1999	337	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.235	35	18	123	NUMBER	2026-08-06 11:51:11.235	null
+2000	337	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.235	\N	\N	124	SELECT	2026-08-06 11:51:11.235	["NORMAL", "WARNING", "CRITICAL"]
+2001	337	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.235	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.235	null
+2002	337	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.235	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.235	null
+2003	337	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.235	\N	\N	127	TEXT	2026-08-06 11:51:11.235	null
+2004	338	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.237	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.237	null
+2005	338	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.237	35	18	123	NUMBER	2026-08-06 11:51:11.237	null
+2006	338	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.237	\N	\N	124	SELECT	2026-08-06 11:51:11.237	["NORMAL", "WARNING", "CRITICAL"]
+2007	338	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.237	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.237	null
+2008	338	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.237	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.237	null
+2009	338	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.237	\N	\N	127	TEXT	2026-08-06 11:51:11.237	null
+2010	339	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.24	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.24	null
+2011	339	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.24	35	18	123	NUMBER	2026-08-06 11:51:11.24	null
+2012	339	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.24	\N	\N	124	SELECT	2026-08-06 11:51:11.24	["NORMAL", "WARNING", "CRITICAL"]
+2013	339	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.24	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.24	null
+2014	339	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.24	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.24	null
+2015	339	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.24	\N	\N	127	TEXT	2026-08-06 11:51:11.24	null
+2016	340	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.242	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.242	null
+2017	340	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.242	35	18	123	NUMBER	2026-08-06 11:51:11.242	null
+2018	340	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.242	\N	\N	124	SELECT	2026-08-06 11:51:11.242	["NORMAL", "WARNING", "CRITICAL"]
+2019	340	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.242	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.242	null
+2020	340	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.242	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.242	null
+2021	340	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.242	\N	\N	127	TEXT	2026-08-06 11:51:11.242	null
+2022	341	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.245	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.245	null
+2023	341	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.245	35	18	123	NUMBER	2026-08-06 11:51:11.245	null
+2024	341	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.245	\N	\N	124	SELECT	2026-08-06 11:51:11.245	["NORMAL", "WARNING", "CRITICAL"]
+2025	341	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.245	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.245	null
+2026	341	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.245	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.245	null
+2027	341	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.245	\N	\N	127	TEXT	2026-08-06 11:51:11.245	null
+2028	342	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.247	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.247	null
+2029	342	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.247	35	18	123	NUMBER	2026-08-06 11:51:11.247	null
+2030	342	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.247	\N	\N	124	SELECT	2026-08-06 11:51:11.247	["NORMAL", "WARNING", "CRITICAL"]
+2031	342	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.247	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.247	null
+2032	342	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.247	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.247	null
+2033	342	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.247	\N	\N	127	TEXT	2026-08-06 11:51:11.247	null
+2034	343	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.25	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.25	null
+2035	343	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.25	35	18	123	NUMBER	2026-08-06 11:51:11.25	null
+2036	343	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.25	\N	\N	124	SELECT	2026-08-06 11:51:11.25	["NORMAL", "WARNING", "CRITICAL"]
+2037	343	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.25	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.25	null
+2038	343	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.25	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.25	null
+2039	343	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.25	\N	\N	127	TEXT	2026-08-06 11:51:11.25	null
+2040	344	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.252	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.252	null
+2041	344	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.252	35	18	123	NUMBER	2026-08-06 11:51:11.252	null
+2042	344	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.252	\N	\N	124	SELECT	2026-08-06 11:51:11.252	["NORMAL", "WARNING", "CRITICAL"]
+2043	344	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.252	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.252	null
+2044	344	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.252	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.252	null
+2045	344	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.252	\N	\N	127	TEXT	2026-08-06 11:51:11.252	null
+2046	345	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.255	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.255	null
+2047	345	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.255	35	18	123	NUMBER	2026-08-06 11:51:11.255	null
+2048	345	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.255	\N	\N	124	SELECT	2026-08-06 11:51:11.255	["NORMAL", "WARNING", "CRITICAL"]
+2049	345	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.255	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.255	null
+2050	345	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.255	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.255	null
+2051	345	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.255	\N	\N	127	TEXT	2026-08-06 11:51:11.255	null
+2052	346	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.257	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.257	null
+2053	346	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.257	35	18	123	NUMBER	2026-08-06 11:51:11.257	null
+2054	346	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.257	\N	\N	124	SELECT	2026-08-06 11:51:11.257	["NORMAL", "WARNING", "CRITICAL"]
+2055	346	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.257	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.257	null
+2056	346	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.257	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.257	null
+2057	346	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.257	\N	\N	127	TEXT	2026-08-06 11:51:11.257	null
+2058	347	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.26	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.26	null
+2059	347	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.26	35	18	123	NUMBER	2026-08-06 11:51:11.26	null
+2060	347	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.26	\N	\N	124	SELECT	2026-08-06 11:51:11.26	["NORMAL", "WARNING", "CRITICAL"]
+2061	347	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.26	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.26	null
+2062	347	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.26	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.26	null
+2063	347	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.26	\N	\N	127	TEXT	2026-08-06 11:51:11.26	null
+2064	348	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.263	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.263	null
+2065	348	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.263	35	18	123	NUMBER	2026-08-06 11:51:11.263	null
+2066	348	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.263	\N	\N	124	SELECT	2026-08-06 11:51:11.263	["NORMAL", "WARNING", "CRITICAL"]
+2067	348	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.263	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.263	null
+2068	348	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.263	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.263	null
+2069	348	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.263	\N	\N	127	TEXT	2026-08-06 11:51:11.263	null
+2070	349	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.265	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.265	null
+2071	349	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.265	35	18	123	NUMBER	2026-08-06 11:51:11.265	null
+2072	349	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.265	\N	\N	124	SELECT	2026-08-06 11:51:11.265	["NORMAL", "WARNING", "CRITICAL"]
+2073	349	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.265	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.265	null
+2074	349	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.265	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.265	null
+2075	349	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.265	\N	\N	127	TEXT	2026-08-06 11:51:11.265	null
+2076	350	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.268	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.268	null
+2077	350	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.268	35	18	123	NUMBER	2026-08-06 11:51:11.268	null
+2078	350	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.268	\N	\N	124	SELECT	2026-08-06 11:51:11.268	["NORMAL", "WARNING", "CRITICAL"]
+2079	350	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.268	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.268	null
+2080	350	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.268	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.268	null
+2081	350	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.268	\N	\N	127	TEXT	2026-08-06 11:51:11.268	null
+2082	351	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.271	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.271	null
+2083	351	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.271	35	18	123	NUMBER	2026-08-06 11:51:11.271	null
+2084	351	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.271	\N	\N	124	SELECT	2026-08-06 11:51:11.271	["NORMAL", "WARNING", "CRITICAL"]
+2085	351	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.271	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.271	null
+2086	351	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.271	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.271	null
+2087	351	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.271	\N	\N	127	TEXT	2026-08-06 11:51:11.271	null
+2088	352	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.274	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.274	null
+2089	352	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.274	35	18	123	NUMBER	2026-08-06 11:51:11.274	null
+2090	352	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.274	\N	\N	124	SELECT	2026-08-06 11:51:11.274	["NORMAL", "WARNING", "CRITICAL"]
+2091	352	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.274	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.274	null
+2092	352	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.274	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.274	null
+2093	352	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.274	\N	\N	127	TEXT	2026-08-06 11:51:11.274	null
+2094	353	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.277	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.277	null
+2095	353	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.277	35	18	123	NUMBER	2026-08-06 11:51:11.277	null
+2096	353	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.277	\N	\N	124	SELECT	2026-08-06 11:51:11.277	["NORMAL", "WARNING", "CRITICAL"]
+2097	353	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.277	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.277	null
+2098	353	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.277	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.277	null
+2099	353	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.277	\N	\N	127	TEXT	2026-08-06 11:51:11.277	null
+2100	354	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.282	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.282	null
+2101	354	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.282	35	18	123	NUMBER	2026-08-06 11:51:11.282	null
+2102	354	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.282	\N	\N	124	SELECT	2026-08-06 11:51:11.282	["NORMAL", "WARNING", "CRITICAL"]
+2103	354	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.282	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.282	null
+2104	354	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.282	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.282	null
+2105	354	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.282	\N	\N	127	TEXT	2026-08-06 11:51:11.282	null
+2106	355	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.285	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.285	null
+2107	355	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.285	35	18	123	NUMBER	2026-08-06 11:51:11.285	null
+2108	355	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.285	\N	\N	124	SELECT	2026-08-06 11:51:11.285	["NORMAL", "WARNING", "CRITICAL"]
+2109	355	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.285	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.285	null
+2110	355	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.285	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.285	null
+2111	355	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.285	\N	\N	127	TEXT	2026-08-06 11:51:11.285	null
+2112	356	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.288	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.288	null
+2113	356	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.288	35	18	123	NUMBER	2026-08-06 11:51:11.288	null
+2114	356	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.288	\N	\N	124	SELECT	2026-08-06 11:51:11.288	["NORMAL", "WARNING", "CRITICAL"]
+2115	356	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.288	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.288	null
+2116	356	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.288	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.288	null
+2117	356	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.288	\N	\N	127	TEXT	2026-08-06 11:51:11.288	null
+2118	357	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.29	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.29	null
+2119	357	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.29	35	18	123	NUMBER	2026-08-06 11:51:11.29	null
+2120	357	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.29	\N	\N	124	SELECT	2026-08-06 11:51:11.29	["NORMAL", "WARNING", "CRITICAL"]
+2121	357	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.29	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.29	null
+2122	357	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.29	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.29	null
+2123	357	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.29	\N	\N	127	TEXT	2026-08-06 11:51:11.29	null
+2124	358	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.293	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.293	null
+2125	358	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.293	35	18	123	NUMBER	2026-08-06 11:51:11.293	null
+2126	358	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.293	\N	\N	124	SELECT	2026-08-06 11:51:11.293	["NORMAL", "WARNING", "CRITICAL"]
+2127	358	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.293	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.293	null
+2128	358	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.293	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.293	null
+2129	358	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.293	\N	\N	127	TEXT	2026-08-06 11:51:11.293	null
+2130	359	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.295	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.295	null
+2131	359	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.295	35	18	123	NUMBER	2026-08-06 11:51:11.295	null
+2132	359	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.295	\N	\N	124	SELECT	2026-08-06 11:51:11.295	["NORMAL", "WARNING", "CRITICAL"]
+2133	359	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.295	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.295	null
+2134	359	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.295	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.295	null
+2135	359	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.295	\N	\N	127	TEXT	2026-08-06 11:51:11.295	null
+2136	360	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.297	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.297	null
+2137	360	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.297	35	18	123	NUMBER	2026-08-06 11:51:11.297	null
+2138	360	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.297	\N	\N	124	SELECT	2026-08-06 11:51:11.297	["NORMAL", "WARNING", "CRITICAL"]
+2139	360	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.297	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.297	null
+2140	360	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.297	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.297	null
+2141	360	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.297	\N	\N	127	TEXT	2026-08-06 11:51:11.297	null
+2142	361	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.299	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.299	null
+2143	361	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.299	35	18	123	NUMBER	2026-08-06 11:51:11.299	null
+2144	361	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.299	\N	\N	124	SELECT	2026-08-06 11:51:11.299	["NORMAL", "WARNING", "CRITICAL"]
+2145	361	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.299	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.299	null
+2146	361	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.299	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.299	null
+2147	361	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.299	\N	\N	127	TEXT	2026-08-06 11:51:11.299	null
+2148	362	Emergency access clear	1	true	\N	\N	2026-08-06 11:51:11.301	\N	\N	122	BOOLEAN	2026-08-06 11:51:11.301	null
+2149	362	Ambient temperature	2	\N	\N	\N	2026-08-06 11:51:11.301	35	18	123	NUMBER	2026-08-06 11:51:11.301	null
+2150	362	Indicator status	3	NORMAL	\N	\N	2026-08-06 11:51:11.301	\N	\N	124	SELECT	2026-08-06 11:51:11.301	["NORMAL", "WARNING", "CRITICAL"]
+2151	362	Power supply stable	4	true	\N	\N	2026-08-06 11:51:11.301	\N	\N	125	BOOLEAN	2026-08-06 11:51:11.301	null
+2152	362	Visible wear or damage	5	false	\N	\N	2026-08-06 11:51:11.301	\N	\N	126	BOOLEAN	2026-08-06 11:51:11.301	null
+2153	362	Inspector notes	6	\N	\N	\N	2026-08-06 11:51:11.301	\N	\N	127	TEXT	2026-08-06 11:51:11.301	null
 \.
 
 
@@ -5564,6 +8289,245 @@ COPY maintix."UserSession" (id, "userId", "refreshToken", "deviceInfo", "ipAddre
 3100	3	$2b$10$nYp0z2XfaU252SqnEivN1OMjzLoZPUV/DWTblEneQUm6.OXrWVBGu	\N	\N	\N	f	2026-08-05 17:31:47.357	2026-08-05 17:31:47.357	2026-08-12 17:31:47.357	4b1ac506-b2da-4143-bfda-7044ded24d8b
 3101	3	$2b$10$UKlboTFtwDKiCbTyCy4pduBF0yjYL36eIuW76KpsNo2nJT8u5mZje	\N	\N	\N	f	2026-08-05 17:36:31.837	2026-08-05 17:36:31.837	2026-08-12 17:36:31.836	b5d58e73-8743-4c1a-823c-78fba9e3049f
 3102	3	$2b$10$AMrm6IlXdmin03Vu0AFwT.4Jinh5WRjdg9LrjmjDxdMsyQZpLriJW	\N	\N	\N	t	2026-08-05 17:36:38.053	2026-08-05 17:36:38.053	2026-08-12 17:36:38.053	f252642f-5ee9-454f-bf9f-d3316d9deb1e
+3103	3	$2b$10$d4Tsei1DR1GFrnRmyhsBvuM2G1CjERnfPsBJTW1MtfE9ESQ1P43f2	Edge on Android 15	::1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0	f	2026-08-06 03:53:26.258	2026-08-06 03:53:26.258	2026-08-13 03:53:26.241	86225878-ed74-438f-981c-be3d2b2012c8
+3115	3	$2b$10$yZiPjwyGGFvsqiy9NQOk2OHE3y8132owySruF7XpV.CrVDnTsXwGi	\N	\N	\N	f	2026-08-06 05:23:42.915	2026-08-06 05:23:42.915	2026-08-13 05:23:42.914	5b3a7b90-6eb7-41dd-9419-653f94b6739c
+3104	3	$2b$10$J07sW/gmZq0AAMmBeUADjujvoF1oH1q6sjWjZZCq06TWcLO88p0BC	\N	\N	\N	f	2026-08-06 03:55:19.383	2026-08-06 03:53:26.791	2026-08-13 03:53:26.79	2c373d1a-ea20-4c75-988a-b04211da11f6
+3105	3	$2b$10$gQchmX1I4w209rh80F2Tn.viZ91ZrQu42VRObC.MUOZmnI251bKmS	\N	\N	\N	f	2026-08-06 04:11:06.89	2026-08-06 04:08:24.798	2026-08-13 04:08:24.788	a1daeaac-ab52-49aa-b3dc-20df63aa86a5
+3116	3	$2b$10$2pq9Gy.DhabRXMFTeUpZSeOomHNCK2KXVRhX8I6OEoD9cKBpY0phe	\N	\N	\N	f	2026-08-06 05:23:59.752	2026-08-06 05:23:59.752	2026-08-13 05:23:59.747	1064cd6b-faee-4ced-964b-fa561c4d016b
+3106	3	$2b$10$DaJXqNQ0P.kqNdjQiF8oi.SIVrXThR9YmnK5wq8MaNnVy48/tIUn.	\N	\N	\N	f	2026-08-06 04:34:37.186	2026-08-06 04:28:11.241	2026-08-13 04:28:11.232	f4a7ca92-77ad-449f-8af7-942f1580f6f7
+3107	3	$2b$10$crAmHJ7yI/iiwByw3LqgdOVaScJm44kZuVGbHgw82HFfhp2l/u.3.	\N	\N	\N	f	2026-08-06 04:34:48.907	2026-08-06 04:34:48.907	2026-08-13 04:34:48.9	557a3d6d-34f1-4656-bcc0-cf796a65a1e0
+3117	3	$2b$10$/kVYQZwmD42u2MF9.vJJde12WTxLPX/cAVcK5i2y46CDnFaLDMVsq	\N	\N	\N	f	2026-08-06 05:24:33.039	2026-08-06 05:24:33.039	2026-08-13 05:24:33.038	a8b4a423-599d-49e4-b74f-551409627de7
+3108	3	$2b$10$uttLhMvtM979kw1XvWIkueQYO7W97NEP6lJxnbOmvHlCBzG0MaU46	\N	\N	\N	f	2026-08-06 04:38:02.515	2026-08-06 04:35:09.888	2026-08-13 04:35:09.887	7576dab4-272a-4776-9053-f299a9694d68
+3109	3	$2b$10$5USvutzDGO2EEPwSYFaXMur1uSGRqs8N6j28qw48rH5g31NzfJZLW	\N	\N	\N	t	2026-08-06 04:44:05.012	2026-08-06 04:44:05.012	2026-08-13 04:44:05.004	fc36b015-4bf6-4c23-8ac8-73da7f6bacab
+3110	3	$2b$10$.doij77.LjKzoexwZBkcP.MUe/WZjlX6JgF/CXeAjhPh5PUw.rkOa	Edge on Windows 10	::1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0	f	2026-08-06 05:20:35.507	2026-08-06 05:20:35.507	2026-08-13 05:20:35.482	163e192d-84dc-401b-8b73-9991888333c9
+3111	3	$2b$10$bByosnlNlpJrclZs0VbRmOEJDqwgNarZBCeUAyDcsVugHlHtx7yqC	\N	\N	\N	f	2026-08-06 05:20:36.45	2026-08-06 05:20:36.45	2026-08-13 05:20:36.447	50848782-a25d-4d5a-9351-9f6f80626657
+3112	3	$2b$10$znwTPvqUDk7DjVGjjpmRdO6j4M0ceZComhGFabkmvmA/b3MZJQ3Xi	\N	\N	\N	f	2026-08-06 05:21:18.83	2026-08-06 05:21:18.83	2026-08-13 05:21:18.827	21b07ad7-eccf-46a4-a4f7-63e4bb668611
+3113	3	$2b$10$5ZKZr0Rkhf2sphVaEj0jeO0M.ahDq.7FX8J9pnvjWTb0a3tsEqndu	\N	\N	\N	f	2026-08-06 05:21:59.007	2026-08-06 05:21:59.007	2026-08-13 05:21:59.006	1f9c4a94-151f-4ecb-a3df-6f12f494219a
+3114	3	$2b$10$kBoEZUC/hzM/2SupXt7DCexRXJ/5SNujDosFKGVAhEN9qGXM8CHsO	\N	\N	\N	f	2026-08-06 05:23:09.394	2026-08-06 05:23:09.394	2026-08-13 05:23:09.391	29fc0a39-bb5e-4f32-85e3-0ae9099caeae
+3118	3	$2b$10$te74kew6PeudTO0RLNSyB.gHzETEEeU8Ma4j8XLW1ypaTEgx0KCTK	\N	\N	\N	f	2026-08-06 05:26:13.403	2026-08-06 05:26:13.403	2026-08-13 05:26:13.4	47f38f44-a656-49e3-8534-9b6c62cb1ea2
+3119	3	$2b$10$K6JiJtEj54IaN3SyEiQm.unCL.S1UF1cNcVxUu5/DtvU8AZRipUCq	\N	\N	\N	f	2026-08-06 05:26:31.521	2026-08-06 05:26:31.521	2026-08-13 05:26:31.52	47b3d9ea-2e61-4024-9b17-70d9e909aff5
+3120	3	$2b$10$STmzZJXkooctDrXnoL7hder9Cs1fCb9DhUAXCEs4z9ZlhMOFXE.FG	\N	\N	\N	f	2026-08-06 05:26:48.281	2026-08-06 05:26:48.281	2026-08-13 05:26:48.28	a6f34d08-dd9b-417e-b446-e50139c6eed0
+3121	3	$2b$10$Xrp4AIPW18LT6uyFg9x8He.W9VmqqA3pds0SkGLn76Q5dKWv.twh6	\N	\N	\N	f	2026-08-06 05:27:48.315	2026-08-06 05:27:48.315	2026-08-13 05:27:48.313	8cb60f94-3363-4db3-94a3-716cc8124ae0
+3122	3	$2b$10$hFjz3WGweCN15YBZSEpzCOonvUurRZzd/NmtSl6eCvx61WbGg2G/S	\N	\N	\N	f	2026-08-06 05:28:06.212	2026-08-06 05:28:06.212	2026-08-13 05:28:06.211	b437c60c-9eb4-4f6d-b29b-05c0d6d77494
+3128	3	$2b$10$eV64EINveMuA.dQcYue0TO9b1TMhSjFIyc0k4rq1gs8aD5PTMlMgS	\N	\N	\N	f	2026-08-06 05:35:35.544	2026-08-06 05:35:35.544	2026-08-13 05:35:35.543	a6a5b4fb-dc2f-419a-ab98-8d385bb86e4b
+3123	3	$2b$10$KAm04AfTdp0iLT60LpPpK.JlHPEQslYUqLY3ZlSLwr6PdXTFCkM2q	\N	\N	\N	f	2026-08-06 05:29:25.061	2026-08-06 05:28:18.021	2026-08-13 05:28:18.02	468f2e5a-470c-4fe3-a24b-e95a3df8932c
+3124	3	$2b$10$Iil2MHuugyjAX66/wxDojO.tOimCVVeOizJ262Ly.kdTkhD/pJQaK	\N	\N	\N	f	2026-08-06 05:31:09.452	2026-08-06 05:29:55.204	2026-08-13 05:29:55.201	8e03d47e-75e7-446d-a94c-a1e70bc4d7d4
+3125	3	$2b$10$oU6iNPk6DjrCDYqMuqfjjuZAKCXEkcNVksNReLJfDC.ZnUsVLy0nG	\N	\N	\N	f	2026-08-06 05:34:21.175	2026-08-06 05:34:21.175	2026-08-13 05:34:21.173	e783cc6a-28d1-4b41-8061-9dafc0ed9f6f
+3126	3	$2b$10$Gfr/gd2YkqnlABYYa50jt.YIDcBdKVxi1tihrOaGUoBxxvG5ev9xi	\N	\N	\N	f	2026-08-06 05:35:16.42	2026-08-06 05:35:16.42	2026-08-13 05:35:16.416	ada72df9-1f3d-4af2-8cb5-194e8c0d5d70
+3127	3	$2b$10$dkXfQL5cRmXWuX/lX7R2G.ZM3/VtchVhCbKcbgvCwEISPqcWL1KU6	\N	\N	\N	f	2026-08-06 05:35:27.615	2026-08-06 05:35:27.615	2026-08-13 05:35:27.615	52850484-564f-4ab4-a825-0e50594dadf8
+3129	3	$2b$10$4z3ThVnNfYsXZ0ih9KYMd.RvRNjMOIocnOrfNF76XC2CpW/STKh/K	\N	\N	\N	f	2026-08-06 05:35:43.035	2026-08-06 05:35:43.035	2026-08-13 05:35:43.034	eb1ad03a-eadc-4a2c-af0d-e25a1e5333dd
+3130	3	$2b$10$FDeOZpDrIY0jxLV81l1uKumpa7uC8.GD7RuruaSUMA27qpMDWjab2	\N	\N	\N	f	2026-08-06 05:35:48.359	2026-08-06 05:35:48.359	2026-08-13 05:35:48.358	128ea51d-3f12-48ab-8f45-5d30120032db
+3131	3	$2b$10$KXy.jcTZCgZ4LZ9bOCHg4eH0cuyeCaPjCDPyhdd.Lc.APFB27ywSS	\N	\N	\N	f	2026-08-06 05:35:53.985	2026-08-06 05:35:53.985	2026-08-13 05:35:53.985	1b6b3e3f-d2ca-47f2-af45-6d52d5a37e85
+3133	3	$2b$10$t.qqQ/dDSfs1sRKwSmun0uLD8JeX/uGCgjMpJkaIMCEvvZ40U2jZS	\N	\N	\N	f	2026-08-06 05:46:00.722	2026-08-06 05:46:00.722	2026-08-13 05:46:00.719	139343b6-65c6-4a6b-86f3-f0c587e655b2
+3132	3	$2b$10$Cr.SwxmqEWVwE94YHQJWL.dnlydtpJ8t/4YtZMWi0PZBR7SfD/aUa	\N	\N	\N	f	2026-08-06 05:45:50.379	2026-08-06 05:36:33.028	2026-08-13 05:36:33.025	38aa6a99-3a61-4d26-8ddd-2aa866b929eb
+3134	3	$2b$10$XDrXJrCL6ID9dLB7BIK1jOXnqbttyVTRIg2ZX6EKJ9Atq31akQLv6	\N	\N	\N	f	2026-08-06 05:50:00.433	2026-08-06 05:50:00.433	2026-08-13 05:50:00.43	1ee7811c-93ae-4a90-9b05-043549d471bf
+3135	3	$2b$10$YrHlcVAPN8GOTR1Afcr.IOhkaEpAerc3xXqa6odzWk9PMgBY/FNfu	\N	\N	\N	f	2026-08-06 05:53:32.719	2026-08-06 05:50:09.635	2026-08-13 05:50:09.634	169d5107-9984-4e2c-9b5f-21aadbece256
+3136	3	$2b$10$EmFf48zk6Nydo5Q8eE.02.tTBB./paQNbVBGkMdU8Kg8P5EFG15N.	\N	\N	\N	f	2026-08-06 05:56:28.352	2026-08-06 05:55:08.03	2026-08-13 05:55:08.029	b5a6b092-3ee5-48a5-b05c-010b7fa97b83
+3155	3	$2b$10$lWqDNAoJOq.YtjC9tI7QuuQjkOy2HLpBwseJFdDlcy8fK2CudP/3m	\N	\N	\N	f	2026-08-06 06:31:30.194	2026-08-06 06:27:21.125	2026-08-13 06:27:21.123	9ec885c3-87bc-4ca4-a922-0dc203424e91
+3137	3	$2b$10$4nE296J2423JUxo0026ByemFCp6bUaiE4m0RLOk2nYZqaPhAFZ4PC	\N	\N	\N	f	2026-08-06 05:59:46.784	2026-08-06 05:57:15.262	2026-08-13 05:57:15.261	61e90c76-31e8-46c2-914d-e2a6d7eb70ee
+3138	3	$2b$10$7iVxA3h/pSrPoX28hfF4XO.EV61GjJ0qqLK1XmmgBvEkNBbh/gU8q	\N	\N	\N	f	2026-08-06 06:15:57.928	2026-08-06 06:15:57.928	2026-08-13 06:15:57.927	e5482831-ef30-46b9-acde-7eaff57c699b
+3139	3	$2b$10$00Oe9NdEIUaIvmWYPghWuehGS2UVPvW8HnmlXAXoyWHzT0CpouYVK	\N	\N	\N	f	2026-08-06 06:16:33.719	2026-08-06 06:16:33.719	2026-08-13 06:16:33.715	13468576-5404-4677-8f4e-da8883d1043e
+3140	3	$2b$10$xe2PuNiqrwCL3ASzMTu.ku3LxBbKGH5FKCbU1WXth.m3NUQcD3yWK	\N	\N	\N	f	2026-08-06 06:17:12.947	2026-08-06 06:17:12.947	2026-08-13 06:17:12.946	bd7629f7-9512-4c17-a0c2-01f000c11814
+3141	3	$2b$10$zKzost/fXmFGdrnouF87S.lS7QWzoaeVf9MGaeavS9nLgmusZ00eu	\N	\N	\N	f	2026-08-06 06:17:19.634	2026-08-06 06:17:19.634	2026-08-13 06:17:19.633	eb9d84e7-4c1b-45a9-9bd0-7dbdc8f58868
+3142	3	$2b$10$ShlxtiUGbaW7QPfcM5lt8uxYucyBdUXL7iihRuy5IbOyIXK2NQQJi	\N	\N	\N	f	2026-08-06 06:17:31.785	2026-08-06 06:17:31.785	2026-08-13 06:17:31.785	1b08ad2f-a7b0-4687-b872-926c64522a1a
+3143	3	$2b$10$Ss98rXf6hjKK10pPFH9CPuEDtVobf.PDO7I/0DIyTGHiZ.c3Z498i	\N	\N	\N	f	2026-08-06 06:17:43.314	2026-08-06 06:17:43.314	2026-08-13 06:17:43.313	0705e90d-491e-4f7d-b05c-af0634080616
+3144	3	$2b$10$wzPz4ZXl/fdoJIKYu7uVl.mkuujlRNtWj0v8KgBnJxFDQ4yTdveNu	\N	\N	\N	f	2026-08-06 06:17:47.954	2026-08-06 06:17:47.954	2026-08-13 06:17:47.954	138fb20b-2961-48b1-aa06-507a54fabec5
+3145	3	$2b$10$xsnw6In0HbIhtE3TtSUR.eQ3dIsFBvXrTJbyjaPHPVugqBrajS1OO	\N	\N	\N	f	2026-08-06 06:18:10.261	2026-08-06 06:18:10.261	2026-08-13 06:18:10.261	0f381e8e-a79d-4ff9-ad25-76c7eba29e5a
+3146	3	$2b$10$.XHdp9SLePugqXGljhaZzeojmveBRA5jXgUbQKX33xVH9q5KJTCby	\N	\N	\N	f	2026-08-06 06:18:19.047	2026-08-06 06:18:19.047	2026-08-13 06:18:19.046	49b518b0-a7b8-40d3-aeef-710080b983e8
+3147	3	$2b$10$K7fg5HgUBjrv0bowRKDx7uyMYPEmqwtGtzNfhv2nELODQNr6r3ctS	\N	\N	\N	f	2026-08-06 06:18:54.683	2026-08-06 06:18:54.683	2026-08-13 06:18:54.678	c4fe7abc-32eb-470e-be5f-e1759ecc549e
+3148	3	$2b$10$WHcohz6u0MyLmWfbu2TYyuzeTHoiNDXh0m3OK8YIIsIqP5.asY3HS	\N	\N	\N	f	2026-08-06 06:19:34.495	2026-08-06 06:19:34.495	2026-08-13 06:19:34.494	43ae2e7d-2bf4-4f3c-ac78-057747bd7914
+3149	3	$2b$10$Cg4U9ln6r.t.JM8tYqPwO.l6jzFPnK84mXarZlSfFJaNCdP8MKMV.	\N	\N	\N	f	2026-08-06 06:20:46.093	2026-08-06 06:20:46.093	2026-08-13 06:20:46.092	201934dd-b37d-4b13-b9a6-f96fc1cb604c
+3150	3	$2b$10$hMfTAAOtQvx1N8J3Yns9hOzg/0FwiZZVDLvsw3jUARTJQoPKE4rfq	\N	\N	\N	f	2026-08-06 06:21:58.646	2026-08-06 06:21:58.646	2026-08-13 06:21:58.646	92f0a11a-3dc7-432c-b62f-9aa643414e67
+3151	3	$2b$10$qg12g6RSmCJgupqUH2tTSug4Vbr.la2xC.fgqAf1YRpmba5EWBnfq	\N	\N	\N	f	2026-08-06 06:23:52.761	2026-08-06 06:22:41.792	2026-08-13 06:22:41.788	cbecea09-7f7a-4ef9-8c71-1db63cf28d04
+3166	3	$2b$10$GDi5DXtcySMQqDasPAbAmOBlCcAqee9bmT722HQ8VzHnrw854LcEi	\N	\N	\N	f	2026-08-06 07:28:24.52	2026-08-06 07:28:24.52	2026-08-13 07:28:24.519	5a754aec-cd11-447d-b56b-0d2a0fcd377f
+3152	3	$2b$10$lM3ij9l1aDqM9JGBUE4MRuqLCOCxFF5uEzDBtlhaQukFdAWuultjm	\N	\N	\N	f	2026-08-06 06:25:19.255	2026-08-06 06:24:09.085	2026-08-13 06:24:09.083	92c87410-b3e6-48c4-8c33-6b2ef699d336
+3153	3	$2b$10$PyjcJZBdHvsUSB0MLcfof.pf.EHFwCIJjSm4p/GeRDH7hAzFyMRIS	\N	\N	\N	f	2026-08-06 06:25:29.023	2026-08-06 06:25:29.023	2026-08-13 06:25:29.021	ff87ccdc-140a-46d1-9dfd-e9dc0e96bd9a
+3154	3	$2b$10$8fNMQg/5FH7b3qRE8mooCeI/7odaKt6jvEOVXoOBpAEZ4wcUZbZcS	\N	\N	\N	f	2026-08-06 06:26:24.4	2026-08-06 06:26:24.4	2026-08-13 06:26:24.399	1835eed9-92ad-4e34-a082-76f11228ba5d
+3156	3	$2b$10$Ml82dxIc6Po6WD8MNJI2mOshP7RaHMexiB8i6xYHUaD7XC32P37P6	\N	\N	\N	f	2026-08-06 06:34:58.998	2026-08-06 06:31:51.481	2026-08-13 06:31:51.481	d20b7637-5f0b-4369-9d58-936d5deb0455
+3168	3	$2b$10$ii23VSsSQBm/wYVteXPwvOtSomPCxlsdCu.5715yrK/t1knv9R03e	PostmanRuntime/7.56.0	::1	PostmanRuntime/7.56.0	t	2026-08-06 07:29:36.506	2026-08-06 07:29:36.506	2026-08-13 07:29:36.492	bff70b03-b69e-4fb0-8790-c54c6977cc06
+3157	3	$2b$10$97UPAv0b9PgEXzk.aVOJheTvBu7Fkqn2cvRR0B6DYnTvd.HWwB8Zq	\N	\N	\N	f	2026-08-06 06:35:25.643	2026-08-06 06:35:25.643	2026-08-13 06:35:25.639	be5e09d9-dc65-47f2-bf9e-f0d05a358e09
+3158	3	$2b$10$6THkFS32kdDkBiWFhW9RHuT1ESBBysXhm3sYWV3Iv5jpc6uVkxMHu	\N	\N	\N	f	2026-08-06 06:35:32.669	2026-08-06 06:35:32.669	2026-08-13 06:35:32.668	1e9273ee-5af9-4c2b-a705-130a5c34d853
+3159	3	$2b$10$37bVYQaqKiL03QHJkZL.NOpU/0c0nkx.MGvMcQUSUiYlUGwrFTyn2	\N	\N	\N	f	2026-08-06 06:35:58.755	2026-08-06 06:35:58.755	2026-08-13 06:35:58.753	43be2fc8-fdc2-494d-9c6e-7e749d6916fc
+3160	3	$2b$10$VyYu0Hr./hk.UFLVHgxii.Si34tpwRiw3DDgHreLLqDgqDD.rhB1G	\N	\N	\N	f	2026-08-06 06:36:11.618	2026-08-06 06:36:11.618	2026-08-13 06:36:11.618	a6a36457-902f-4a26-b886-47f2af0904e6
+3161	3	$2b$10$.3oOCeCI9gcBLOaevO3h4.JyGGCalDNJr0u62GibRoLbVM7hmRQ4.	\N	\N	\N	f	2026-08-06 06:38:15.275	2026-08-06 06:38:15.275	2026-08-13 06:38:15.274	845f4f3a-8a2d-43df-b47a-44da31d67a0f
+3162	3	$2b$10$HOugvqJQNH7ZPYHFBhdL4.HeDqoRJqUyWL8e85MAsJAcrUK2zzR/e	\N	\N	\N	f	2026-08-06 07:26:14.89	2026-08-06 07:26:14.89	2026-08-13 07:26:14.881	e2e3cdc3-63ed-4faa-a774-ccc1d9630eac
+3163	3	$2b$10$OjmxKTw4yu1SUJxbfAPJyeHtSErvhX1HGBa2ks6tUKe2tR0eUdxTi	\N	\N	\N	f	2026-08-06 07:27:03.151	2026-08-06 07:27:03.151	2026-08-13 07:27:03.151	0837f62b-3eca-45aa-85a3-b1157882f044
+3164	3	$2b$10$mulbLywoINkmOVb.98VuuuL1SLyBH/ddsRt8Tt/MDZ2eReLleS1sO	\N	\N	\N	f	2026-08-06 07:27:37.436	2026-08-06 07:27:37.436	2026-08-13 07:27:37.435	d95a9252-e462-427f-8471-48b801bf37f9
+3165	3	$2b$10$GrZoVqZp97jgL1Zib7boVOD7KxmEerF5xTw/G2Q4eFT0y.heykL0.	\N	\N	\N	f	2026-08-06 07:28:10.225	2026-08-06 07:28:10.225	2026-08-13 07:28:10.224	1a97bdf9-4492-406f-b3b0-b3d572d8c305
+3167	3	$2b$10$gWjxK4RRnWIp.UN3PEnkPeLg7666Yxd0JTnNVJPGiKwr49qSzMWZG	\N	\N	\N	f	2026-08-06 07:28:35.523	2026-08-06 07:28:35.523	2026-08-13 07:28:35.522	b6e130ab-c602-4a27-a29d-965af7cd7fd7
+3169	3	$2b$10$KUt6NC/3ilTPpNxSxgcBeuGRCHWk7elFhP3ls77r8Kc5mIfwIuNk6	\N	\N	\N	f	2026-08-06 07:31:56.674	2026-08-06 07:31:56.674	2026-08-13 07:31:56.673	77f5633b-5e0e-47b0-b532-1aabbf1e60e0
+3170	3	$2b$10$9mraaEPMnKmhgSyE2XB.q.WWHQXKaRVidITHzsW9CCuFUBeNEJ7T2	\N	\N	\N	f	2026-08-06 07:32:32.514	2026-08-06 07:32:32.514	2026-08-13 07:32:32.512	665e7429-699e-4360-ba26-1c17d1064607
+3171	3	$2b$10$cfR/ugSYk/RBG05AKzfq1ebaOoDc2vEW8DWm5bXJLv4kfYH4WaRkS	\N	\N	\N	f	2026-08-06 07:32:36.347	2026-08-06 07:32:36.347	2026-08-13 07:32:36.346	d82f88a2-6951-478e-ac46-b306143007e8
+3172	3	$2b$10$JhG/N.uf5IQBgZ4reGMPuOdoHjCDq3ydBHBo16qcHPI/k/Xn2WT0S	\N	\N	\N	f	2026-08-06 07:32:41.754	2026-08-06 07:32:41.754	2026-08-13 07:32:41.754	1b89dd9f-e74b-48ea-8db6-8956a2464633
+3173	3	$2b$10$ir9ogG9oawcXuTdSEV2YquwmP2MhyeaeXSpeRzLNy3X88.RLlRgQ2	\N	\N	\N	f	2026-08-06 07:33:03.864	2026-08-06 07:33:03.864	2026-08-13 07:33:03.863	bd7ffb85-fef5-455e-9835-d2e0ba8b6f5b
+3174	3	$2b$10$UE5.3/kJMYF2rAkrkbi1Y.aUzMr7UH4nhX8FiF7r4Dq3ik.pQgQk.	\N	\N	\N	f	2026-08-06 07:33:08.74	2026-08-06 07:33:08.74	2026-08-13 07:33:08.739	1d153d98-87d6-4045-a158-0e95b013973e
+3175	3	$2b$10$H7UwT778DrZjPz4fnX/hquaIQZTCYzNWoVIM8iugTZ4go5yr286Ia	\N	\N	\N	f	2026-08-06 07:33:13.478	2026-08-06 07:33:13.478	2026-08-13 07:33:13.476	26316146-75bc-41bb-a432-2387d9383185
+3177	3	$2b$10$zR7SJBSMBgvpsGL0N.Cpxe5zyRlvgXC405VY3VlRGQgDWDN4QAYUe	\N	\N	\N	f	2026-08-06 07:35:21.625	2026-08-06 07:35:21.625	2026-08-13 07:35:21.624	760c9941-189f-45b9-803b-bf12f7a1b1fc
+3176	3	$2b$10$JXHLAhkwbjP.pUobrsJ8wu2x842uuKJriV.OrhwP0E1tmtly1OoKK	\N	\N	\N	f	2026-08-06 07:34:40.604	2026-08-06 07:33:18.103	2026-08-13 07:33:18.102	c026cc71-fbfb-49ac-8ec6-80b5644a8af0
+3178	3	$2b$10$EMrfX/0xNb88pL0KQ3A.zeU/fKgKe/vgzPL/vdkobQ0WCIw1jl6tO	\N	\N	\N	f	2026-08-06 07:38:54.768	2026-08-06 07:35:38.806	2026-08-13 07:35:38.806	5a7b1169-1b71-4bde-888b-466ba7dea24e
+3179	3	$2b$10$JCDy57Uwxv1HJRwcrzTq6eSSzK9v8qVUDcOjkixaD6CW0fk3shqLa	\N	\N	\N	f	2026-08-06 07:39:51.84	2026-08-06 07:39:51.84	2026-08-13 07:39:51.839	2f21d984-671b-48fb-a8b9-9c7d084510d7
+3180	3	$2b$10$ZcE5r4FEFbBLJBaS0/mMw.MKKINraxI.LH.rW7nXPbLXgnFEykEF.	\N	\N	\N	f	2026-08-06 07:40:47.192	2026-08-06 07:40:47.192	2026-08-13 07:40:47.191	a9b1ec97-da83-4146-abb5-0650d611b58d
+3181	3	$2b$10$vGN0gJMxcv3UlPuH55vlp.rUvMg2eWWLP.xtvPND7x2SSNBJ.IosC	\N	\N	\N	f	2026-08-06 07:51:45.495	2026-08-06 07:41:01.406	2026-08-13 07:41:01.405	95f47583-10fc-471a-9687-5a448fafa989
+3182	3	$2b$10$6Jq4.oSuaHhaPIvnsiyBEOBm065AZDAM8D8Q/coOX6HTPh1DQ8dje	\N	\N	\N	f	2026-08-06 07:52:18.287	2026-08-06 07:52:18.287	2026-08-13 07:52:18.285	81562316-4f85-45e2-90ba-b774c2a68810
+3207	3	$2b$10$tpQ6Wk69Fqp0w5H0MlWSHut86m56/qAfHhEuZWPzXA.j/E3fr2Hkm	\N	\N	\N	f	2026-08-06 08:59:26.096	2026-08-06 08:59:26.096	2026-08-13 08:59:26.095	ca4cec25-0220-4318-b1ca-fe217dd22641
+3193	3	$2b$10$TxAnIr9dCfuQ0qnz0Wr55eYxvyQJrKWnetk3BPCiG2rXVRdWCYVJ6	\N	\N	\N	f	2026-08-06 08:42:01.852	2026-08-06 08:40:51.212	2026-08-13 08:40:51.211	0f8851dd-4daf-4dd8-9252-399da1b16a32
+3183	3	$2b$10$m22RaAnPioAWKy/bfUv.L.CAQLUFI2O7qUqWkZiiQujaLtbTF5RMa	\N	\N	\N	f	2026-08-06 07:57:47.192	2026-08-06 07:52:33.407	2026-08-13 07:52:33.406	c2f99733-016f-4097-9937-5effd82bc365
+3208	3	$2b$10$8qbOAm3IOVCeBo1E6vLECOfYj.MbKt9xg.JKZmB2hNPChUM9rI0Ia	\N	\N	\N	f	2026-08-06 08:59:34.488	2026-08-06 08:59:34.488	2026-08-13 08:59:34.486	a2f7a779-4284-4713-af66-0270d5bfe67c
+3194	3	$2b$10$hHSYXFUh8H6vNjka7Y2m7uyEBQArKB4FSmFLMGQduGUwRmfHiEZim	\N	\N	\N	f	2026-08-06 08:47:25.132	2026-08-06 08:42:43.523	2026-08-13 08:42:43.517	07b62cdb-b32b-45c8-9ac2-c2642f9acad7
+3195	3	$2b$10$dPz6jBeZikE7i1Nkahk1decxpV.FkK.48BfRy.aqtSkJr7pikNB4S	\N	\N	\N	f	2026-08-06 08:47:29.086	2026-08-06 08:47:29.086	2026-08-13 08:47:29.084	27be0fe5-b7b4-4656-92a2-1f51c31e3be6
+3196	3	$2b$10$CVveonf5hipvFIlXcoJkIOvT/4FjBFze3sUVKLrj.Ql09SI1WZWwu	\N	\N	\N	f	2026-08-06 08:47:45.691	2026-08-06 08:47:45.691	2026-08-13 08:47:45.69	df7d4b7c-9364-4191-aecf-abcb0b594870
+3197	3	$2b$10$oIfPT0P4X6QGVEnCZWNfVeEUG22HjUV24uY/u0NpWymUiYwNvIzO6	\N	\N	\N	f	2026-08-06 08:47:48.404	2026-08-06 08:47:48.404	2026-08-13 08:47:48.404	00b7fba4-624b-4ef4-a3f4-7a2e42680883
+3184	3	$2b$10$LgNzg5xkLD8yCzI5DDor9OoojkNytH.EBqsUWsyWjtCESJR2XVVFa	\N	\N	\N	f	2026-08-06 08:14:30.459	2026-08-06 07:59:48.381	2026-08-13 07:59:48.379	b3194f2c-71d6-4161-a304-cd0c92192d95
+3198	3	$2b$10$vbnNvxr9ultj43VxHkUmoOfHKpG6eMpKC87VFuSAq/JD7VTwG3GB2	\N	\N	\N	f	2026-08-06 08:50:50.041	2026-08-06 08:50:50.041	2026-08-13 08:50:50.033	c52beae6-82fd-4f5b-9f4d-ce7440079836
+3199	3	$2b$10$UPti6PmMHnAPjgvzyWczG.eWJdKXw.a3zub3sZHWuAvvLTL0SBqca	\N	\N	\N	f	2026-08-06 08:52:06.416	2026-08-06 08:52:06.416	2026-08-13 08:52:06.414	74fd47c7-ae67-46cb-8276-921eaa08ab33
+3185	3	$2b$10$AMclqLLhf/2SPIPkDh6J8eJ5nbOJU0pkjzb2ztnnGjoM76D9haeg.	\N	\N	\N	f	2026-08-06 08:26:42.893	2026-08-06 08:15:40.194	2026-08-13 08:15:40.19	dfc9a5b1-f194-4533-9162-f2cf9b327707
+3186	3	$2b$10$md2XTGtefd531VRqMxahYOmm.KUHbt8D/nF7.VoeuQTIqF/lYHPWG	\N	\N	\N	f	2026-08-06 08:28:05.622	2026-08-06 08:28:05.622	2026-08-13 08:28:05.616	34ad7e3d-2b3d-4730-bfec-a58239b4fc1b
+3187	3	$2b$10$.Z2C7AZTLcgSeATQVjhre.aeXcXn1XV7ZmxGvIvpEGb0/uAsoxyIe	\N	\N	\N	f	2026-08-06 08:28:27.269	2026-08-06 08:28:27.269	2026-08-13 08:28:27.267	1c99e0e1-7115-4bb6-b1bd-ccae2b9efea3
+3188	3	$2b$10$u3Gtk9xlQkxosRsYvIGVR.2JsoXyuuVOu.xoiwIlN64Sb3611HuvC	\N	\N	\N	f	2026-08-06 08:28:31.302	2026-08-06 08:28:31.302	2026-08-13 08:28:31.301	2c225bc5-5ebd-45dd-9dbf-ad12f5f2db6f
+3189	3	$2b$10$6m7WmXQ/PUwZKK0USUecBOaCYCA.JgpbwIFjT6pCYqABGHvbrh0M.	\N	\N	\N	f	2026-08-06 08:28:43.638	2026-08-06 08:28:43.638	2026-08-13 08:28:43.636	ad7cc2a8-0625-4ec3-9390-5e1683753ec5
+3190	3	$2b$10$AGdk2TPe3mgYIlmPR3zOxed8hzinAbblz.b0AxLls5mZ1JPhUk4Fi	\N	\N	\N	f	2026-08-06 08:28:51.724	2026-08-06 08:28:51.724	2026-08-13 08:28:51.724	b6234e03-1a27-4a36-8c06-6842eb12dcf3
+3191	3	$2b$10$2wime04ZBBVYBs38WUKxbe/in0lzxeunRaIbahHagLeHrz/yx2TUi	\N	\N	\N	f	2026-08-06 08:29:05.165	2026-08-06 08:29:05.165	2026-08-13 08:29:05.164	a535b343-9d12-4332-8021-8f6d07aeb54c
+3200	3	$2b$10$FcX//zZAqpxzd/HehFCUv.aZm2Uii.I1E0kr1JH3cieW/lgbWDLBq	\N	\N	\N	f	2026-08-06 08:56:32.547	2026-08-06 08:56:32.547	2026-08-13 08:56:32.544	9cd258b1-b2c2-4ff0-9d14-ff25c25904d0
+3192	3	$2b$10$/Th6CMZwJpQER52oH1/z1uw0BxkY2aAOLMkRgbWQt/ddvOSg0L8nW	\N	\N	\N	f	2026-08-06 08:40:13.877	2026-08-06 08:32:44.133	2026-08-13 08:32:44.131	4470e585-c661-497f-9175-28b3695dff32
+3201	3	$2b$10$YK2yf9I8.VlGnnGKChuOZefQgYunF05KgjOj14z2ZndkAUxKjq3Jm	\N	\N	\N	f	2026-08-06 08:58:17.115	2026-08-06 08:58:17.115	2026-08-13 08:58:17.115	b2efeb35-dedf-4dda-88b8-712206e9a449
+3202	3	$2b$10$t3AVDjEvJy2mUP1EQNeyROE4UU/PpP5yk.EqvQk6RicVdM6bx2Dya	\N	\N	\N	f	2026-08-06 08:58:47.395	2026-08-06 08:58:47.395	2026-08-13 08:58:47.394	6171b2fb-4b54-4ba1-8713-87c571765a8d
+3203	3	$2b$10$Tl8Ivkayq/heFIFwzhulVe3mmrZrCtJdMWj2UmygMJaEw.Y27upEC	\N	\N	\N	f	2026-08-06 08:58:55.195	2026-08-06 08:58:55.195	2026-08-13 08:58:55.194	d0147f5c-d877-4299-bee8-c21349f92730
+3204	3	$2b$10$MlVP0M3rdnSByxGIt45uZ.R7gIfM60KDdBq1dbRVld2TfwHM1V5Lu	\N	\N	\N	f	2026-08-06 08:59:01.021	2026-08-06 08:59:01.021	2026-08-13 08:59:01.02	1219d2ff-3ff0-4633-bbd3-30f3d66c9303
+3205	3	$2b$10$44M.EQCjYMvg4s9PApunYeE8IYrmqXhY98wLHSjgpjDh.CaiaoFa.	\N	\N	\N	f	2026-08-06 08:59:05.545	2026-08-06 08:59:05.545	2026-08-13 08:59:05.545	1aaa386f-1118-4efb-859c-5f10aa69a2be
+3206	3	$2b$10$MGu05Jr25Y6xnkyVskOxXuG2a0tC0Uzb5zwhHbGrsPiR4GqzOAL1q	\N	\N	\N	f	2026-08-06 08:59:10.709	2026-08-06 08:59:10.709	2026-08-13 08:59:10.708	ef12b509-822f-4fea-a3ab-3e6413bc2ca9
+3209	3	$2b$10$uCJE3sLXW.6U4l7xsvde.enWsaQ7k.QXwLT86pZKkAhyM7wn4fGb6	\N	\N	\N	f	2026-08-06 08:59:40.948	2026-08-06 08:59:40.948	2026-08-13 08:59:40.948	93f782cf-5d74-45a9-a826-d07455dc26d7
+3210	3	$2b$10$kOb9SWkKDUFm7xjY3Y/1dekbSSEPqlGfZw7pIpIAhrJ4joOHzciHm	\N	\N	\N	f	2026-08-06 08:59:59.792	2026-08-06 08:59:59.792	2026-08-13 08:59:59.791	ffe1ef60-e106-4f40-9b37-dd5a07652550
+3211	3	$2b$10$jjcesZ95Q1LWrxSMgTOpgOc7hvrsR5euBqlwSDziBbjUx.goh93DK	\N	\N	\N	f	2026-08-06 09:00:35.277	2026-08-06 09:00:35.277	2026-08-13 09:00:35.272	00bd3dbc-7620-408d-8872-e37bb2910224
+3212	3	$2b$10$Qhwtzr6NLQVIqk5HRJtaL.Gr3Qie.e1sU9K/5qjb.nRLEovUYNvcy	\N	\N	\N	f	2026-08-06 09:00:44.979	2026-08-06 09:00:44.979	2026-08-13 09:00:44.978	5bac35d3-80b1-406c-bd02-d5831f412728
+3213	3	$2b$10$s5QWZW9fC.ApIVVwpQ1Dw.P173VC/2aYfWlygBU.VImaq2YTqLtOO	\N	\N	\N	f	2026-08-06 09:00:52.872	2026-08-06 09:00:52.872	2026-08-13 09:00:52.871	a72701ea-1549-41e2-b610-77f65ebffcfe
+3214	3	$2b$10$CqBGsvVXUR/OmU8obAS2euMhTNWnmrJlloWHpzhPN5WCb4Nvx5My2	\N	\N	\N	f	2026-08-06 09:01:09.622	2026-08-06 09:01:09.622	2026-08-13 09:01:09.616	8f6600cd-201f-4db1-8045-516e77f49e17
+3215	3	$2b$10$R9mc4WE7Pbyj9VpR.0L0xOMThUkSE.dVPCEam5EDo3gQbfKRzHUse	\N	\N	\N	f	2026-08-06 09:01:16.835	2026-08-06 09:01:16.835	2026-08-13 09:01:16.835	9f7fc5a4-f733-4324-bc5d-0b0d1a8c133f
+3216	3	$2b$10$wuV3r5XOkBo39bLFo/rCDeEK2ydQcckRjbcU0OWxdQ89VXe5MSABS	\N	\N	\N	f	2026-08-06 09:01:24.934	2026-08-06 09:01:24.934	2026-08-13 09:01:24.933	921348b2-a74d-43e0-b242-c932949c09c7
+3217	3	$2b$10$IvN5WwgqHtwb5lu0KIrrgu4ieKyc7bStcKaGlUtZy2T8So/6UYpq2	\N	\N	\N	f	2026-08-06 09:01:28.906	2026-08-06 09:01:28.906	2026-08-13 09:01:28.906	77ac2039-26ea-448b-8350-7601f28e0a4b
+3218	3	$2b$10$96P/Rxgy4ku8CWz8OW0bOOvPNwP0NrWJuxwzch3l9jPGnf981LieC	\N	\N	\N	f	2026-08-06 09:01:32.086	2026-08-06 09:01:32.086	2026-08-13 09:01:32.086	ea992ffe-8d03-4370-a4b6-869692ac1f71
+3219	3	$2b$10$rBpYSACAJJk8l3Q.VXtaGOkvjV4ZG04UFNVtsll0rYKIC.FahcNKG	\N	\N	\N	f	2026-08-06 09:01:45.843	2026-08-06 09:01:45.843	2026-08-13 09:01:45.841	ddbf50c8-2d04-4502-8177-44a7adbea10c
+3220	3	$2b$10$yZvjeV4eu8vAfxnh9ZxnueaRt86GgCHBBYY7JMDx4.YTIMiyUtjIS	\N	\N	\N	f	2026-08-06 09:01:49.983	2026-08-06 09:01:49.983	2026-08-13 09:01:49.983	fe4a3f85-4abd-47bc-bbe3-3ff8dc3ebddc
+3221	3	$2b$10$yNOlous2USfB8gyAfcWOYODekW1br9WKR2q4mTDTRYH7Yu.143MFS	\N	\N	\N	f	2026-08-06 09:01:58.216	2026-08-06 09:01:58.216	2026-08-13 09:01:58.216	a45fa1f8-c0e0-4d0e-bb5c-5ebd5655b416
+3222	3	$2b$10$xzPqLuj3e9khAZj1hFdK4.5qpyRz1NacR43eNO2tU8HHgvhPBH/me	\N	\N	\N	f	2026-08-06 09:02:03.334	2026-08-06 09:02:03.334	2026-08-13 09:02:03.334	91d4a53c-683d-439c-8c20-8046cdc6c41c
+3223	3	$2b$10$B0J1qvr8dopKYVlIgX7a/OXk.5eQiwLqJD2BZ.vpRGMC0zuzCZb1.	\N	\N	\N	f	2026-08-06 09:02:12.16	2026-08-06 09:02:12.16	2026-08-13 09:02:12.159	e83544a1-b436-4bee-b917-9c090c871cef
+3224	3	$2b$10$KmnKRLwOhPl1NAl0DZXqtu27kRDOVF1OH/yffXxVCpR5jr2YY5Ve6	\N	\N	\N	f	2026-08-06 09:02:16.609	2026-08-06 09:02:16.609	2026-08-13 09:02:16.608	cb10c344-e61e-4c02-bf7d-c0e34585e9d8
+3225	3	$2b$10$RbEn6Gr9K/F9EqIiU9e6aOmWUXoh7E8k774hbSzRlcTTt7Px8MV4.	\N	\N	\N	f	2026-08-06 09:02:22.849	2026-08-06 09:02:22.849	2026-08-13 09:02:22.849	01f5f206-9a59-49ea-9790-85e3463a4fe9
+3226	3	$2b$10$gxZTBK6ANWqWXp6X7NCjk.C/sadk.1tgdHvT0Dem1fhEHwxSTRyFG	\N	\N	\N	f	2026-08-06 09:02:36.445	2026-08-06 09:02:36.445	2026-08-13 09:02:36.44	797f6a4e-c1d5-478d-883d-b8a5fd00932f
+3227	3	$2b$10$QzU8TKUHE26RUtr2u/mplOZsDyzvuECl3ZaaLd27jAsSvOmaVBl72	\N	\N	\N	f	2026-08-06 09:03:04.442	2026-08-06 09:03:04.442	2026-08-13 09:03:04.421	a5c9770e-b005-4667-a623-b3159373055d
+3228	3	$2b$10$/nOnAhi4bGhkMNPVtHuh/uif0SRClOpTpzQgm6j5Y11s1YOcGbQse	\N	\N	\N	f	2026-08-06 09:03:14.459	2026-08-06 09:03:14.459	2026-08-13 09:03:14.458	7e4d8fc6-a77d-4206-896f-df8663f6c6e3
+3247	3	$2b$10$qRT4OsbxQVW1TTq5rxgBKOh7A2qfraZo.wAMdfhD0yJtC1dnok072	\N	\N	\N	f	2026-08-06 09:31:21.918	2026-08-06 09:31:21.918	2026-08-13 09:31:21.917	63d95d51-f690-4897-92bc-ac2ccd91ca2f
+3229	3	$2b$10$hhtO4gBo0ulIDM4MaOCUp.PqmeDkK4P0aSBMeqxJqGSxlJOW.ia8K	\N	\N	\N	f	2026-08-06 09:06:10.998	2026-08-06 09:04:09.688	2026-08-13 09:04:09.685	269b3164-bb85-4f62-9502-4edebaeb054a
+3230	3	$2b$10$d3jQJaoHdvHJQ1ZIWll7euGTkiKRNb72Joog25k3tH2nHlEmeo/IK	\N	\N	\N	t	2026-08-06 09:16:19.806	2026-08-06 09:16:19.806	2026-08-13 09:16:19.801	472de7ea-4125-4174-9143-789feb807d31
+3231	3	$2b$10$.xWkNPlQjHfpC4Iu.a5Q3uHf0998u40fhRlhq8aVtGQdxSeULhica	Edge on Windows 10	::1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0	f	2026-08-06 09:19:15.999	2026-08-06 09:19:15.999	2026-08-13 09:19:15.964	6e2b341b-9b89-42a2-84bb-2e6fe1b90e09
+3232	3	$2b$10$ed9/21tzBPlCaRO6C0kS7.Wbgxa.m.liN10sDjsPpZ0ZPeRutE4MW	\N	\N	\N	f	2026-08-06 09:19:16.451	2026-08-06 09:19:16.451	2026-08-13 09:19:16.45	120649e1-bf11-4826-ac5c-beeee9f2fc5d
+3233	3	$2b$10$qBtlHrNnLHWvnbeHvrBx1e7VxrMQmicHc7mDW5NWdLcEKIdwzP88e	\N	\N	\N	f	2026-08-06 09:19:48.727	2026-08-06 09:19:48.727	2026-08-13 09:19:48.726	07d25ea9-d183-4774-b8e5-a8bf7fb33962
+3234	3	$2b$10$dPvD.ANCDSi95tV.Dmn5UerWgiFxz1LaxbHn3LPnM6TxACCZT.UUa	\N	\N	\N	f	2026-08-06 09:20:24.421	2026-08-06 09:20:24.421	2026-08-13 09:20:24.421	b0327594-3011-47a5-8346-0ed1c7782072
+3248	3	$2b$10$DI/SFg8U1z/BLIzJhQAgMuJZ4g6uSNt75VnVnO2Ksktg5AaBbFVMy	\N	\N	\N	f	2026-08-06 09:31:25.259	2026-08-06 09:31:25.259	2026-08-13 09:31:25.258	ee9192a7-654e-412d-b559-bc7e95210def
+3235	3	$2b$10$x05NAWhMd4veouT22AMeNeBibokesCEs32icX4NYpMhAP6StqJ3qi	\N	\N	\N	f	2026-08-06 09:26:54.931	2026-08-06 09:21:08.547	2026-08-13 09:21:08.546	73cd4128-147b-429b-a3d3-1c3e7801c9ea
+3236	3	$2b$10$/RrFOZCabXW5a0ErS6X7G.bBbs6NaT1CIgci37NqJLATVDmC1M5q.	\N	\N	\N	f	2026-08-06 09:26:56.679	2026-08-06 09:26:56.679	2026-08-13 09:26:56.676	aa1e3ef3-2f6b-4a96-9379-7051517db43b
+3237	3	$2b$10$haSxSPkiPgEU2khvY.yjQ.JILchNefZNewY8QQcC2IP7MAFP9lIcG	\N	\N	\N	f	2026-08-06 09:27:27.56	2026-08-06 09:27:27.56	2026-08-13 09:27:27.559	d4d0ec63-4c87-46ef-813a-5bccb0fc44d0
+3238	3	$2b$10$DhKlmSvitrJvFeLFdnv5BeEvgpjUFU.7PC4hnBY3UHHf136WKOqce	\N	\N	\N	f	2026-08-06 09:27:31.817	2026-08-06 09:27:31.817	2026-08-13 09:27:31.817	79dc359e-8b82-4257-b4b5-bf57ca9575ce
+3239	3	$2b$10$NK9hY10osx6DU.KOpCO1vOKnkZXcCrSZn3mQ/x4nE/9Y3xojVmxfG	\N	\N	\N	f	2026-08-06 09:27:37.484	2026-08-06 09:27:37.484	2026-08-13 09:27:37.483	bcd8c9b2-c1e4-4a65-9af1-ce5dbb78764a
+3240	3	$2b$10$FomRoJQoXlDMfoCcYLhohe4Stng6ouYPQGvw0c/5dt6c6jnWo91vi	\N	\N	\N	f	2026-08-06 09:28:04.102	2026-08-06 09:28:04.102	2026-08-13 09:28:04.102	3ca8e5b9-f94f-4101-9b22-e307692c7359
+3241	3	$2b$10$LeyTOQvXR60h/.40ctZp0epVtswg648aLkuowEQqrddnvcR5nIPv.	\N	\N	\N	f	2026-08-06 09:28:20.482	2026-08-06 09:28:20.482	2026-08-13 09:28:20.482	1b520186-e8eb-4608-b6cd-30aacf306d54
+3242	3	$2b$10$Yxa0zuxNFfnTurwQoGrBtuvIQqFHm/2m7nB29VS0g9PElcpoHoto.	\N	\N	\N	f	2026-08-06 09:29:18.478	2026-08-06 09:29:18.478	2026-08-13 09:29:18.478	cbcb2735-22ec-42b5-af2a-dd928117e0de
+3243	3	$2b$10$FEIzOuXp6cSuHz5MGTezWOIVPowwMXgQ472adv7qLiU3PPYX3bWry	\N	\N	\N	f	2026-08-06 09:30:07.188	2026-08-06 09:30:07.188	2026-08-13 09:30:07.188	148417fd-3f92-4348-9411-17b3273b200c
+3244	3	$2b$10$oAHza6PVwK0M8rcRg9qZr.SH9Sb6qPDoQIUaEqVRLe8TwlJjx7RbC	\N	\N	\N	f	2026-08-06 09:30:18.794	2026-08-06 09:30:18.794	2026-08-13 09:30:18.794	a853593c-3cb4-433c-90b8-2475c4d542f8
+3245	3	$2b$10$HQryQEYYHDp1vNWRSYskd.rCQJrjFp2nYCXLz0Sqf5/a8TprNBY0O	\N	\N	\N	f	2026-08-06 09:30:32.331	2026-08-06 09:30:32.331	2026-08-13 09:30:32.33	91bb1f83-4d7f-4d1a-915e-cb14b6c34c35
+3246	3	$2b$10$H/jH.m46X4M5C2g4h3c9vuhMrYEEXk5tvk4ovkS6wBScN9NYdZaKO	\N	\N	\N	f	2026-08-06 09:30:43.709	2026-08-06 09:30:43.709	2026-08-13 09:30:43.709	6d7ecdcb-15dc-49a6-8a46-4850903f5849
+3249	3	$2b$10$VvQWzIbIkJzE1ExeozNVMOR87tcn7tgzXI4mV3D9AN5RHKFsruYjK	\N	\N	\N	f	2026-08-06 09:31:29.177	2026-08-06 09:31:29.177	2026-08-13 09:31:29.176	8c97ed3f-347c-4f65-8006-3268ae36d24f
+3250	3	$2b$10$dmEBRou7aVps8.cH2R180e2JCA0VUHEfAX03NaNzarCXCrkl3ymj.	\N	\N	\N	f	2026-08-06 09:31:48.57	2026-08-06 09:31:48.57	2026-08-13 09:31:48.57	b1627d01-e068-45d8-84dd-ca8e8f13e09a
+3251	3	$2b$10$.70PKY/2GgP2oeEdplJbBeo6.wo7fLYC0XXQS5WpgikbLy47jba2G	\N	\N	\N	f	2026-08-06 09:31:52.095	2026-08-06 09:31:52.095	2026-08-13 09:31:52.095	818d3d5e-b1bf-4d3d-898c-6f752add16f3
+3252	3	$2b$10$xVq0rpiXFb4xFXWEDcfTuuCuRaPbWdWJLLE02TJEasryB0LBVExLK	\N	\N	\N	f	2026-08-06 09:32:01.253	2026-08-06 09:32:01.253	2026-08-13 09:32:01.253	615c7ca7-6e28-494a-bf5e-3d4b92c9cbd4
+3257	3	$2b$10$hlZdk8dhdifEPLShbkSAkOwsGn3ka5bDBnvr4GveHw4HoMFrlOR6.	\N	\N	\N	f	2026-08-06 09:38:32.481	2026-08-06 09:38:32.481	2026-08-13 09:38:32.48	a507a7c9-f992-41e2-821d-4fe7e833fe54
+3253	3	$2b$10$tXcc/yeEmHQkh8VnZEbgjumteuwB/gAQvzg7C.hWYIeV9LYj5UApy	\N	\N	\N	f	2026-08-06 09:33:38.215	2026-08-06 09:32:37.991	2026-08-13 09:32:37.991	24c24925-a72f-42db-9d73-05bc975bfdef
+3254	3	$2b$10$wbGYiA7OVow3lFFszW0YOeBZwAh3IR8DU1RsGivhBI/qjvB7iOWW2	\N	\N	\N	f	2026-08-06 09:37:18.887	2026-08-06 09:35:53.672	2026-08-13 09:35:53.663	32e7eab6-967a-4544-8e3e-875d3e622a0b
+3255	3	$2b$10$2g4DzmTsA6fgfi/x2LOhn.xK7lA0/PYloQlsnVJTtn4q7Kbc2Kwmm	\N	\N	\N	f	2026-08-06 09:38:08.175	2026-08-06 09:38:08.175	2026-08-13 09:38:08.174	b3bbd5e6-f511-4fdb-895e-89cb90fb3aed
+3256	3	$2b$10$sH.a.BIorv0IsNQrqUsV7e77GkXhVfV/8cysLB4g6949CRmQmJE1a	\N	\N	\N	f	2026-08-06 09:38:13.954	2026-08-06 09:38:13.954	2026-08-13 09:38:13.953	68c775d6-7223-4c83-86fd-bb9c848c610e
+3258	3	$2b$10$6GW/l/qzIk6inw15Vs0IJuC5Vl587KbuPh0smMPvWctHFTrflBEGy	\N	\N	\N	f	2026-08-06 09:39:37.791	2026-08-06 09:39:37.791	2026-08-13 09:39:37.79	d54b37c4-8bd9-4375-a3f2-fbc8169fa8d4
+3267	3	$2b$10$v/0eO8DNDVTxDRMuSafnhOctwEBhijE8VZ3FNsPOzKpOaC0jm9KMK	\N	\N	\N	f	2026-08-06 09:52:04.18	2026-08-06 09:52:04.18	2026-08-13 09:52:04.179	1c74de8e-2ffb-48ff-a562-d2933de5e201
+3259	3	$2b$10$XGHgSDYZWE3o7F1ASBYUEu3yGE33ZZ8.6HIBQt/u6LtGNrcjkMsha	\N	\N	\N	f	2026-08-06 09:41:00.925	2026-08-06 09:39:42.006	2026-08-13 09:39:42.006	bc80af36-88a7-496f-949c-96451b078521
+3260	3	$2b$10$WEgupVPJEkhtbI6o3XFpZOSpvUssFXvTo/GrcEeHVYAEs/t3sY0/i	\N	\N	\N	f	2026-08-06 09:42:03.619	2026-08-06 09:42:03.619	2026-08-13 09:42:03.618	14e2d5d6-7c32-49da-8c71-da7a5392257b
+3261	3	$2b$10$hg72091FsctPZ9lETxoqz.t6x2K.0cvqkuRk2Jt7mdoYAr3YsYBOO	\N	\N	\N	f	2026-08-06 09:42:30.316	2026-08-06 09:42:30.316	2026-08-13 09:42:30.315	e53f031f-e931-4878-9bdd-2d98e8f14e8e
+3262	3	$2b$10$aceXb0/eVZAnhhqES9i5H.h6bYCqD9Iqixf54KHSXKbXswCzBjUbq	\N	\N	\N	f	2026-08-06 09:46:48.509	2026-08-06 09:44:33.201	2026-08-13 09:44:33.199	f49f130e-e9a0-4a28-be0a-3cf9e78c1d28
+3263	3	$2b$10$UOCkM92fhTFZLfa9s3iNxuqMRkKigYKyQF1szLzETnxOSpJ8GWDyu	\N	\N	\N	f	2026-08-06 09:47:30.145	2026-08-06 09:47:30.145	2026-08-13 09:47:30.144	3ba71b90-cc1f-428a-90d5-efc27327f6ee
+3264	3	$2b$10$/H1jiUTfaHwna6Z8OCy9SubO9dxSKtkjeMwR6Lo3r0Vs1Pt9drC.u	\N	\N	\N	f	2026-08-06 09:47:50.693	2026-08-06 09:47:50.693	2026-08-13 09:47:50.693	10f80431-3672-499e-9905-6202c76df502
+3265	3	$2b$10$VlsZoiMlvtkoSw.MBeSxeOyhKyDTQrNJceShsSDL1phfwFnFx34gu	\N	\N	\N	f	2026-08-06 09:49:16.267	2026-08-06 09:48:04.56	2026-08-13 09:48:04.56	ce34c707-48ad-43d1-8120-f2be8a6b105c
+3266	3	$2b$10$boowCZyF3hbpfKyQgpVz1.1OtrScTdTxc5vLzv1Mo3eyrnW7/Waca	\N	\N	\N	f	2026-08-06 09:51:42.541	2026-08-06 09:50:31.017	2026-08-13 09:50:31.015	867fbbda-b621-45ae-baab-15a639ee473e
+3268	3	$2b$10$UqqnumrF93fSADTcIv7UmeLYRgaz6v32wew5W7HWuoG2nKkCdvltW	\N	\N	\N	f	2026-08-06 09:52:08.527	2026-08-06 09:52:08.527	2026-08-13 09:52:08.526	ce64ab19-ccf0-470d-96ea-f175cadc4956
+3269	3	$2b$10$MkLe0pvfURwcG2.wAVvW/et7xZkBevY264hzmCA2XvQGmmZ45Y/Zm	\N	\N	\N	f	2026-08-06 09:52:47.029	2026-08-06 09:52:47.029	2026-08-13 09:52:47.029	3954f235-6e3d-4a77-9854-4a816d69e2d0
+3270	3	$2b$10$U.H6fO5hjeTa3OFCQBkFZ.I2cTMe/x7z0jgy05pyClAMXeiAWic3.	\N	\N	\N	f	2026-08-06 09:52:50.876	2026-08-06 09:52:50.876	2026-08-13 09:52:50.876	40422211-bdeb-4dfa-aaaf-a67520adafe9
+3271	3	$2b$10$NUUY4MLPXAyOYuum67kuWetzyOY3uJk/vNWZiayvmwgvIEjZI5AE2	\N	\N	\N	f	2026-08-06 09:52:53.961	2026-08-06 09:52:53.961	2026-08-13 09:52:53.96	998246ce-e9d3-40a3-8f9f-79015055c477
+3272	3	$2b$10$N.vj2rmEcBVRfjbS1jxJx.2p4HaR406rXyMVfu623P016Vf9Hq/Ai	\N	\N	\N	f	2026-08-06 09:52:59.593	2026-08-06 09:52:59.593	2026-08-13 09:52:59.593	94b16ba8-537d-420d-b9d2-8ccc44cb9c35
+3273	3	$2b$10$QDVSwD8Un/nQouEhkg8mVOW6jDN/DKwxC25Yd.tCWzMUksL8rCie6	\N	\N	\N	f	2026-08-06 09:53:55.457	2026-08-06 09:53:55.457	2026-08-13 09:53:55.456	af34238a-493a-4fd0-92f4-7ce54386c918
+3274	3	$2b$10$Y/r8LqpiDOHLo8tjAwHp2uhRiecl5PdiclW07KfXgziClxQYjc6mi	\N	\N	\N	f	2026-08-06 09:54:46.528	2026-08-06 09:54:46.528	2026-08-13 09:54:46.527	ac683dbc-a16a-4d6a-a2ee-d55313db74dd
+3290	3	$2b$10$48tt2Jd69pgDwAH509oko.9O0783/QqdTmCTop.zelpHud/QTQfMW	\N	\N	\N	f	2026-08-06 10:09:13.754	2026-08-06 10:09:13.754	2026-08-13 10:09:13.754	728074c5-aa7d-4b73-a5b6-9b992d4fc449
+3275	3	$2b$10$7.m/PQaPGz/ZiVakicejzuXV8C6v9.S768PMCl/2cqLREu3h1VQwS	\N	\N	\N	f	2026-08-06 09:58:25.336	2026-08-06 09:56:53.662	2026-08-13 09:56:53.661	9e2c3d62-0473-4aa2-8d53-157d10620f7b
+3276	3	$2b$10$tzS5P5d.UooF7d/HSAuamu4FEjIzxTNncbIrvkxnsNMOySddPH9Jq	\N	\N	\N	f	2026-08-06 10:00:28.507	2026-08-06 09:58:55.387	2026-08-13 09:58:55.387	17f5bfcd-8d3e-4143-8013-79309f4085a9
+3277	3	$2b$10$4UCjzASvxFJtp1w1FsyZNOX1kdSmLTel/gnKJ13I.JuSOW0jfuFiK	\N	\N	\N	f	2026-08-06 10:01:06.454	2026-08-06 10:01:06.454	2026-08-13 10:01:06.453	22a2588a-9d99-452b-8bb1-dfaab492b542
+3291	3	$2b$10$SAusN6GFxYLDF7Uz9YopMuPEiR1ASj5r3I5T.wqrGToT9Wd.l..E2	\N	\N	\N	f	2026-08-06 10:09:19.656	2026-08-06 10:09:19.656	2026-08-13 10:09:19.651	9a78c382-f35e-46c9-bb5c-2418fb536bf5
+3278	3	$2b$10$DkC.j.4MU8P5UTQ5DSK52usQ8yoSQ500wdUP05gYsRmqrFcT0tfy.	\N	\N	\N	f	2026-08-06 10:06:44.179	2026-08-06 10:02:07.904	2026-08-13 10:02:07.904	340fc3dd-17e2-4789-a3be-1b0f8873caa3
+3279	3	$2b$10$A57Z6wQ/TxFeeXyFANwDb.WwJmr5S4.vPZoGs7f9d/RnqnUR90/DC	\N	\N	\N	f	2026-08-06 10:07:07.303	2026-08-06 10:07:07.303	2026-08-13 10:07:07.302	72c5136b-2a40-4edc-b7bd-75433c62a735
+3280	3	$2b$10$u1CaIQ5a/lIq8g2Z2Qilw.bV68iWkE4EKKh15SHu4LsG6giPgYwkG	\N	\N	\N	f	2026-08-06 10:07:23.741	2026-08-06 10:07:23.741	2026-08-13 10:07:23.741	c6628699-a6a0-45c1-bf98-b2a0a712d6e1
+3281	3	$2b$10$3FHr3pEYfQEa7/k8UeNPkuWdGDWS0Byeapc81BXr9AsSKutttTrEK	\N	\N	\N	f	2026-08-06 10:07:27.826	2026-08-06 10:07:27.826	2026-08-13 10:07:27.825	daf77e1a-e584-4829-8742-3713bdda85e8
+3282	3	$2b$10$3aZycR05kdltklz45uYLJOhZlh8INx72YCqAZekF6U8v68j6l7Zh.	\N	\N	\N	f	2026-08-06 10:07:32.61	2026-08-06 10:07:32.61	2026-08-13 10:07:32.61	45460284-1894-4f31-8591-2b4d99b9193e
+3283	3	$2b$10$tB.AT24MntkrSTRNGz6fBuaBUKwsZAOU.PNNGJDcuM2Lf8TGwT/Si	\N	\N	\N	f	2026-08-06 10:07:56.786	2026-08-06 10:07:56.786	2026-08-13 10:07:56.785	d65e6d28-38b0-4d5a-91ee-1f3dd5180cd9
+3284	3	$2b$10$drr20vvSwYeUZqkKxaiv/.gc2P4CX/t9U/w/t1kPUHUbWfjOKlb22	\N	\N	\N	f	2026-08-06 10:07:59.702	2026-08-06 10:07:59.702	2026-08-13 10:07:59.702	1da6ee60-6daa-4748-9301-573d57176248
+3285	3	$2b$10$2Dtg.23ThxdAUOfDRhXITO/fOewFpGaKYTNwQIua5xNFzTfp0109e	\N	\N	\N	f	2026-08-06 10:08:15.159	2026-08-06 10:08:15.159	2026-08-13 10:08:15.158	c4966941-d703-47d1-adb9-8cee3d361acb
+3286	3	$2b$10$nKJLxgRUKSXOLSUgquL.NesLXNCVnU4UeRu/ge0pgILXE/rnB05Oe	\N	\N	\N	f	2026-08-06 10:08:19.604	2026-08-06 10:08:19.604	2026-08-13 10:08:19.604	18e17245-452c-43e3-9efc-1c349e2bf5af
+3287	3	$2b$10$uH1q/46IMKNcpwIkIhF/e.7yJijxnhBk9lFgVtJyUALPbpkDM941C	\N	\N	\N	f	2026-08-06 10:08:23.313	2026-08-06 10:08:23.313	2026-08-13 10:08:23.313	cbe64100-a526-445d-b3de-d5cea3435596
+3288	3	$2b$10$q7aNekAQq168YHmNiKDxxu5cHs.PJu9nk8d9ZrY5rhi50w6jjncbG	\N	\N	\N	f	2026-08-06 10:08:28.573	2026-08-06 10:08:28.573	2026-08-13 10:08:28.572	a8cddc9e-5987-492e-b0fa-95b1eea46139
+3289	3	$2b$10$tSB7R/DTNbR/8PvoZFW0CeYpqCd/sDo7Hd9KV5r5Sv9l4jCIAmAfu	\N	\N	\N	f	2026-08-06 10:09:10.752	2026-08-06 10:09:10.752	2026-08-13 10:09:10.747	143faab7-ccfc-4a90-9dc4-24f647656ed1
+3292	3	$2b$10$EVQ6fKNtoV8lw9zVOShYDuds4iZTE85SoipWh7vLjNFxJdnR32O/W	\N	\N	\N	f	2026-08-06 10:09:24.731	2026-08-06 10:09:24.731	2026-08-13 10:09:24.729	1d4627a5-7f5b-48be-af23-ffc7195c59ae
+3300	3	$2b$10$/rOCBkXJMsIxbj4ExDIbfOPNXGaTWuDBLT.Z1gIjepMRTh9vZ2Ryy	\N	\N	\N	f	2026-08-06 10:15:07.907	2026-08-06 10:15:07.907	2026-08-13 10:15:07.905	21647d46-c8b9-44f7-b59a-5ccc8aec8d89
+3293	3	$2b$10$zswP/U2LgLXT1SNJCGTk1u7enWbGlZ9i9qddfKaH0PBr8V7VxZQvu	\N	\N	\N	f	2026-08-06 10:10:33.466	2026-08-06 10:09:32.165	2026-08-13 10:09:32.164	a4719c69-aa0f-443c-a051-e592c572b093
+3294	3	$2b$10$LD3MkFZLZY0xl2eVPu/gG.YVnzhomIEdnbDLLvov4MT05t/nohWwS	\N	\N	\N	f	2026-08-06 10:12:04.179	2026-08-06 10:12:04.179	2026-08-13 10:12:04.176	73f7de99-5d5e-489a-a709-234661aa6368
+3295	3	$2b$10$dPBNzoFxkmuKLWui5miiJe7R3q5fB65ZIKkQynwsh5vXZy8YEOSUK	\N	\N	\N	f	2026-08-06 10:13:32.055	2026-08-06 10:13:32.055	2026-08-13 10:13:32.054	74ae91b0-f6cd-4e57-a3c6-fe90447ddc87
+3296	3	$2b$10$o1A1awOJkqGBbdyRxYf/6e4pF9PFVfHdBsl3JAWsptCKo4sNZfL2S	\N	\N	\N	f	2026-08-06 10:13:57.091	2026-08-06 10:13:57.091	2026-08-13 10:13:57.089	d9d48358-c6ae-4364-96f9-7ae59b3a3bf1
+3297	3	$2b$10$tCmpzX8bhyMGygh/E10W0OMyXj3lO37Aqw04br2my4gq39e4xQj2G	\N	\N	\N	f	2026-08-06 10:14:06.878	2026-08-06 10:14:06.878	2026-08-13 10:14:06.877	7d08933c-3291-4c08-9f19-0485be88b31a
+3298	3	$2b$10$hmnkBpNUiaaG1wLq1E0rNeNkLK6UKsDCM8nULxqKaRYMhVW6If7b2	\N	\N	\N	f	2026-08-06 10:14:53.985	2026-08-06 10:14:53.985	2026-08-13 10:14:53.985	8998ba5e-291c-4029-8d2a-811af0b6ab79
+3299	3	$2b$10$dEcmFleptpzic3rlidQBA.jeK5Ip8xdtSGdhSAyYws5p2Wp47RGEK	Edge on Windows 10	::1	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0	f	2026-08-06 10:15:07.339	2026-08-06 10:15:07.339	2026-08-13 10:15:07.332	b5ff3c41-712d-4bef-9f1e-fc39444f52ba
+3301	3	$2b$10$vsUT1XYbn6VzOEzwFQrw4uzxqOxCcPaUKwNpOmoFJE7h0dwXTAc96	\N	\N	\N	f	2026-08-06 10:15:42.814	2026-08-06 10:15:42.814	2026-08-13 10:15:42.813	948a46c3-640f-45b3-a3b6-f5fa65a52564
+3308	3	$2b$10$S7EBDVkXdj6F3RTQRxz.2epfRSwL9LdNxPINulIm32A/.vm/cJ8Ua	\N	\N	\N	f	2026-08-06 10:25:11.506	2026-08-06 10:25:11.506	2026-08-13 10:25:11.499	0e3aa7cc-d64d-4837-b3bc-e262c62f02e5
+3302	3	$2b$10$W/0VBV9YfUnHXVeN.HaL3u9gNGiZeeUlrDPGrDl12/iNxi.L/C8cC	\N	\N	\N	f	2026-08-06 10:17:46.093	2026-08-06 10:16:20.011	2026-08-13 10:16:20.008	e2bd450a-13b0-4efd-b8f8-c8aa0ce28683
+3303	3	$2b$10$qEWKNo5C4n1zrH/vwJmbDOftQ0nPLPr0nnF51XpUWA3HiBhDCz05m	\N	\N	\N	f	2026-08-06 10:17:52.909	2026-08-06 10:17:52.909	2026-08-13 10:17:52.907	bdf8592e-aa0f-47cf-a4b4-f821ffb1db63
+3305	3	$2b$10$.yQfn.Y5Cb60qL5s.fCRUuP2DdxbV7z3vEK9lwWlTO6sq/EFFdnUC	\N	\N	\N	f	2026-08-06 10:23:52.34	2026-08-06 10:21:27.916	2026-08-13 10:21:27.913	e9818c16-c511-459b-b2c2-74a115434b97
+3304	3	$2b$10$BxNQHK8tOWCEp4eNzi4TxuDx.7YJi7y586xLrUXahhYUESatuoX4.	\N	\N	\N	f	2026-08-06 10:21:07.984	2026-08-06 10:19:06.276	2026-08-13 10:19:06.271	299b7bcf-1248-431a-851a-0fdae56ad4ce
+3306	3	$2b$10$ZLJlIA2Z/hN4Aw.AsNn5Vu1IMkcHqAkKJr/aVGixH.cah3CIYAHvm	\N	\N	\N	f	2026-08-06 10:24:05.791	2026-08-06 10:24:05.791	2026-08-13 10:24:05.785	18c19c7e-0722-454d-94da-530fad36c28f
+3307	3	$2b$10$q/bG/j28HB964/sqDqOq9.CxRUPpoNVnjEHncmQAI7u/3BU8uZel2	\N	\N	\N	f	2026-08-06 10:24:34.561	2026-08-06 10:24:34.561	2026-08-13 10:24:34.56	23743492-6494-44bc-93a2-595b684459bf
+3309	3	$2b$10$qBK4ZZfw8dM1Xr3L4UJGj.vRBqzin55jdIOOpqF7eQFnfDxx.Hy/u	\N	\N	\N	f	2026-08-06 10:25:46.784	2026-08-06 10:25:46.784	2026-08-13 10:25:46.777	98705b67-3f4f-4054-bb1d-dbacd5b2d5b1
+3310	3	$2b$10$mAH72wqNOBVf/XXLMdB0Z.ROmWYkTv0RRVMxcBc0pvjqcwE/O47UK	\N	\N	\N	f	2026-08-06 10:45:55.825	2026-08-06 10:45:55.825	2026-08-13 10:45:55.794	d6ddf42d-c0a3-478d-9e86-88e4162d7d9a
+3311	3	$2b$10$JZWpNoRVPjjsjYy5Iuj7K.au3TDmBIpTGuu.SyLpx3nZw0yxt9f/K	\N	\N	\N	f	2026-08-06 10:46:31.348	2026-08-06 10:46:31.348	2026-08-13 10:46:31.348	61da862a-a674-47e3-8e37-9f1009a60dd2
+3312	3	$2b$10$X83QG6MYdb1JqzVos26xM.E3f1BtnTyrDG75X3eE7T7nqGWoJtwYS	\N	\N	\N	f	2026-08-06 10:50:11.018	2026-08-06 10:50:11.018	2026-08-13 10:50:11.009	adbcd6a0-7f01-4705-9176-ba08dc9e4e51
+3313	3	$2b$10$.CQ3qJuAmEaKIspgXMkEpeZdee.mGO4Jl.eRqSeJNEltNtD0kg/Oy	\N	\N	\N	f	2026-08-06 10:51:15.103	2026-08-06 10:51:15.103	2026-08-13 10:51:15.097	064e3ffd-40f6-41d7-8e20-abbd67a82ab2
+3314	3	$2b$10$JEpGngQteUu.OwL5EPlkfu4aTWJIsjnrZrvzYHNpWOUlczlKUNKZi	\N	\N	\N	f	2026-08-06 10:53:19.133	2026-08-06 10:53:19.133	2026-08-13 10:53:19.13	92673233-f858-45e6-afb5-9bb1c177ca47
+3315	3	$2b$10$NFQLWa.kPFPkckzE1AAaauyhO0MwJkbGo7HY.95Z2inDdk/lK6dSC	\N	\N	\N	f	2026-08-06 10:53:56.817	2026-08-06 10:53:56.817	2026-08-13 10:53:56.812	4c64a4f8-2677-4081-b5ba-d65a826c0d29
+3333	3	$2b$10$mtn0cLPGxJyrABBtfxVPae0tpJlpaZF/S4iLNvapc9oAXA2bAOOhi	\N	\N	\N	f	2026-08-06 11:29:10.281	2026-08-06 11:29:10.281	2026-08-13 11:29:10.279	69a2da94-e02e-495e-8b2e-b1f24c0c8e67
+3316	3	$2b$10$Nr.KIDL2L7bkUBhDgtDGn.R9RM3aCngMzftcnDgalx0HBo.EgYQna	\N	\N	\N	f	2026-08-06 11:01:01.144	2026-08-06 10:57:26.563	2026-08-13 10:57:26.56	4058b3c8-4386-461b-b109-88c29434fdf4
+3317	3	$2b$10$bI4B.oJdFn/glqXlBns8puYNTv44H9w.RYB1TqTf8tbCH20oLGuM2	\N	\N	\N	f	2026-08-06 11:02:44.098	2026-08-06 11:01:27.798	2026-08-13 11:01:27.795	e0531ba0-434d-4d91-a791-01e2bcf5c3ab
+3318	3	$2b$10$Y.R.homFYL5uELWU3Y2FUuaV5dBLsQRgsQKrPpQXNolpugevdCQbC	\N	\N	\N	f	2026-08-06 11:03:15.928	2026-08-06 11:03:15.928	2026-08-13 11:03:15.919	331b794f-9fd6-424f-9b6b-ec880ccf36d0
+3319	3	$2b$10$Rh7gXNp2st6wGmAGPnIap.HNXQAGBkyRsn8P1QjFxPMAOgtkRMjW.	\N	\N	\N	f	2026-08-06 11:05:11.86	2026-08-06 11:05:11.86	2026-08-13 11:05:11.857	88c400ac-21f9-488b-aa08-506c7f6343be
+3320	3	$2b$10$ht8quIVl8MP6DkbzgnU71ue9RskXwGo2xjN3m90JnO9XoYOed6Gbe	\N	\N	\N	f	2026-08-06 11:06:28.856	2026-08-06 11:06:28.856	2026-08-13 11:06:28.842	a6e7e403-ce9c-4d50-85b6-6d5a2c072bfd
+3321	3	$2b$10$VtLcwLIyuPGplR2.NexbrenjUbKdqUAf7.8Vf3SVF/RNt.oTTyN9C	\N	\N	\N	f	2026-08-06 11:07:09.057	2026-08-06 11:07:09.057	2026-08-13 11:07:09.054	585e19cc-32d7-4b17-be33-af9b2adaf3b6
+3322	3	$2b$10$vXEETMWE7QifqHlcaHl3Ye1HgbTDoGs33RBqxB0etR9jqCg6sEtxW	\N	\N	\N	f	2026-08-06 11:08:02.792	2026-08-06 11:08:02.792	2026-08-13 11:08:02.789	34893028-f1dd-4eea-a62f-abca67fd1773
+3323	3	$2b$10$g58FsXLxkWfiGIYmZ92DReg.ApV6vWFZJaJiIZR37YGujmY6kY70O	\N	\N	\N	f	2026-08-06 11:08:08.182	2026-08-06 11:08:08.182	2026-08-13 11:08:08.18	85ea4494-55d4-46e8-903d-ae49b7d91863
+3324	3	$2b$10$cSi0xErDy10b.GTF7Hkh4Ojc3KQ/HE.EaT7ji2l2w9KduVEcDlz.K	\N	\N	\N	f	2026-08-06 11:08:16.096	2026-08-06 11:08:16.096	2026-08-13 11:08:16.096	a30d61c3-06cc-477b-a95e-d1659deb1f5d
+3325	3	$2b$10$8imWkd8jhezbcsvHyUDL1.MjxOSIgTzAZRtFlf37tbKsIz9mrPUCq	\N	\N	\N	f	2026-08-06 11:08:21.119	2026-08-06 11:08:21.119	2026-08-13 11:08:21.119	2504c55f-5907-4e5f-94c6-b37b6d840187
+3326	3	$2b$10$17WeDYZHe9W1NYNNcIF2y.5TQe99ILPflRdHzlx1pJG/x5So9xJs2	\N	\N	\N	f	2026-08-06 11:08:30.196	2026-08-06 11:08:30.196	2026-08-13 11:08:30.195	afaeccd3-941a-4a9d-9dd2-b50aa1eb4722
+3327	3	$2b$10$eqdp.3.xqE.dHHTk.ca2aehT3jdFRPP9..UoHkWVRsXAzQuyazB/i	\N	\N	\N	f	2026-08-06 11:09:27.82	2026-08-06 11:09:27.82	2026-08-13 11:09:27.817	1dd4d511-e5b0-43d0-8992-5943906c98ec
+3328	3	$2b$10$GfgOwUognRvOMXEmmXUMueMAjSdto71v/yelAg.R9.aEpZlpieeUq	\N	\N	\N	f	2026-08-06 11:09:40.439	2026-08-06 11:09:40.439	2026-08-13 11:09:40.438	9752115e-5ff6-405b-9318-69605cd64aaf
+3329	3	$2b$10$QZEv6c6Lwy5z0axef1soQORdxfoeR8Xyftw51kP2mQCL44desuJFy	\N	\N	\N	f	2026-08-06 11:09:47.479	2026-08-06 11:09:47.479	2026-08-13 11:09:47.477	938fd1dd-f696-4f1e-aa59-856928eb3ac3
+3334	3	$2b$10$5QDTkewyFTgfqvTK2YOxf.MlB3aD5W7aMvTeBYq9N/VPY72Nr9suq	\N	\N	\N	f	2026-08-06 11:32:16.581	2026-08-06 11:30:54.358	2026-08-13 11:30:54.354	e3435681-554f-4fca-804e-509bc6b8c57d
+3335	3	$2b$10$6MVAXwvYb2/04UU/SWlN6OmzzZZChU.nCGwZOGZ2xHiaOxluPH.VS	\N	\N	\N	f	2026-08-06 11:34:21.95	2026-08-06 11:33:18.274	2026-08-13 11:33:18.269	afa03b96-91f6-4865-af16-d2f41d3907b9
+3330	3	$2b$10$Mg8SKYCSnIqQ7ur.J0MiYeAHW97Cbk7RknkE0OxRnvvzVdQwUtEiO	\N	\N	\N	f	2026-08-06 11:18:29.985	2026-08-06 11:10:27.347	2026-08-13 11:10:27.342	9e05a336-c542-4dd9-88f1-bf059d1f4e61
+3331	3	$2b$10$hY.J3MzVFcQkPQiQaz25J.XsPCKwqZAc7k68rRoNrVK4g9We80gGW	\N	\N	\N	f	2026-08-06 11:20:59.855	2026-08-06 11:20:59.855	2026-08-13 11:20:59.854	b8828717-0ba3-44b8-9a6a-42c81879ff57
+3332	3	$2b$10$h1OdDu4oae3W9HTC7Lj1Te6R34lZrXOmA9XoK/4fRTe8iTSJMGXMm	\N	\N	\N	f	2026-08-06 11:28:42.278	2026-08-06 11:28:42.278	2026-08-13 11:28:42.271	b562d77c-251e-454f-a96b-17e84f58cfeb
+3336	3	$2b$10$0yooFRbNOylqaJ7xae5nXer5YJOuuk2viDvixQ99eVaT4I/G8ijRq	\N	\N	\N	f	2026-08-06 11:34:37.435	2026-08-06 11:34:37.435	2026-08-13 11:34:37.432	23cbc225-243d-4182-9230-bd72faf31f20
+3337	3	$2b$10$gEJCT.ZwyCO1srgRSiMJa.RqtXxAjJJw2iQkqJxqcsFXcULQSplVi	\N	\N	\N	f	2026-08-06 11:40:36.794	2026-08-06 11:36:54.801	2026-08-13 11:36:54.798	9654f1ba-a730-46ac-9d79-636a3215e1a2
+3338	3	$2b$10$DmPF3qtTPPoDwFlFzbAGVe4du3vxe1cB77fuh/eLkEx05goFoATdm	\N	\N	\N	f	2026-08-06 11:42:52.587	2026-08-06 11:42:52.587	2026-08-13 11:42:52.576	d2db5ff0-c2f3-46ad-92a7-476675b636a8
+3340	3	$2b$10$fprQNI8xUm10C8ykkFu4Lel4tp8IGLq6ONvIuMJc15m1HxyVUO0k2	PostmanRuntime/7.56.0	::1	PostmanRuntime/7.56.0	t	2026-08-06 11:51:17.511	2026-08-06 11:46:22.496	2026-08-13 11:46:22.447	09a9f2aa-2c37-4901-b2cc-449dee328e41
+3339	3	$2b$10$Yp9/I1sLkUDoekoqnyv/pelGdsmfI0FQ/YNgEyb.3nGGwnJOEMNNS	\N	\N	\N	f	2026-08-06 11:46:39.49	2026-08-06 11:43:53.016	2026-08-13 11:43:53.015	ee3443c8-168d-4777-b2fe-4f17a1f04c1c
+3341	3	$2b$10$.NP/cVnxDaT.xkpryURQp.lewfzRR3jNXKoAGBPpCWpKalSjUALMq	\N	\N	\N	t	2026-08-06 11:52:51.106	2026-08-06 11:52:51.106	2026-08-13 11:52:51.099	2d048f73-5ef3-4e4a-972f-e8889db1b8f3
 \.
 
 
@@ -5607,7 +8571,7 @@ c778c177-86d5-47c4-a7a8-884bea8e9204	f6f55ee5225cd339db18722edcb3f16117e6f20b1d6
 -- Name: AuditLog_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 1395, true);
+SELECT pg_catalog.setval('maintix."AuditLog_id_seq"', 1407, true);
 
 
 --
@@ -5628,14 +8592,14 @@ SELECT pg_catalog.setval('maintix."BreakdownReport_id_seq"', 9, true);
 -- Name: ChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 143, true);
+SELECT pg_catalog.setval('maintix."ChecklistItem_id_seq"', 144, true);
 
 
 --
 -- Name: ChecklistTemplate_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 66, true);
+SELECT pg_catalog.setval('maintix."ChecklistTemplate_id_seq"', 67, true);
 
 
 --
@@ -5656,7 +8620,7 @@ SELECT pg_catalog.setval('maintix."EmailVerification_id_seq"', 19, true);
 -- Name: EquipmentType_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."EquipmentType_id_seq"', 32, true);
+SELECT pg_catalog.setval('maintix."EquipmentType_id_seq"', 36, true);
 
 
 --
@@ -5684,7 +8648,7 @@ SELECT pg_catalog.setval('maintix."Location_id_seq"', 10, true);
 -- Name: Notification_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."Notification_id_seq"', 14, true);
+SELECT pg_catalog.setval('maintix."Notification_id_seq"', 355, true);
 
 
 --
@@ -5698,14 +8662,14 @@ SELECT pg_catalog.setval('maintix."Organization_id_seq"', 11, true);
 -- Name: PMSchedule_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."PMSchedule_id_seq"', 17, true);
+SELECT pg_catalog.setval('maintix."PMSchedule_id_seq"', 20, true);
 
 
 --
 -- Name: PMTask_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."PMTask_id_seq"', 24, true);
+SELECT pg_catalog.setval('maintix."PMTask_id_seq"', 362, true);
 
 
 --
@@ -5726,7 +8690,7 @@ SELECT pg_catalog.setval('maintix."Role_id_seq"', 5, true);
 -- Name: TaskChecklistItem_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."TaskChecklistItem_id_seq"', 125, true);
+SELECT pg_catalog.setval('maintix."TaskChecklistItem_id_seq"', 2153, true);
 
 
 --
@@ -5747,7 +8711,7 @@ SELECT pg_catalog.setval('maintix."UserRole_id_seq"', 38, true);
 -- Name: UserSession_id_seq; Type: SEQUENCE SET; Schema: maintix; Owner: -
 --
 
-SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 3102, true);
+SELECT pg_catalog.setval('maintix."UserSession_id_seq"', 3341, true);
 
 
 --
@@ -6581,5 +9545,5 @@ ALTER TABLE ONLY maintix."User"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict XwC4SEJ0CPeRb30uz294hPAm1unfoSOIvhIagJRlEkxvYHBYwyxnpxLXGOTbufR
+\unrestrict bhyH0gYn7t4D7SSCYxadXcoeJ1NR4tOKOKPRWSGpSvKKDY5TlKmxwAdmpOkkh9i
 

@@ -90,13 +90,13 @@ export function EquipmentType() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {/* Add Equipment field for mobile view */}
           {canAccess && (
-            <div className="sm:hidden">
+            <div className="lg:hidden">
               <Dialog open={addTypeOpen} onOpenChange={setAddTypeOpen}>
                 <DialogTrigger
                   render={
                     <button
                       type="button"
-                      className="flex w-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-8 text-muted-foreground transition-colors hover:bg-muted/50"
+                      className="flex w-full h-full flex-col items-center justify-center rounded-md border-2 border-dashed border-border px-5 py-8 text-muted-foreground transition-colors hover:bg-muted/50"
                     >
                       <Plus className="size-10" aria-hidden="true" />
 

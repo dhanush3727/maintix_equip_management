@@ -22,8 +22,8 @@ export const scheduleService = {
   // Get schedule list
   async getSchedules(
     params: ScheduleParams,
-  ): Promise<ApiResponse<ScheduleData>> {
-    const { data } = await api.get<ApiResponse<ScheduleData>>(
+  ): Promise<ApiResponse<ScheduleData[]>> {
+    const { data } = await api.get<ApiResponse<ScheduleData[]>>(
       SCHEDULE_ENDPOINTS.LIST,
       {
         params,

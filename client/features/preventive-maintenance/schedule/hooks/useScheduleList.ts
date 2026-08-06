@@ -12,7 +12,7 @@ export const useScheduleList = ({
   ...params
 }: ScheduleListParam) => {
   return useQuery({
-    queryKey: [...QUERY_KEYS.schedule.list, params],
+    queryKey: [...QUERY_KEYS.schedule.list, "table", params],
     queryFn: () => scheduleService.getSchedules(params),
     placeholderData: keepPreviousData,
     enabled,

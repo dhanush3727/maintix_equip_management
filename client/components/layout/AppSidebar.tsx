@@ -74,7 +74,7 @@ export function AppSidebar() {
   });
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="z-20">
       <SidebarHeader>
         <div className="flex items-center gap-3">
           <Image src={Logo} alt="Maintix" width={32} height={32} />
