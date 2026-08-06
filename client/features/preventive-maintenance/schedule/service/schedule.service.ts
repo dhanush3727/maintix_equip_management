@@ -4,6 +4,7 @@ import {
   ScheduleDataById,
   ScheduleParams,
   ScheduleRequest,
+  UpdateScheduleRequest,
 } from "../types/schedule.type";
 import api from "@/services/api/api";
 import { SCHEDULE_ENDPOINTS } from "../constant/schedule.constant";
@@ -45,7 +46,7 @@ export const scheduleService = {
   // Update schedule
   async updateSchedule(
     id: number,
-    payload: ScheduleRequest,
+    payload: UpdateScheduleRequest,
   ): Promise<ApiResponse<void>> {
     const { data } = await api.patch<ApiResponse<void>>(
       SCHEDULE_ENDPOINTS.UPDATE(id),

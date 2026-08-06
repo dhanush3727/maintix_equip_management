@@ -5,3 +5,9 @@ export function formatDate(dateStr: string): string {
 
   return `${day}/${month}/${year}`;
 }
+
+export function formatStartDate(dateStr: string): string {
+  const date = dateStr.split("T")[0];
+
+  return date;
+}

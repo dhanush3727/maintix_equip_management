@@ -15,6 +15,8 @@ import { ScheduleTable } from "./ScheduleTable";
 import { DataPagination } from "@/components/common";
 import { useScheduleInfiniteList } from "../hooks/useScheduleInfiniteList";
 import { ScheduleCard } from "./ScheduleCard";
+import { Dialog, DialogContent } from "@/components/ui";
+import { UpdateSchedule } from "./UpdateSchedule";
 
 export interface ScheduleParamsValues {
   page?: number;
@@ -78,6 +80,8 @@ export function Schedule() {
   const scheduleCardList =
     scheduleCardData?.pages.flatMap((page) => page.data ?? []) ?? [];
 
+  const [editScheduleId, setEditScheduleId] = useState<number | null>(null);
+
   return (
     <div className="space-y-6">
       <FilterItems
@@ -96,7 +100,7 @@ export function Schedule() {
           scheduleList={scheduleTableList}
           isLoading={isScheduleTable}
           isError={isScheduleTableError}
-          onEdit={() => {}}
+          onEdit={setEditScheduleId}
         />
 
         {!isScheduleTable && !isScheduleTableError && pagination && (
@@ -112,9 +116,27 @@ export function Schedule() {
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           fetchNextPage={fetchNextPage}
-          onEdit={() => {}}
+          onEdit={setEditScheduleId}
         />
       </div>
+
+      <Dialog
+        open={editScheduleId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditScheduleId(null);
+          }
+        }}
+      >
+        <DialogContent className={"w-[90vw] max-w-6xl"}>
+          {editScheduleId !== null && (
+            <UpdateSchedule
+              id={editScheduleId}
+              onClose={() => setEditScheduleId(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

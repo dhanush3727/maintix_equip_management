@@ -9,6 +9,13 @@ export interface ScheduleRequest {
   assignedTo: number;
 }
 
+export interface UpdateScheduleRequest {
+  frequencyType?: FrequencyType;
+  interval?: number;
+  startDate?: string;
+  assignedTo?: number;
+}
+
 export interface ScheduleParams extends QueryParams {
   equipment?: string;
   template?: string;

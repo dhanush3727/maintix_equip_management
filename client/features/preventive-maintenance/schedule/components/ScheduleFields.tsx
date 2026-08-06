@@ -12,14 +12,8 @@ import {
 } from "@/components/ui";
 import { SCHEDULE_CONTENT } from "../constant/schedule.constant";
 
-interface ScheduleFieldsProps {
+interface BaseProps {
   form: UseFormReturn<ScheduleValues>;
-
-  typeValue: number;
-  setTypeValue: (value: number) => void;
-
-  isEquipType: boolean;
-  equipmentType: DropDown[];
 
   isEquipment: boolean;
   equipment: DropDown[];
@@ -34,41 +28,53 @@ interface ScheduleFieldsProps {
   users: DropDown[];
 }
 
-export function ScheduleFields({
-  form,
-  typeValue,
-  setTypeValue,
-  isEquipType,
-  isEquipment,
-  isChecklist,
-  equipment,
-  equipmentType,
-  checklist,
-  isMeta,
-  frequencyType,
-  isUser,
-  users,
-}: ScheduleFieldsProps) {
+interface CreateProps extends BaseProps {
+  mode: "create";
+
+  typeValue: number;
+  setTypeValue: (value: number) => void;
+
+  isEquipType: boolean;
+  equipmentType: DropDown[];
+}
+
+interface UpdateProps extends BaseProps {
+  mode: "update";
+}
+
+type ScheduleFieldsProps = CreateProps | UpdateProps;
+
+export function ScheduleFields(props: ScheduleFieldsProps) {
+  const disableEquipment =
+    props.mode === "update" || props.typeValue === 0 || props.isEquipment;
+
+  const disableChecklist =
+    props.mode === "update" || props.typeValue === 0 || props.isChecklist;
+
+  const { form } = props;
+
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      <Field className="col-span-full">
-        <FieldLabel htmlFor="equip-type">
-          {SCHEDULE_CONTENT.FIELDS.EQUIPMENT_TYPE.LABEL}
-        </FieldLabel>
+      {props.mode === "create" && (
+        <Field className="col-span-full">
+          <FieldLabel htmlFor="equip-type">
+            {SCHEDULE_CONTENT.FIELDS.EQUIPMENT_TYPE.LABEL}
+          </FieldLabel>
 
-        <FieldContent>
-          {isEquipType ? (
-            <Skeleton className="h-10" />
-          ) : (
-            <SearchSelect
-              options={equipmentType}
-              value={typeValue}
-              onValueChange={(value) => setTypeValue(Number(value))}
-              placeholder={SCHEDULE_CONTENT.FIELDS.EQUIPMENT_TYPE.PLACEHOLDER}
-            />
-          )}
-        </FieldContent>
-      </Field>
+          <FieldContent>
+            {props.isEquipType ? (
+              <Skeleton className="h-10" />
+            ) : (
+              <SearchSelect
+                options={props.equipmentType}
+                value={props.typeValue}
+                onValueChange={(value) => props.setTypeValue(Number(value))}
+                placeholder={SCHEDULE_CONTENT.FIELDS.EQUIPMENT_TYPE.PLACEHOLDER}
+              />
+            )}
+          </FieldContent>
+        </Field>
+      )}
 
       <Field>
         <FieldLabel htmlFor="equipment">
@@ -81,10 +87,10 @@ export function ScheduleFields({
             name="equipmentId"
             render={({ field }) => (
               <SearchSelect
-                options={equipment}
+                options={props.equipment}
                 value={field.value}
                 onValueChange={field.onChange}
-                disabled={typeValue === 0 || isEquipment}
+                disabled={disableEquipment}
                 placeholder={SCHEDULE_CONTENT.FIELDS.EQUIPMENT.PLACEHOLDER}
               />
             )}
@@ -105,10 +111,10 @@ export function ScheduleFields({
             name="templateId"
             render={({ field }) => (
               <SearchSelect
-                options={checklist}
+                options={props.checklist}
                 value={field.value}
                 onValueChange={field.onChange}
-                disabled={typeValue === 0 || isChecklist}
+                disabled={disableChecklist}
                 placeholder={SCHEDULE_CONTENT.FIELDS.CHECKLIST.PLACEHOLDER}
               />
             )}
@@ -122,7 +128,7 @@ export function ScheduleFields({
         <FieldLabel>{SCHEDULE_CONTENT.FIELDS.FREQUENCY_TYPE.LABEL}</FieldLabel>
 
         <FieldContent>
-          {isMeta ? (
+          {props.isMeta ? (
             <Skeleton className="h-10" />
           ) : (
             <Controller
@@ -130,7 +136,7 @@ export function ScheduleFields({
               name="frequencyType"
               render={({ field }) => (
                 <SearchSelect
-                  options={frequencyType}
+                  options={props.frequencyType}
                   value={field.value}
                   onValueChange={field.onChange}
                   placeholder={
@@ -187,7 +193,7 @@ export function ScheduleFields({
         <FieldLabel>{SCHEDULE_CONTENT.FIELDS.ASSIGNED_TO.LABEL}</FieldLabel>
 
         <FieldContent>
-          {isUser ? (
+          {props.isUser ? (
             <Skeleton className="h-10" />
           ) : (
             <Controller
@@ -195,7 +201,7 @@ export function ScheduleFields({
               name="assignedTo"
               render={({ field }) => (
                 <SearchSelect
-                  options={users}
+                  options={props.users}
                   value={field.value}
                   onValueChange={field.onChange}
                   placeholder={SCHEDULE_CONTENT.FIELDS.ASSIGNED_TO.PLACEHOLDER}

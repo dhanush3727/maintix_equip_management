@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ScheduleRequest } from "../types/schedule.type";
+import { UpdateScheduleRequest } from "../types/schedule.type";
 import { scheduleService } from "../service/schedule.service";
 import { QUERY_KEYS } from "@/constants";
 
 interface UpdateScheduleVariable {
   id: number;
-  payload: ScheduleRequest;
+  payload: UpdateScheduleRequest;
 }
 
 export const useUpdateSchedule = () => {

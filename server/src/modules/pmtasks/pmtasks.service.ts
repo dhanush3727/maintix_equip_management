@@ -93,17 +93,10 @@ export class PmtasksService {
       take,
       select: {
         id: true,
-        organizationId: true,
-        scheduleId: true,
-        equipmentId: true,
-        templateId: true,
         title: true,
-        assignedTo: true,
         dueDate: true,
         completedAt: true,
         status: true,
-        priority: true,
-        remarks: true,
         createdAt: true,
         assignee: {
           select: {
@@ -125,20 +118,13 @@ export class PmtasksService {
 
     const formattedPMTasks = tasks.map((task) => ({
       id: task.id,
-      organizationId: task.organizationId,
-      scheduleId: task.scheduleId,
-      templateId: task.templateId,
       template: task.template.name,
-      equipmentId: task.equipmentId,
       equipment: task.equipment.name,
-      assignedToId: task.assignedTo,
       assignedTo: task.assignee.name,
       title: task.title,
       dueDate: task.dueDate,
       completedAt: task.completedAt,
       status: task.status,
-      priority: task.priority,
-      remarks: task.remarks,
       createdAt: task.createdAt,
       isOverdue:
         task.dueDate < now &&

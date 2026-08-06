@@ -401,7 +401,7 @@ export class AuthService {
     });
 
     if (!session) {
-      throw new NotFoundException('Session not found');
+      throw new UnauthorizedException('Invalid ses');
     }
 
     // verify token match

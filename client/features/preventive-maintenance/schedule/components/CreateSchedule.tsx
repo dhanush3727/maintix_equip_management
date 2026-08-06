@@ -10,7 +10,12 @@ import {
   FieldGroup,
 } from "@/components/ui";
 import { SCHEDULE_CONTENT } from "../constant/schedule.constant";
-import { useEquipmentDDByType, useEquipmentTypeDD, useMeta, useUserDropdown } from "@/hooks";
+import {
+  useEquipmentDDByType,
+  useEquipmentTypeDD,
+  useMeta,
+  useUserDropdown,
+} from "@/hooks";
 import { useState } from "react";
 import { useGetChecklistDropdown } from "@/features/checklist/hooks/useGetChecklistDropdown";
 import { useForm } from "react-hook-form";
@@ -93,6 +98,7 @@ export function CreateSchedule({ onClose }: CreateScheduleProps) {
 
       <FieldGroup className="fle-1 overflow-y-auto p-5">
         <ScheduleFields
+          mode="create"
           form={form}
           typeValue={typeValue}
           setTypeValue={handleTypeValue}
@@ -113,6 +119,7 @@ export function CreateSchedule({ onClose }: CreateScheduleProps) {
         <DialogClose className={"mr-3"} disabled={scheduleMutation.isPending}>
           {SCHEDULE_CONTENT.BUTTONS.CANCEL}
         </DialogClose>
+
         <Button type="submit" disabled={scheduleMutation.isPending}>
           {scheduleMutation.isPending ? (
             <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
