@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const taskSchema = z.object({
-  actualValue: z.string().min(1, "Enter the value"),
+  actualValue: z.string().min(1, "Enter the value").trim(),
   remarks: z.string().optional(),
 });
 

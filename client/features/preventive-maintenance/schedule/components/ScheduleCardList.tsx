@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { FrequencyType } from "@/types";
 import { formatDate } from "../util/schedule.util";
+import { SCHEDULE_CONTENT } from "../constant/schedule.constant";
 
 interface ScheduleCardListProps {
   item: ScheduleData;
@@ -70,7 +71,7 @@ export function ScheduleCardList({ item, onEdit }: ScheduleCardListProps) {
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-2 text-muted-foreground">
             <CalendarDays className="size-4" />
-            <span>Start</span>
+            <span>{SCHEDULE_CONTENT.CARD.START}</span>
           </div>
 
           <span>{formatDate(item.startDate)}</span>
@@ -79,7 +80,7 @@ export function ScheduleCardList({ item, onEdit }: ScheduleCardListProps) {
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-2 text-muted-foreground">
             <CalendarDays className="size-4" />
-            <span>Next Due</span>
+            <span>{SCHEDULE_CONTENT.CARD.NEXT_DUE}</span>
           </div>
 
           <span className="font-medium">{formatDate(item.nextDueDate)}</span>
@@ -89,7 +90,7 @@ export function ScheduleCardList({ item, onEdit }: ScheduleCardListProps) {
       <CardFooter className="justify-end border-t pt-4">
         <Button size="sm" variant="outline" onClick={() => onEdit(item.id)}>
           <SquarePen className="mr-2 size-4" />
-          Edit
+          {SCHEDULE_CONTENT.BUTTONS.EDIT}
         </Button>
       </CardFooter>
     </Card>

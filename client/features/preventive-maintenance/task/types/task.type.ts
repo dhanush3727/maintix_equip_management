@@ -31,6 +31,7 @@ export interface TaskData {
   status: TaskStatus;
   createdAt: string;
   isOverdue: boolean;
+  isComplete: boolean;
 }
 
 export interface TaskParams extends QueryParams {
@@ -46,6 +47,7 @@ export interface TaskParams extends QueryParams {
 export interface TaskDataById {
   id: number;
   scheduleId: number;
+  equipmentName: number;
   title: string;
   remarks: string | null;
   dueDate: string;
@@ -53,7 +55,7 @@ export interface TaskDataById {
   status: TaskStatus;
   createdAt: string;
   isOverdue: boolean;
-  checklistItems: ChecklistItemType[];
+  checklistItems: ChecklistItems[];
 }
 
 export interface UpdateTaskItemRequest {

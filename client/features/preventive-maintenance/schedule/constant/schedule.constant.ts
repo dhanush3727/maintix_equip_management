@@ -26,6 +26,7 @@ export const SCHEDULE_CONTENT = {
     UPDATE: "Update Schedule",
     CANCEL: "Cancel",
     LOADING_MORE: "Loading more...",
+    EDIT: "Edit",
   },
 
   FIELDS: {
@@ -63,6 +64,11 @@ export const SCHEDULE_CONTENT = {
       LABEL: "Assigned Technician",
       PLACEHOLDER: "Select technician",
     },
+  },
+
+  CARD: {
+    START: "Start",
+    NEXT_DUE: "Next Due",
   },
 
   FILTER: {

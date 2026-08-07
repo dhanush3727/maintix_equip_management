@@ -105,7 +105,7 @@ export function UpdateSchedule({ id, onClose }: UpdateScheduleProps) {
         </DialogDescription>
       </DialogHeader>
 
-      <FieldGroup className="fle-1 overflow-y-auto p-5">
+      <FieldGroup className="flex-1 overflow-y-auto p-5">
         <ScheduleFields
           mode="update"
           form={form}

@@ -4,13 +4,39 @@ export const TASK_ENDPOINT = {
   UPDATE: (id: number, itemId: number) =>
     `pmtasks/${id}/checklist-items/${itemId}`,
   COMPLETE: (id: number) => `pmtasks/${id}/complete`,
-};
+} as const;
 
 export const TASK_CONTENT = {
   HEADER: {
     TITLE: "Tasks",
     DESCRIPTION:
       "View, track, and complete preventive maintenance tasks assigned to your team.",
+  },
+
+  UPDATE: {
+    TITLE: "Update Task",
+    DESCRIPTION:
+      "Review the task details, record inspection results, add remarks, and complete the task.",
+  },
+
+  CARD: {
+    OVERDUE: "Overdue",
+    TEMPLATE: "Template",
+    ASSIGNED: "Assigned",
+    DUE: "Due",
+    COMPLETED: "Completed",
+  },
+
+  FIELD: {
+    STATUS: "Status",
+    DUE_DATE: "Due date",
+    OVERDUE: "Task is overdue",
+
+    EXPECTED: "Expected value",
+    ACTUAL: "Actual Value",
+    RANGE: "Expected Range",
+
+    INPUT_PLACEHOLDER: "Enter actual value",
   },
 
   FILTERS: {
@@ -37,4 +63,25 @@ export const TASK_CONTENT = {
     TITLE: "Unable to load tasks",
     DESCRIPTION: "Soemthing went wrong while loading tasks. Please try again.",
   },
+
+  BUTTONS: {
+    EDIT: "Edit",
+    UPDATE: "Update Task",
+    COMPLETE: "Complete",
+    LOADING_MORE: "Loading More...",
+    CANCEL: "Cancel",
+    VIEW: "View",
+    SAVE: "Save",
+  },
 } as const;
+
+export const BOOLEAN_VALUE = [
+  {
+    label: "True",
+    value: true,
+  },
+  {
+    label: "False",
+    value: false,
+  },
+];

@@ -113,6 +113,7 @@ export class PmtasksService {
             name: true,
           },
         },
+        checklistItems: true,
       },
     });
 
@@ -130,6 +131,9 @@ export class PmtasksService {
         task.dueDate < now &&
         task.status !== TaskStatus.COMPLETED &&
         task.status !== TaskStatus.SKIPPED,
+      isComplete:
+        task.checklistItems.every((item) => item.actualValue !== null) &&
+        task.status !== TaskStatus.COMPLETED,
     }));
 
     const { data, meta } = buildCursorMeta(formattedPMTasks, limit);
@@ -193,6 +197,7 @@ export class PmtasksService {
     const formattedPMTask = {
       id: pmtask.id,
       scheduleId: pmtask.scheduleId,
+      equipmentName: pmtask.equipment.name,
       title: pmtask.title,
       remarks: pmtask.remarks,
       dueDate: pmtask.dueDate,

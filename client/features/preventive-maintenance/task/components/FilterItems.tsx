@@ -92,11 +92,11 @@ export function FilterItems(props: FilterItemsParams) {
       ) : (
         <SearchSelect
           options={users}
-          value={params.users}
+          value={params.assignedTo}
           onValueChange={(value) => {
             setParams((prev) => ({
               ...prev,
-              users: Number(value),
+              assignedTo: Number(value),
             }));
           }}
           placeholder={TASK_CONTENT.FILTERS.USERS_PLACEHOLDER}
@@ -133,14 +133,14 @@ export function FilterItems(props: FilterItemsParams) {
           htmlFor="from-date"
           className="absolute -top-2 left-3 px-1 text-xs text-muted-foreground"
         >
-          {TASK_CONTENT.FILTERS.FROM_DATE_LABEL}
+          {TASK_CONTENT.FILTERS.TO_DATE_LABEL}
         </FieldLabel>
 
         <FieldContent>
           <Input
             id="from-date"
             type="date"
-            value={params.from ?? ""}
+            value={params.to ?? ""}
             onChange={(e) => {
               setParams((prev) => ({
                 ...prev,
