@@ -90,7 +90,7 @@ export function EquipmentType() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {/* Add Equipment field for mobile view */}
           {canAccess && (
-            <div className="lg:hidden">
+            <div className="md:hidden">
               <Dialog open={addTypeOpen} onOpenChange={setAddTypeOpen}>
                 <DialogTrigger
                   render={

@@ -100,6 +100,7 @@ export class PmtasksService {
         createdAt: true,
         assignee: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -122,6 +123,7 @@ export class PmtasksService {
       template: task.template.name,
       equipment: task.equipment.name,
       assignedTo: task.assignee.name,
+      assignedToById: task.assignee.id,
       title: task.title,
       dueDate: task.dueDate,
       completedAt: task.completedAt,
@@ -204,6 +206,7 @@ export class PmtasksService {
       completedAt: pmtask.completedAt,
       status: pmtask.status,
       createdAt: pmtask.createdAt,
+      assignedTo: pmtask.assignee.id,
       isOverdue:
         pmtask.dueDate < now &&
         pmtask.status !== TaskStatus.COMPLETED &&

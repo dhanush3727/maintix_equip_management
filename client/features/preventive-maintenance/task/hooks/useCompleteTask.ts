@@ -17,6 +17,10 @@ export const useCompleteTask = () => {
       queryClient.invalidateQueries({
         queryKey: [...QUERY_KEYS.task.id, variables.id],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.task.list,
+      });
     },
   });
 };

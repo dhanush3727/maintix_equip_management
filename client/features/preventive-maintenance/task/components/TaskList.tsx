@@ -14,6 +14,8 @@ import {
   CalendarDays,
   CheckCircle2,
   ClipboardList,
+  Eye,
+  Loader2,
   SquarePen,
   User,
   Wrench,
@@ -24,9 +26,23 @@ import { formatStartDate } from "../../schedule/util/schedule.util";
 interface TaskListProps {
   item: TaskData;
   onEdit: (id: number) => void;
+  userId?: number;
+  completeTask: (id: number) => void;
+  completingTaskId: number | null;
 }
 
-export function TaskList({ item, onEdit }: TaskListProps) {
+export function TaskList({
+  item,
+  onEdit,
+  userId,
+  completeTask,
+  completingTaskId,
+}: TaskListProps) {
+  const canAccess =
+    item.assignedToById === userId && item.status !== TaskStatus.COMPLETED;
+
+  const isCompleting = item.id === completingTaskId;
+
   return (
     <Card className="flex h-full flex-col transition-all hover:-translate-y-1 hover:shadow-lg">
       <CardHeader className="space-y-4">
@@ -93,22 +109,31 @@ export function TaskList({ item, onEdit }: TaskListProps) {
       </CardContent>
 
       <CardFooter className="justify-end">
-        {item.status === TaskStatus.COMPLETED ? (
-          <Button variant="outline" onClick={() => onEdit(item.id)}>
-            <SquarePen className="size-4" />
-            {TASK_CONTENT.BUTTONS.VIEW}
-          </Button>
-        ) : item.isComplete ? (
-          <Button>
-            <CheckCircle2 className="size-4" />
+        {item.isComplete && (
+          <Button onClick={() => completeTask(item.id)} disabled={isCompleting}>
+            {isCompleting ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <CheckCircle2 className="size-4" />
+            )}
             {TASK_CONTENT.BUTTONS.COMPLETE}
           </Button>
-        ) : (
-          <Button variant="outline" onClick={() => onEdit(item.id)}>
-            <SquarePen className="size-4" />
-            {TASK_CONTENT.BUTTONS.EDIT}
-          </Button>
         )}
+        <Button
+          variant="outline"
+          onClick={() => onEdit(item.id)}
+          disabled={isCompleting}
+        >
+          {canAccess ? (
+            <>
+              <SquarePen className="size-4" /> {TASK_CONTENT.BUTTONS.EDIT}
+            </>
+          ) : (
+            <>
+              <Eye className="size-4" /> {TASK_CONTENT.BUTTONS.VIEW}
+            </>
+          )}
+        </Button>
       </CardFooter>
     </Card>
   );

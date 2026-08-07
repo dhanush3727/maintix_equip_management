@@ -1,18 +1,19 @@
 "use client";
 
-import { useEquipmentDD, useMeta, useUserDropdown } from "@/hooks";
+import { useAuth, useEquipmentDD, useMeta, useUserDropdown } from "@/hooks";
 import { TaskParams } from "../types/task.type";
 import { useEffect, useRef, useState } from "react";
 import { TASK_CONTENT } from "../constant/task.constant";
 import { FilterItems } from "./FilterItems";
 import { useGetTask } from "../hooks/useGetTask";
-import { cn, getOptionLabel } from "@/lib";
+import { appToast, cn, getErrorMessage, getOptionLabel } from "@/lib";
 import { ErrorState } from "./ErrorState";
 import { EmptyState } from "./EmptyState";
 import { TaskList } from "./TaskList";
 import { SkeletionList } from "./SkeletionList";
 import { Dialog, DialogContent, useSidebar } from "@/components/ui";
 import { UpdateTask } from "./UpdateTask";
+import { useCompleteTask } from "../hooks/useCompleteTask";
 
 export interface TaskFilters {
   equipment?: number;
@@ -24,9 +25,11 @@ export interface TaskFilters {
 
 export function Task() {
   const { open } = useSidebar();
+  const { user } = useAuth();
   const { data: equipmentData, isLoading: isEquipment } = useEquipmentDD();
   const { data: meta, isLoading: isMeta } = useMeta();
   const { data: usersData, isLoading: isUsers } = useUserDropdown();
+  const { mutate: completeTask } = useCompleteTask();
   const equipments = equipmentData?.data ?? [];
   const status = meta?.data?.taskStatus ?? [];
   const users = usersData?.data ?? [];
@@ -77,6 +80,23 @@ export function Task() {
 
   const [editTask, setEditTask] = useState<number | null>(null);
 
+  const [completingTaskId, setCompletingTaskId] = useState<number | null>(null);
+  const handleCompleteTask = (id: number) => {
+    setCompletingTaskId(id);
+
+    completeTask(
+      { id },
+      {
+        onSuccess: (data) => {
+          appToast.success(data.message);
+        },
+        onError: (err) => {
+          appToast.error(getErrorMessage(err));
+        },
+      },
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y01">
@@ -113,7 +133,14 @@ export function Task() {
           <EmptyState />
         ) : (
           tasks.map((item) => (
-            <TaskList key={item.id} item={item} onEdit={setEditTask} />
+            <TaskList
+              key={item.id}
+              item={item}
+              onEdit={setEditTask}
+              userId={user?.id}
+              completeTask={handleCompleteTask}
+              completingTaskId={completingTaskId}
+            />
           ))
         )}
       </div>

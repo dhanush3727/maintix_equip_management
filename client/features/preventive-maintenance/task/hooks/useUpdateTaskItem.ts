@@ -18,6 +18,10 @@ export const useUpdateTaskItem = () => {
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.task.list,
+      });
+
+      queryClient.invalidateQueries({
         queryKey: [...QUERY_KEYS.task.id, variables.id],
       });
     },

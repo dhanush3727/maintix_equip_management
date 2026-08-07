@@ -27,7 +27,12 @@ export function UpdateTask({ id }: UpdateTaskProp) {
                 key={item.id}
                 className="space-y-4 rounded-lg border bg-card p-4"
               >
-                <UpdateTaskContent item={item} index={index} />
+                <UpdateTaskContent
+                  item={item}
+                  index={index}
+                  userId={task.assignedTo}
+                  status={task.status}
+                />
               </div>
             ))}
       </FieldGroup>

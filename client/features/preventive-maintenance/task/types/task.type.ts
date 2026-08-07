@@ -25,6 +25,7 @@ export interface TaskData {
   template: string;
   equipment: string;
   assignedTo: string;
+  assignedToById: number;
   title: string;
   dueDate: string;
   completedAt: string | null;
@@ -54,6 +55,7 @@ export interface TaskDataById {
   completedAt: string | null;
   status: TaskStatus;
   createdAt: string;
+  assignedTo: number;
   isOverdue: boolean;
   checklistItems: ChecklistItems[];
 }

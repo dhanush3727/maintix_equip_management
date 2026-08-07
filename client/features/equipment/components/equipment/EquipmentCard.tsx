@@ -1,4 +1,9 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  useSidebar,
+} from "@/components/ui";
 import { EquipmentData } from "../../types/equipment.type";
 import { EquipmentCardList } from "./EquipmentCardList";
 import { Plus } from "lucide-react";
@@ -8,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { CardSkeleton } from "./CardSkeleton";
 import { CardErrorState } from "./CardErrorState";
 import { CardEmptyState } from "./CardEmptyState";
+import { cn } from "@/lib";
 
 interface EquipmentCardProps {
   equipmentList: EquipmentData[];
@@ -28,6 +34,7 @@ export function EquipmentCard({
   fetchNextPage,
   onEdit,
 }: EquipmentCardProps) {
+  const { open } = useSidebar();
   const [addOpen, setAddOpen] = useState<boolean>(false);
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -58,9 +65,14 @@ export function EquipmentCard({
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-4 md:grid-cols-2",
+        open && "md:grid-cols-1",
+      )}
+    >
       {/* Add Equipment field for mobile view */}
-      <div className="lg:hidden">
+      <div className="md:hidden">
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger
             render={

@@ -78,10 +78,10 @@ export const TASK_CONTENT = {
 export const BOOLEAN_VALUE = [
   {
     label: "True",
-    value: true,
+    value: "true",
   },
   {
     label: "False",
-    value: false,
+    value: "false",
   },
 ];

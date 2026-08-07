@@ -5,9 +5,10 @@ import { TaskSchemaValues } from "../schema/task.schema";
 interface SelectValueProps {
   options: string[] | null;
   form: UseFormReturn<TaskSchemaValues>;
+  disabled: boolean;
 }
 
-export function SelectValue({ options, form }: SelectValueProps) {
+export function SelectValue({ options, form, disabled }: SelectValueProps) {
   const values =
     options?.map((option) => ({
       label: option,
@@ -24,6 +25,7 @@ export function SelectValue({ options, form }: SelectValueProps) {
             options={values}
             value={field.value}
             onValueChange={field.onChange}
+            disabled={disabled}
           />
         )}
       />
