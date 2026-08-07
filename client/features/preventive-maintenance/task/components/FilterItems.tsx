@@ -1,43 +1,45 @@
+import { Dispatch, SetStateAction } from "react";
+import { TaskFilters } from "./Task";
+import { DropDown, TaskStatusType } from "@/types";
 import {
   Button,
   Field,
+  FieldContent,
   FieldLabel,
   Input,
   SearchSelect,
   Skeleton,
-  FieldContent,
 } from "@/components/ui";
-import { DropDown, Frequency } from "@/types";
-import { ScheduleParamsValues } from "./Schedule";
-import { Dispatch, SetStateAction } from "react";
-import { ScheduleParams } from "../types/schedule.type";
-import { SCHEDULE_CONTENT } from "../constant/schedule.constant";
+import { TASK_CONTENT } from "../constant/task.constant";
+import { TaskParams } from "../types/task.type";
 import { X } from "lucide-react";
 
-interface FilterItemsProps {
+interface FilterItemsParams {
+  params: TaskFilters;
+  setParams: Dispatch<SetStateAction<TaskFilters>>;
+
   equipments: DropDown[];
   isEquipment: boolean;
 
-  checklists: DropDown[];
-  isChecklist: boolean;
-
-  frequencyType: Frequency[];
+  status: TaskStatusType[];
   isMeta: boolean;
 
-  params: ScheduleParamsValues;
-  setParams: Dispatch<SetStateAction<ScheduleParamsValues>>;
+  users: DropDown[];
+  isUsers: boolean;
 }
 
-export function FilterItems({
-  equipments,
-  isEquipment,
-  checklists,
-  isChecklist,
-  frequencyType,
-  isMeta,
-  params,
-  setParams,
-}: FilterItemsProps) {
+export function FilterItems(props: FilterItemsParams) {
+  const {
+    params,
+    setParams,
+    equipments,
+    isEquipment,
+    status,
+    isMeta,
+    users,
+    isUsers,
+  } = props;
+
   const isClear = Object.keys(params).length > 0;
 
   const handleClearFilter = () => {
@@ -55,7 +57,6 @@ export function FilterItems({
           onValueChange={(value) => {
             setParams((prev) => ({
               ...prev,
-              page: 1,
 
               // SearchSelect callback is typed as `string | number`.
               // Even if this dropdown currently returns a number,
@@ -64,24 +65,8 @@ export function FilterItems({
               equipment: Number(value),
             }));
           }}
-          placeholder={SCHEDULE_CONTENT.FILTER.EQUIPMENT}
-        />
-      )}
-
-      {isChecklist ? (
-        <Skeleton className="h-10" />
-      ) : (
-        <SearchSelect
-          options={checklists}
-          value={params.template}
-          onValueChange={(value) => {
-            setParams((prev) => ({
-              ...prev,
-              page: 1,
-              template: Number(value),
-            }));
-          }}
-          placeholder={SCHEDULE_CONTENT.FILTER.TEMPLATE}
+          placeholder={TASK_CONTENT.FILTERS.EQUIPMENT_PLACEHOLDER}
+          searchPlaceholder={TASK_CONTENT.FILTERS.EQUIPMENT_SEARCH_PLACEHOLDER}
         />
       )}
 
@@ -89,16 +74,33 @@ export function FilterItems({
         <Skeleton className="h-10" />
       ) : (
         <SearchSelect
-          options={frequencyType}
-          value={params.frequencyType}
+          options={status}
+          value={params.status}
           onValueChange={(value) => {
             setParams((prev) => ({
               ...prev,
-              page: 1,
-              frequencyType: value as ScheduleParams["frequencyType"],
+              status: value as TaskParams["status"],
             }));
           }}
-          placeholder={SCHEDULE_CONTENT.FILTER.FREQUENCY_TYPE}
+          placeholder={TASK_CONTENT.FILTERS.STATUS_PLACEHOLDER}
+          searchPlaceholder={TASK_CONTENT.FILTERS.STATUS_SEARCH_PLACEHOLDER}
+        />
+      )}
+
+      {isUsers ? (
+        <Skeleton className="h-10" />
+      ) : (
+        <SearchSelect
+          options={users}
+          value={params.users}
+          onValueChange={(value) => {
+            setParams((prev) => ({
+              ...prev,
+              users: Number(value),
+            }));
+          }}
+          placeholder={TASK_CONTENT.FILTERS.USERS_PLACEHOLDER}
+          searchPlaceholder={TASK_CONTENT.FILTERS.USERS_SEARCH_PLACEHOLDER}
         />
       )}
 
@@ -107,7 +109,7 @@ export function FilterItems({
           htmlFor="from-date"
           className="absolute -top-2 left-3 px-1 text-xs text-muted-foreground"
         >
-          {SCHEDULE_CONTENT.FILTER.FROM_DATE_LABEL}
+          {TASK_CONTENT.FILTERS.FROM_DATE_LABEL}
         </FieldLabel>
 
         <FieldContent>
@@ -128,17 +130,17 @@ export function FilterItems({
 
       <Field className="relative">
         <FieldLabel
-          htmlFor="to-date"
+          htmlFor="from-date"
           className="absolute -top-2 left-3 px-1 text-xs text-muted-foreground"
         >
-          {SCHEDULE_CONTENT.FILTER.TO_DATE_LABEL}
+          {TASK_CONTENT.FILTERS.FROM_DATE_LABEL}
         </FieldLabel>
 
         <FieldContent>
           <Input
-            id="to-date"
+            id="from-date"
             type="date"
-            value={params.to ?? ""}
+            value={params.from ?? ""}
             onChange={(e) => {
               setParams((prev) => ({
                 ...prev,

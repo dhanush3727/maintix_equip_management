@@ -4,3 +4,9 @@ export interface Pagination {
   totalPages: number;
   limit: number;
 }
+
+export interface Meta {
+  limit: number;
+  hasMore: boolean;
+  nextCursor: string;
+}

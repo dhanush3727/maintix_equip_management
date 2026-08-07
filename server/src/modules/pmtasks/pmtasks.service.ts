@@ -154,12 +154,8 @@ export class PmtasksService {
       },
       select: {
         id: true,
-        organizationId: true,
         scheduleId: true,
-        equipmentId: true,
-        templateId: true,
         title: true,
-        assignedTo: true,
         dueDate: true,
         completedAt: true,
         status: true,
@@ -168,16 +164,19 @@ export class PmtasksService {
         createdAt: true,
         assignee: {
           select: {
+            id: true,
             name: true,
           },
         },
         equipment: {
           select: {
+            id: true,
             name: true,
           },
         },
         template: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -193,20 +192,12 @@ export class PmtasksService {
 
     const formattedPMTask = {
       id: pmtask.id,
-      organizationId: pmtask.organizationId,
       scheduleId: pmtask.scheduleId,
-      templateId: pmtask.templateId,
-      template: pmtask.template.name,
-      equipmentId: pmtask.equipmentId,
-      equipment: pmtask.equipment.name,
-      assignedToId: pmtask.assignedTo,
-      assignedTo: pmtask.assignee.name,
       title: pmtask.title,
+      remarks: pmtask.remarks,
       dueDate: pmtask.dueDate,
       completedAt: pmtask.completedAt,
       status: pmtask.status,
-      priority: pmtask.priority,
-      remarks: pmtask.remarks,
       createdAt: pmtask.createdAt,
       isOverdue:
         pmtask.dueDate < now &&

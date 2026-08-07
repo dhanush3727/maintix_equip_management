@@ -51,5 +51,10 @@ export const QUERY_KEYS = {
     id: ["schedule-id"],
   },
 
+  task: {
+    list: ["task-list"],
+    id: ["task-id"],
+  },
+
   user_dropdown: ["user-dropdown"],
 } as const;
