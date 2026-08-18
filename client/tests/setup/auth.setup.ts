@@ -1,8 +1,10 @@
 // this file is specifically for creating reusable authenticated state.
 import { test as setup, expect } from "@playwright/test";
 
+// This authFile is used in the playwright.config.ts file to set the storageState for authenticated tests.
 const authFile = "playwright/.auth/user.json";
 
+// Setup test to authenticate and save the authentication state
 setup("Authenticate", async ({ page }) => {
   const testEmail = process.env.PLAYWRIGHT_TEST_EMAIL;
   const testPassword = process.env.PLAYWRIGHT_TEST_PASSWORD;
@@ -20,7 +22,9 @@ setup("Authenticate", async ({ page }) => {
 
   await expect(page).toHaveURL(/dashboard/);
 
-  // "After login succeeds, save the browser's authentication state to this file."
+  // Save the authenticated state to the authFile
+  // This will allow other tests to use this state for authenticated scenarios
+  // This will automatically create the .auth directory if it doesn't exist
   await page.context().storageState({
     path: authFile,
   });

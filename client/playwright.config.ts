@@ -36,12 +36,12 @@ export default defineConfig({
   projects: [
     {
       name: "setup",
-      testMatch: /.*\.authenticate\.ts/,
+      testMatch: /.*\.setup\.ts/,
     },
     // Unauthenticated tests
     {
       name: "chromium",
-      testIgnore: /.*authenticate\.spec\.ts/,
+      testIgnore: /.*auth\.spec\.ts/,
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -50,7 +50,7 @@ export default defineConfig({
     // Authenticated tests
     {
       name: "chromium-auth",
-      testMatch: /.*\.authenticate\.spec\.ts/,
+      testMatch: /.*\.auth\.spec\.ts/,
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/user.json",
