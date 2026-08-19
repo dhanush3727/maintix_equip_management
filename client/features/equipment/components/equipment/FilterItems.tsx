@@ -83,6 +83,7 @@ export function FilterItems({
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       <Input
+        aria-label="Search equipment"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
