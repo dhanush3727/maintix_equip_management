@@ -3,6 +3,8 @@ FROM node:24-bookworm-slim AS dependencies
 
 WORKDIR /app
 
+RUN apt-get update -y && apt-get install -y openssl
+
 COPY package*.json ./
 
 RUN npm ci
@@ -11,6 +13,8 @@ RUN npm ci
 FROM node:24-bookworm-slim AS builder
 
 WORKDIR /app
+
+RUN apt-get update -y && apt-get install -y openssl
 
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
@@ -25,6 +29,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+RUN apt-get update -y && apt-get install -y openssl
+
 COPY package*.json ./
 
 RUN npm ci --omit=dev
@@ -35,4 +41,4 @@ COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 5000
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/src/main.js" ]

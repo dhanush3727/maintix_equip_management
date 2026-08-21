@@ -40,7 +40,7 @@ COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 5000
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/src/main.js" ]
 ```
 ## Why we doing it this way?
 This is a multi-stage Docker build.
@@ -102,7 +102,7 @@ COPY --from=builder /app/prisma ./prisma
 - It does not actually publish the port to your machine. We'll do that when running the container.
 
 8. CMD
-`CMD ["node", "dist/main.js"]`:
+`CMD ["node", "dist/src/main.js"]`:
 - This is the command Docker executes when the container starts.
 
 So conceptually:
@@ -117,3 +117,6 @@ NestJS starts
     ↓
 Server listens on port 5000
 ```
+
+9. Change the postgreSQL local to docker
+in the `.env` file we change the localhost to host.docker.internal
