@@ -64,7 +64,11 @@ RUN npm ci
 ```
 - We deliberately copy `package.json` and `package-lock.json` before copying the source code. Why?
 - This take the `package.json` cache if we change it in files then docker use the exist cache don't again run it.
-- If we change `package.json` then it run `npm ci`
+- If we change `package.json` then it run `npm ci`.
+
+5. `COPY . .`:
+- This copies the entire application code into the container.
+- Make sure to include a `.dockerignore` file to exclude unnecessary files and directories from being copied into the container.
 
 4. Build the NestJS application
 ```dockerfile

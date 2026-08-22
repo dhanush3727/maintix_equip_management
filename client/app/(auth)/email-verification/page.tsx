@@ -3,7 +3,12 @@ export const metadata = {
 };
 
 import { EmailVerification } from "@/features/auth";
+import { Suspense } from "react";
 
 export default function EmailVerificationPage() {
-  return <EmailVerification />;
+  return (
+    <Suspense fallback={null}>
+      <EmailVerification />
+    </Suspense>
+  );
 }

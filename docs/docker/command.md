@@ -96,3 +96,13 @@ If Bash is not available:
 ### Remove Unused Docker Resources
 `docker system prune`: Removes unused Docker resources such as stopped containers, unused networks, and dangling images.
 **Note:** Use this carefully because it can remove resources you may still want.
+
+### Create a new Docker Network
+`docker network create <network-name>`: Creates a new Docker network.
+* `<network-name>`: Name you want to give to the network.
+* Network is useful for allowing containers to communicate with each other.
+
+### Connect a Container to a Network
+`docker network connect <network-name> <container-name>`: Connects a running container to a specified Docker network.
+* `<network-name>`: Name of the network to connect to.
+* `<container-name>`: Name of the container to connect.

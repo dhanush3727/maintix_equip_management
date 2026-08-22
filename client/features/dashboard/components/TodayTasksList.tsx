@@ -38,7 +38,7 @@ export function TodayTasksList({ pmTasks, isDashboard }: TodayTasksListProps) {
         <Button
           variant={"ghost"}
           className={"text-primary"}
-          onClick={() => router.push(ROUTES.PREVENTIVE_MAINTENANCE)}
+          onClick={() => router.push(ROUTES.PREVENTIVE_MAINTENANCE.TASK)}
         >
           {DASHBOARD_CONTENT.TODAY_TASK_BUTTON}
           <ArrowRight className="size-4" />

@@ -13,6 +13,8 @@ FROM node:24-bookworm-slim AS builder
 WORKDIR /app
 
 COPY --from=dependencies /app/node_modules ./node_modules
+# This COPY . . command copies the entire application code into the container.
+# Make sure to include a .dockerignore file to exclude unnecessary files and directories from being copied into the container.
 COPY . .
 
 RUN npx prisma generate

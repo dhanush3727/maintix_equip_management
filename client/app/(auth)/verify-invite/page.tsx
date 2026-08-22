@@ -3,7 +3,12 @@ export const metadata = {
 };
 
 import { VerifyInvitation } from "@/features/auth";
+import { Suspense } from "react";
 
 export default function AcceptInvitationPage() {
-  return <VerifyInvitation />;
+  return (
+    <Suspense fallback={null}>
+      <VerifyInvitation />
+    </Suspense>
+  );
 }
