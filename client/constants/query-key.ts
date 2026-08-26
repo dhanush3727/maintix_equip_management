@@ -57,4 +57,9 @@ export const QUERY_KEYS = {
   },
 
   user_dropdown: ["user-dropdown"],
+
+  breakdown: {
+    list: ["breakdown-list"],
+    id: ["breakdown-id"],
+  },
 } as const;

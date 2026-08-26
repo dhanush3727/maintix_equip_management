@@ -123,13 +123,7 @@ export class BreakdownService {
       orderBy,
       select: {
         id: true,
-        organizationId: true,
-        equipmentId: true,
-        reportedBy: true,
-        assignedTo: true,
         title: true,
-        rootCause: true,
-        description: true,
         severity: true,
         status: true,
         createdAt: true,
@@ -153,16 +147,10 @@ export class BreakdownService {
 
     const formattedBreakdowns = breakdowns.map((breakdown) => ({
       id: breakdown.id,
-      organizationId: breakdown.organizationId,
-      equipmentId: breakdown.equipmentId,
       equipment: breakdown.equipment.name,
-      reportedById: breakdown.reportedBy,
       reportedBy: breakdown.reporter.name,
-      assignedToId: breakdown.assignedTo,
       assignedTo: breakdown.assignee?.name,
       title: breakdown.title,
-      rootCause: breakdown.rootCause,
-      description: breakdown.description,
       severity: breakdown.severity,
       status: breakdown.status,
       createdAt: breakdown.createdAt,
@@ -185,9 +173,6 @@ export class BreakdownService {
       },
       select: {
         id: true,
-        organizationId: true,
-        equipmentId: true,
-        reportedBy: true,
         assignedTo: true,
         title: true,
         rootCause: true,
@@ -197,16 +182,13 @@ export class BreakdownService {
         createdAt: true,
         equipment: {
           select: {
-            name: true,
-          },
-        },
-        reporter: {
-          select: {
+            id: true,
             name: true,
           },
         },
         assignee: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -218,13 +200,6 @@ export class BreakdownService {
 
     const formattedBreakdowns = {
       id: breakdown.id,
-      organizationId: breakdown.organizationId,
-      equipmentId: breakdown.equipmentId,
-      equipment: breakdown.equipment.name,
-      reportedById: breakdown.reportedBy,
-      reportedBy: breakdown.reporter.name,
-      assignedToId: breakdown.assignedTo,
-      assignedTo: breakdown.assignee?.name,
       title: breakdown.title,
       rootCause: breakdown.rootCause,
       description: breakdown.description,
@@ -232,6 +207,14 @@ export class BreakdownService {
       status: breakdown.status,
       createdAt: breakdown.createdAt,
       actions: breakdown.actions,
+      equipment: {
+        value: breakdown.equipment.id,
+        label: breakdown.equipment.name,
+      },
+      assignedTo: {
+        value: breakdown.assignee?.id,
+        laberl: breakdown.assignee?.name,
+      },
     };
 
     return formattedBreakdowns;

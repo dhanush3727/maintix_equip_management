@@ -99,15 +99,6 @@ export function Task() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y01">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {TASK_CONTENT.HEADER.TITLE}
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          {TASK_CONTENT.HEADER.DESCRIPTION}
-        </p>
-      </div>
-
       <FilterItems
         params={params}
         setParams={setParams}

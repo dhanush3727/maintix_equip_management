@@ -24,7 +24,6 @@ export class CreateBreakdownDto {
   @ApiPropertyOptional({ example: 'Description' })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 
