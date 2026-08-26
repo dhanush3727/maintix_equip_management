@@ -22,7 +22,7 @@ export function getErrorMessage(err: unknown): string {
 
     const data = err.response.data as ApiErrorResponse;
 
-    return data.message;
+    return data.message || "An unexpected error occured.";
   }
 
   /**

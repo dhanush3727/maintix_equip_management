@@ -95,7 +95,7 @@ If Bash is not available:
 
 ### Remove Unused Docker Resources
 `docker system prune`: Removes unused Docker resources such as stopped containers, unused networks, and dangling images.
-**Note:** Use this carefully because it can remove resources you may still want.
+**Note**: Use this carefully because it can remove resources you may still want.
 
 ### Create a new Docker Network
 `docker network create <network-name>`: Creates a new Docker network.
@@ -106,3 +106,119 @@ If Bash is not available:
 `docker network connect <network-name> <container-name>`: Connects a running container to a specified Docker network.
 * `<network-name>`: Name of the network to connect to.
 * `<container-name>`: Name of the container to connect.
+
+
+## Docker Compose Commands
+### Validate Docker Compose Configuration
+`docker compose config`: Validates the Docker Compose configuration and displays the resolved configuration.
+* Useful for detecting YAML syntax, indentation, and Compose configuration errors before starting the services.
+
+### Build Docker Compose Services
+`docker compose build`: Builds the Docker images for all services defined in the Docker Compose file.
+* Builds each service that has a `build` configuration.
+* Reuses Docker's build cache when possible.
+
+### Build a Specific Service
+`docker compose build <service-name>`: Builds the Docker image for a specific service.
+* `<service-name>`: Name of the service defined in the Docker Compose file.
+Example:
+`docker compose build server`
+
+### Build All Services Without Cache
+`docker compose build --no-cache`: Builds all Docker Compose services without using the existing Docker build cache.
+* `--no-cache`: Forces Docker to execute all build steps again.
+* Useful when troubleshooting Docker build or dependency-cache issues.
+
+### Start Docker Compose Services
+`docker compose up`: Creates and starts all services defined in the Docker Compose file.
+* Creates the required containers and network.
+* Displays the logs from the running services in the terminal.
+
+### Start Services in Detached Mode
+`docker compose up -d`: Creates and starts all services in the background.
+* `-d`: Runs the services in detached mode.
+* Allows you to continue using the terminal.
+
+### Build and Start Services
+`docker compose up --build`: Builds the required images and starts all services.
+* Useful when you have changed a Dockerfile or application code and want to rebuild before starting the containers.
+
+### Build and Start Services in Detached Mode
+`docker compose up -d --build`: Builds the required images and starts all services in the background.
+* `-d`: Runs the services in detached mode.
+* `--build`: Builds the images before starting the containers.
+
+### List Compose Services
+`docker compose ps`: Lists the containers created by the current Docker Compose project.
+* Shows the service name, container name, status, and exposed ports.
+
+### View Logs of All Services
+`docker compose logs`: Displays logs from all Docker Compose services.
+
+### Follow Logs of All Services
+`docker compose logs -f`: Continuously displays new logs from all services.
+* `-f`: Follows the logs in real time.
+
+### View Logs of a Specific Service
+`docker compose logs <service-name>`: Displays logs from a specific service.
+* `<service-name>`: Name of the service defined in the Docker Compose file.
+Example:
+`docker compose logs server`
+
+### Follow Logs of a Specific Service
+`docker compose logs -f <service-name>`: Continuously displays new logs from a specific service.
+* `-f`: Follows the service logs in real time.
+Example:
+`docker compose logs -f nginx`
+
+### Stop Docker Compose Services
+`docker compose stop`: Stops all running Docker Compose services without removing their containers.
+* The containers can be started again using `docker compose start`.
+
+### Start Stopped Compose Services
+`docker compose start`: Starts previously stopped Docker Compose containers.
+* Does not create new containers.
+* Uses the existing containers.
+
+### Restart Compose Services
+`docker compose restart`: Restarts all running Docker Compose services.
+
+### Restart a Specific Service
+`docker compose restart <service-name>`: Restarts a specific Compose service.
+Example:
+`docker compose restart server`
+
+### Stop and Remove Compose Services
+`docker compose down`: Stops and removes the containers and network created by Docker Compose.
+* Removes the Compose containers.
+* Removes the Compose network.
+* Does not normally remove Docker images.
+
+### Stop and Remove Compose Services with Volumes
+`docker compose down -v`: Stops and removes the Compose containers, network, and associated volumes.
+* `-v`: Removes the volumes created by the Compose project.
+* Use carefully because volumes may contain persistent data.
+
+### Stop and Remove Compose Services with Images
+`docker compose down --rmi all`: Stops and removes the Compose containers, network, and images created by the Compose project.
+* `--rmi all`: Removes images used by the services.
+
+### Execute a Command Inside a Compose Container
+`docker compose exec <service-name> <command>`: Executes a command inside a running Compose container.
+* `<service-name>`: Name of the Compose service.
+* `<command>`: Command to execute inside the container.
+Example:
+`docker compose exec server sh`
+
+### Open a Shell Inside a Compose Container
+`docker compose exec <service-name> sh`: Opens a shell inside a running Compose container.
+* Useful for inspecting files, environment variables, and the application inside the container.
+Example:
+`docker compose exec server sh`
+
+### Pull Service Images
+`docker compose pull`: Downloads the images required by the services from the configured container registries.
+* Useful when using services such as `nginx:alpine`.
+
+### List Docker Compose Images
+`docker compose images`: Lists the Docker images used by the current Docker Compose project.
