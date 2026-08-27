@@ -11,6 +11,8 @@ import { BreakdownSeverity, BreakdownStatus } from "@/types";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
 import { Plus } from "lucide-react";
 import { BreakdownForm } from "./BreakdownForm";
+import { useBreakdowns } from "../hooks/useBreakdowns";
+import { BreakdownList } from "./BreakdownList";
 
 export interface BreakdownFilterItems {
   equipment?: number;
@@ -21,11 +23,14 @@ export interface BreakdownFilterItems {
 export function Breakdown() {
   const { data: equipmentDD, isLoading: isEquipment } = useEquipmentDD();
   const { data: meta, isLoading: isMeta } = useMeta();
+  const { data: breakdownData, isLoading: isBreakdown } = useBreakdowns();
 
   const equipment = equipmentDD?.data ?? [];
   const breakdownSeverity = meta?.data?.breakdownSeverity ?? [];
   const breakdownStatus = meta?.data?.breakdownStatus ?? [];
   const [filters, setFilters] = useState<BreakdownFilterItems>({});
+  const breakdowns =
+    breakdownData?.pages.flatMap((page) => page.data ?? []) ?? [];
 
   const [createOpen, setCreateOpen] = useState<boolean>(false);
 
@@ -73,9 +78,15 @@ export function Breakdown() {
               onClose={() => setCreateOpen(false)}
               equipments={equipment}
               breakdownSeverity={breakdownSeverity}
+              isEquipment={isEquipment}
+              isMeta={isMeta}
             />
           </DialogContent>
         </Dialog>
+
+        {breakdowns.map((item) => (
+          <BreakdownList item={item} key={item.id} />
+        ))}
       </div>
     </div>
   );

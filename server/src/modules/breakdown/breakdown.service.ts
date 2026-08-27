@@ -127,6 +127,8 @@ export class BreakdownService {
         severity: true,
         status: true,
         createdAt: true,
+        reportedAt: true,
+        resolvedAt: true,
         equipment: {
           select: {
             name: true,
@@ -153,6 +155,8 @@ export class BreakdownService {
       title: breakdown.title,
       severity: breakdown.severity,
       status: breakdown.status,
+      reportedAt: breakdown.reportedAt,
+      resolvedAt: breakdown.resolvedAt,
       createdAt: breakdown.createdAt,
     }));
 

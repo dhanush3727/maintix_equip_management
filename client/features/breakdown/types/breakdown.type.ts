@@ -36,6 +36,7 @@ export interface BreakdownData {
   title: string;
   severity: BreakdownSeverity;
   status: BreakdownStatus;
+  reportedAt: string;
   createdAt: string;
 }
 
