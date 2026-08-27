@@ -55,5 +55,14 @@ export const BREAKDOWN_FORM_CONTENT = {
 
   CREATE_BUTTON: "Report Breakdown",
   UPDATE_BUTTON: "Update",
-  CANCEL_BUTTON: "Cancel"
+  CANCEL_BUTTON: "Cancel",
+} as const;
+
+export const BREAKDOWN_CARD_CONTENT = {
+  REPORTED_BY: "Report By",
+  ASSIGNED_TO: "Assigned To",
+  UNASSIGNED: "Un Assigned",
+  REPORTED_AT: "Reported At",
+  VIEW: "View",
+  UPDATE: "Update",
 } as const;
