@@ -1,0 +1,2 @@
+# CI (Continuous Integration)
+CI is stands for Continuous Integration it is automatically check, build, and test our code whenever changes are pushed or pull request is created. To implement this CI we can use github actions.
