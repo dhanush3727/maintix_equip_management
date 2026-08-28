@@ -28,6 +28,20 @@ export const BREAKDOWN_CONTENT = {
   STATUS_SEARCH: "Search Status",
 
   CLEAR_BUTTON: "Clear",
+  LOAD_MORE: "Loading More...",
+
+  ERROR: {
+    TITLE: "Unable to Load Breakdowns",
+    DESCRIPTION:
+      "Something went wrong while loading the breakdowns. Please try again.",
+  },
+
+  EMPTY: {
+    TITLE: "No Breakdowns Found",
+    DESCRIPTION:
+      "There are no breakdowns reported yet. Report a breakdown when equipment requires maintenance.",
+    BUTTON: "Raise Breakdown",
+  },
 } as const;
 
 export const BREAKDOWN_FORM_CONTENT = {
@@ -35,9 +49,20 @@ export const BREAKDOWN_FORM_CONTENT = {
   CREATE_DESCRIPTION:
     "Report an equipment breakdown by providing the issue details, severity, and affected equipment.",
 
-  UPDATE_TITLE: "Update Breakdown",
-  UPDATE_DESCRIPTION:
-    "Update the breakdown details, severity, or affected equipment.",
+  VIEW_TITLE: "Breakdown Details",
+  VIEW_DESCRIPTION:
+    "View the reported breakdown details, severity, equipment, and current status.",
+
+  ASSIGN_TITLE: "Assign Technician",
+  ASSIGN_DESCRIPTION:
+    "Assign a technician to this breakdown to begin the maintenance work.",
+  RESOLVE_TITLE: "Resolve Breakdown",
+  RESOLVE_DESCRIPTION:
+    "Mark this breakdown as resolved after the required maintenance work has been completed.",
+
+  // CLOSE_TITLE: "Close Breakdown",
+  // CLOSE_DESCRIPTION:
+  //   "Close this breakdown after confirming that the issue has been resolved and the equipment is ready for operation.",
 
   TITLE_LABEL: "Title",
   TITLE_PLACEHOLDER: "Ex: Motor Overheating",
@@ -53,8 +78,13 @@ export const BREAKDOWN_FORM_CONTENT = {
   EQUIPMENT_PLACEHOLDER: "Select Equipment",
   EQUIPMENT_SEARCH: "Search Equipment",
 
+  ASSIGN_TECHNICIAN_LABEL: "Assign Technician",
+  ASSIGN_TECHNICIAN_PLACEHOLDER: "Select Technician",
+  ASSIGN_TECHNICIAN_SEARCH: "Search Technician",
+
   CREATE_BUTTON: "Report Breakdown",
-  UPDATE_BUTTON: "Update",
+  ASSIGN_BUTTON: "Assign Technician",
+  RESOLVE_BUTTON: "Resolve",
   CANCEL_BUTTON: "Cancel",
 } as const;
 
@@ -64,5 +94,6 @@ export const BREAKDOWN_CARD_CONTENT = {
   UNASSIGNED: "Un Assigned",
   REPORTED_AT: "Reported At",
   VIEW: "View",
-  UPDATE: "Update",
+  ASSIGN_TECHNICIAN: "Assign Technician",
+  RESOLVE: "Resolve",
 } as const;

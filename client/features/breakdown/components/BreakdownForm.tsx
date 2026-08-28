@@ -14,41 +14,89 @@ import { useForm } from "react-hook-form";
 import { breakdownSchema, BreakdownValues } from "../schema/breakdown.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateBreakdown } from "../hooks/useCreateBreakdown";
-import { CircleAlert, LoaderCircle, Pencil } from "lucide-react";
+import {
+  CircleAlert,
+  CircleCheck,
+  LoaderCircle,
+  UserRoundPlus,
+} from "lucide-react";
 import { appToast, getErrorMessage } from "@/lib";
+import { useBreakdownById } from "../hooks/useBreakdownById";
+import { useEffect } from "react";
+import { useUserDropdown } from "@/hooks";
+import { AssignTechnician } from "./AssignTechnician";
+import {
+  assignTechnicianSchema,
+  AssignTechnicianValue,
+} from "../schema/assign-technician.schema";
+import { useAssignTechnician } from "../hooks/useAssignTechnician";
 
-interface BreakdownFormProps {
-  mode: "create" | "update";
-  onClose: () => void;
+interface BreakdownBaseProps {
   equipments: DropDown[];
   breakdownSeverity: BreakdownSeverityType[];
   isEquipment: boolean;
   isMeta: boolean;
 }
 
-export function BreakdownForm({
-  mode,
-  onClose,
-  equipments,
-  breakdownSeverity,
-  isEquipment,
-  isMeta,
-}: BreakdownFormProps) {
-  const isEditMode = mode === "update";
+interface CreateBreakdownProps extends BreakdownBaseProps {
+  mode: "create";
+  onClose: () => void;
+}
 
-  const title = isEditMode
-    ? BREAKDOWN_FORM_CONTENT.UPDATE_TITLE
-    : BREAKDOWN_FORM_CONTENT.CREATE_TITLE;
+interface ViewBreakdownProps extends BreakdownBaseProps {
+  mode: "view";
+  id: number;
+}
 
-  const description = isEditMode
-    ? BREAKDOWN_FORM_CONTENT.UPDATE_DESCRIPTION
-    : BREAKDOWN_FORM_CONTENT.CREATE_DESCRIPTION;
+interface AssignTechnicianProps extends BreakdownBaseProps {
+  mode: "assign";
+  id: number;
+  onClose: () => void;
+}
 
-  const buttonText = isEditMode
-    ? BREAKDOWN_FORM_CONTENT.UPDATE_BUTTON
-    : BREAKDOWN_FORM_CONTENT.CREATE_BUTTON;
+interface ResolveBreakdownProps extends BreakdownBaseProps {
+  mode: "resolve";
+  id: number;
+}
+
+type BreakdownProps =
+  | CreateBreakdownProps
+  | ViewBreakdownProps
+  | AssignTechnicianProps
+  | ResolveBreakdownProps;
+
+export function BreakdownForm(props: BreakdownProps) {
+  const { equipments, breakdownSeverity, isEquipment, isMeta, mode } = props;
+
+  const isCreateMode = mode === "create";
+  const isViewMode = mode === "view";
+  const isAssignMode = mode === "assign";
+  const isResolveMode = mode === "resolve";
+  const breakdownId = mode !== "create" ? props.id : undefined;
+
+  const title = isViewMode
+    ? BREAKDOWN_FORM_CONTENT.VIEW_TITLE
+    : isAssignMode
+      ? BREAKDOWN_FORM_CONTENT.ASSIGN_TITLE
+      : isResolveMode
+        ? BREAKDOWN_FORM_CONTENT.RESOLVE_TITLE
+        : BREAKDOWN_FORM_CONTENT.CREATE_TITLE;
+
+  const description = isViewMode
+    ? BREAKDOWN_FORM_CONTENT.VIEW_DESCRIPTION
+    : isAssignMode
+      ? BREAKDOWN_FORM_CONTENT.ASSIGN_DESCRIPTION
+      : isResolveMode
+        ? BREAKDOWN_FORM_CONTENT.RESOLVE_DESCRIPTION
+        : BREAKDOWN_FORM_CONTENT.CREATE_DESCRIPTION;
 
   const createBreakdown = useCreateBreakdown();
+  const assignTechnician = useAssignTechnician();
+  const { data: breakdownData, isLoading: isBreakdown } =
+    useBreakdownById(breakdownId);
+  const { data: usersData, isLoading: isUsers } = useUserDropdown();
+  const breakdown = breakdownData?.data;
+  const users = usersData?.data ?? [];
 
   const form = useForm<BreakdownValues>({
     resolver: zodResolver(breakdownSchema),
@@ -60,12 +108,30 @@ export function BreakdownForm({
     },
   });
 
-  const onSubmit = (payload: BreakdownValues) => {
+  const assignForm = useForm<AssignTechnicianValue>({
+    resolver: zodResolver(assignTechnicianSchema),
+    defaultValues: {
+      assignedTo: undefined,
+    },
+  });
+
+  useEffect(() => {
+    if (!breakdown) return;
+
+    form.reset({
+      equipmentId: breakdown.equipment.value,
+      title: breakdown.title,
+      severity: breakdown.severity,
+      description: breakdown.description,
+    });
+  }, [breakdown, form]);
+
+  const handleCreate = (payload: BreakdownValues) => {
     createBreakdown.mutate(payload, {
       onSuccess: (data) => {
         appToast.success(data.message);
         form.reset();
-        onClose();
+        if (mode === "create") props.onClose();
       },
 
       onError: (err) => {
@@ -74,11 +140,33 @@ export function BreakdownForm({
     });
   };
 
+  const handleAssign = (payload: AssignTechnicianValue) => {
+    if (mode !== "assign") return;
+
+    assignTechnician.mutate(
+      { id: props.id, payload },
+      {
+        onSuccess: (data) => {
+          appToast.success(data.message);
+          if (mode === "assign") props.onClose();
+        },
+
+        onError: (err) => {
+          appToast.error(getErrorMessage(err));
+        },
+      },
+    );
+  };
+
   return (
     <form
       noValidate
       className="flex flex-col max-h-[90vh]"
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={
+        isCreateMode
+          ? form.handleSubmit(handleCreate)
+          : assignForm.handleSubmit(handleAssign)
+      }
     >
       <DialogHeader className="shrink-0">
         <DialogTitle>{title}</DialogTitle>
@@ -87,14 +175,20 @@ export function BreakdownForm({
       </DialogHeader>
 
       <FieldGroup className="flex-1 overflow-y-auto p-5">
-        <BreakdownFields
-          form={form}
-          equipments={equipments}
-          breakdownSeverity={breakdownSeverity}
-          isEquipment={isEquipment}
-          isMeta={isMeta}
-          isDisabled={createBreakdown.isPending}
-        />
+        {mode === "view" ? (
+          <>View Mode</>
+        ) : mode === "assign" ? (
+          <AssignTechnician users={users} isUsers={isUsers} form={assignForm} />
+        ) : (
+          <BreakdownFields
+            form={form}
+            equipments={equipments}
+            breakdownSeverity={breakdownSeverity}
+            isEquipment={isEquipment}
+            isMeta={isMeta}
+            isDisabled={createBreakdown.isPending}
+          />
+        )}
       </FieldGroup>
 
       <DialogFooter>
@@ -102,16 +196,43 @@ export function BreakdownForm({
           {BREAKDOWN_FORM_CONTENT.CANCEL_BUTTON}
         </DialogClose>
 
-        <Button type="submit" disabled={createBreakdown.isPending}>
-          {createBreakdown.isPending ? (
-            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
-          ) : isEditMode ? (
-            <Pencil aria-hidden="true" className="size-4" />
-          ) : (
-            <CircleAlert aria-hidden="true" className="size-4" />
-          )}
-          {buttonText}
-        </Button>
+        {isCreateMode ? (
+          <Button type="submit" disabled={createBreakdown.isPending}>
+            {createBreakdown.isPending ? (
+              <LoaderCircle
+                aria-hidden="true"
+                className="size-4 animate-spin"
+              />
+            ) : (
+              <CircleAlert aria-hidden="true" className="size-4" />
+            )}
+            {BREAKDOWN_FORM_CONTENT.CREATE_BUTTON}
+          </Button>
+        ) : isAssignMode ? (
+          <Button type="submit" disabled={assignTechnician.isPending}>
+            {assignTechnician.isPending ? (
+              <LoaderCircle
+                aria-hidden="true"
+                className="size-4 animate-spin"
+              />
+            ) : (
+              <UserRoundPlus aria-hidden="true" className="size-4" />
+            )}
+            {BREAKDOWN_FORM_CONTENT.ASSIGN_BUTTON}
+          </Button>
+        ) : isResolveMode ? (
+          <Button type="submit" disabled={createBreakdown.isPending}>
+            {createBreakdown.isPending ? (
+              <LoaderCircle
+                aria-hidden="true"
+                className="size-4 animate-spin"
+              />
+            ) : (
+              <CircleCheck aria-hidden="true" className="size-4" />
+            )}
+            {BREAKDOWN_FORM_CONTENT.RESOLVE_BUTTON}
+          </Button>
+        ) : null}
       </DialogFooter>
     </form>
   );

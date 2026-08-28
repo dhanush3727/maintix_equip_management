@@ -6,13 +6,17 @@ import {
   BREAKDOWN_FORM_CONTENT,
 } from "../constants/breakdown.constant";
 import { BreakdownFilters } from "./BreakdownFilters";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BreakdownSeverity, BreakdownStatus } from "@/types";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
 import { Plus } from "lucide-react";
 import { BreakdownForm } from "./BreakdownForm";
 import { useBreakdowns } from "../hooks/useBreakdowns";
 import { BreakdownList } from "./BreakdownList";
+import { BreakdownListSkeleton } from "./BreakdownListSkeleton";
+import { BreakdownListError } from "./BreakdownListError";
+import { BreakdownListEmpty } from "./BreakdownListEmpty";
+import { getOptionLabel } from "@/lib";
 
 export interface BreakdownFilterItems {
   equipment?: number;
@@ -23,16 +27,54 @@ export interface BreakdownFilterItems {
 export function Breakdown() {
   const { data: equipmentDD, isLoading: isEquipment } = useEquipmentDD();
   const { data: meta, isLoading: isMeta } = useMeta();
-  const { data: breakdownData, isLoading: isBreakdown } = useBreakdowns();
 
-  const equipment = equipmentDD?.data ?? [];
+  const equipments = equipmentDD?.data ?? [];
   const breakdownSeverity = meta?.data?.breakdownSeverity ?? [];
   const breakdownStatus = meta?.data?.breakdownStatus ?? [];
   const [filters, setFilters] = useState<BreakdownFilterItems>({});
+  const equipment = getOptionLabel(equipments, filters.equipment);
+
+  const {
+    data: breakdownData,
+    isLoading: isBreakdownLoading,
+    isError: isBreakdownError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useBreakdowns({
+    ...filters,
+    equipment,
+  });
   const breakdowns =
     breakdownData?.pages.flatMap((page) => page.data ?? []) ?? [];
 
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const element = loadMoreRef.current;
+
+    if (!element || !hasNextPage || isFetchingNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (entry.isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
+
   const [createOpen, setCreateOpen] = useState<boolean>(false);
+  const [viewOpen, setViewOpen] = useState<number | null>(null);
+  const [assignOpen, setAssignOpen] = useState<number | null>(null);
 
   return (
     <div className="space-y-6">
@@ -51,10 +93,16 @@ export function Breakdown() {
         onFilterChange={setFilters}
         isEquipment={isEquipment}
         isMeta={isMeta}
-        equipment={equipment}
+        equipment={equipments}
         breakdownSeverity={breakdownSeverity}
         breakdownStatus={breakdownStatus}
       />
+
+      {isBreakdownError ? (
+        <BreakdownListError />
+      ) : !isBreakdownLoading && breakdowns.length === 0 ? (
+        <BreakdownListEmpty />
+      ) : null}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {/* Create Breakdown */}
@@ -76,7 +124,7 @@ export function Breakdown() {
             <BreakdownForm
               mode="create"
               onClose={() => setCreateOpen(false)}
-              equipments={equipment}
+              equipments={equipments}
               breakdownSeverity={breakdownSeverity}
               isEquipment={isEquipment}
               isMeta={isMeta}
@@ -84,10 +132,68 @@ export function Breakdown() {
           </DialogContent>
         </Dialog>
 
-        {breakdowns.map((item) => (
-          <BreakdownList item={item} key={item.id} />
-        ))}
+        {isBreakdownLoading
+          ? Array.from({ length: 11 }, (_, i) => (
+              <BreakdownListSkeleton key={i} />
+            ))
+          : !isBreakdownError &&
+            breakdowns.length > 0 &&
+            breakdowns.map((item) => (
+              <BreakdownList
+                item={item}
+                key={item.id}
+                onView={setViewOpen}
+                onAssign={setAssignOpen}
+              />
+            ))}
       </div>
+
+      {hasNextPage && (
+        <div ref={loadMoreRef} className="flex h-10 justify-center">
+          <span>{isFetchingNextPage && BREAKDOWN_CONTENT.LOAD_MORE}</span>
+        </div>
+      )}
+
+      <Dialog
+        open={viewOpen !== null}
+        onOpenChange={(open) => {
+          if (!open) setViewOpen(null);
+        }}
+      >
+        <DialogContent className={"w-[90vw] max-w-6xl"}>
+          {viewOpen !== null && (
+            <BreakdownForm
+              mode="view"
+              id={viewOpen}
+              equipments={equipments}
+              breakdownSeverity={breakdownSeverity}
+              isEquipment={isEquipment}
+              isMeta={isMeta}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={assignOpen !== null}
+        onOpenChange={(open) => {
+          if (!open) setAssignOpen(null);
+        }}
+      >
+        <DialogContent className={"w-[90vw] max-w-6xl"}>
+          {assignOpen !== null && (
+            <BreakdownForm
+              mode="assign"
+              id={assignOpen}
+              equipments={equipments}
+              breakdownSeverity={breakdownSeverity}
+              isEquipment={isEquipment}
+              isMeta={isMeta}
+              onClose={() => setAssignOpen(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
