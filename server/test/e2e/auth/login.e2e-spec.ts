@@ -2,24 +2,45 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
 import { createApp } from '../../utils/create-app';
+import {
+  createTestOrganization,
+  createTestUser,
+  prisma,
+} from '../../utils/test-data';
 
 describe('Login E2E', () => {
   let app: INestApplication;
+  let testUserEmail: string;
 
   beforeAll(async () => {
     app = await createApp();
+
+    // Create test data
+    const organization = await createTestOrganization();
+    const user = await createTestUser(organization.id);
+
+    testUserEmail = user.email;
   });
 
   // Clean up after all tests have run
   afterAll(async () => {
-    // close the app after test
+    // Delete sessions created during login
+    await prisma.userSession.deleteMany({
+      where: {
+        user: {
+          email: testUserEmail,
+        },
+      },
+    });
+
+    // close the app after test and disconnect prisma
     await app.close();
   });
 
   it('should login a existing user', async () => {
     const payload = {
-      email: `test@gmail.com`,
-      password: 'Password@123',
+      email: `dhanush7825@gmail.com`,
+      password: 'Dhanush@3727',
     };
 
     const server = app.getHttpServer() as Parameters<typeof request>[0];
@@ -61,7 +82,7 @@ describe('Login E2E', () => {
 
   it('should fail for password not match', async () => {
     const payload = {
-      email: 'test@gmail.com',
+      email: 'dhanush7825@gmail.com',
       password: 'password113',
     };
 
