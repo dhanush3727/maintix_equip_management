@@ -141,6 +141,7 @@ export class BreakdownService {
         },
         assignee: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -152,6 +153,7 @@ export class BreakdownService {
       equipment: breakdown.equipment.name,
       reportedBy: breakdown.reporter.name,
       assignedTo: breakdown.assignee?.name,
+      assignedToById: breakdown.assignee?.id,
       title: breakdown.title,
       severity: breakdown.severity,
       status: breakdown.status,
@@ -552,7 +554,7 @@ export class BreakdownService {
 
     if (hasActions === 0) {
       throw new BadRequestException(
-        'At least one repair action is required before resolving',
+        'Repair action is required before resolving',
       );
     }
 

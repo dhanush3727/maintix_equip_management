@@ -28,9 +28,19 @@ interface BreakdownListProps {
   item: BreakdownData;
   onView: (id: number) => void;
   onAssign: (id: number) => void;
+  onResolve: (id: number) => void;
+  isManager?: boolean;
+  technicianId?: number;
 }
 
-export function BreakdownList({ item, onView, onAssign }: BreakdownListProps) {
+export function BreakdownList({
+  item,
+  onView,
+  onAssign,
+  onResolve,
+  isManager,
+  technicianId,
+}: BreakdownListProps) {
   return (
     <Card className="flex h-full flex-col transition-all hover:-translate-y-1 hover:shadow-lg">
       <CardHeader className="space-y-4">
@@ -68,7 +78,7 @@ export function BreakdownList({ item, onView, onAssign }: BreakdownListProps) {
                   {BREAKDOWN_CARD_CONTENT.VIEW}
                 </Button>
 
-                {item.status === BreakdownStatus.OPEN && (
+                {item.status === BreakdownStatus.OPEN && isManager && (
                   <Button
                     variant="ghost"
                     onClick={() => onAssign(item.id)}
@@ -79,16 +89,17 @@ export function BreakdownList({ item, onView, onAssign }: BreakdownListProps) {
                   </Button>
                 )}
 
-                {item.status === BreakdownStatus.IN_PROGRESS && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => onView(item.id)}
-                    className="justify-start gap-2"
-                  >
-                    <CircleCheck aria-hidden="true" className="size-4" />
-                    {BREAKDOWN_CARD_CONTENT.RESOLVE}
-                  </Button>
-                )}
+                {item.status === BreakdownStatus.IN_PROGRESS &&
+                  item.assignedToById === technicianId && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => onResolve(item.id)}
+                      className="justify-start gap-2"
+                    >
+                      <CircleCheck aria-hidden="true" className="size-4" />
+                      {BREAKDOWN_CARD_CONTENT.RESOLVE}
+                    </Button>
+                  )}
               </div>
             </PopoverContent>
           </Popover>

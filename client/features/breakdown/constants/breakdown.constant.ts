@@ -82,9 +82,19 @@ export const BREAKDOWN_FORM_CONTENT = {
   ASSIGN_TECHNICIAN_PLACEHOLDER: "Select Technician",
   ASSIGN_TECHNICIAN_SEARCH: "Search Technician",
 
+  ROOTCAUSE_LABEL: "Root Cause",
+  ROOTCAUSE_DESCRIPTION:
+    "Ex: Motor bearing failure due to insufficient lubrication.",
+
+  ACTION_LABEL: "Action",
+  ACTION_DESCRIPTION: "Ex: Replaced the damaged motor bearing.",
+
+  REMARKS_LABEL: "Remarks",
+  REMARKS_DESCRIPTION: "Ex: Installed a new SKF bearing.",
+
   CREATE_BUTTON: "Report Breakdown",
   ASSIGN_BUTTON: "Assign Technician",
-  RESOLVE_BUTTON: "Resolve",
+  RESOLVE_BUTTON: "Resolve Breakdown",
   CANCEL_BUTTON: "Cancel",
 } as const;
 

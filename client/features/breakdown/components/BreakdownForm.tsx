@@ -30,6 +30,10 @@ import {
   AssignTechnicianValue,
 } from "../schema/assign-technician.schema";
 import { useAssignTechnician } from "../hooks/useAssignTechnician";
+import { ResolveBreakdown } from "./ResolveBreakdown";
+import { resolveSchema, ResolveValues } from "../schema/resolve.schema";
+import { useResolveBreakdown } from "../hooks/useResolveBreakdown";
+import { useCreateBreakdownAction } from "../hooks/useCreateBreakdownAction";
 
 interface BreakdownBaseProps {
   equipments: DropDown[];
@@ -57,6 +61,7 @@ interface AssignTechnicianProps extends BreakdownBaseProps {
 interface ResolveBreakdownProps extends BreakdownBaseProps {
   mode: "resolve";
   id: number;
+  onClose: () => void;
 }
 
 type BreakdownProps =
@@ -92,6 +97,8 @@ export function BreakdownForm(props: BreakdownProps) {
 
   const createBreakdown = useCreateBreakdown();
   const assignTechnician = useAssignTechnician();
+  const resolveBreakdown = useResolveBreakdown();
+  const createAction = useCreateBreakdownAction();
   const { data: breakdownData, isLoading: isBreakdown } =
     useBreakdownById(breakdownId);
   const { data: usersData, isLoading: isUsers } = useUserDropdown();
@@ -112,6 +119,13 @@ export function BreakdownForm(props: BreakdownProps) {
     resolver: zodResolver(assignTechnicianSchema),
     defaultValues: {
       assignedTo: undefined,
+    },
+  });
+
+  const resolveForm = useForm<ResolveValues>({
+    resolver: zodResolver(resolveSchema),
+    defaultValues: {
+      rootCause: "",
     },
   });
 
@@ -158,6 +172,35 @@ export function BreakdownForm(props: BreakdownProps) {
     );
   };
 
+  const handleResolve = async (payload: ResolveValues) => {
+    if (mode !== "resolve") return;
+    const { rootCause, action, remarks } = payload;
+
+    try {
+      await createAction.mutateAsync({
+        id: props.id,
+        payload: {
+          action,
+          remarks,
+        },
+      });
+
+      await resolveBreakdown.mutateAsync({
+        id: props.id,
+        payload: {
+          rootCause,
+        },
+      });
+
+      appToast.success("Breakdown resolved successfully");
+      props.onClose();
+    } catch (err) {
+      appToast.error(getErrorMessage(err));
+    }
+  };
+
+  const isResolving = resolveBreakdown.isPending || createAction.isPending;
+
   return (
     <form
       noValidate
@@ -165,7 +208,11 @@ export function BreakdownForm(props: BreakdownProps) {
       onSubmit={
         isCreateMode
           ? form.handleSubmit(handleCreate)
-          : assignForm.handleSubmit(handleAssign)
+          : isAssignMode
+            ? assignForm.handleSubmit(handleAssign)
+            : isResolveMode
+              ? resolveForm.handleSubmit(handleResolve)
+              : undefined
       }
     >
       <DialogHeader className="shrink-0">
@@ -179,6 +226,8 @@ export function BreakdownForm(props: BreakdownProps) {
           <>View Mode</>
         ) : mode === "assign" ? (
           <AssignTechnician users={users} isUsers={isUsers} form={assignForm} />
+        ) : mode === "resolve" ? (
+          <ResolveBreakdown form={resolveForm} />
         ) : (
           <BreakdownFields
             form={form}
@@ -192,7 +241,14 @@ export function BreakdownForm(props: BreakdownProps) {
       </FieldGroup>
 
       <DialogFooter>
-        <DialogClose className={"mr-3"} disabled={createBreakdown.isPending}>
+        <DialogClose
+          className={"mr-3"}
+          disabled={
+            createBreakdown.isPending ||
+            assignTechnician.isPending ||
+            !isResolving
+          }
+        >
           {BREAKDOWN_FORM_CONTENT.CANCEL_BUTTON}
         </DialogClose>
 
@@ -221,8 +277,12 @@ export function BreakdownForm(props: BreakdownProps) {
             {BREAKDOWN_FORM_CONTENT.ASSIGN_BUTTON}
           </Button>
         ) : isResolveMode ? (
-          <Button type="submit" disabled={createBreakdown.isPending}>
-            {createBreakdown.isPending ? (
+          <Button
+            type="submit"
+            disabled={isResolving}
+            className={"bg-success hover:bg-success"}
+          >
+            {isResolving ? (
               <LoaderCircle
                 aria-hidden="true"
                 className="size-4 animate-spin"

@@ -16,7 +16,6 @@ export class CreateActionsDto {
   @ApiPropertyOptional({ example: 'actions' })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @Transform(({ value }: { value: string }) => {
     if (typeof value !== 'string') return value;
 

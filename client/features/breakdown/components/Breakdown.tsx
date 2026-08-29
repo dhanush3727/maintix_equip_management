@@ -1,6 +1,6 @@
 "use client";
 
-import { useEquipmentDD, useMeta } from "@/hooks";
+import { useAuth, useEquipmentDD, useMeta } from "@/hooks";
 import {
   BREAKDOWN_CONTENT,
   BREAKDOWN_FORM_CONTENT,
@@ -17,6 +17,7 @@ import { BreakdownListSkeleton } from "./BreakdownListSkeleton";
 import { BreakdownListError } from "./BreakdownListError";
 import { BreakdownListEmpty } from "./BreakdownListEmpty";
 import { getOptionLabel } from "@/lib";
+import { ROLE_IDS } from "@/constants/role.constant";
 
 export interface BreakdownFilterItems {
   equipment?: number;
@@ -27,12 +28,14 @@ export interface BreakdownFilterItems {
 export function Breakdown() {
   const { data: equipmentDD, isLoading: isEquipment } = useEquipmentDD();
   const { data: meta, isLoading: isMeta } = useMeta();
+  const { user } = useAuth();
 
   const equipments = equipmentDD?.data ?? [];
   const breakdownSeverity = meta?.data?.breakdownSeverity ?? [];
   const breakdownStatus = meta?.data?.breakdownStatus ?? [];
   const [filters, setFilters] = useState<BreakdownFilterItems>({});
   const equipment = getOptionLabel(equipments, filters.equipment);
+  const isManager = user?.roles.some((role) => role.id === ROLE_IDS.MANAGER);
 
   const {
     data: breakdownData,
@@ -75,6 +78,7 @@ export function Breakdown() {
   const [createOpen, setCreateOpen] = useState<boolean>(false);
   const [viewOpen, setViewOpen] = useState<number | null>(null);
   const [assignOpen, setAssignOpen] = useState<number | null>(null);
+  const [resolveOpen, setResolveOpen] = useState<number | null>(null);
 
   return (
     <div className="space-y-6">
@@ -144,6 +148,9 @@ export function Breakdown() {
                 key={item.id}
                 onView={setViewOpen}
                 onAssign={setAssignOpen}
+                onResolve={setResolveOpen}
+                isManager={isManager}
+                technicianId={user?.id}
               />
             ))}
       </div>
@@ -185,6 +192,27 @@ export function Breakdown() {
             <BreakdownForm
               mode="assign"
               id={assignOpen}
+              equipments={equipments}
+              breakdownSeverity={breakdownSeverity}
+              isEquipment={isEquipment}
+              isMeta={isMeta}
+              onClose={() => setAssignOpen(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={resolveOpen !== null}
+        onOpenChange={(open) => {
+          if (!open) setResolveOpen(null);
+        }}
+      >
+        <DialogContent className={"w-[90vw] max-w-6xl"}>
+          {resolveOpen !== null && (
+            <BreakdownForm
+              mode="resolve"
+              id={resolveOpen}
               equipments={equipments}
               breakdownSeverity={breakdownSeverity}
               isEquipment={isEquipment}

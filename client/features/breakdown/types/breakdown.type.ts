@@ -33,6 +33,7 @@ export interface BreakdownData {
   equipment: string;
   reportedBy: string;
   assignedTo: string;
+  assignedToById: number;
   title: string;
   severity: BreakdownSeverity;
   status: BreakdownStatus;
@@ -59,7 +60,7 @@ export interface AssignTechnicianRequest {
 
 export interface BreakdownActionRequest {
   action: string;
-  remarks: string;
+  remarks?: string;
 }
 
 export interface ResolveRequest {
