@@ -6,6 +6,7 @@ import {
   createTestOrganization,
   createTestUser,
   prisma,
+  TEST_USER,
 } from '../../utils/test-data';
 
 describe('Login E2E', () => {
@@ -33,14 +34,31 @@ describe('Login E2E', () => {
       },
     });
 
+    // Delete user role
+    await prisma.userRole.deleteMany({
+      where: {
+        user: {
+          email: testUserEmail,
+        },
+      },
+    });
+
+    // Delete test user
+    await prisma.user.delete({
+      where: {
+        email: testUserEmail,
+      },
+    });
+
     // close the app after test and disconnect prisma
     await app.close();
+    await prisma.$disconnect();
   });
 
   it('should login a existing user', async () => {
     const payload = {
-      email: `dhanush7825@gmail.com`,
-      password: 'Dhanush@3727',
+      email: testUserEmail,
+      password: TEST_USER.password,
     };
 
     const server = app.getHttpServer() as Parameters<typeof request>[0];
@@ -82,7 +100,7 @@ describe('Login E2E', () => {
 
   it('should fail for password not match', async () => {
     const payload = {
-      email: 'dhanush7825@gmail.com',
+      email: testUserEmail,
       password: 'password113',
     };
 

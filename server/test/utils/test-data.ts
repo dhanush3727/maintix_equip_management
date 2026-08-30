@@ -25,12 +25,14 @@ export const TEST_USER = {
 };
 
 export async function createTestOrganization() {
-  return prisma.organization.create({
+  const organization = prisma.organization.create({
     data: {
       name: 'Test Organization',
       slug: `test-organization-${Date.now()}`,
     },
   });
+
+  return organization;
 }
 
 export async function createTestUser(organizationId: number) {
@@ -39,9 +41,10 @@ export async function createTestUser(organizationId: number) {
   const user = await prisma.user.create({
     data: {
       name: TEST_USER.name,
-      email: `${Date.now()} - ${TEST_USER.email}`,
+      email: `${Date.now()}-${TEST_USER.email}`,
       passwordHash: hashedPassword,
       organizationId,
+      isEmailVerified: true,
     },
   });
 
