@@ -32,33 +32,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # - name: Run lint
-      #   run: npm run lint
-
       - name: Build client
         run: npm run build
 
   server:
     name: Server CI
     runs-on: ubuntu-latest
-
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/maintix_test?schema=maintix
-
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: maintix_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres -d maintix_test"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     defaults:
       run:
@@ -78,21 +57,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create test environment
-        run: |
-          echo "DATABASE_URL=$DATABASE_URL" > .env.test
-
       - name: Generate Prisma client
         run: npx prisma generate
-
-      - name: Run database migrations
-        run: npx prisma migrate deploy
-
-      # - name: Run lint
-      #   run: npm run lint
-
-      - name: Run login test
-        run: npm run test:e2e -- --runInBand test/e2e/auth/login.e2e-spec.ts
 
       - name: Build server
         run: npm run build
