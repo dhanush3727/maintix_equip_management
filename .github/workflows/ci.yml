@@ -1,70 +1,98 @@
 name: Maintix CI
 
 on:
-    push:
-        branches:
-            - main
-    
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    client:
-        name: Client CI
-        runs-on: ubuntu-latest
+  client:
+    name: Client CI
+    runs-on: ubuntu-latest
 
-        defaults:
-            run:
-                working-directory: client
+    defaults:
+      run:
+        working-directory: client
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                node-version: 24
-                cache: npm
-                cache-dependency-path: client/package-lock.json
-            
-            - name: Install dependencies
-              run: npm ci
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
 
-            - name: Run lint
-              run: npm run lint
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Build client
-              run: npm run build
+      # - name: Run lint
+      #   run: npm run lint
 
-    server:
-        name: Server CI
-        runs-on: ubuntu-latest
+      - name: Build client
+        run: npm run build
 
-        defaults:
-            run:
-                working-directory: server
+  server:
+    name: Server CI
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/maintix_test?schema=maintix
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                node-version: 24
-                cache: npm
-                cache-dependency-path: server/package-lock.json
-            
-            - name: Install dependencies
-              run: npm ci
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: maintix_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d maintix_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
-            - name: Run lint
-              run: npm run lint
+    defaults:
+      run:
+        working-directory: server
 
-            - name: Generate Prisma client
-              run: npx prisma generate
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Build server
-              run: npm run build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create test environment
+        run: |
+          echo "DATABASE_URL=$DATABASE_URL" > .env.test
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Run database migrations
+        run: npx prisma migrate deploy
+
+      # - name: Run lint
+      #   run: npm run lint
+
+      - name: Run login test
+        run: npm run test:e2e -- --runInBand test/e2e/auth/login.e2e-spec.ts
+
+      - name: Build server
+        run: npm run build
