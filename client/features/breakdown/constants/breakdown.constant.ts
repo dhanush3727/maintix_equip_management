@@ -95,6 +95,7 @@ export const BREAKDOWN_FORM_CONTENT = {
   CREATE_BUTTON: "Report Breakdown",
   ASSIGN_BUTTON: "Assign Technician",
   RESOLVE_BUTTON: "Resolve Breakdown",
+  CLOSE_BUTTON: "Close Breakdown",
   CANCEL_BUTTON: "Cancel",
 } as const;
 

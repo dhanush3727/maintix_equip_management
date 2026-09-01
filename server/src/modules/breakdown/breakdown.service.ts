@@ -186,6 +186,8 @@ export class BreakdownService {
         severity: true,
         status: true,
         createdAt: true,
+        reportedAt: true,
+        resolvedAt: true,
         equipment: {
           select: {
             id: true,
@@ -195,6 +197,11 @@ export class BreakdownService {
         assignee: {
           select: {
             id: true,
+            name: true,
+          },
+        },
+        reporter: {
+          select: {
             name: true,
           },
         },
@@ -212,6 +219,9 @@ export class BreakdownService {
       severity: breakdown.severity,
       status: breakdown.status,
       createdAt: breakdown.createdAt,
+      reportedBy: breakdown.reporter.name,
+      reportedAt: breakdown.reportedAt,
+      resolvedAt: breakdown.resolvedAt,
       actions: breakdown.actions,
       equipment: {
         value: breakdown.equipment.id,
@@ -219,7 +229,7 @@ export class BreakdownService {
       },
       assignedTo: {
         value: breakdown.assignee?.id,
-        laberl: breakdown.assignee?.name,
+        label: breakdown.assignee?.name,
       },
     };
 

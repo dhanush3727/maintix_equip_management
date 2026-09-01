@@ -171,6 +171,8 @@ export function Breakdown() {
           {viewOpen !== null && (
             <BreakdownForm
               mode="view"
+              onClose={() => setViewOpen(null)}
+              isManager={isManager}
               id={viewOpen}
               equipments={equipments}
               breakdownSeverity={breakdownSeverity}
@@ -217,7 +219,7 @@ export function Breakdown() {
               breakdownSeverity={breakdownSeverity}
               isEquipment={isEquipment}
               isMeta={isMeta}
-              onClose={() => setAssignOpen(null)}
+              onClose={() => setResolveOpen(null)}
             />
           )}
         </DialogContent>

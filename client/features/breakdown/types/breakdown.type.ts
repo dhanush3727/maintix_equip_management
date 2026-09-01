@@ -49,6 +49,9 @@ export interface BreakdownDataById {
   severity: BreakdownSeverity;
   status: BreakdownStatus;
   createdAt: string;
+  reportedBy: string;
+  reportedAt: string;
+  resolvedAt: string;
   actions: BreakdownAction[];
   equipment: DropDown;
   assignedTo: DropDown;

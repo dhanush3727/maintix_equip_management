@@ -9,7 +9,7 @@ import {
 } from "@/components/ui";
 import { BREAKDOWN_FORM_CONTENT } from "../constants/breakdown.constant";
 import { BreakdownFields } from "./BreakdownFields";
-import { BreakdownSeverityType, DropDown } from "@/types";
+import { BreakdownSeverityType, BreakdownStatus, DropDown } from "@/types";
 import { useForm } from "react-hook-form";
 import { breakdownSchema, BreakdownValues } from "../schema/breakdown.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +17,7 @@ import { useCreateBreakdown } from "../hooks/useCreateBreakdown";
 import {
   CircleAlert,
   CircleCheck,
+  CircleX,
   LoaderCircle,
   UserRoundPlus,
 } from "lucide-react";
@@ -34,34 +35,35 @@ import { ResolveBreakdown } from "./ResolveBreakdown";
 import { resolveSchema, ResolveValues } from "../schema/resolve.schema";
 import { useResolveBreakdown } from "../hooks/useResolveBreakdown";
 import { useCreateBreakdownAction } from "../hooks/useCreateBreakdownAction";
+import { BreakdownDetails } from "./BreakdownDetails";
+import { useCloseBreakdown } from "../hooks/useCloseBreakdown";
 
 interface BreakdownBaseProps {
   equipments: DropDown[];
   breakdownSeverity: BreakdownSeverityType[];
   isEquipment: boolean;
   isMeta: boolean;
+  onClose: () => void;
 }
 
 interface CreateBreakdownProps extends BreakdownBaseProps {
   mode: "create";
-  onClose: () => void;
 }
 
 interface ViewBreakdownProps extends BreakdownBaseProps {
   mode: "view";
   id: number;
+  isManager?: boolean;
 }
 
 interface AssignTechnicianProps extends BreakdownBaseProps {
   mode: "assign";
   id: number;
-  onClose: () => void;
 }
 
 interface ResolveBreakdownProps extends BreakdownBaseProps {
   mode: "resolve";
   id: number;
-  onClose: () => void;
 }
 
 type BreakdownProps =
@@ -71,7 +73,8 @@ type BreakdownProps =
   | ResolveBreakdownProps;
 
 export function BreakdownForm(props: BreakdownProps) {
-  const { equipments, breakdownSeverity, isEquipment, isMeta, mode } = props;
+  const { equipments, breakdownSeverity, isEquipment, isMeta, mode, onClose } =
+    props;
 
   const isCreateMode = mode === "create";
   const isViewMode = mode === "view";
@@ -99,6 +102,7 @@ export function BreakdownForm(props: BreakdownProps) {
   const assignTechnician = useAssignTechnician();
   const resolveBreakdown = useResolveBreakdown();
   const createAction = useCreateBreakdownAction();
+  const closeBreakdown = useCloseBreakdown();
   const { data: breakdownData, isLoading: isBreakdown } =
     useBreakdownById(breakdownId);
   const { data: usersData, isLoading: isUsers } = useUserDropdown();
@@ -145,7 +149,7 @@ export function BreakdownForm(props: BreakdownProps) {
       onSuccess: (data) => {
         appToast.success(data.message);
         form.reset();
-        if (mode === "create") props.onClose();
+        onClose();
       },
 
       onError: (err) => {
@@ -162,7 +166,7 @@ export function BreakdownForm(props: BreakdownProps) {
       {
         onSuccess: (data) => {
           appToast.success(data.message);
-          if (mode === "assign") props.onClose();
+          onClose();
         },
 
         onError: (err) => {
@@ -193,13 +197,34 @@ export function BreakdownForm(props: BreakdownProps) {
       });
 
       appToast.success("Breakdown resolved successfully");
-      props.onClose();
+      onClose();
     } catch (err) {
       appToast.error(getErrorMessage(err));
     }
   };
 
+  const handleClose = () => {
+    if (mode !== "view") return;
+
+    closeBreakdown.mutate(
+      { id: props.id },
+      {
+        onSuccess: (data) => {
+          appToast.success(data.message);
+          onClose();
+        },
+        onError: (err) => {
+          appToast.error(getErrorMessage(err));
+        },
+      },
+    );
+  };
+
   const isResolving = resolveBreakdown.isPending || createAction.isPending;
+  const canClose =
+    breakdown?.status === BreakdownStatus.RESOLVED &&
+    isViewMode &&
+    props.isManager;
 
   return (
     <form
@@ -223,7 +248,7 @@ export function BreakdownForm(props: BreakdownProps) {
 
       <FieldGroup className="flex-1 overflow-y-auto p-5">
         {mode === "view" ? (
-          <>View Mode</>
+          <BreakdownDetails breakdown={breakdown} isBreakdown={isBreakdown} />
         ) : mode === "assign" ? (
           <AssignTechnician users={users} isUsers={isUsers} form={assignForm} />
         ) : mode === "resolve" ? (
@@ -246,7 +271,8 @@ export function BreakdownForm(props: BreakdownProps) {
           disabled={
             createBreakdown.isPending ||
             assignTechnician.isPending ||
-            !isResolving
+            isResolving ||
+            closeBreakdown.isPending
           }
         >
           {BREAKDOWN_FORM_CONTENT.CANCEL_BUTTON}
@@ -291,6 +317,22 @@ export function BreakdownForm(props: BreakdownProps) {
               <CircleCheck aria-hidden="true" className="size-4" />
             )}
             {BREAKDOWN_FORM_CONTENT.RESOLVE_BUTTON}
+          </Button>
+        ) : canClose ? (
+          <Button
+            className={"bg-destructive hover:bg-destructive"}
+            onClick={handleClose}
+            disabled={closeBreakdown.isPending}
+          >
+            {closeBreakdown.isPending ? (
+              <LoaderCircle
+                aria-hidden="true"
+                className="size-4 animate-spin"
+              />
+            ) : (
+              <CircleX aria-hidden="true" className="size-4" />
+            )}
+            {BREAKDOWN_FORM_CONTENT.CLOSE_BUTTON}
           </Button>
         ) : null}
       </DialogFooter>
