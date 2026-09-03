@@ -10,6 +10,8 @@ export async function proxy(req: NextRequest) {
   // The nextUrl property of the NextRequest object provides a URL object that represents the requested URL, allowing you to easily access its components like pathname and search parameters.
   const { pathname, search } = req.nextUrl;
 
+  console.log("pathname", pathname);
+
   // If the user is trying to access the login or register page and they already have a refresh token, redirect them to the dashboard.
   if (isAuthRoutes(pathname) && token) {
     return NextResponse.redirect(new URL(ROUTES.DASHBOARD, req.url));

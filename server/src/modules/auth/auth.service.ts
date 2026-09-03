@@ -283,6 +283,7 @@ export class AuthService {
             name: true,
             onboardingStep: true,
             isActive: true,
+            slug: true,
           },
         },
 
@@ -366,6 +367,7 @@ export class AuthService {
 
     const formattedUser = {
       id: user.id,
+      slug: user.organization.slug,
       name: user.name,
       organizationId: user.organizationId,
       email: user.email,
@@ -917,6 +919,7 @@ export class AuthService {
             name: true,
             logoUrl: true,
             logoPublicId: true,
+            slug: true,
           },
         },
         roles: {
@@ -948,6 +951,7 @@ export class AuthService {
 
     const formattedUser = {
       id: user.id,
+      slug: user.organization.slug,
       name: user.name,
       email: user.email,
       organizationId: user.organizationId,

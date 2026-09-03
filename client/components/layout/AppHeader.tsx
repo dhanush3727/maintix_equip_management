@@ -31,13 +31,14 @@ import { appToast } from "@/lib/toast";
 import { getErrorMessage } from "@/lib/error-message";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/hooks";
+import { useAuth, useSlug } from "@/hooks";
 import { clearToken } from "@/lib";
 
 export function AppHeader() {
   const logoutMutation = useLogout();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { getSlugUrl } = useSlug();
 
   const { user, clearUser, isLoading } = useAuth();
   const roleName = user?.roles[0].name;
@@ -103,7 +104,7 @@ export function AppHeader() {
                 className={
                   "p-3 cursor-pointer flex justify-between items-center mb-1"
                 }
-                render={<Link href={ROUTES.ACCOUNT} />}
+                render={<Link href={getSlugUrl(ROUTES.ACCOUNT)} />}
               >
                 {isLoading ? (
                   <Skeleton className="h-8 w-full" />

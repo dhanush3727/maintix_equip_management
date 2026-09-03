@@ -37,7 +37,7 @@ export function BreakdownFilters({
     onFilterChange({});
   };
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       {isEquipment ? (
         <Skeleton className="h-10" />
       ) : (
@@ -96,6 +96,7 @@ export function BreakdownFilters({
             variant={"ghost"}
             aria-label="Clear filters"
             onClick={handleClearFilter}
+            className="w-fit justify-self-end shrink-0 gap-2 text-muted-foreground hover:bg-muted hover:text-foreground justify-end"
           >
             <X className="size-4" />
             {BREAKDOWN_CONTENT.CLEAR_BUTTON}

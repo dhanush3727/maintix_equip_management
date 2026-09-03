@@ -21,8 +21,9 @@ import {
   Wrench,
 } from "lucide-react";
 import { ROUTES } from "@/constants";
-import { useAuth } from "@/hooks";
+import { useAuth, useSlug } from "@/hooks";
 import { ROLE_IDS } from "@/constants/role.constant";
+import { useRouter } from "next/navigation";
 
 export const navItems = [
   {
@@ -59,6 +60,8 @@ export const navItems = [
 
 export function AppSidebar() {
   const { user } = useAuth();
+  const router = useRouter();
+  const { getSlugUrl } = useSlug();
 
   const canAccess = user?.roles.some(
     (role) => role.id === ROLE_IDS.ADMIN || role.id === ROLE_IDS.MANAGER,
@@ -66,16 +69,24 @@ export function AppSidebar() {
 
   const isAdmin = user?.roles.some((role) => role.id === ROLE_IDS.ADMIN);
 
-  const visibleNavigation = navItems.filter((item) => {
-    const isChecklist = item.url === ROUTES.CHECKLIST;
-    const isUsers = item.url === ROUTES.USERS;
+  const visibleNavigation = navItems
+    .filter((item) => {
+      const isChecklist = item.url === ROUTES.CHECKLIST;
+      const isUsers = item.url === ROUTES.USERS;
 
-    return (!isChecklist || canAccess) && (!isUsers || isAdmin);
-  });
+      return (!isChecklist || canAccess) && (!isUsers || isAdmin);
+    })
+    .map((item) => ({
+      ...item,
+      url: getSlugUrl(item.url),
+    }));
 
   return (
     <Sidebar collapsible="icon" className="z-20">
-      <SidebarHeader>
+      <SidebarHeader
+        className="cursor-pointer"
+        onClick={() => router.push(getSlugUrl(ROUTES.DASHBOARD))}
+      >
         <div className="flex items-center gap-3">
           <Image src={Logo} alt="Maintix" width={32} height={32} />
           <div className="flex flex-col group-data-[collapsible=icon]:hidden">

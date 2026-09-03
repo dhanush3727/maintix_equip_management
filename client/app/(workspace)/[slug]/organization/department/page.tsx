@@ -1,5 +1,5 @@
 import { Hammer } from "lucide-react";
-import { UNDER_DEVELOPMENT_CONTENT } from "../../constant";
+import { UNDER_DEVELOPMENT_CONTENT } from "../../../constant";
 
 export default function DepartmentPage() {
   return (

@@ -45,7 +45,7 @@ export function FilterItems({
   };
 
   return (
-    <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
+    <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-[repeat(5,minmax(0,1fr))_auto]">
       {isEquipment ? (
         <Skeleton className="h-10" />
       ) : (

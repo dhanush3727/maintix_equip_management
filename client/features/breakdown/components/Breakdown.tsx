@@ -8,7 +8,12 @@ import {
 import { BreakdownFilters } from "./BreakdownFilters";
 import { useEffect, useRef, useState } from "react";
 import { BreakdownSeverity, BreakdownStatus } from "@/types";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  useSidebar,
+} from "@/components/ui";
 import { Plus } from "lucide-react";
 import { BreakdownForm } from "./BreakdownForm";
 import { useBreakdowns } from "../hooks/useBreakdowns";
@@ -16,7 +21,7 @@ import { BreakdownList } from "./BreakdownList";
 import { BreakdownListSkeleton } from "./BreakdownListSkeleton";
 import { BreakdownListError } from "./BreakdownListError";
 import { BreakdownListEmpty } from "./BreakdownListEmpty";
-import { getOptionLabel } from "@/lib";
+import { cn, getOptionLabel } from "@/lib";
 import { ROLE_IDS } from "@/constants/role.constant";
 
 export interface BreakdownFilterItems {
@@ -26,6 +31,7 @@ export interface BreakdownFilterItems {
 }
 
 export function Breakdown() {
+  const { open } = useSidebar();
   const { data: equipmentDD, isLoading: isEquipment } = useEquipmentDD();
   const { data: meta, isLoading: isMeta } = useMeta();
   const { user } = useAuth();
@@ -108,7 +114,12 @@ export function Breakdown() {
         <BreakdownListEmpty />
       ) : null}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4",
+          open && "md:grid-cols-1 lg:grid-cols-2",
+        )}
+      >
         {/* Create Breakdown */}
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
           <DialogTrigger

@@ -8,6 +8,7 @@ export interface UserRole {
 
 export interface User {
   id: number;
+  slug: string;
   name: string;
   organizationId: number;
   email: string;

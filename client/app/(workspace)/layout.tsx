@@ -1,18 +1,16 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { AuthInitializer } from "./AuthInitializer";
 import { OnBoardingGuard } from "../OnboardingGuard";
-import { RouteGuard } from "./RouteGuard";
 
-export default function WorkspaceLayout({
-  children,
-}: Readonly<{
+interface WorkspaceLayoutProp {
   children: React.ReactNode;
-}>) {
+}
+
+export default function WorkspaceLayout({ children }: WorkspaceLayoutProp) {
   return (
     <OnBoardingGuard mode="dashboard">
       <AppShell>
         <AuthInitializer />
-        {/* <RouteGuard></RouteGuard> */}
         {children}
       </AppShell>
     </OnBoardingGuard>

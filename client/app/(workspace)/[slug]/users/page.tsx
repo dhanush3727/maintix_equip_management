@@ -1,7 +1,7 @@
 import { Hammer } from "lucide-react";
 import { UNDER_DEVELOPMENT_CONTENT } from "../../constant";
 
-export default function LocationPage() {
+export default function UsersPage() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-6">
       <div className="max-w-lg text-center">

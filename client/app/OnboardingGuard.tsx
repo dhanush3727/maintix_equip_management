@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { ROUTES } from "@/constants";
-import { useOnboarding } from "@/hooks";
+import { useOnboarding, useSlug } from "@/hooks";
 import { OnboardingSetup } from "@/types";
 import { setupRoutes } from "@/features/auth/constatnts/setup.constants";
 import { Loading } from "@/components/ui";
@@ -29,6 +29,7 @@ export function OnBoardingGuard({
   mode,
 }: OnBoardingGuardProps): React.ReactNode {
   const router = useRouter();
+  const { getSlugUrl } = useSlug();
 
   const { data, isLoading } = useOnboarding();
 
@@ -40,7 +41,7 @@ export function OnBoardingGuard({
     }
 
     if (mode === "setup" && onboardingStep === OnboardingSetup.COMPLETED) {
-      router.replace(ROUTES.DASHBOARD);
+      router.replace(getSlugUrl(ROUTES.DASHBOARD));
       return;
     }
 
@@ -49,7 +50,7 @@ export function OnBoardingGuard({
 
       router.replace(targetRoute);
     }
-  }, [isLoading, onboardingStep, mode, router]);
+  }, [isLoading, onboardingStep, mode, router, getSlugUrl]);
 
   // Wait until onboarding status is loaded.
   if (isLoading) {

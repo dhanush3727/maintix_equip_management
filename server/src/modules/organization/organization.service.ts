@@ -837,8 +837,6 @@ export class OrganizationService {
       Maintix Team
       </p>`,
     });
-
-    // Audit logs
   }
   //#endregion
 
