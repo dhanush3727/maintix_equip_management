@@ -39,6 +39,9 @@ jobs:
     name: Server CI
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql://postgres:Dhanush@3727@localhost:5432/maintix_test?schema=maintix
+
     services:
       postgres:
         image: postgres:17
