@@ -2,7 +2,9 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, RoleType } from '@prisma/client';
 import dotenv from 'dotenv';
 
-dotenv.config({});
+dotenv.config({
+  path: '.env.test',
+});
 
 const adapter = new PrismaPg(
   {
