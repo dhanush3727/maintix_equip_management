@@ -67,11 +67,11 @@ export function LoginForm({ redirect }: LoginProps) {
       onSuccess: (data) => {
         appToast.success(data.message);
 
-        const slug = data.data?.user.slug;
+        // const slug = data.data?.user.slug;
 
-        if (!slug) {
-          appToast.error("An unexepcted error occured, try again later");
-        }
+        // if (!slug) {
+        //   appToast.error("An unexepcted error occured, try again later");
+        // }
 
         const isAdmin = data.data?.user.roles.some(
           (role) => role.id === ROLE_IDS.ADMIN,
@@ -80,7 +80,7 @@ export function LoginForm({ redirect }: LoginProps) {
         const onboardingStep = data.data?.user.onboardingStep;
 
         if (!onboardingStep) {
-          router.replace(`/${slug}${getRedirectPath(redirect)}`);
+          router.replace(getRedirectPath(redirect));
           return;
         }
 
@@ -89,7 +89,7 @@ export function LoginForm({ redirect }: LoginProps) {
           return;
         }
 
-        router.replace(`/${slug}${getRedirectPath(redirect)}`);
+        router.replace(getRedirectPath(redirect));
         form.reset();
       },
 
