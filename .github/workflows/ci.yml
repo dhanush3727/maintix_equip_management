@@ -40,9 +40,18 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/maintix_test?schema=maintix
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      PORT: ${{secrets.PORT}}
       JWT_ACCESS_SECRET: ${{secrets.CI_JWT_ACCESS_SECRET}}
       JWT_REFRESH_SECRET: ${{secrets.CI_JWT_REFRESH_SECRET}}
+      EMAIL_ID: ${{secrets.EMAIL_ID}}
+      EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
+      EMAIL_HOST: ${{secrets.EMAIL_HOST}}
+      EMAIL_PORT: ${{secrets.EMAIL_PORT}}
+      CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
+      CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
+      CLOUDINARY_NAME: ${{secrets.CLOUDINARY_NAME}}
+      CLIENT_URL: ${{secrets.CLIENT_URL}}
 
     services:
       postgres:
