@@ -38,6 +38,9 @@ jobs:
       - name: Lint Client
         run: npm run lint
 
+      - name: Run playwright tests
+        run: npx playwright test
+
       - name: Build client
         run: npm run build
 
