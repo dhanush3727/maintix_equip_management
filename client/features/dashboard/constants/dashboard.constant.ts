@@ -1,4 +1,3 @@
-import { BreakdownSeverity, BreakdownStatus } from "@/types";
 import {
   BreakdownPriority,
   BreakdownTrend,

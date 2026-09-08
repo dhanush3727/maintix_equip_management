@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Lint Client
-        run: npm run client
+        run: npm run lint
 
       - name: Build client
         run: npm run build
