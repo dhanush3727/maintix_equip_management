@@ -37,14 +37,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-
       - name: Lint Client
         run: npm run lint
-
-      - name: Run playwright tests
-        run: npx playwright test
 
       - name: Build client
         run: npm run build
@@ -114,3 +108,79 @@ jobs:
 
       - name: Build server
         run: npm run build
+
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+
+    env:
+      NEXT_PUBLIC_API_URL: ${{secrets.NEXT_PUBLIC_API_URL}}
+      PLAYWRIGHT_TEST_EMAIL: ${{secrets.PLAYWRIGHT_TEST_EMAIL}}
+      PLAYWRIGHT_TEST_PASSWORD: ${{secrets.PLAYWRIGHT_TEST_PASSWORD}}
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/maintix_test?schema=maintix
+      PORT: ${{secrets.PORT}}
+      JWT_ACCESS_SECRET: ${{secrets.CI_JWT_ACCESS_SECRET}}
+      JWT_REFRESH_SECRET: ${{secrets.CI_JWT_REFRESH_SECRET}}
+      EMAIL_ID: ${{secrets.EMAIL_ID}}
+      EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
+      EMAIL_HOST: ${{secrets.EMAIL_HOST}}
+      EMAIL_PORT: ${{secrets.EMAIL_PORT}}
+      CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
+      CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
+      CLOUDINARY_NAME: ${{secrets.CLOUDINARY_NAME}}
+      CLIENT_URL: ${{secrets.CLIENT_URL}}
+
+    services:
+      postgres:
+        image: postgres:17
+
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: maintix_test
+
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd="pg_isready -U postgres -d maintix_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Generate Prisma client
+        working-directory: server
+        run: npx prisma generate
+
+      - name: Seed test database
+        working-directory: server
+        run: npx prisma db seed
+
+      - name: Install Playwright browsers
+        working-directory: client
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright test
+        working-directory: client
+        run: npx playwright test
