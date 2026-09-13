@@ -107,7 +107,7 @@ export default defineConfig({
 
     {
       command: "npm run start:dev",
-      url: "http://localhost:5000/api",
+      url: "http://localhost:5000",
       reuseExistingServer: !process.env.CI,
       cwd: "../server",
     },
