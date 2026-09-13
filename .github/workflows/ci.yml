@@ -180,10 +180,16 @@ jobs:
       - name: Seed test database
         working-directory: server
         run: npx prisma db seed
-        
-      - name: Test server
+
+      - name: Start server manually
         working-directory: server
-        run: npm run start:dev
+        run: |
+          npm run start:dev > server.log 2>&1 &
+          sleep 10
+          cat server.log
+
+      - name: Check server
+        run: curl -i http://localhost:5000/api
 
       - name: Install Playwright browsers
         working-directory: client
