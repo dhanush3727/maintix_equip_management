@@ -181,6 +181,13 @@ jobs:
         working-directory: server
         run: npx prisma db seed
 
+      - name: Start Next.js manually
+        working-directory: client
+        run: |
+          npm run dev > next.log 2>&1 &
+          sleep 10
+          cat next.log
+
       - name: Install Playwright browsers
         working-directory: client
         run: npx playwright install --with-deps chromium
