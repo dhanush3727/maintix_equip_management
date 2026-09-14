@@ -105,11 +105,11 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
     },
 
-    {
-      command: "npm run start:dev",
-      url: "http://localhost:5000/api",
-      reuseExistingServer: !process.env.CI,
-      cwd: "../server",
-    },
+    // {
+    //   command: "npm run start:dev",
+    //   url: "http://localhost:5000/api",
+    //   reuseExistingServer: !process.env.CI,
+    //   cwd: "../server",
+    // },
   ],
 });
