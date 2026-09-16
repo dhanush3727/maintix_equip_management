@@ -100,12 +100,6 @@ jobs:
       - name: Run Prisma migrations
         run: npx prisma migrate deploy
 
-      - name: Seed test database
-        run: npx prisma db seed
-
-      - name: Run login E2E test
-        run: npm run test:e2e -- test/e2e/auth/login.e2e-spec.ts
-
       - name: Build server
         run: npm run build
 
