@@ -188,6 +188,14 @@ jobs:
           FROM maintix."User";
           SQL
 
+      - name: Inspect CI test database
+        run: |
+          PGPASSWORD=postgres psql \
+          -h localhost \
+          -U postgres \
+          -d maintix_test \
+          -c 'SELECT id, name, email, "isEmailVerified", "isActive", "organizationId" FROM maintix."User";'
+
       - name: Install Playwright browsers
         working-directory: client
         run: npx playwright install --with-deps chromium
