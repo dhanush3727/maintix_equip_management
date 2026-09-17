@@ -14,11 +14,6 @@ jobs:
     name: Client CI
     runs-on: ubuntu-latest
 
-    env:
-      NEXT_PUBLIC_API_URL: ${{secrets.NEXT_PUBLIC_API_URL}}
-      PLAYWRIGHT_TEST_EMAIL: ${{secrets.PLAYWRIGHT_TEST_EMAIL}}
-      PLAYWRIGHT_TEST_PASSWORD: ${{secrets.PLAYWRIGHT_TEST_PASSWORD}}
-
     defaults:
       run:
         working-directory: client
@@ -46,35 +41,6 @@ jobs:
   server:
     name: Server CI
     runs-on: ubuntu-latest
-
-    env:
-      DATABASE_URL: ${{secrets.DATABASE_URL}}
-      PORT: ${{secrets.PORT}}
-      JWT_ACCESS_SECRET: ${{secrets.CI_JWT_ACCESS_SECRET}}
-      JWT_REFRESH_SECRET: ${{secrets.CI_JWT_REFRESH_SECRET}}
-      EMAIL_ID: ${{secrets.EMAIL_ID}}
-      EMAIL_PASSWORD: ${{secrets.EMAIL_PASSWORD}}
-      EMAIL_HOST: ${{secrets.EMAIL_HOST}}
-      EMAIL_PORT: ${{secrets.EMAIL_PORT}}
-      CLOUDINARY_API_KEY: ${{secrets.CLOUDINARY_API_KEY}}
-      CLOUDINARY_API_SECRET: ${{secrets.CLOUDINARY_API_SECRET}}
-      CLOUDINARY_NAME: ${{secrets.CLOUDINARY_NAME}}
-      CLIENT_URL: ${{secrets.CLIENT_URL}}
-
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: maintix_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres -d maintix_test"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     defaults:
       run:
@@ -173,22 +139,6 @@ jobs:
       - name: Seed test database
         working-directory: server
         run: npx prisma db seed
-
-      - name: Inspect test database
-        working-directory: server
-        run: |
-          npx prisma db execute --stdin <<'SQL'
-          SELECT id, name, email, "isEmailVerified", "isActive"
-          FROM maintix."User";
-          SQL
-
-      - name: Inspect CI test database
-        run: |
-          PGPASSWORD=postgres psql \
-          -h localhost \
-          -U postgres \
-          -d maintix_test \
-          -c 'SELECT id, name, email, "isEmailVerified", "isActive", "organizationId" FROM maintix."User";'
 
       - name: Install Playwright browsers
         working-directory: client
