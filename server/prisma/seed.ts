@@ -1,5 +1,5 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient, RoleType } from '@prisma/client';
+import { OnboardingStep, PrismaClient, RoleType } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
@@ -53,10 +53,13 @@ async function main(): Promise<void> {
     where: {
       slug: 'playwright-test-org',
     },
-    update: {},
+    update: {
+      onboardingStep: OnboardingStep.COMPLETED,
+    },
     create: {
       name: 'Playwright Test Organization',
       slug: 'playwright-test-org',
+      onboardingStep: OnboardingStep.COMPLETED,
     },
   });
 
