@@ -48,6 +48,8 @@ HTTP - TCP 80
 ### Launce the EC2 instance
 After clicking Launch instance, AWS created the actual virtual machine. It received a public address and a public DNS name. The public address allows your computer on the internet to reach the EC2 instance.
 
+We created and launched the EC2 instance now we connect the EC2 instance to our computer using the SSH with private key.
+
 ### AWS SSH Tab
 AWS provide this command
 ```bash
@@ -58,3 +60,115 @@ This command contains several important pieces,
 - `-i "maintix-key.pem"`: Use this private key for authentication.
 - `ubuntu@`: This is the linux username we're logging in as. The Ubuntu EC2 AMI provides the `ubuntu` user. So we're saying login as ubuntu
 - `ec2-13-126-76-119.ap-south-1.compute.amazonaws.com`: This identifies the EC2 server wwe're connecting to.
+
+### Run the EC2 instance in the window
+In the windows open the powershell where our security key there, then run the command
+```bash
+ssh -i "maintix-key.pem" ubuntu@ec2-13-126-76-119.ap-south-1.compute.amazonaws.com
+```
+- After run this command it show the error. Because windows was allowing more users/groups to access the security key SSH consider that unsafe. The private key is supposed to be private.
+- So check the windows username using `whoami` command.
+- Then run the command `icacls "maintix-key.pem" /inheritance:r` it is remove the inherited permmissons. Windows can inherit permissions from the parent folder. We didn't want the `.pem` file inheriting broad permissions. So we removed inherited permissions.
+- Then run the command `icacls "maintix-key.pem" /grant:r "(windows-username):R"`. It gives the read permission to the private key.
+- Then check `icals "maintix-key.pem"` we can get the user name of the window.
+- Run again the SSH, this time SSH accepted the private key, successfully entered ubuntu
+Now the EC2 instance connected to our windows
+
+## Install Docker
+before install docker will see some ubuntu commands and flags to going to use
+- `sudo`: It means run this command with administrator(root) privileges.
+- `apt`: stands for Advanced Package Tool. It is Ubuntu's package manager. It is allows ubuntu to search, download, install update, remove software.
+- `curl`: Is a command line tool used to send requests to URLs and transfer data.
+
+### Prerequities
+Now we want to check some prerequisites:
+1. Update Ubuntu's package information
+```bash
+sudo apt update
+```
+- Updates Ubuntu's package index so it knows about the latest available packages.
+
+2. Installed required packages
+```bash
+sudo apt install ca-certificates curl
+```
+- Installs packages required to securely download Docker's repository key and communicate with HTTPS repositories.
+
+3. Create Docker Keyrings Directory
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+```
+- Creates the directory used to store repository signing keys.
+
+4. Download Docker's Signing Key
+```bash
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+```
+- Downloads Docker's official GPG signing key and saves it as docker.asc.
+
+5. Set Key Permissions
+```bash
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+- Makes the Docker signing key readable by the APT package manager.
+
+6. Add Docker's Official Repository
+```bash
+sudo tee /etc/apt/sources.list.d/docker.sources > /dev/null <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+```
+- Adds Docker's official APT repository to Ubuntu and configures it to verify packages using Docker's signing key.
+
+7. Update Package Information
+```bash
+sudo apt update
+```
+- Updates the package index again, now including Docker's official repository.
+
+8. Install Docker
+```bash
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+- `docker-ce`: Docker Engine
+- `docker-ce-cli`: Docker command-line interface
+- `containerd.io`: Container runtime
+- `docker-buildx-plugin`: Docker Buildx
+- `docker-compose-plugin`: Docker Compose
+
+9. Verify Docker Service
+```bash
+sudo systemctl status docker
+```
+- Checks whether the Docker service is running.
+
+10. Verify Docker and Docker compose Version
+```bash
+sudo docker --version
+sudo docker compose version
+```
+- Displays the installed Docker Engine version.
+- Displays the installed Docker Compose version.
+
+11. Test Docker
+```bash
+sudo docker run hello-world
+```
+- Downloads and runs the `hello-world` image to verify that Docker can pull images and create and run containers successfully.
+
+## Install git and clone the project
+We want to deploy our project in EC2 then install the git on the EC2 server.
+`sudo apt install git`
+`git --version`
+`git clone <project-repo>`
+`cd <project-directory>`
+
+## Install PostgreSQL
+`sudo apt install postgresql postgresql-contrib`
+`psql --version`
+`sudo systemctl status postgresql`
