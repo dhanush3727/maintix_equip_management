@@ -172,3 +172,5 @@ We want to deploy our project in EC2 then install the git on the EC2 server.
 `sudo apt install postgresql postgresql-contrib`
 `psql --version`
 `sudo systemctl status postgresql`
+`sudo pg_lsclusters`
+``
