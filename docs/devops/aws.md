@@ -176,3 +176,10 @@ We want to deploy our project in EC2 then install the git on the EC2 server.
 `sudo -u postgres psql`
 inside the postgresql
 `CREATE USER maintix_user WITH PASSWORD "Enter_Password";`
+`sudo docker network inspect bridge --format '{{(index .IPAM.Config 0).Gateway}}'`
+`sudo -u postgres psql -c "SHOW listen_addresses;"`
+`sudo -u postgres psql -c "SHOW config_file;"`
+`sudo nano /etc/postgresql/18/main/postgresql.conf` to edit the listen_address for postgresql change it to *
+`sudo -u postgres psql -c "SHOW hba_file;"`
+Add this line in the postgresql.conf file in the end `host    maintix    maintix_user    172.17.0.0/16    scram-sha-256`
+``
