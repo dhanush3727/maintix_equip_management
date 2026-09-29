@@ -174,3 +174,5 @@ We want to deploy our project in EC2 then install the git on the EC2 server.
 `sudo systemctl status postgresql`
 `sudo pg_lsclusters`
 `sudo -u postgres psql`
+inside the postgresql
+`CREATE USER maintix_user WITH PASSWORD "Enter_Password";`

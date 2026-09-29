@@ -3,9 +3,7 @@ import { OnboardingStep, PrismaClient, RoleType } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
-dotenv.config({
-  path: '.env.test',
-});
+dotenv.config();
 
 const adapter = new PrismaPg(
   {
