@@ -183,3 +183,5 @@ inside the postgresql
 `sudo -u postgres psql -c "SHOW hba_file;"`
 Add this line in the postgresql.conf file in the end `host    maintix    maintix_user    172.17.0.0/16    scram-sha-256`
 ``
+
+## Add the .env variable for server
