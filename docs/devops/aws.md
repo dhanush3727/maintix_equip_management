@@ -299,3 +299,7 @@ These variables are stored in:
 ```text
 server/.env
 ```
+
+## Run docker compose
+`docker compose build`
+`docker compose up`
