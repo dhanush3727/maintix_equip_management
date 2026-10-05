@@ -304,3 +304,11 @@ server/.env
 `docker compose build`
 `docker compose up`
 `docker compose logs`
+
+`sudo docker compose run --rm server npx prisma migrate status`
+
+`sudo docker compose run --rm server npx prisma migrate deploy`
+
+`sudo docker compose run --rm server sh -c 'ls -la prisma.config.ts'`
+
+`sudo docker build --target builder -t maintix-server-seed ./server`
