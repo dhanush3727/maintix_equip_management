@@ -303,3 +303,4 @@ server/.env
 ## Run docker compose
 `docker compose build`
 `docker compose up`
+`docker compose logs`
