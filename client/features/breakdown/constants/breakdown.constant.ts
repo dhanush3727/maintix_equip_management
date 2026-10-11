@@ -14,7 +14,7 @@ export const BREAKDOWN_ENDPOINTS = {
 } as const;
 
 export const BREAKDOWN_CONTENT = {
-  TITLE: "Equipment Breakdown",
+  TITLE: "Breakdown",
   DESCRIPTION:
     "Report, track, assign, and resolve equipment breakdowns to minimize downtime and keep maintenance operations running smoothly.",
 

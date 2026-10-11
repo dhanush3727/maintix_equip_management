@@ -1,3 +1,4 @@
+# it is just test for github and ec2 will connect or not
 name: EC2 SSH Test
 
 on:
