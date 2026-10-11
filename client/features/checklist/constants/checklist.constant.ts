@@ -9,7 +9,7 @@ export const CHECKLIST_ENDPOINTS = {
 
 export const CHECKLIST_CONTENT = {
   HEADER: {
-    TITLE: "Checklists",
+    TITLE: "Checklist List",
     DESCRIPTION:
       "Create and manage maintenance checklists to ensure tasks are completed consistently and accurately.",
   },
